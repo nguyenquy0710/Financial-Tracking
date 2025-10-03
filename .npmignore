@@ -1,0 +1,14 @@
+# Ignore TypeScript build info files
+*.tsbuildinfo
+
+# Ignore markdown files
+*.md
+
+# Ignore build output directories
+dist/
+
+# Ignore npm config files
+.npmrc
+
+# Ignore Mac system files
+.DS_Store
