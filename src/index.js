@@ -14,6 +14,10 @@ const transactionRoutes = require('./routes/transactionRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const budgetRoutes = require('./routes/budgetRoutes');
 const goalRoutes = require('./routes/goalRoutes');
+const rentalRoutes = require('./routes/rentalRoutes');
+const salaryRoutes = require('./routes/salaryRoutes');
+const expenseRoutes = require('./routes/expenseRoutes');
+const excelRoutes = require('./routes/excelRoutes');
 
 // Initialize app
 const app = express();
@@ -44,6 +48,10 @@ app.use('/api/transactions', transactionRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/budgets', budgetRoutes);
 app.use('/api/goals', goalRoutes);
+app.use('/api/rentals', rentalRoutes);
+app.use('/api/salaries', salaryRoutes);
+app.use('/api/expenses', expenseRoutes);
+app.use('/api/excel', excelRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
@@ -67,7 +75,11 @@ app.get('/', (req, res) => {
       transactions: '/api/transactions',
       categories: '/api/categories',
       budgets: '/api/budgets',
-      goals: '/api/goals'
+      goals: '/api/goals',
+      rentals: '/api/rentals',
+      salaries: '/api/salaries',
+      expenses: '/api/expenses',
+      excel: '/api/excel'
     }
   });
 });
