@@ -1,0 +1,110 @@
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
+const morgan = require('morgan');
+const compression = require('compression');
+const connectDB = require('./config/database');
+const errorHandler = require('./middleware/errorHandler');
+const config = require('./config/config');
+
+// Import routes
+const authRoutes = require('./routes/authRoutes');
+const transactionRoutes = require('./routes/transactionRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
+const budgetRoutes = require('./routes/budgetRoutes');
+const goalRoutes = require('./routes/goalRoutes');
+
+// Initialize app
+const app = express();
+
+// Connect to database
+connectDB();
+
+// Middleware
+app.use(helmet()); // Security headers
+app.use(cors(config.cors)); // CORS
+app.use(compression()); // Compress responses
+app.use(express.json()); // Parse JSON
+app.use(express.urlencoded({ extended: true })); // Parse URL-encoded
+
+// Serve static files
+app.use(express.static('public'));
+
+// Logging
+if (config.server.env === 'development') {
+  app.use(morgan('dev'));
+} else {
+  app.use(morgan('combined'));
+}
+
+// API Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/transactions', transactionRoutes);
+app.use('/api/categories', categoryRoutes);
+app.use('/api/budgets', budgetRoutes);
+app.use('/api/goals', goalRoutes);
+
+// Health check
+app.get('/health', (req, res) => {
+  res.json({
+    success: true,
+    message: 'FinTrack API is running',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  });
+});
+
+// Welcome route
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    message: 'Welcome to FinTrack API',
+    version: '1.0.0',
+    description: 'Smart Financial Companion Platform - Người bạn đồng hành tài chính thông minh',
+    endpoints: {
+      auth: '/api/auth',
+      transactions: '/api/transactions',
+      categories: '/api/categories',
+      budgets: '/api/budgets',
+      goals: '/api/goals'
+    }
+  });
+});
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: 'Route not found'
+  });
+});
+
+// Error handler
+app.use(errorHandler);
+
+// Start server
+const PORT = config.server.port;
+app.listen(PORT, () => {
+  console.log(`
+╔═══════════════════════════════════════════════════════════╗
+║                                                           ║
+║   FinTrack - Smart Financial Companion Platform          ║
+║   Người bạn đồng hành tài chính thông minh               ║
+║                                                           ║
+║   Server running on port ${PORT}                            ║
+║   Environment: ${config.server.env}                              ║
+║   API Documentation: http://localhost:${PORT}/                ║
+║                                                           ║
+╚═══════════════════════════════════════════════════════════╝
+  `);
+});
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (err) => {
+  console.error('Unhandled Promise Rejection:', err);
+  // Close server & exit process
+  process.exit(1);
+});
+
+module.exports = app;
