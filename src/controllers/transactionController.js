@@ -1,5 +1,4 @@
 const Transaction = require('../models/Transaction');
-const Category = require('../models/Category');
 const Budget = require('../models/Budget');
 
 // @desc    Get all transactions
