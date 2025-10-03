@@ -24,7 +24,9 @@ const isAuthenticated = () => {
 // Logout function
 const logout = () => {
     removeAuthToken();
-    window.location.href = '/index.html';
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userEmail');
+    window.location.href = '/login.html';
 };
 
 // API call with authentication
@@ -66,9 +68,9 @@ const apiCall = async (endpoint, options = {}) => {
 // Check authentication on page load for protected pages
 document.addEventListener('DOMContentLoaded', () => {
     const currentPage = window.location.pathname;
-    const publicPages = ['/', '/index.html'];
+    const publicPages = ['/', '/index.html', '/login.html', '/register.html'];
     
     if (!publicPages.includes(currentPage) && !isAuthenticated()) {
-        window.location.href = '/index.html';
+        window.location.href = '/login.html';
     }
 });
