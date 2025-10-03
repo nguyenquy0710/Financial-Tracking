@@ -23,7 +23,8 @@ const connectDB = async () => {
 
   } catch (error) {
     console.error('❌ MongoDB connection failed:', error.message);
-    process.exit(1);
+    console.log('⚠️  Server will continue without database. API endpoints will not work.');
+    // Don't exit - allow server to serve static files
   }
 };
 
