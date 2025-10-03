@@ -263,6 +263,216 @@ Authorization: Bearer {your_jwt_token}
 - **GET** `/goals/summary`
 - **Access:** Private
 
+### Savings
+
+#### Get All Savings
+- **GET** `/savings`
+- **Access:** Private
+- **Query Parameters:**
+  - `type` (string, optional): Filter by type (mother, fund)
+  - `startDate` (date, optional): Filter from date
+  - `endDate` (date, optional): Filter to date
+  - `page` (number, optional): Page number (default: 1)
+  - `limit` (number, optional): Items per page (default: 20)
+
+#### Get Saving by ID
+- **GET** `/savings/:id`
+- **Access:** Private
+
+#### Create Saving
+- **POST** `/savings`
+- **Access:** Private
+- **Body:**
+```json
+{
+  "month": "2024-01-01",
+  "type": "mother",
+  "depositDate": "2024-01-15",
+  "amount": 5000000,
+  "accountNumber": "123456789",
+  "recipient": "Nguyen Thi A",
+  "notes": "Monthly savings"
+}
+```
+
+#### Update Saving
+- **PUT** `/savings/:id`
+- **Access:** Private
+
+#### Delete Saving
+- **DELETE** `/savings/:id`
+- **Access:** Private
+
+#### Get Savings Statistics
+- **GET** `/savings/stats/summary`
+- **Access:** Private
+
+### Deposits
+
+#### Get All Deposits
+- **GET** `/deposits`
+- **Access:** Private
+- **Query Parameters:**
+  - `bank` (string, optional): Filter by bank name
+  - `status` (string, optional): Filter by status (active, matured, closed)
+  - `page` (number, optional): Page number (default: 1)
+  - `limit` (number, optional): Items per page (default: 20)
+
+#### Get Deposit by ID
+- **GET** `/deposits/:id`
+- **Access:** Private
+
+#### Create Deposit
+- **POST** `/deposits`
+- **Access:** Private
+- **Body:**
+```json
+{
+  "bank": "Vietcombank",
+  "accountNumber": "1234567890",
+  "accountName": "Nguyen Van A",
+  "accountType": "Savings",
+  "principalAmount": 100000000,
+  "interestRate": 6.5,
+  "termMonths": 12,
+  "startDate": "2024-01-01",
+  "maturityDate": "2025-01-01",
+  "status": "active"
+}
+```
+
+#### Update Deposit
+- **PUT** `/deposits/:id`
+- **Access:** Private
+
+#### Delete Deposit
+- **DELETE** `/deposits/:id`
+- **Access:** Private
+
+#### Get Upcoming Maturity Deposits
+- **GET** `/deposits/upcoming`
+- **Access:** Private
+- **Query Parameters:**
+  - `days` (number, optional): Look ahead days (default: 30)
+
+#### Get Deposits Statistics
+- **GET** `/deposits/stats/summary`
+- **Access:** Private
+
+### Recurring Bills
+
+#### Get All Recurring Bills
+- **GET** `/recurring-bills`
+- **Access:** Private
+- **Query Parameters:**
+  - `type` (string, optional): Filter by type (rent, electricity, water, internet, parking, garbage, other)
+  - `isActive` (boolean, optional): Filter by active status
+  - `page` (number, optional): Page number (default: 1)
+  - `limit` (number, optional): Items per page (default: 20)
+
+#### Get Recurring Bill by ID
+- **GET** `/recurring-bills/:id`
+- **Access:** Private
+
+#### Create Recurring Bill
+- **POST** `/recurring-bills`
+- **Access:** Private
+- **Body:**
+```json
+{
+  "name": "Electric Bill",
+  "type": "electricity",
+  "amount": 500000,
+  "frequency": "monthly",
+  "dueDay": 15,
+  "nextDueDate": "2024-02-15",
+  "reminderDays": 3,
+  "autoDebit": false,
+  "isActive": true
+}
+```
+
+#### Update Recurring Bill
+- **PUT** `/recurring-bills/:id`
+- **Access:** Private
+
+#### Delete Recurring Bill
+- **DELETE** `/recurring-bills/:id`
+- **Access:** Private
+
+#### Mark Bill as Paid
+- **POST** `/recurring-bills/:id/pay`
+- **Access:** Private
+- **Body:**
+```json
+{
+  "amount": 520000,
+  "paidDate": "2024-01-15"
+}
+```
+
+#### Get Upcoming Bills
+- **GET** `/recurring-bills/upcoming`
+- **Access:** Private
+- **Query Parameters:**
+  - `days` (number, optional): Look ahead days (default: 7)
+
+#### Get Overdue Bills
+- **GET** `/recurring-bills/overdue`
+- **Access:** Private
+
+#### Get Recurring Bills Statistics
+- **GET** `/recurring-bills/stats/summary`
+- **Access:** Private
+
+### Bank Accounts
+
+#### Get All Bank Accounts
+- **GET** `/bank-accounts`
+- **Access:** Private
+- **Query Parameters:**
+  - `bank` (string, optional): Filter by bank name
+  - `isActive` (boolean, optional): Filter by active status
+  - `page` (number, optional): Page number (default: 1)
+  - `limit` (number, optional): Items per page (default: 20)
+
+#### Get Bank Account by ID
+- **GET** `/bank-accounts/:id`
+- **Access:** Private
+
+#### Create Bank Account
+- **POST** `/bank-accounts`
+- **Access:** Private
+- **Body:**
+```json
+{
+  "bank": "Vietcombank",
+  "accountHolder": "Nguyen Van A",
+  "accountNumber": "1234567890",
+  "branch": "Ha Noi Branch",
+  "identifier": "TK-VCB-01",
+  "isDefault": true,
+  "isActive": true,
+  "notes": "Main account"
+}
+```
+
+#### Update Bank Account
+- **PUT** `/bank-accounts/:id`
+- **Access:** Private
+
+#### Delete Bank Account
+- **DELETE** `/bank-accounts/:id`
+- **Access:** Private
+
+#### Set Bank Account as Default
+- **PUT** `/bank-accounts/:id/set-default`
+- **Access:** Private
+
+#### Get Default Bank Account
+- **GET** `/bank-accounts/default`
+- **Access:** Private
+
 ## Error Codes
 
 - `200` - Success

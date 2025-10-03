@@ -377,6 +377,164 @@ GET /api/excel/export?startDate=2024-01-01&endDate=2024-12-31
 Authorization: Bearer {token}
 ```
 
+### Savings Endpoints (NEW)
+
+#### Get All Savings
+```http
+GET /api/savings?type=mother&startDate=2024-01-01&endDate=2024-12-31
+Authorization: Bearer {token}
+```
+
+#### Create Saving
+```http
+POST /api/savings
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "month": "2024-01-01",
+  "type": "mother",
+  "depositDate": "2024-01-15",
+  "amount": 5000000,
+  "accountNumber": "123456789",
+  "recipient": "Nguyen Thi A",
+  "notes": "Gửi tiền mẹ tháng 1"
+}
+```
+
+#### Get Savings Statistics
+```http
+GET /api/savings/stats/summary
+Authorization: Bearer {token}
+```
+
+### Deposits Endpoints (NEW)
+
+#### Get All Deposits
+```http
+GET /api/deposits?bank=Vietcombank&status=active
+Authorization: Bearer {token}
+```
+
+#### Create Deposit
+```http
+POST /api/deposits
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "bank": "Vietcombank",
+  "accountNumber": "1234567890",
+  "accountName": "Nguyen Van A",
+  "principalAmount": 100000000,
+  "interestRate": 6.5,
+  "termMonths": 12,
+  "startDate": "2024-01-01",
+  "maturityDate": "2025-01-01",
+  "status": "active"
+}
+```
+
+#### Get Upcoming Maturity Deposits
+```http
+GET /api/deposits/upcoming?days=30
+Authorization: Bearer {token}
+```
+
+#### Get Deposits Statistics
+```http
+GET /api/deposits/stats/summary
+Authorization: Bearer {token}
+```
+
+### Recurring Bills Endpoints (NEW)
+
+#### Get All Recurring Bills
+```http
+GET /api/recurring-bills?type=electricity&isActive=true
+Authorization: Bearer {token}
+```
+
+#### Create Recurring Bill
+```http
+POST /api/recurring-bills
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "name": "Tiền điện",
+  "type": "electricity",
+  "amount": 500000,
+  "frequency": "monthly",
+  "dueDay": 15,
+  "nextDueDate": "2024-02-15",
+  "reminderDays": 3,
+  "autoDebit": false,
+  "isActive": true
+}
+```
+
+#### Mark Bill as Paid
+```http
+POST /api/recurring-bills/:id/pay
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "amount": 520000,
+  "paidDate": "2024-01-15"
+}
+```
+
+#### Get Upcoming Bills
+```http
+GET /api/recurring-bills/upcoming?days=7
+Authorization: Bearer {token}
+```
+
+#### Get Overdue Bills
+```http
+GET /api/recurring-bills/overdue
+Authorization: Bearer {token}
+```
+
+### Bank Account Endpoints (NEW)
+
+#### Get All Bank Accounts
+```http
+GET /api/bank-accounts?isActive=true
+Authorization: Bearer {token}
+```
+
+#### Create Bank Account
+```http
+POST /api/bank-accounts
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "bank": "Vietcombank",
+  "accountHolder": "Nguyen Van A",
+  "accountNumber": "1234567890",
+  "branch": "Chi nhánh Hà Nội",
+  "identifier": "TK-VCB-01",
+  "isDefault": true,
+  "isActive": true
+}
+```
+
+#### Set Bank Account as Default
+```http
+PUT /api/bank-accounts/:id/set-default
+Authorization: Bearer {token}
+```
+
+#### Get Default Bank Account
+```http
+GET /api/bank-accounts/default
+Authorization: Bearer {token}
+```
+
 ## 🏗️ Cấu trúc dự án / Project Structure
 
 ```
@@ -394,7 +552,11 @@ Financial-Tracking/
 │   │   ├── rentalController.js      # NEW
 │   │   ├── salaryController.js      # NEW
 │   │   ├── expenseController.js     # NEW
-│   │   └── excelController.js       # NEW
+│   │   ├── excelController.js       # NEW
+│   │   ├── savingController.js      # NEW
+│   │   ├── depositController.js     # NEW
+│   │   ├── recurringBillController.js  # NEW
+│   │   └── bankAccountController.js    # NEW
 │   ├── middleware/       # Middleware functions
 │   │   ├── auth.js
 │   │   ├── errorHandler.js
@@ -410,6 +572,7 @@ Financial-Tracking/
 │   │   ├── Expense.js               # NEW
 │   │   ├── Deposit.js               # NEW
 │   │   ├── Saving.js                # NEW
+│   │   ├── RecurringBill.js         # NEW
 │   │   └── BankAccount.js           # NEW
 │   ├── routes/          # API routes
 │   │   ├── authRoutes.js
@@ -420,7 +583,11 @@ Financial-Tracking/
 │   │   ├── rentalRoutes.js          # NEW
 │   │   ├── salaryRoutes.js          # NEW
 │   │   ├── expenseRoutes.js         # NEW
-│   │   └── excelRoutes.js           # NEW
+│   │   ├── excelRoutes.js           # NEW
+│   │   ├── savingRoutes.js          # NEW
+│   │   ├── depositRoutes.js         # NEW
+│   │   ├── recurringBillRoutes.js   # NEW
+│   │   └── bankAccountRoutes.js     # NEW
 │   ├── utils/           # Utility functions
 │   │   ├── helpers.js
 │   │   └── excelParser.js           # NEW
@@ -442,8 +609,10 @@ Financial-Tracking/
 │   ├── salaries.html                # NEW
 │   ├── expenses.html                # NEW
 │   ├── excel.html                   # NEW
-│   ├── savings.html                 # NEW
-│   └── settings.html                # NEW
+│   ├── savings.html                 # UPDATED
+│   ├── deposits.html                # NEW
+│   ├── recurring-bills.html         # NEW
+│   └── settings.html                # UPDATED
 ├── .env.example         # Environment variables template
 ├── .gitignore
 ├── package.json

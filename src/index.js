@@ -18,6 +18,10 @@ const rentalRoutes = require('./routes/rentalRoutes');
 const salaryRoutes = require('./routes/salaryRoutes');
 const expenseRoutes = require('./routes/expenseRoutes');
 const excelRoutes = require('./routes/excelRoutes');
+const savingRoutes = require('./routes/savingRoutes');
+const depositRoutes = require('./routes/depositRoutes');
+const recurringBillRoutes = require('./routes/recurringBillRoutes');
+const bankAccountRoutes = require('./routes/bankAccountRoutes');
 
 // Initialize app
 const app = express();
@@ -52,6 +56,10 @@ app.use('/api/rentals', rentalRoutes);
 app.use('/api/salaries', salaryRoutes);
 app.use('/api/expenses', expenseRoutes);
 app.use('/api/excel', excelRoutes);
+app.use('/api/savings', savingRoutes);
+app.use('/api/deposits', depositRoutes);
+app.use('/api/recurring-bills', recurringBillRoutes);
+app.use('/api/bank-accounts', bankAccountRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
@@ -79,7 +87,11 @@ app.get('/', (req, res) => {
       rentals: '/api/rentals',
       salaries: '/api/salaries',
       expenses: '/api/expenses',
-      excel: '/api/excel'
+      excel: '/api/excel',
+      savings: '/api/savings',
+      deposits: '/api/deposits',
+      recurringBills: '/api/recurring-bills',
+      bankAccounts: '/api/bank-accounts'
     }
   });
 });
