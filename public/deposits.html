@@ -8,29 +8,59 @@
     <link rel="stylesheet" href="/css/dashboard.css">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="container">
-            <div class="nav-brand">
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo">
                 <h2>💰 FinTrack</h2>
             </div>
-            <ul class="nav-menu">
-                <li><a href="/dashboard.html">Dashboard</a></li>
-                <li><a href="/salaries.html">Thu Nhập</a></li>
-                <li><a href="/expenses.html">Chi Tiêu</a></li>
-                <li><a href="/savings.html">Tiết Kiệm</a></li>
-                <li><a href="/deposits.html" class="active">Đầu Tư</a></li>
-                <li><a href="/recurring-bills.html">Hóa Đơn</a></li>
-                <li><a href="/settings.html">Cài Đặt</a></li>
-                <li><a href="#" id="logoutBtn">Đăng Xuất</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <div class="container main-content">
-        <header class="page-header">
-            <h1>🏦 Sổ Tiết Kiệm / Đầu Tư</h1>
-            <p>Theo dõi sổ ngân hàng, kỳ hạn, lãi suất</p>
-        </header>
+            <nav class="nav-menu">
+                <a href="/dashboard.html" class="nav-item">
+                    <span class="icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/rentals.html" class="nav-item">
+                    <span class="icon">🏠</span>
+                    <span>Thuê phòng</span>
+                </a>
+                <a href="/salaries.html" class="nav-item">
+                    <span class="icon">💵</span>
+                    <span>Lương</span>
+                </a>
+                <a href="/expenses.html" class="nav-item">
+                    <span class="icon">💳</span>
+                    <span>Chi tiêu</span>
+                </a>
+                <a href="/savings.html" class="nav-item">
+                    <span class="icon">🏦</span>
+                    <span>Tiết kiệm</span>
+                </a>
+                <a href="/deposits.html" class="nav-item active">
+                    <span class="icon">💰</span>
+                    <span>Đầu tư</span>
+                </a>
+                <a href="/recurring-bills.html" class="nav-item">
+                    <span class="icon">📋</span>
+                    <span>Hóa đơn</span>
+                </a>
+                <a href="/excel.html" class="nav-item">
+                    <span class="icon">📁</span>
+                    <span>Excel Import/Export</span>
+                </a>
+                <a href="/settings.html" class="nav-item">
+                    <span class="icon">⚙️</span>
+                    <span>Cài đặt</span>
+                </a>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>Sổ Tiết Kiệm / Đầu Tư</h1>
+                <div class="user-info">
+                    <span id="user-name">User</span>
+                    <button class="btn-logout" onclick="logout()">Đăng xuất</button>
+                </div>
+            </header>
+            <div class="content">
 
         <div class="stats-grid">
             <div class="stat-card">
@@ -83,6 +113,8 @@
                 </div>
             </div>
         </div>
+            </div>
+        </main>
     </div>
 
     <!-- Add/Edit Deposit Modal -->
@@ -427,13 +459,6 @@
                 console.error('Error saving deposit:', error);
                 alert('Có lỗi xảy ra!');
             }
-        });
-
-        // Logout
-        document.getElementById('logoutBtn').addEventListener('click', (e) => {
-            e.preventDefault();
-            localStorage.removeItem('token');
-            window.location.href = '/index.html';
         });
 
         // Initial load

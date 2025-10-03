@@ -379,11 +379,6 @@
             localStorage.setItem('currency', currency);
         }
 
-        function logout() {
-            localStorage.removeItem('token');
-            window.location.href = '/index.html';
-        }
-
         // Initial load
         loadUserInfo();
         loadBankAccounts();
