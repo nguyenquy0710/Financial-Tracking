@@ -8,9 +8,9 @@ const {
   deleteExpense,
   getExpenseStats
 } = require('../controllers/expenseController');
-const { protect } = require('../middleware/auth');
+const auth = require('../middleware/auth');
 
-router.use(protect);
+router.use(auth);
 
 router.route('/')
   .get(getExpenses)

@@ -8,9 +8,9 @@ const {
   deleteSalary,
   getSalaryStats
 } = require('../controllers/salaryController');
-const { protect } = require('../middleware/auth');
+const auth = require('../middleware/auth');
 
-router.use(protect);
+router.use(auth);
 
 router.route('/')
   .get(getSalaries)

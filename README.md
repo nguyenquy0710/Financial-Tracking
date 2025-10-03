@@ -19,6 +19,32 @@ Building a "Smart Financial Companion Platform" that not only tracks income and 
 - ✅ Đồng bộ giao dịch từ ví điện tử, ngân hàng (nếu tích hợp API) / Sync transactions from e-wallets and banks (with API integration)
 - ✅ Phân loại tự động theo danh mục / Auto-categorization by category (food, transportation, entertainment, etc.)
 
+### 🏠 Quản lý thuê phòng / Rental Management (NEW)
+- ✅ Theo dõi tiền thuê nhà hàng tháng / Track monthly rent
+- ✅ Quản lý tiền điện, nước, internet, gửi xe / Manage electricity, water, internet, parking fees
+- ✅ Tính toán tự động tổng chi phí / Auto-calculate total costs
+- ✅ Import/Export từ Excel / Import/Export from Excel
+
+### 💵 Quản lý lương / Salary Management (NEW)
+- ✅ Theo dõi lương từ công ty / Track company salary (basic, KPI, projects, OT, bonus)
+- ✅ Quản lý thu nhập freelance / Manage freelance income
+- ✅ Tính toán tổng thu nhập / Calculate total income
+- ✅ Phân tích tăng trưởng / Growth analysis
+
+### 💳 Quản lý chi tiêu theo phương pháp 6 lọ / 6 Jars Method (NEW)
+- ✅ **Gửi Mẹ**: Tiền gửi cho gia đình / Money for family
+- ✅ **NEC (55%)**: Nhu cầu thiết yếu / Necessities
+- ✅ **FFA (10%)**: Tự do tài chính / Financial Freedom Account
+- ✅ **EDUC (10%)**: Giáo dục Đào tạo / Education
+- ✅ **PLAY (10%)**: Giải trí Hưởng thụ / Play
+- ✅ **GIVE (7%)**: Từ thiện Cho đi / Give
+- ✅ **LTS (10%)**: Tiết kiệm dài hạn / Long Term Savings
+
+### 📁 Excel Import/Export (NEW)
+- ✅ Import dữ liệu từ file Excel / Import data from Excel
+- ✅ Export toàn bộ dữ liệu ra Excel / Export all data to Excel
+- ✅ Hỗ trợ định dạng chuẩn / Support standard format
+
 ### 📊 Phân tích & báo cáo / Analysis & Reports
 - ✅ Biểu đồ chi tiêu hàng tuần/tháng/năm / Weekly/monthly/yearly spending charts
 - ✅ Cảnh báo khi chi tiêu vượt hạn mức / Alerts when spending exceeds limits
@@ -250,6 +276,107 @@ Content-Type: application/json
 }
 ```
 
+### Rental Endpoints (NEW)
+
+#### Get All Rentals
+```http
+GET /api/rentals?startDate=2024-01-01&endDate=2024-12-31&propertyName=P3L1
+Authorization: Bearer {token}
+```
+
+#### Create Rental
+```http
+POST /api/rentals
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "propertyName": "P3L1-600",
+  "address": "Số 1 Hẻm 600, Đường Quang Trung",
+  "month": "2024-01-01",
+  "rentAmount": 3670000,
+  "electricity": {
+    "startReading": 311298,
+    "endReading": 316190,
+    "consumption": 4892,
+    "rate": 4000,
+    "amount": 19568000
+  },
+  "water": {
+    "startReading": 0,
+    "endReading": 0,
+    "consumption": 0,
+    "rate": 50000,
+    "amount": 0
+  },
+  "internet": 0,
+  "parking": 5510000,
+  "garbage": 920000,
+  "total": 29668000
+}
+```
+
+### Salary Endpoints (NEW)
+
+#### Get All Salaries
+```http
+GET /api/salaries?startDate=2024-01-01&endDate=2024-12-31
+Authorization: Bearer {token}
+```
+
+#### Create Salary
+```http
+POST /api/salaries
+Authorization: Bearer {token}
+Content-Type: application/json
+
+{
+  "month": "2024-01-01",
+  "company": "VIHAT",
+  "baseSalary": 7370000,
+  "kpi": 5920927,
+  "project": 7290124,
+  "overtime": 0,
+  "freelance": {
+    "dakiatech": 6600000,
+    "other": 13500000,
+    "total": 20100000
+  },
+  "totalIncome": 40681051
+}
+```
+
+### Expense Endpoints (NEW)
+
+#### Get All Expenses
+```http
+GET /api/expenses?startDate=2024-01-01&category=Ăn uống
+Authorization: Bearer {token}
+```
+
+#### Get Expense Statistics (with 6 Jars)
+```http
+GET /api/expenses/stats/summary
+Authorization: Bearer {token}
+```
+
+### Excel Import/Export Endpoints (NEW)
+
+#### Import from Excel
+```http
+POST /api/excel/import
+Authorization: Bearer {token}
+Content-Type: multipart/form-data
+
+file: [Excel file]
+```
+
+#### Export to Excel
+```http
+GET /api/excel/export?startDate=2024-01-01&endDate=2024-12-31
+Authorization: Bearer {token}
+```
+
 ## 🏗️ Cấu trúc dự án / Project Structure
 
 ```
@@ -263,7 +390,11 @@ Financial-Tracking/
 │   │   ├── transactionController.js
 │   │   ├── categoryController.js
 │   │   ├── budgetController.js
-│   │   └── goalController.js
+│   │   ├── goalController.js
+│   │   ├── rentalController.js      # NEW
+│   │   ├── salaryController.js      # NEW
+│   │   ├── expenseController.js     # NEW
+│   │   └── excelController.js       # NEW
 │   ├── middleware/       # Middleware functions
 │   │   ├── auth.js
 │   │   ├── errorHandler.js
@@ -273,19 +404,46 @@ Financial-Tracking/
 │   │   ├── Transaction.js
 │   │   ├── Category.js
 │   │   ├── Budget.js
-│   │   └── Goal.js
+│   │   ├── Goal.js
+│   │   ├── Rental.js                # NEW
+│   │   ├── Salary.js                # NEW
+│   │   ├── Expense.js               # NEW
+│   │   ├── Deposit.js               # NEW
+│   │   ├── Saving.js                # NEW
+│   │   └── BankAccount.js           # NEW
 │   ├── routes/          # API routes
 │   │   ├── authRoutes.js
 │   │   ├── transactionRoutes.js
 │   │   ├── categoryRoutes.js
 │   │   ├── budgetRoutes.js
-│   │   └── goalRoutes.js
+│   │   ├── goalRoutes.js
+│   │   ├── rentalRoutes.js          # NEW
+│   │   ├── salaryRoutes.js          # NEW
+│   │   ├── expenseRoutes.js         # NEW
+│   │   └── excelRoutes.js           # NEW
 │   ├── utils/           # Utility functions
-│   │   └── helpers.js
+│   │   ├── helpers.js
+│   │   └── excelParser.js           # NEW
 │   └── index.js         # Application entry point
 ├── tests/               # Test files
 ├── docs/                # Documentation
 ├── public/              # Static files
+│   ├── css/
+│   │   ├── style.css
+│   │   └── dashboard.css            # NEW
+│   ├── js/
+│   │   ├── main.js
+│   │   ├── auth.js                  # NEW
+│   │   ├── dashboard.js             # NEW
+│   │   └── excel.js                 # NEW
+│   ├── index.html
+│   ├── dashboard.html               # NEW
+│   ├── rentals.html                 # NEW
+│   ├── salaries.html                # NEW
+│   ├── expenses.html                # NEW
+│   ├── excel.html                   # NEW
+│   ├── savings.html                 # NEW
+│   └── settings.html                # NEW
 ├── .env.example         # Environment variables template
 ├── .gitignore
 ├── package.json

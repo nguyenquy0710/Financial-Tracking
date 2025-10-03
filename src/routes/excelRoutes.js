@@ -5,9 +5,9 @@ const {
   importExcel,
   exportExcel
 } = require('../controllers/excelController');
-const { protect } = require('../middleware/auth');
+const auth = require('../middleware/auth');
 
-router.use(protect);
+router.use(auth);
 
 router.post('/import', uploadExcel, importExcel);
 router.get('/export', exportExcel);

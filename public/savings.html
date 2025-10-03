@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiết kiệm - FinTrack</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <h2>💰 FinTrack</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="/dashboard.html" class="nav-item">
+                    <span class="icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="/rentals.html" class="nav-item">
+                    <span class="icon">🏠</span>
+                    <span>Thuê phòng</span>
+                </a>
+                <a href="/salaries.html" class="nav-item">
+                    <span class="icon">💵</span>
+                    <span>Lương</span>
+                </a>
+                <a href="/expenses.html" class="nav-item">
+                    <span class="icon">💳</span>
+                    <span>Chi tiêu</span>
+                </a>
+                <a href="/savings.html" class="nav-item active">
+                    <span class="icon">🏦</span>
+                    <span>Tiết kiệm</span>
+                </a>
+                <a href="/excel.html" class="nav-item">
+                    <span class="icon">📁</span>
+                    <span>Excel Import/Export</span>
+                </a>
+                <a href="/settings.html" class="nav-item">
+                    <span class="icon">⚙️</span>
+                    <span>Cài đặt</span>
+                </a>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>Quản lý tiết kiệm</h1>
+                <div class="user-info">
+                    <span id="user-name">User</span>
+                    <button class="btn-logout" onclick="logout()">Đăng xuất</button>
+                </div>
+            </header>
+            <div class="content">
+                <div class="card">
+                    <h2>🚧 Trang đang được phát triển</h2>
+                    <p>Chức năng quản lý tiết kiệm sẽ sớm có mặt. Hiện tại bạn có thể import dữ liệu từ Excel.</p>
+                    <a href="/excel.html" class="btn btn-primary">Đi đến Excel Import</a>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="/js/auth.js"></script>
+</body>
+</html>
