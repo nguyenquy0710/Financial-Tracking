@@ -12,16 +12,10 @@ const auth = require('../middleware/auth');
 
 router.use(auth);
 
-router.route('/')
-  .get(getExpenses)
-  .post(createExpense);
+router.route('/').get(getExpenses).post(createExpense);
 
-router.route('/stats/summary')
-  .get(getExpenseStats);
+router.route('/stats/summary').get(getExpenseStats);
 
-router.route('/:id')
-  .get(getExpense)
-  .put(updateExpense)
-  .delete(deleteExpense);
+router.route('/:id').get(getExpense).put(updateExpense).delete(deleteExpense);
 
 module.exports = router;

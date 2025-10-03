@@ -6,6 +6,7 @@ cách
 chăm
 chấp
 chạy
+chính
 chỉnh
 chối
 chọn
@@ -21,6 +22,7 @@ dịch
 điện
 đính
 định
+đồng
 động
 dùng
 dừng
@@ -32,6 +34,7 @@ giao
 giúp
 hàng
 hằng
+hành
 hiện
 hiệu
 hình

@@ -5,7 +5,7 @@ const XLSX = require('xlsx');
  * @param {Buffer} fileBuffer - Excel file buffer
  * @returns {Object} Parsed data from all sheets
  */
-const parseExcelFile = (fileBuffer) => {
+const parseExcelFile = fileBuffer => {
   const workbook = XLSX.read(fileBuffer, { type: 'buffer' });
   const result = {};
 
@@ -27,7 +27,7 @@ const parseExcelFile = (fileBuffer) => {
  * @param {Array} data - Raw sheet data
  * @returns {Object} Parsed rental data
  */
-const parseRentalSheet = (data) => {
+const parseRentalSheet = data => {
   const rental = {
     propertyName: '',
     address: '',
@@ -58,7 +58,7 @@ const parseRentalSheet = (data) => {
     if (!row || row.length === 0) return;
 
     const firstCol = String(row[0] || '').toLowerCase();
-    
+
     // Total row
     if (firstCol.includes('tổng') && idx > 2) {
       rental.rentAmount = parseFloat(row[2]) || 0;
@@ -74,14 +74,14 @@ const parseRentalSheet = (data) => {
       rental.parking = parseFloat(row[13]) || 0;
       rental.garbage = parseFloat(row[14]) || 0;
       rental.bonus = parseFloat(row[15]) || 0;
-      
+
       // Extract total
       const totalStr = String(row[16] || '');
       const totalMatch = totalStr.match(/([0-9,]+)/);
       if (totalMatch) {
         rental.total = parseFloat(totalMatch[1].replace(/,/g, '')) || 0;
       }
-      
+
       rental.notes = row[17] || '';
     }
   });
@@ -94,7 +94,7 @@ const parseRentalSheet = (data) => {
  * @param {Array} data - Raw sheet data
  * @returns {Object} Parsed salary data
  */
-const parseSalarySheet = (data) => {
+const parseSalarySheet = data => {
   const salary = {
     month: null,
     company: 'VIHAT',
@@ -115,7 +115,7 @@ const parseSalarySheet = (data) => {
     if (!row || row.length === 0) return;
 
     const firstCol = String(row[0] || '').toLowerCase();
-    
+
     // Total row
     if (firstCol.includes('tổng') && idx > 1) {
       salary.baseSalary = parseFloat(row[3]) || 0;
@@ -124,40 +124,40 @@ const parseSalarySheet = (data) => {
       salary.project = parseFloat(row[6]) || 0;
       salary.overtime = parseFloat(row[7]) || 0;
       salary.bonus13thMonth = parseFloat(row[8]) || 0;
-      
+
       // Extract total company salary
       const totalCompanyStr = String(row[9] || '');
       const totalCompanyMatch = totalCompanyStr.match(/([0-9,]+)/);
       if (totalCompanyMatch) {
         salary.totalCompanySalary = parseFloat(totalCompanyMatch[1].replace(/,/g, '')) || 0;
       }
-      
+
       // Freelance
       const freelanceDakiaStr = String(row[10] || '');
       const freelanceDakiaMatch = freelanceDakiaStr.match(/([0-9,]+)/);
       if (freelanceDakiaMatch) {
         salary.freelance.dakiatech = parseFloat(freelanceDakiaMatch[1].replace(/,/g, '')) || 0;
       }
-      
+
       const freelanceOtherStr = String(row[11] || '');
       const freelanceOtherMatch = freelanceOtherStr.match(/([0-9,]+)/);
       if (freelanceOtherMatch) {
         salary.freelance.other = parseFloat(freelanceOtherMatch[1].replace(/,/g, '')) || 0;
       }
-      
+
       const freelanceTotalStr = String(row[12] || '');
       const freelanceTotalMatch = freelanceTotalStr.match(/([0-9,]+)/);
       if (freelanceTotalMatch) {
         salary.freelance.total = parseFloat(freelanceTotalMatch[1].replace(/,/g, '')) || 0;
       }
-      
+
       // Total income
       const totalIncomeStr = String(row[13] || '');
       const totalIncomeMatch = totalIncomeStr.match(/([0-9,]+)/);
       if (totalIncomeMatch) {
         salary.totalIncome = parseFloat(totalIncomeMatch[1].replace(/,/g, '')) || 0;
       }
-      
+
       salary.receiveDate = row[14] || null;
     }
   });
@@ -170,13 +170,13 @@ const parseSalarySheet = (data) => {
  * @param {Array} data - Raw sheet data
  * @returns {Array} Array of parsed expense items
  */
-const parseExpenseSheet = (data) => {
+const parseExpenseSheet = data => {
   const expenses = [];
-  
+
   // Parse data rows (skip header rows)
   data.forEach((row, idx) => {
     if (!row || row.length === 0 || idx < 1) return;
-    
+
     // Check if this is a data row (starts with a number)
     const firstCol = row[0];
     if (typeof firstCol === 'number' && firstCol > 0) {
@@ -188,7 +188,7 @@ const parseExpenseSheet = (data) => {
         totalAmount: parseFloat(row[5]) || 0,
         month: row[7] || null
       };
-      
+
       // Parse allocation data if available
       if (row.length > 8) {
         expense.allocation = {
@@ -202,7 +202,7 @@ const parseExpenseSheet = (data) => {
           lts: parseFloat(row[15]) || 0
         };
       }
-      
+
       expenses.push(expense);
     }
   });
@@ -215,15 +215,15 @@ const parseExpenseSheet = (data) => {
  * @param {Array} data - Raw sheet data
  * @returns {Array} Array of parsed deposit accounts
  */
-const parseDepositSheet = (data) => {
+const parseDepositSheet = data => {
   const deposits = [];
-  
+
   // Parse data rows (skip header rows)
   data.forEach((row, idx) => {
     if (!row || row.length === 0 || idx < 1) return;
-    
+
     const firstCol = String(row[0] || '').toLowerCase();
-    
+
     // Check if this is a total row
     if (firstCol.includes('tổng') && idx > 2) {
       const deposit = {
@@ -240,7 +240,7 @@ const parseDepositSheet = (data) => {
         interestAmount: parseFloat(row[12]) || 0,
         totalAmount: parseFloat(row[13]) || 0
       };
-      
+
       deposits.push(deposit);
     }
   });
@@ -253,13 +253,13 @@ const parseDepositSheet = (data) => {
  * @param {Array} data - Raw sheet data
  * @returns {Array} Array of parsed bank accounts
  */
-const parseBankAccountSheet = (data) => {
+const parseBankAccountSheet = data => {
   const accounts = [];
-  
+
   // Parse data rows (skip header row)
   data.forEach((row, idx) => {
     if (!row || row.length === 0 || idx < 1) return;
-    
+
     // Check if this is a data row with bank info
     if (row[0] && row[1] && row[2]) {
       const account = {
@@ -269,7 +269,7 @@ const parseBankAccountSheet = (data) => {
         branch: row[3] || '',
         identifier: row[4] || ''
       };
-      
+
       accounts.push(account);
     }
   });
@@ -282,7 +282,7 @@ const parseBankAccountSheet = (data) => {
  * @param {Object} data - Data to export
  * @returns {Buffer} Excel file buffer
  */
-const exportToExcel = (data) => {
+const exportToExcel = data => {
   const workbook = XLSX.utils.book_new();
 
   // Add each sheet

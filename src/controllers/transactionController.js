@@ -6,12 +6,12 @@ const Budget = require('../models/Budget');
 // @access  Private
 exports.getTransactions = async (req, res, next) => {
   try {
-    const { 
-      type, 
-      categoryId, 
-      startDate, 
-      endDate, 
-      page = 1, 
+    const {
+      type,
+      categoryId,
+      startDate,
+      endDate,
+      page = 1,
       limit = 20,
       sortBy = 'date',
       sortOrder = 'desc'
@@ -93,14 +93,16 @@ exports.createTransaction = async (req, res, next) => {
     };
 
     const transaction = await Transaction.create(transactionData);
-    
+
     // Update budget if expense
     if (transaction.type === 'expense') {
       await updateBudgetSpent(req.userId, transaction.categoryId, transaction.amount);
     }
 
-    const populatedTransaction = await Transaction.findById(transaction._id)
-      .populate('categoryId', 'name nameVi icon color');
+    const populatedTransaction = await Transaction.findById(transaction._id).populate(
+      'categoryId',
+      'name nameVi icon color'
+    );
 
     res.status(201).json({
       success: true,
@@ -130,8 +132,10 @@ exports.updateTransaction = async (req, res, next) => {
     }
 
     // If amount or category changed, update budget
-    if (transaction.type === 'expense' && 
-        (req.body.amount !== undefined || req.body.categoryId !== undefined)) {
+    if (
+      transaction.type === 'expense' &&
+      (req.body.amount !== undefined || req.body.categoryId !== undefined)
+    ) {
       // Subtract old amount
       await updateBudgetSpent(req.userId, transaction.categoryId, -transaction.amount);
       // Add new amount
@@ -140,11 +144,10 @@ exports.updateTransaction = async (req, res, next) => {
       await updateBudgetSpent(req.userId, newCategory, newAmount);
     }
 
-    transaction = await Transaction.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    ).populate('categoryId', 'name nameVi icon color');
+    transaction = await Transaction.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true
+    }).populate('categoryId', 'name nameVi icon color');
 
     res.json({
       success: true,
@@ -195,7 +198,7 @@ exports.deleteTransaction = async (req, res, next) => {
 exports.getStats = async (req, res, next) => {
   try {
     const { startDate, endDate } = req.query;
-    
+
     const query = { userId: req.userId };
     if (startDate || endDate) {
       query.date = {};
@@ -272,16 +275,13 @@ exports.getStats = async (req, res, next) => {
 // Helper function to update budget spent amount
 async function updateBudgetSpent(userId, categoryId, amount) {
   const now = new Date();
-  
+
   const budgets = await Budget.find({
     userId,
     categoryId,
     isActive: true,
     startDate: { $lte: now },
-    $or: [
-      { endDate: { $gte: now } },
-      { endDate: null }
-    ]
+    $or: [{ endDate: { $gte: now } }, { endDate: null }]
   });
 
   for (const budget of budgets) {

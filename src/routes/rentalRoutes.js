@@ -12,16 +12,10 @@ const auth = require('../middleware/auth');
 
 router.use(auth);
 
-router.route('/')
-  .get(getRentals)
-  .post(createRental);
+router.route('/').get(getRentals).post(createRental);
 
-router.route('/stats/summary')
-  .get(getRentalStats);
+router.route('/stats/summary').get(getRentalStats);
 
-router.route('/:id')
-  .get(getRental)
-  .put(updateRental)
-  .delete(deleteRental);
+router.route('/:id').get(getRental).put(updateRental).delete(deleteRental);
 
 module.exports = router;

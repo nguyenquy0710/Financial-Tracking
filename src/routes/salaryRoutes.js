@@ -12,16 +12,10 @@ const auth = require('../middleware/auth');
 
 router.use(auth);
 
-router.route('/')
-  .get(getSalaries)
-  .post(createSalary);
+router.route('/').get(getSalaries).post(createSalary);
 
-router.route('/stats/summary')
-  .get(getSalaryStats);
+router.route('/stats/summary').get(getSalaryStats);
 
-router.route('/:id')
-  .get(getSalary)
-  .put(updateSalary)
-  .delete(deleteSalary);
+router.route('/:id').get(getSalary).put(updateSalary).delete(deleteSalary);
 
 module.exports = router;

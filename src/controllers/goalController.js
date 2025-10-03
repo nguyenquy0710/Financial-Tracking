@@ -6,9 +6,9 @@ const Goal = require('../models/Goal');
 exports.getGoals = async (req, res, next) => {
   try {
     const { status, priority } = req.query;
-    
+
     const query = { userId: req.userId };
-    
+
     if (status) query.status = status;
     if (priority) query.priority = priority;
 
@@ -94,11 +94,10 @@ exports.updateGoal = async (req, res, next) => {
       req.body.status = 'completed';
     }
 
-    goal = await Goal.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    );
+    goal = await Goal.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true
+    });
 
     res.json({
       success: true,

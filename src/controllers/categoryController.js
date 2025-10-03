@@ -6,12 +6,9 @@ const Category = require('../models/Category');
 exports.getCategories = async (req, res, next) => {
   try {
     const { type } = req.query;
-    
+
     const query = {
-      $or: [
-        { userId: req.userId },
-        { isDefault: true, userId: null }
-      ]
+      $or: [{ userId: req.userId }, { isDefault: true, userId: null }]
     };
 
     if (type) {
@@ -105,11 +102,10 @@ exports.updateCategory = async (req, res, next) => {
       });
     }
 
-    category = await Category.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    );
+    category = await Category.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true
+    });
 
     res.json({
       success: true,

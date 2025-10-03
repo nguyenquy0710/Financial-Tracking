@@ -7,9 +7,9 @@ const Transaction = require('../models/Transaction');
 exports.getBudgets = async (req, res, next) => {
   try {
     const { period, isActive } = req.query;
-    
+
     const query = { userId: req.userId };
-    
+
     if (period) query.period = period;
     if (isActive !== undefined) query.isActive = isActive === 'true';
 
@@ -76,9 +76,11 @@ exports.createBudget = async (req, res, next) => {
     }
 
     const budget = await Budget.create(budgetData);
-    
-    const populatedBudget = await Budget.findById(budget._id)
-      .populate('categoryId', 'name nameVi icon color');
+
+    const populatedBudget = await Budget.findById(budget._id).populate(
+      'categoryId',
+      'name nameVi icon color'
+    );
 
     res.status(201).json({
       success: true,
@@ -107,11 +109,10 @@ exports.updateBudget = async (req, res, next) => {
       });
     }
 
-    budget = await Budget.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    ).populate('categoryId', 'name nameVi icon color');
+    budget = await Budget.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true
+    }).populate('categoryId', 'name nameVi icon color');
 
     res.json({
       success: true,
@@ -157,15 +158,12 @@ exports.deleteBudget = async (req, res, next) => {
 exports.getBudgetAlerts = async (req, res, next) => {
   try {
     const now = new Date();
-    
+
     const budgets = await Budget.find({
       userId: req.userId,
       isActive: true,
       startDate: { $lte: now },
-      $or: [
-        { endDate: { $gte: now } },
-        { endDate: null }
-      ]
+      $or: [{ endDate: { $gte: now } }, { endDate: null }]
     }).populate('categoryId', 'name nameVi icon color');
 
     const alerts = budgets
@@ -176,9 +174,7 @@ exports.getBudgetAlerts = async (req, res, next) => {
       .map(budget => ({
         budget,
         percentage: (budget.spent / budget.amount) * 100,
-        message: budget.spent >= budget.amount 
-          ? 'Budget exceeded' 
-          : 'Budget threshold reached'
+        message: budget.spent >= budget.amount ? 'Budget exceeded' : 'Budget threshold reached'
       }));
 
     res.json({

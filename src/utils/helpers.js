@@ -8,7 +8,7 @@ async function initializeDefaultCategories() {
   try {
     // Check if default categories already exist
     const existingCategories = await Category.countDocuments({ isDefault: true });
-    
+
     if (existingCategories > 0) {
       console.log('✓ Default categories already initialized');
       return;
@@ -47,7 +47,7 @@ async function autoCategorizeTransaction(description, type = 'expense') {
     if (!description) return null;
 
     const searchText = description.toLowerCase();
-    
+
     // Find categories with matching keywords
     const categories = await Category.find({
       type,
@@ -56,10 +56,10 @@ async function autoCategorizeTransaction(description, type = 'expense') {
 
     for (const category of categories) {
       if (category.keywords && category.keywords.length > 0) {
-        const hasMatch = category.keywords.some(keyword => 
+        const hasMatch = category.keywords.some(keyword =>
           searchText.includes(keyword.toLowerCase())
         );
-        
+
         if (hasMatch) {
           return category._id;
         }
@@ -99,7 +99,7 @@ function getDateRange(period, date = new Date()) {
     startDate.setHours(0, 0, 0, 0);
     endDate.setHours(23, 59, 59, 999);
     break;
-    
+
   case 'week': {
     const dayOfWeek = startDate.getDay();
     const diff = startDate.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1);
@@ -109,21 +109,21 @@ function getDateRange(period, date = new Date()) {
     endDate.setHours(23, 59, 59, 999);
     break;
   }
-    
+
   case 'month':
     startDate.setDate(1);
     startDate.setHours(0, 0, 0, 0);
     endDate.setMonth(endDate.getMonth() + 1, 0);
     endDate.setHours(23, 59, 59, 999);
     break;
-    
+
   case 'year':
     startDate.setMonth(0, 1);
     startDate.setHours(0, 0, 0, 0);
     endDate.setMonth(11, 31);
     endDate.setHours(23, 59, 59, 999);
     break;
-    
+
   default:
     startDate.setDate(1);
     startDate.setHours(0, 0, 0, 0);
@@ -162,8 +162,7 @@ function generateSpendingInsights(transactions, budgets) {
     }
   });
 
-  const topCategory = Object.entries(categorySpending)
-    .sort((a, b) => b[1] - a[1])[0];
+  const topCategory = Object.entries(categorySpending).sort((a, b) => b[1] - a[1])[0];
 
   if (topCategory) {
     const percentage = ((topCategory[1] / totalSpending) * 100).toFixed(1);

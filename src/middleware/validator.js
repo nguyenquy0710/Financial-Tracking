@@ -21,7 +21,7 @@ const userValidation = {
     body('name').trim().notEmpty().withMessage('Name is required'),
     validate
   ],
-  
+
   login: [
     body('email').isEmail().withMessage('Please provide a valid email'),
     body('password').notEmpty().withMessage('Password is required'),
@@ -38,18 +38,18 @@ const transactionValidation = {
     body('date').optional().isISO8601().withMessage('Invalid date format'),
     validate
   ],
-  
+
   update: [
     param('id').isMongoId().withMessage('Invalid transaction ID'),
-    body('type').optional().isIn(['income', 'expense']).withMessage('Type must be income or expense'),
+    body('type')
+      .optional()
+      .isIn(['income', 'expense'])
+      .withMessage('Type must be income or expense'),
     body('amount').optional().isFloat({ min: 0 }).withMessage('Amount must be a positive number'),
     validate
   ],
-  
-  delete: [
-    param('id').isMongoId().withMessage('Invalid transaction ID'),
-    validate
-  ]
+
+  delete: [param('id').isMongoId().withMessage('Invalid transaction ID'), validate]
 };
 
 // Category validation rules
@@ -59,7 +59,7 @@ const categoryValidation = {
     body('type').isIn(['income', 'expense']).withMessage('Type must be income or expense'),
     validate
   ],
-  
+
   update: [
     param('id').isMongoId().withMessage('Invalid category ID'),
     body('name').optional().trim().notEmpty().withMessage('Category name cannot be empty'),
@@ -77,7 +77,7 @@ const budgetValidation = {
     body('startDate').isISO8601().withMessage('Invalid start date'),
     validate
   ],
-  
+
   update: [
     param('id').isMongoId().withMessage('Invalid budget ID'),
     body('amount').optional().isFloat({ min: 0 }).withMessage('Amount must be a positive number'),
@@ -93,10 +93,13 @@ const goalValidation = {
     body('targetDate').isISO8601().withMessage('Invalid target date'),
     validate
   ],
-  
+
   update: [
     param('id').isMongoId().withMessage('Invalid goal ID'),
-    body('targetAmount').optional().isFloat({ min: 0 }).withMessage('Target amount must be a positive number'),
+    body('targetAmount')
+      .optional()
+      .isFloat({ min: 0 })
+      .withMessage('Target amount must be a positive number'),
     validate
   ]
 };

@@ -3,7 +3,7 @@ const User = require('../models/User');
 const config = require('../config/config');
 
 // Generate JWT token
-const generateToken = (userId) => {
+const generateToken = userId => {
   return jwt.sign({ userId }, config.jwt.secret, {
     expiresIn: config.jwt.expiresIn
   });
@@ -101,7 +101,7 @@ exports.login = async (req, res, next) => {
 exports.getMe = async (req, res, next) => {
   try {
     const user = await User.findById(req.userId);
-    
+
     res.json({
       success: true,
       data: { user }
