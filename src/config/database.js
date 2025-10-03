@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const connectDB = async () => {
   try {
     const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/fintrack';
-    
+    console.log("🚀 QuyNH: connectDB -> mongoURI", mongoURI);
+
     const options = {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -12,7 +13,7 @@ const connectDB = async () => {
     await mongoose.connect(mongoURI, options);
 
     console.log('✅ MongoDB connected successfully');
-    
+
     mongoose.connection.on('error', (err) => {
       console.error('❌ MongoDB connection error:', err);
     });
