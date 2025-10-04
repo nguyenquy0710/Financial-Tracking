@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadSummaryData();
 
   // Setup file upload
-  setupFileUpload();
+  // setupFileUpload();
 });
 
 // Load user information

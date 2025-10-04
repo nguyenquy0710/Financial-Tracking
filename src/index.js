@@ -43,6 +43,7 @@ app.use(helmet({
       defaultSrc: ['\'self\''],
       scriptSrc: [
         '\'self\'',
+        '\'unsafe-hashes\'',
         '\'unsafe-inline\'',
         'https://code.jquery.com',
         'https://cdn.jsdelivr.net',
@@ -50,12 +51,14 @@ app.use(helmet({
       ],
       styleSrc: [
         '\'self\'',
+        '\'unsafe-hashes\'',
         '\'unsafe-inline\'',
         'https://cdn.jsdelivr.net',
         'https://cdnjs.cloudflare.com'
       ],
       fontSrc: [
         '\'self\'',
+        '\'unsafe-hashes\'',
         '\'unsafe-inline\'',
         'https://cdnjs.cloudflare.com',
         'https://cdn.jsdelivr.net'

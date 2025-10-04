@@ -1,18 +1,18 @@
 // Authentication helper functions
-const API_BASE_URL = window.location.origin + '/api';
+var API_BASE_URL = window.location.origin + '/api';
 
 // Get auth token from localStorage
-const getAuthToken = () => {
+var getAuthToken = () => {
   return localStorage.getItem('authToken');
 };
 
 // Set auth token to localStorage
-const setAuthToken = (token) => {
+var setAuthToken = (token) => {
   localStorage.setItem('authToken', token);
 };
 
 // Remove auth token from localStorage
-const removeAuthToken = () => {
+var removeAuthToken = () => {
   localStorage.removeItem('authToken');
 };
 
