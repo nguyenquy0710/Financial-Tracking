@@ -180,7 +180,7 @@
   <script src="/js/auth.js"></script>
   <script>
     let rentals = [];
-    let token = localStorage.getItem('token');
+    let token = localStorage.getItem('authToken');
 
     if (!token) {
       window.location.href = '/';
@@ -650,4 +650,4 @@
       background: #5a6268;
     }
   </style>
-  <%- include('partials/footer', { additionalJS: ['/js/auth.js', '/js/rentals.js' ] }) %>
+  <%- include('partials/footer', { additionalJS: ['/js/auth.js'] }) %>
