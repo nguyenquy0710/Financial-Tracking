@@ -1,41 +1,6 @@
 <%- include('partials/header', { title: 'Lương' , additionalCSS: ['/css/dashboard.css'] }) %>
   <div class="app-container">
-    <!-- Sidebar Navigation -->
-    <aside class="sidebar">
-      <div class="logo">
-        <h2>💰 FinTrack</h2>
-      </div>
-      <nav class="nav-menu">
-        <a href="/dashboard" class="nav-item">
-          <span class="icon">📊</span>
-          <span>Dashboard</span>
-        </a>
-        <a href="/rentals.html" class="nav-item">
-          <span class="icon">🏠</span>
-          <span>Thuê phòng</span>
-        </a>
-        <a href="/salaries.html" class="nav-item active">
-          <span class="icon">💵</span>
-          <span>Lương</span>
-        </a>
-        <a href="/expenses.html" class="nav-item">
-          <span class="icon">💳</span>
-          <span>Chi tiêu</span>
-        </a>
-        <a href="/savings.html" class="nav-item">
-          <span class="icon">🏦</span>
-          <span>Tiết kiệm</span>
-        </a>
-        <a href="/excel.html" class="nav-item">
-          <span class="icon">📁</span>
-          <span>Excel Import/Export</span>
-        </a>
-        <a href="/settings.html" class="nav-item">
-          <span class="icon">⚙️</span>
-          <span>Cài đặt</span>
-        </a>
-      </nav>
-    </aside>
+    <%- include('partials/sidebar', { currentPage: 'salaries' }) %>
 
     <!-- Main Content -->
     <main class="main-content">
