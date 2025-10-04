@@ -1,0 +1,44 @@
+<!-- Sidebar Navigation -->
+<aside class="sidebar">
+  <div class="logo">
+    <h2>💰 FinTrack</h2>
+  </div>
+  <nav class="nav-menu">
+    <a href="/dashboard" class="nav-item <%= currentPage === 'dashboard' ? 'active' : '' %>">
+      <span class="icon">📊</span>
+      <span>Dashboard</span>
+    </a>
+    <a href="/rentals" class="nav-item <%= currentPage === 'rentals' ? 'active' : '' %>">
+      <span class="icon">🏠</span>
+      <span>Thuê phòng</span>
+    </a>
+    <a href="/salaries" class="nav-item <%= currentPage === 'salaries' ? 'active' : '' %>">
+      <span class="icon">💵</span>
+      <span>Lương</span>
+    </a>
+    <a href="/expenses" class="nav-item <%= currentPage === 'expenses' ? 'active' : '' %>">
+      <span class="icon">💳</span>
+      <span>Chi tiêu</span>
+    </a>
+    <a href="/savings" class="nav-item <%= currentPage === 'savings' ? 'active' : '' %>">
+      <span class="icon">🏦</span>
+      <span>Tiết kiệm</span>
+    </a>
+    <a href="/deposits" class="nav-item <%= currentPage === 'deposits' ? 'active' : '' %>">
+      <span class="icon">💎</span>
+      <span>Tiền gửi</span>
+    </a>
+    <a href="/recurring-bills" class="nav-item <%= currentPage === 'recurring-bills' ? 'active' : '' %>">
+      <span class="icon">🔄</span>
+      <span>Hóa đơn định kỳ</span>
+    </a>
+    <a href="/excel" class="nav-item <%= currentPage === 'excel' ? 'active' : '' %>">
+      <span class="icon">📁</span>
+      <span>Excel Import/Export</span>
+    </a>
+    <a href="/settings" class="nav-item <%= currentPage === 'settings' ? 'active' : '' %>">
+      <span class="icon">⚙️</span>
+      <span>Cài đặt</span>
+    </a>
+  </nav>
+</aside>

@@ -1,0 +1,148 @@
+<%- include('partials/header', { title: 'Người bạn đồng hành tài chính thông minh', additionalCSS: [] }) %>
+    <header>
+      <div class="container">
+        <div class="logo">
+          <h1>💰 FinTrack</h1>
+          <p class="tagline">Người bạn đồng hành tài chính thông minh</p>
+        </div>
+        <nav>
+          <a href="#features">Tính năng</a>
+          <a href="#api">API</a>
+          <a href="#contact">Liên hệ</a>
+          <a href="/login">Đăng nhập</a>
+          <a href="/register">Đăng ký</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container">
+          <h2>Quản lý tài chính cá nhân một cách thông minh</h2>
+          <p>Ghi chép thu chi, lập kế hoạch ngân sách, đặt mục tiêu tiết kiệm và nhiều hơn thế nữa</p>
+          <div class="cta-buttons">
+            <a href="/login" class="btn btn-primary">Đăng nhập</a>
+            <a href="https://github.com/nguyenquy0710/Financial-Tracking" class="btn btn-secondary" target="_blank">View on GitHub</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="features" class="features">
+        <div class="container">
+          <h2>Tính năng nổi bật</h2>
+          <div class="feature-grid">
+            <div class="feature-card">
+              <div class="icon">📝</div>
+              <h3>Ghi chép thu chi</h3>
+              <p>Nhập thủ công hoặc quét hóa đơn. Phân loại tự động theo danh mục.</p>
+            </div>
+            <div class="feature-card">
+              <div class="icon">📊</div>
+              <h3>Phân tích & báo cáo</h3>
+              <p>Biểu đồ chi tiêu chi tiết. Cảnh báo khi vượt hạn mức.</p>
+            </div>
+            <div class="feature-card">
+              <div class="icon">💰</div>
+              <h3>Ngân sách</h3>
+              <p>Đặt hạn mức chi cho từng hạng mục. Theo dõi chi tiêu theo thời gian thực.</p>
+            </div>
+            <div class="feature-card">
+              <div class="icon">🎯</div>
+              <h3>Mục tiêu tài chính</h3>
+              <p>Lập kế hoạch tiết kiệm. Nhắc nhở tiến độ mục tiêu.</p>
+            </div>
+            <div class="feature-card">
+              <div class="icon">🤖</div>
+              <h3>AI hỗ trợ</h3>
+              <p>Gợi ý cắt giảm chi phí. Phân tích thói quen tiêu dùng.</p>
+            </div>
+            <div class="feature-card">
+              <div class="icon">🔒</div>
+              <h3>Bảo mật</h3>
+              <p>Mã hóa dữ liệu. Hỗ trợ đa ngôn ngữ và đồng bộ đa thiết bị.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="api" class="api-section">
+        <div class="container">
+          <h2>API Documentation</h2>
+          <p>FinTrack cung cấp RESTful API đầy đủ để tích hợp vào ứng dụng của bạn</p>
+
+          <div class="api-examples">
+            <div class="api-example">
+              <h3>Authentication</h3>
+              <pre><code>POST /api/auth/register
+POST /api/auth/login
+GET /api/auth/me</code></pre>
+            </div>
+
+            <div class="api-example">
+              <h3>Transactions</h3>
+              <pre><code>GET /api/transactions
+POST /api/transactions
+PUT /api/transactions/:id
+DELETE /api/transactions/:id
+GET /api/transactions/stats/summary</code></pre>
+            </div>
+
+            <div class="api-example">
+              <h3>Budgets & Goals</h3>
+              <pre><code>GET /api/budgets
+POST /api/budgets
+GET /api/budgets/alerts
+
+GET /api/goals
+POST /api/goals
+POST /api/goals/:id/contribute</code></pre>
+            </div>
+          </div>
+
+          <div class="api-link">
+            <a href="/api-docs" class="btn btn-primary">Xem tài liệu API đầy đủ</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="stats">
+        <div class="container">
+          <h2>API Status</h2>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-value" id="api-status">🟢 Online</div>
+              <div class="stat-label">API Status</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="uptime">--</div>
+              <div class="stat-label">Uptime</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">v1.0.0</div>
+              <div class="stat-label">Version</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="contact">
+        <div class="container">
+          <h2>Liên hệ</h2>
+          <p>Có câu hỏi hoặc muốn đóng góp? Chúng tôi rất vui được nghe từ bạn!</p>
+          <div class="contact-info">
+            <a href="https://github.com/nguyenquy0710/Financial-Tracking" class="btn btn-secondary" target="_blank">
+              GitHub Repository
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2025 FinTrack. Made with ❤️ in Vietnam. Licensed under MIT.</p>
+        <p>Created by Nguyễn Hữu Quý</p>
+      </div>
+    </footer>
+
+<%- include('partials/footer', { additionalJS: ['/js/main.js'] }) %>

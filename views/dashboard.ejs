@@ -1,0 +1,79 @@
+<%- include('partials/header', { title: 'Dashboard', additionalCSS: ['/css/dashboard.css'] }) %>
+    <div class="app-container">
+      <%- include('partials/sidebar', { currentPage: 'dashboard' }) %>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <header class="top-bar">
+          <h1>Dashboard</h1>
+          <div class="user-info">
+            <span id="user-name">User</span>
+            <button class="btn-logout" onclick="logout()">Đăng xuất</button>
+          </div>
+        </header>
+
+        <div class="content">
+          <!-- Summary Cards -->
+          <div class="summary-grid">
+            <div class="summary-card">
+              <div class="card-icon">💰</div>
+              <div class="card-content">
+                <h3>Tổng thu nhập</h3>
+                <p class="amount" id="total-income">0 VND</p>
+                <span class="period">Tháng này</span>
+              </div>
+            </div>
+            <div class="summary-card">
+              <div class="card-icon">💸</div>
+              <div class="card-content">
+                <h3>Tổng chi tiêu</h3>
+                <p class="amount" id="total-expense">0 VND</p>
+                <span class="period">Tháng này</span>
+              </div>
+            </div>
+            <div class="summary-card">
+              <div class="card-icon">🏠</div>
+              <div class="card-content">
+                <h3>Tiền thuê nhà</h3>
+                <p class="amount" id="total-rent">0 VND</p>
+                <span class="period">Tháng này</span>
+              </div>
+            </div>
+            <div class="summary-card">
+              <div class="card-icon">💵</div>
+              <div class="card-content">
+                <h3>Tiết kiệm</h3>
+                <p class="amount" id="total-savings">0 VND</p>
+                <span class="period">Tổng cộng</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts -->
+          <div class="charts-grid">
+            <div class="chart-card">
+              <h3>Chi tiêu theo danh mục</h3>
+              <div id="expense-chart" class="chart-placeholder">
+                <p>Biểu đồ chi tiêu sẽ hiển thị ở đây</p>
+              </div>
+            </div>
+            <div class="chart-card">
+              <h3>Thu nhập vs Chi tiêu</h3>
+              <div id="income-expense-chart" class="chart-placeholder">
+                <p>Biểu đồ so sánh sẽ hiển thị ở đây</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Activities -->
+          <div class="recent-activities">
+            <h3>Hoạt động gần đây</h3>
+            <div id="activities-list" class="activities-list">
+              <p class="loading">Đang tải dữ liệu...</p>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+<%- include('partials/footer', { additionalJS: ['/js/auth.js', '/js/dashboard.js'] }) %>

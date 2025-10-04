@@ -1,0 +1,503 @@
+<%- include('partials/header', { title: 'Hóa đơn định kỳ', additionalCSS: ['/css/dashboard.css'] }) %>
+    <div class="app-container">
+      <aside class="sidebar">
+        <div class="logo">
+          <h2>💰 FinTrack</h2>
+        </div>
+        <nav class="nav-menu">
+          <a href="/dashboard.html" class="nav-item">
+            <span class="icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+          <a href="/rentals.html" class="nav-item">
+            <span class="icon">🏠</span>
+            <span>Thuê phòng</span>
+          </a>
+          <a href="/salaries.html" class="nav-item">
+            <span class="icon">💵</span>
+            <span>Lương</span>
+          </a>
+          <a href="/expenses.html" class="nav-item">
+            <span class="icon">💳</span>
+            <span>Chi tiêu</span>
+          </a>
+          <a href="/savings.html" class="nav-item">
+            <span class="icon">🏦</span>
+            <span>Tiết kiệm</span>
+          </a>
+          <a href="/deposits.html" class="nav-item">
+            <span class="icon">💰</span>
+            <span>Đầu tư</span>
+          </a>
+          <a href="/recurring-bills.html" class="nav-item active">
+            <span class="icon">📋</span>
+            <span>Hóa đơn</span>
+          </a>
+          <a href="/excel.html" class="nav-item">
+            <span class="icon">📁</span>
+            <span>Excel Import/Export</span>
+          </a>
+          <a href="/settings.html" class="nav-item">
+            <span class="icon">⚙️</span>
+            <span>Cài đặt</span>
+          </a>
+        </nav>
+      </aside>
+      <main class="main-content">
+        <header class="top-bar">
+          <h1>Hóa Đơn Định Kỳ</h1>
+          <div class="user-info">
+            <span id="user-name">User</span>
+            <button class="btn-logout" onclick="logout()">Đăng xuất</button>
+          </div>
+        </header>
+        <div class="content">
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <h3>Tổng Hóa Đơn Tháng</h3>
+              <p class="stat-value" id="totalMonthly">0 VNĐ</p>
+            </div>
+            <div class="stat-card">
+              <h3>Sắp Đến Hạn</h3>
+              <p class="stat-value" id="upcomingCount">0</p>
+            </div>
+            <div class="stat-card">
+              <h3>Quá Hạn</h3>
+              <p class="stat-value" id="overdueCount">0</p>
+            </div>
+            <div class="stat-card">
+              <h3>Hoạt Động</h3>
+              <p class="stat-value" id="activeCount">0</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h2>Danh Sách Hóa Đơn</h2>
+              <button class="btn btn-primary" onclick="showAddBillForm()">+ Thêm Hóa Đơn</button>
+            </div>
+            <div class="card-body">
+              <div class="filters">
+                <select id="typeFilter" onchange="filterBills()">
+                  <option value="">Tất cả loại</option>
+                  <option value="rent">Tiền nhà</option>
+                  <option value="electricity">Điện</option>
+                  <option value="water">Nước</option>
+                  <option value="internet">Internet</option>
+                  <option value="parking">Gửi xe</option>
+                  <option value="garbage">Rác</option>
+                  <option value="other">Khác</option>
+                </select>
+                <select id="statusFilter" onchange="filterBills()">
+                  <option value="true">Đang hoạt động</option>
+                  <option value="false">Đã dừng</option>
+                  <option value="">Tất cả</option>
+                </select>
+              </div>
+
+              <div id="billsList" class="table-responsive">
+                <p class="loading">Đang tải dữ liệu...</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h2>🔔 Sắp Đến Hạn (7 ngày)</h2>
+            </div>
+            <div class="card-body">
+              <div id="upcomingBills" class="table-responsive">
+                <p class="loading">Đang tải dữ liệu...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Add/Edit Bill Modal -->
+    <div id="billModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span class="close" onclick="closeBillModal()">&times;</span>
+        <h2 id="modalTitle">Thêm Hóa Đơn Định Kỳ</h2>
+        <form id="billForm">
+          <input type="hidden" id="billId">
+
+          <div class="form-group">
+            <label for="name">Tên hóa đơn *</label>
+            <input type="text" id="name" required>
+          </div>
+
+          <div class="form-group">
+            <label for="type">Loại *</label>
+            <select id="type" required>
+              <option value="rent">Tiền nhà</option>
+              <option value="electricity">Điện</option>
+              <option value="water">Nước</option>
+              <option value="internet">Internet</option>
+              <option value="parking">Gửi xe</option>
+              <option value="garbage">Rác</option>
+              <option value="other">Khác</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="amount">Số tiền *</label>
+            <input type="number" id="amount" required min="0">
+          </div>
+
+          <div class="form-group">
+            <label for="frequency">Tần suất *</label>
+            <select id="frequency" required>
+              <option value="monthly">Hàng tháng</option>
+              <option value="weekly">Hàng tuần</option>
+              <option value="quarterly">Hàng quý</option>
+              <option value="yearly">Hàng năm</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="dueDay">Ngày đến hạn (1-31)</label>
+            <input type="number" id="dueDay" min="1" max="31">
+          </div>
+
+          <div class="form-group">
+            <label for="nextDueDate">Ngày đến hạn tiếp theo *</label>
+            <input type="date" id="nextDueDate" required>
+          </div>
+
+          <div class="form-group">
+            <label for="reminderDays">Nhắc nhở trước (ngày)</label>
+            <input type="number" id="reminderDays" value="3" min="0">
+          </div>
+
+          <div class="form-group">
+            <label for="autoDebit">
+              <input type="checkbox" id="autoDebit">
+              Tự động thanh toán
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label for="notes">Ghi chú</label>
+            <textarea id="notes" rows="3"></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" onclick="closeBillModal()">Hủy</button>
+            <button type="submit" class="btn btn-primary">Lưu</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script>
+      let bills = [];
+      let token = localStorage.getItem('token');
+
+      if (!token) {
+        window.location.href = '/index.html';
+      }
+
+      async function loadBills() {
+        try {
+          const typeFilter = document.getElementById('typeFilter').value;
+          const statusFilter = document.getElementById('statusFilter').value;
+
+          let url = '/api/recurring-bills?limit=100';
+          if (typeFilter) url += `&type=${typeFilter}`;
+          if (statusFilter) url += `&isActive=${statusFilter}`;
+
+          const response = await fetch(url, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          const data = await response.json();
+
+          if (data.success) {
+            bills = data.data;
+            displayBills(bills);
+          }
+        } catch (error) {
+          console.error('Error loading bills:', error);
+        }
+      }
+
+      function displayBills(billsData) {
+        const container = document.getElementById('billsList');
+
+        if (billsData.length === 0) {
+          container.innerHTML = '<p>Chưa có hóa đơn nào.</p>';
+          return;
+        }
+
+        const table = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tên</th>
+                            <th>Loại</th>
+                            <th>Số tiền</th>
+                            <th>Tần suất</th>
+                            <th>Ngày đến hạn</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${billsData.map(bill => `
+                            <tr>
+                                <td>${bill.name}</td>
+                                <td>${getTypeLabel(bill.type)}</td>
+                                <td>${bill.amount.toLocaleString('vi-VN')} VNĐ</td>
+                                <td>${getFrequencyLabel(bill.frequency)}</td>
+                                <td>${new Date(bill.nextDueDate).toLocaleDateString('vi-VN')}</td>
+                                <td><span class="badge ${bill.isActive ? 'badge-success' : 'badge-secondary'}">${bill.isActive ? 'Hoạt động' : 'Dừng'}</span></td>
+                                <td>
+                                    <button class="btn btn-sm" onclick="markAsPaid('${bill._id}')">✓ Đã thanh toán</button>
+                                    <button class="btn btn-sm" onclick="editBill('${bill._id}')">✏️</button>
+                                    <button class="btn btn-sm btn-danger" onclick="deleteBill('${bill._id}')">🗑️</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+
+        container.innerHTML = table;
+      }
+
+      async function loadUpcomingBills() {
+        try {
+          const response = await fetch('/api/recurring-bills/upcoming?days=7', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          const data = await response.json();
+
+          if (data.success) {
+            displayUpcomingBills(data.data);
+          }
+        } catch (error) {
+          console.error('Error loading upcoming bills:', error);
+        }
+      }
+
+      function displayUpcomingBills(billsData) {
+        const container = document.getElementById('upcomingBills');
+
+        if (billsData.length === 0) {
+          container.innerHTML = '<p>Không có hóa đơn nào sắp đến hạn.</p>';
+          return;
+        }
+
+        const list = billsData.map(bill => `
+                <div class="alert alert-warning">
+                    <strong>${bill.name}</strong> - ${bill.amount.toLocaleString('vi-VN')} VNĐ
+                    <br>Đến hạn: ${new Date(bill.nextDueDate).toLocaleDateString('vi-VN')}
+                    <button class="btn btn-sm" onclick="markAsPaid('${bill._id}')">✓ Đã thanh toán</button>
+                </div>
+            `).join('');
+
+        container.innerHTML = list;
+      }
+
+      async function loadStats() {
+        try {
+          const [statsRes, upcomingRes, overdueRes] = await Promise.all([
+            fetch('/api/recurring-bills/stats/summary', {
+              headers: { 'Authorization': `Bearer ${token}` }
+            }),
+            fetch('/api/recurring-bills/upcoming?days=7', {
+              headers: { 'Authorization': `Bearer ${token}` }
+            }),
+            fetch('/api/recurring-bills/overdue', {
+              headers: { 'Authorization': `Bearer ${token}` }
+            })
+          ]);
+
+          const statsData = await statsRes.json();
+          const upcomingData = await upcomingRes.json();
+          const overdueData = await overdueRes.json();
+
+          if (statsData.success) {
+            document.getElementById('totalMonthly').textContent =
+              (statsData.data.monthlyTotal.total || 0).toLocaleString('vi-VN') + ' VNĐ';
+          }
+
+          if (upcomingData.success) {
+            document.getElementById('upcomingCount').textContent = upcomingData.count || 0;
+          }
+
+          if (overdueData.success) {
+            document.getElementById('overdueCount').textContent = overdueData.count || 0;
+          }
+
+          const activeResponse = await fetch('/api/recurring-bills?isActive=true&limit=1000', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          const activeData = await activeResponse.json();
+          if (activeData.success) {
+            document.getElementById('activeCount').textContent = activeData.data.length;
+          }
+        } catch (error) {
+          console.error('Error loading stats:', error);
+        }
+      }
+
+      function getTypeLabel(type) {
+        const labels = {
+          'rent': 'Tiền nhà',
+          'electricity': 'Điện',
+          'water': 'Nước',
+          'internet': 'Internet',
+          'parking': 'Gửi xe',
+          'garbage': 'Rác',
+          'other': 'Khác'
+        };
+        return labels[type] || type;
+      }
+
+      function getFrequencyLabel(frequency) {
+        const labels = {
+          'daily': 'Hàng ngày',
+          'weekly': 'Hàng tuần',
+          'monthly': 'Hàng tháng',
+          'quarterly': 'Hàng quý',
+          'yearly': 'Hàng năm'
+        };
+        return labels[frequency] || frequency;
+      }
+
+      function filterBills() {
+        loadBills();
+      }
+
+      function showAddBillForm() {
+        document.getElementById('modalTitle').textContent = 'Thêm Hóa Đơn Định Kỳ';
+        document.getElementById('billForm').reset();
+        document.getElementById('billId').value = '';
+        document.getElementById('billModal').style.display = 'block';
+      }
+
+      function closeBillModal() {
+        document.getElementById('billModal').style.display = 'none';
+      }
+
+      async function editBill(id) {
+        const bill = bills.find(b => b._id === id);
+        if (!bill) return;
+
+        document.getElementById('modalTitle').textContent = 'Chỉnh Sửa Hóa Đơn';
+        document.getElementById('billId').value = bill._id;
+        document.getElementById('name').value = bill.name;
+        document.getElementById('type').value = bill.type;
+        document.getElementById('amount').value = bill.amount;
+        document.getElementById('frequency').value = bill.frequency;
+        document.getElementById('dueDay').value = bill.dueDay || '';
+        document.getElementById('nextDueDate').value = bill.nextDueDate.split('T')[0];
+        document.getElementById('reminderDays').value = bill.reminderDays;
+        document.getElementById('autoDebit').checked = bill.autoDebit;
+        document.getElementById('notes').value = bill.notes || '';
+        document.getElementById('billModal').style.display = 'block';
+      }
+
+      async function deleteBill(id) {
+        if (!confirm('Bạn có chắc chắn muốn xóa hóa đơn này?')) return;
+
+        try {
+          const response = await fetch(`/api/recurring-bills/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+
+          const data = await response.json();
+          if (data.success) {
+            alert('Xóa hóa đơn thành công!');
+            loadBills();
+            loadStats();
+          }
+        } catch (error) {
+          console.error('Error deleting bill:', error);
+          alert('Có lỗi xảy ra!');
+        }
+      }
+
+      async function markAsPaid(id) {
+        const amount = prompt('Nhập số tiền đã thanh toán:');
+        if (!amount) return;
+
+        try {
+          const response = await fetch(`/api/recurring-bills/${id}/pay`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              amount: parseFloat(amount),
+              paidDate: new Date().toISOString()
+            })
+          });
+
+          const data = await response.json();
+          if (data.success) {
+            alert('Đã đánh dấu thanh toán!');
+            loadBills();
+            loadUpcomingBills();
+            loadStats();
+          }
+        } catch (error) {
+          console.error('Error marking as paid:', error);
+          alert('Có lỗi xảy ra!');
+        }
+      }
+
+      document.getElementById('billForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const billId = document.getElementById('billId').value;
+        const billData = {
+          name: document.getElementById('name').value,
+          type: document.getElementById('type').value,
+          amount: parseFloat(document.getElementById('amount').value),
+          frequency: document.getElementById('frequency').value,
+          dueDay: parseInt(document.getElementById('dueDay').value) || undefined,
+          nextDueDate: document.getElementById('nextDueDate').value,
+          reminderDays: parseInt(document.getElementById('reminderDays').value),
+          autoDebit: document.getElementById('autoDebit').checked,
+          notes: document.getElementById('notes').value
+        };
+
+        try {
+          const url = billId ? `/api/recurring-bills/${billId}` : '/api/recurring-bills';
+          const method = billId ? 'PUT' : 'POST';
+
+          const response = await fetch(url, {
+            method,
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(billData)
+          });
+
+          const data = await response.json();
+          if (data.success) {
+            alert(billId ? 'Cập nhật thành công!' : 'Thêm hóa đơn thành công!');
+            closeBillModal();
+            loadBills();
+            loadStats();
+          }
+        } catch (error) {
+          console.error('Error saving bill:', error);
+          alert('Có lỗi xảy ra!');
+        }
+      });
+
+      // Initial load
+      loadBills();
+      loadUpcomingBills();
+      loadStats();
+    </script>
+<%- include('partials/footer', { additionalJS: ['/js/auth.js', '/js/recurring-bills.js'] }) %>

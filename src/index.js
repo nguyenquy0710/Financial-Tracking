@@ -24,9 +24,14 @@ const savingRoutes = require('./routes/savingRoutes');
 const depositRoutes = require('./routes/depositRoutes');
 const recurringBillRoutes = require('./routes/recurringBillRoutes');
 const bankAccountRoutes = require('./routes/bankAccountRoutes');
+const viewRoutes = require('./routes/viewRoutes');
 
 // Initialize app
 const app = express();
+
+// Set view engine
+app.set('view engine', 'ejs');
+app.set('views', './views');
 
 // Connect to database
 connectDB();
@@ -60,6 +65,9 @@ app.get('/api-docs.json', (req, res) => {
   res.send(swaggerSpec);
 });
 
+// Web UI Routes - Must come before API routes
+app.use('/', viewRoutes);
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/transactions', transactionRoutes);
@@ -85,31 +93,7 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Welcome route
-app.get('/', (req, res) => {
-  res.json({
-    success: true,
-    message: 'Welcome to FinTrack API',
-    version: '1.0.0',
-    description: 'Smart Financial Companion Platform - Người bạn đồng hành tài chính thông minh',
-    documentation: '/api-docs',
-    endpoints: {
-      auth: '/api/auth',
-      transactions: '/api/transactions',
-      categories: '/api/categories',
-      budgets: '/api/budgets',
-      goals: '/api/goals',
-      rentals: '/api/rentals',
-      salaries: '/api/salaries',
-      expenses: '/api/expenses',
-      excel: '/api/excel',
-      savings: '/api/savings',
-      deposits: '/api/deposits',
-      recurringBills: '/api/recurring-bills',
-      bankAccounts: '/api/bank-accounts'
-    }
-  });
-});
+// Welcome route - Now removed as root is handled by viewRoutes
 
 // 404 handler
 app.use((req, res) => {
