@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html lang="vi">
-
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FinTrack - Người bạn đồng hành tài chính thông minh</title>
-    <link rel="stylesheet" href="css/style.css">
-  </head>
-
-  <body>
+<%- include('partials/header', { title: 'Người bạn đồng hành tài chính thông minh', additionalCSS: [] }) %>
     <header>
       <div class="container">
         <div class="logo">
@@ -19,8 +9,8 @@
           <a href="#features">Tính năng</a>
           <a href="#api">API</a>
           <a href="#contact">Liên hệ</a>
-          <a href="/login.html">Đăng nhập</a>
-          <a href="/register.html">Đăng ký</a>
+          <a href="/login">Đăng nhập</a>
+          <a href="/register">Đăng ký</a>
         </nav>
       </div>
     </header>
@@ -31,7 +21,7 @@
           <h2>Quản lý tài chính cá nhân một cách thông minh</h2>
           <p>Ghi chép thu chi, lập kế hoạch ngân sách, đặt mục tiêu tiết kiệm và nhiều hơn thế nữa</p>
           <div class="cta-buttons">
-            <a href="/login.html" class="btn btn-primary">Đăng nhập</a>
+            <a href="/login" class="btn btn-primary">Đăng nhập</a>
             <a href="https://github.com/nguyenquy0710/Financial-Tracking" class="btn btn-secondary" target="_blank">View on GitHub</a>
           </div>
         </div>
@@ -155,7 +145,4 @@ POST /api/goals/:id/contribute</code></pre>
       </div>
     </footer>
 
-    <script src="js/main.js"></script>
-  </body>
-
-</html>
+<%- include('partials/footer', { additionalJS: ['/js/main.js'] }) %>

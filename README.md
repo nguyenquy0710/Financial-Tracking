@@ -137,6 +137,17 @@ npm start
 
 Server sẽ chạy tại / Server will run at: `http://localhost:3000`
 
+### Architecture Overview
+
+**FinTrack** sử dụng kiến trúc MVC (Model-View-Controller) với Express.js và EJS template engine:
+
+- **API Routes** (`/api/*`): RESTful API endpoints for programmatic access
+- **Web UI Routes** (`/`, `/login`, `/dashboard`, etc.): Server-side rendered pages using EJS templates
+- **Static Assets**: CSS, JavaScript, and images served from the `public` directory
+- **Template Engine**: EJS for dynamic server-side HTML rendering
+
+This architecture allows the application to serve both as a traditional web application and as an API backend for other clients.
+
 ## 📚 API Documentation
 
 ### Swagger UI (Interactive Documentation)
@@ -653,7 +664,7 @@ Financial-Tracking/
 │   │   ├── Saving.js                # NEW
 │   │   ├── RecurringBill.js         # NEW
 │   │   └── BankAccount.js           # NEW
-│   ├── routes/          # API routes
+│   ├── routes/          # API & View routes
 │   │   ├── authRoutes.js
 │   │   ├── transactionRoutes.js
 │   │   ├── categoryRoutes.js
@@ -666,32 +677,43 @@ Financial-Tracking/
 │   │   ├── savingRoutes.js          # NEW
 │   │   ├── depositRoutes.js         # NEW
 │   │   ├── recurringBillRoutes.js   # NEW
-│   │   └── bankAccountRoutes.js     # NEW
+│   │   ├── bankAccountRoutes.js     # NEW
+│   │   └── viewRoutes.js            # NEW - Web UI routes
 │   ├── utils/           # Utility functions
 │   │   ├── helpers.js
 │   │   └── excelParser.js           # NEW
 │   └── index.js         # Application entry point
+├── views/               # EJS templates (NEW)
+│   ├── partials/
+│   │   ├── header.ejs
+│   │   ├── footer.ejs
+│   │   └── sidebar.ejs
+│   ├── index.ejs
+│   ├── login.ejs
+│   ├── register.ejs
+│   ├── dashboard.ejs
+│   ├── rentals.ejs
+│   ├── salaries.ejs
+│   ├── expenses.ejs
+│   ├── excel.ejs
+│   ├── savings.ejs
+│   ├── deposits.ejs
+│   ├── recurring-bills.ejs
+│   └── settings.ejs
 ├── tests/               # Test files
 ├── docs/                # Documentation
-├── public/              # Static files
+├── public/              # Static assets (CSS, JS, images)
 │   ├── css/
 │   │   ├── style.css
+│   │   ├── login.css
 │   │   └── dashboard.css            # NEW
-│   ├── js/
-│   │   ├── main.js
-│   │   ├── auth.js                  # NEW
-│   │   ├── dashboard.js             # NEW
-│   │   └── excel.js                 # NEW
-│   ├── index.html
-│   ├── dashboard.html               # NEW
-│   ├── rentals.html                 # NEW
-│   ├── salaries.html                # NEW
-│   ├── expenses.html                # NEW
-│   ├── excel.html                   # NEW
-│   ├── savings.html                 # UPDATED
-│   ├── deposits.html                # NEW
-│   ├── recurring-bills.html         # NEW
-│   └── settings.html                # UPDATED
+│   └── js/
+│       ├── main.js
+│       ├── auth.js                  # NEW
+│       ├── login.js                 # NEW
+│       ├── register.js              # NEW
+│       ├── dashboard.js             # NEW
+│       └── excel.js                 # NEW
 ├── .env.example         # Environment variables template
 ├── .gitignore
 ├── package.json

@@ -3,7 +3,7 @@
 $(document).ready(function () {
   // Check if already logged in
   if (localStorage.getItem('authToken')) {
-    window.location.href = '/dashboard.html';
+    window.location.href = '/dashboard';
     return;
   }
 
@@ -147,7 +147,7 @@ $(document).ready(function () {
         // Add smooth transition effect
         $('body').fadeOut(500, function () {
           // Redirect to dashboard
-          window.location.href = '/dashboard.html';
+          window.location.href = '/dashboard';
         });
       } else {
         throw new Error(response.message || 'Đăng ký thất bại');

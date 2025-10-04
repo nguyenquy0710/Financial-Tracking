@@ -1,15 +1,4 @@
-<!DOCTYPE html>
-<html lang="vi">
-
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lương - FinTrack</title>
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/dashboard.css">
-  </head>
-
-  <body>
+<%- include('partials/header', { title: 'Lương', additionalCSS: ['/css/dashboard.css'] }) %>
     <div class="app-container">
       <!-- Sidebar Navigation -->
       <aside class="sidebar">
@@ -17,7 +6,7 @@
           <h2>💰 FinTrack</h2>
         </div>
         <nav class="nav-menu">
-          <a href="/dashboard.html" class="nav-item">
+          <a href="/dashboard" class="nav-item">
             <span class="icon">📊</span>
             <span>Dashboard</span>
           </a>
@@ -216,6 +205,4 @@
         background: #f8f9fa;
       }
     </style>
-  </body>
-
-</html>
+<%- include('partials/footer', { additionalJS: ['/js/auth.js', '/js/salaries.js'] }) %>

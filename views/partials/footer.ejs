@@ -1,0 +1,8 @@
+    <% if (locals.additionalJS) { %>
+      <% additionalJS.forEach(js => { %>
+        <script src="<%= js %>"></script>
+      <% }) %>
+    <% } %>
+  </body>
+
+</html>
