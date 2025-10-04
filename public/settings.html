@@ -1,199 +1,201 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
+
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cài đặt - FinTrack</title>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/dashboard.css">
-</head>
-<body>
+  </head>
+
+  <body>
     <div class="app-container">
-        <aside class="sidebar">
-            <div class="logo">
-                <h2>💰 FinTrack</h2>
+      <aside class="sidebar">
+        <div class="logo">
+          <h2>💰 FinTrack</h2>
+        </div>
+        <nav class="nav-menu">
+          <a href="/dashboard.html" class="nav-item">
+            <span class="icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+          <a href="/rentals.html" class="nav-item">
+            <span class="icon">🏠</span>
+            <span>Thuê phòng</span>
+          </a>
+          <a href="/salaries.html" class="nav-item">
+            <span class="icon">💵</span>
+            <span>Lương</span>
+          </a>
+          <a href="/expenses.html" class="nav-item">
+            <span class="icon">💳</span>
+            <span>Chi tiêu</span>
+          </a>
+          <a href="/savings.html" class="nav-item">
+            <span class="icon">🏦</span>
+            <span>Tiết kiệm</span>
+          </a>
+          <a href="/deposits.html" class="nav-item">
+            <span class="icon">💰</span>
+            <span>Đầu tư</span>
+          </a>
+          <a href="/recurring-bills.html" class="nav-item">
+            <span class="icon">📋</span>
+            <span>Hóa đơn</span>
+          </a>
+          <a href="/excel.html" class="nav-item">
+            <span class="icon">📁</span>
+            <span>Excel Import/Export</span>
+          </a>
+          <a href="/settings.html" class="nav-item active">
+            <span class="icon">⚙️</span>
+            <span>Cài đặt</span>
+          </a>
+        </nav>
+      </aside>
+      <main class="main-content">
+        <header class="top-bar">
+          <h1>Cài đặt</h1>
+          <div class="user-info">
+            <span id="user-name">User</span>
+            <button class="btn-logout" onclick="logout()">Đăng xuất</button>
+          </div>
+        </header>
+        <div class="content">
+          <div class="card">
+            <h2>👤 Thông tin cá nhân</h2>
+            <div id="userInfo">
+              <p class="loading">Đang tải dữ liệu...</p>
             </div>
-            <nav class="nav-menu">
-                <a href="/dashboard.html" class="nav-item">
-                    <span class="icon">📊</span>
-                    <span>Dashboard</span>
-                </a>
-                <a href="/rentals.html" class="nav-item">
-                    <span class="icon">🏠</span>
-                    <span>Thuê phòng</span>
-                </a>
-                <a href="/salaries.html" class="nav-item">
-                    <span class="icon">💵</span>
-                    <span>Lương</span>
-                </a>
-                <a href="/expenses.html" class="nav-item">
-                    <span class="icon">💳</span>
-                    <span>Chi tiêu</span>
-                </a>
-                <a href="/savings.html" class="nav-item">
-                    <span class="icon">🏦</span>
-                    <span>Tiết kiệm</span>
-                </a>
-                <a href="/deposits.html" class="nav-item">
-                    <span class="icon">💰</span>
-                    <span>Đầu tư</span>
-                </a>
-                <a href="/recurring-bills.html" class="nav-item">
-                    <span class="icon">📋</span>
-                    <span>Hóa đơn</span>
-                </a>
-                <a href="/excel.html" class="nav-item">
-                    <span class="icon">📁</span>
-                    <span>Excel Import/Export</span>
-                </a>
-                <a href="/settings.html" class="nav-item active">
-                    <span class="icon">⚙️</span>
-                    <span>Cài đặt</span>
-                </a>
-            </nav>
-        </aside>
-        <main class="main-content">
-            <header class="top-bar">
-                <h1>Cài đặt</h1>
-                <div class="user-info">
-                    <span id="user-name">User</span>
-                    <button class="btn-logout" onclick="logout()">Đăng xuất</button>
-                </div>
-            </header>
-            <div class="content">
-                <div class="card">
-                    <h2>👤 Thông tin cá nhân</h2>
-                    <div id="userInfo">
-                        <p class="loading">Đang tải dữ liệu...</p>
-                    </div>
-                </div>
+          </div>
 
-                <div class="card">
-                    <div class="card-header">
-                        <h2>🏦 Tài khoản ngân hàng</h2>
-                        <button class="btn btn-primary" onclick="showAddAccountForm()">+ Thêm Tài Khoản</button>
-                    </div>
-                    <div class="card-body">
-                        <div id="bankAccountsList">
-                            <p class="loading">Đang tải dữ liệu...</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h2>🎨 Tùy chỉnh</h2>
-                    <div class="settings-form">
-                        <div class="form-group">
-                            <label for="language">Ngôn ngữ</label>
-                            <select id="language">
-                                <option value="vi">Tiếng Việt</option>
-                                <option value="en">English</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="currency">Đơn vị tiền tệ</label>
-                            <select id="currency">
-                                <option value="VND">VNĐ</option>
-                                <option value="USD">USD</option>
-                            </select>
-                        </div>
-                        <button class="btn btn-primary" onclick="savePreferences()">Lưu Tùy Chỉnh</button>
-                    </div>
-                </div>
+          <div class="card">
+            <div class="card-header">
+              <h2>🏦 Tài khoản ngân hàng</h2>
+              <button class="btn btn-primary" onclick="showAddAccountForm()">+ Thêm Tài Khoản</button>
             </div>
-        </main>
+            <div class="card-body">
+              <div id="bankAccountsList">
+                <p class="loading">Đang tải dữ liệu...</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>🎨 Tùy chỉnh</h2>
+            <div class="settings-form">
+              <div class="form-group">
+                <label for="language">Ngôn ngữ</label>
+                <select id="language">
+                  <option value="vi">Tiếng Việt</option>
+                  <option value="en">English</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="currency">Đơn vị tiền tệ</label>
+                <select id="currency">
+                  <option value="VND">VNĐ</option>
+                  <option value="USD">USD</option>
+                </select>
+              </div>
+              <button class="btn btn-primary" onclick="savePreferences()">Lưu Tùy Chỉnh</button>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
 
     <!-- Add/Edit Bank Account Modal -->
     <div id="accountModal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close" onclick="closeAccountModal()">&times;</span>
-            <h2 id="modalTitle">Thêm Tài Khoản Ngân Hàng</h2>
-            <form id="accountForm">
-                <input type="hidden" id="accountId">
-                
-                <div class="form-group">
-                    <label for="bank">Ngân hàng *</label>
-                    <input type="text" id="bank" required placeholder="VD: Vietcombank, BIDV, Techcombank...">
-                </div>
+      <div class="modal-content">
+        <span class="close" onclick="closeAccountModal()">&times;</span>
+        <h2 id="modalTitle">Thêm Tài Khoản Ngân Hàng</h2>
+        <form id="accountForm">
+          <input type="hidden" id="accountId">
 
-                <div class="form-group">
-                    <label for="accountHolder">Chủ tài khoản *</label>
-                    <input type="text" id="accountHolder" required>
-                </div>
+          <div class="form-group">
+            <label for="bank">Ngân hàng *</label>
+            <input type="text" id="bank" required placeholder="VD: Vietcombank, BIDV, Techcombank...">
+          </div>
 
-                <div class="form-group">
-                    <label for="accountNumber">Số tài khoản *</label>
-                    <input type="text" id="accountNumber" required>
-                </div>
+          <div class="form-group">
+            <label for="accountHolder">Chủ tài khoản *</label>
+            <input type="text" id="accountHolder" required>
+          </div>
 
-                <div class="form-group">
-                    <label for="branch">Chi nhánh</label>
-                    <input type="text" id="branch">
-                </div>
+          <div class="form-group">
+            <label for="accountNumber">Số tài khoản *</label>
+            <input type="text" id="accountNumber" required>
+          </div>
 
-                <div class="form-group">
-                    <label for="identifier">Mã định danh</label>
-                    <input type="text" id="identifier" placeholder="Tên gợi nhớ hoặc mã riêng">
-                </div>
+          <div class="form-group">
+            <label for="branch">Chi nhánh</label>
+            <input type="text" id="branch">
+          </div>
 
-                <div class="form-group">
-                    <label for="isDefault">
-                        <input type="checkbox" id="isDefault">
-                        Đặt làm tài khoản mặc định
-                    </label>
-                </div>
+          <div class="form-group">
+            <label for="identifier">Mã định danh</label>
+            <input type="text" id="identifier" placeholder="Tên gợi nhớ hoặc mã riêng">
+          </div>
 
-                <div class="form-group">
-                    <label for="isActive">
-                        <input type="checkbox" id="isActive" checked>
-                        Đang hoạt động
-                    </label>
-                </div>
+          <div class="form-group">
+            <label for="isDefault">
+              <input type="checkbox" id="isDefault">
+              Đặt làm tài khoản mặc định
+            </label>
+          </div>
 
-                <div class="form-group">
-                    <label for="notes">Ghi chú</label>
-                    <textarea id="notes" rows="3"></textarea>
-                </div>
+          <div class="form-group">
+            <label for="isActive">
+              <input type="checkbox" id="isActive" checked>
+              Đang hoạt động
+            </label>
+          </div>
 
-                <div class="form-actions">
-                    <button type="button" class="btn btn-secondary" onclick="closeAccountModal()">Hủy</button>
-                    <button type="submit" class="btn btn-primary">Lưu</button>
-                </div>
-            </form>
-        </div>
+          <div class="form-group">
+            <label for="notes">Ghi chú</label>
+            <textarea id="notes" rows="3"></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" onclick="closeAccountModal()">Hủy</button>
+            <button type="submit" class="btn btn-primary">Lưu</button>
+          </div>
+        </form>
+      </div>
     </div>
 
     <script src="/js/auth.js"></script>
     <script>
-        let accounts = [];
-        let token = localStorage.getItem('token');
-        let currentUser = null;
+      let accounts = [];
+      let token = localStorage.getItem('token');
+      let currentUser = null;
 
-        if (!token) {
-            window.location.href = '/index.html';
+      if (!token) {
+        window.location.href = '/index.html';
+      }
+
+      async function loadUserInfo() {
+        try {
+          const response = await fetch('/api/auth/me', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          const data = await response.json();
+
+          if (data.success) {
+            currentUser = data.data;
+            displayUserInfo(currentUser);
+            document.getElementById('user-name').textContent = currentUser.name;
+          }
+        } catch (error) {
+          console.error('Error loading user info:', error);
         }
+      }
 
-        async function loadUserInfo() {
-            try {
-                const response = await fetch('/api/auth/me', {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                const data = await response.json();
-
-                if (data.success) {
-                    currentUser = data.data;
-                    displayUserInfo(currentUser);
-                    document.getElementById('user-name').textContent = currentUser.name;
-                }
-            } catch (error) {
-                console.error('Error loading user info:', error);
-            }
-        }
-
-        function displayUserInfo(user) {
-            const container = document.getElementById('userInfo');
-            container.innerHTML = `
+      function displayUserInfo(user) {
+        const container = document.getElementById('userInfo');
+        container.innerHTML = `
                 <div class="user-details">
                     <p><strong>Tên:</strong> ${user.name}</p>
                     <p><strong>Email:</strong> ${user.email}</p>
@@ -203,45 +205,45 @@
                 </div>
             `;
 
-            // Set preferences
-            if (user.language) {
-                document.getElementById('language').value = user.language;
-            }
-            if (user.currency) {
-                document.getElementById('currency').value = user.currency;
-            }
+        // Set preferences
+        if (user.language) {
+          document.getElementById('language').value = user.language;
+        }
+        if (user.currency) {
+          document.getElementById('currency').value = user.currency;
+        }
+      }
+
+      async function loadBankAccounts() {
+        try {
+          const response = await fetch('/api/bank-accounts?limit=100', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          const data = await response.json();
+
+          if (data.success) {
+            accounts = data.data;
+            displayBankAccounts(accounts);
+          }
+        } catch (error) {
+          console.error('Error loading bank accounts:', error);
+        }
+      }
+
+      function displayBankAccounts(accountsData) {
+        const container = document.getElementById('bankAccountsList');
+
+        if (accountsData.length === 0) {
+          container.innerHTML = '<p>Chưa có tài khoản ngân hàng nào.</p>';
+          return;
         }
 
-        async function loadBankAccounts() {
-            try {
-                const response = await fetch('/api/bank-accounts?limit=100', {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                const data = await response.json();
-
-                if (data.success) {
-                    accounts = data.data;
-                    displayBankAccounts(accounts);
-                }
-            } catch (error) {
-                console.error('Error loading bank accounts:', error);
-            }
-        }
-
-        function displayBankAccounts(accountsData) {
-            const container = document.getElementById('bankAccountsList');
-            
-            if (accountsData.length === 0) {
-                container.innerHTML = '<p>Chưa có tài khoản ngân hàng nào.</p>';
-                return;
-            }
-
-            const list = accountsData.map(account => `
+        const list = accountsData.map(account => `
                 <div class="bank-account-item" style="border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 5px;">
                     <div style="display: flex; justify-content: space-between; align-items: start;">
                         <div>
                             <h3 style="margin: 0 0 10px 0;">
-                                ${account.bank} 
+                                ${account.bank}
                                 ${account.isDefault ? '<span class="badge badge-primary">Mặc định</span>' : ''}
                                 ${!account.isActive ? '<span class="badge badge-secondary">Không hoạt động</span>' : ''}
                             </h3>
@@ -259,129 +261,130 @@
                     </div>
                 </div>
             `).join('');
-            
-            container.innerHTML = list;
+
+        container.innerHTML = list;
+      }
+
+      function showAddAccountForm() {
+        document.getElementById('modalTitle').textContent = 'Thêm Tài Khoản Ngân Hàng';
+        document.getElementById('accountForm').reset();
+        document.getElementById('accountId').value = '';
+        document.getElementById('isActive').checked = true;
+        document.getElementById('accountModal').style.display = 'block';
+      }
+
+      function closeAccountModal() {
+        document.getElementById('accountModal').style.display = 'none';
+      }
+
+      async function editAccount(id) {
+        const account = accounts.find(a => a._id === id);
+        if (!account) return;
+
+        document.getElementById('modalTitle').textContent = 'Chỉnh Sửa Tài Khoản Ngân Hàng';
+        document.getElementById('accountId').value = account._id;
+        document.getElementById('bank').value = account.bank;
+        document.getElementById('accountHolder').value = account.accountHolder;
+        document.getElementById('accountNumber').value = account.accountNumber;
+        document.getElementById('branch').value = account.branch || '';
+        document.getElementById('identifier').value = account.identifier || '';
+        document.getElementById('isDefault').checked = account.isDefault;
+        document.getElementById('isActive').checked = account.isActive;
+        document.getElementById('notes').value = account.notes || '';
+        document.getElementById('accountModal').style.display = 'block';
+      }
+
+      async function deleteAccount(id) {
+        if (!confirm('Bạn có chắc chắn muốn xóa tài khoản ngân hàng này?')) return;
+
+        try {
+          const response = await fetch(`/api/bank-accounts/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+
+          const data = await response.json();
+          if (data.success) {
+            alert('Xóa thành công!');
+            loadBankAccounts();
+          }
+        } catch (error) {
+          console.error('Error deleting account:', error);
+          alert('Có lỗi xảy ra!');
         }
+      }
 
-        function showAddAccountForm() {
-            document.getElementById('modalTitle').textContent = 'Thêm Tài Khoản Ngân Hàng';
-            document.getElementById('accountForm').reset();
-            document.getElementById('accountId').value = '';
-            document.getElementById('isActive').checked = true;
-            document.getElementById('accountModal').style.display = 'block';
+      async function setDefaultAccount(id) {
+        try {
+          const response = await fetch(`/api/bank-accounts/${id}/set-default`, {
+            method: 'PUT',
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+
+          const data = await response.json();
+          if (data.success) {
+            alert('Đã đặt làm tài khoản mặc định!');
+            loadBankAccounts();
+          }
+        } catch (error) {
+          console.error('Error setting default:', error);
+          alert('Có lỗi xảy ra!');
         }
+      }
 
-        function closeAccountModal() {
-            document.getElementById('accountModal').style.display = 'none';
+      document.getElementById('accountForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const accountId = document.getElementById('accountId').value;
+        const accountData = {
+          bank: document.getElementById('bank').value,
+          accountHolder: document.getElementById('accountHolder').value,
+          accountNumber: document.getElementById('accountNumber').value,
+          branch: document.getElementById('branch').value,
+          identifier: document.getElementById('identifier').value,
+          isDefault: document.getElementById('isDefault').checked,
+          isActive: document.getElementById('isActive').checked,
+          notes: document.getElementById('notes').value
+        };
+
+        try {
+          const url = accountId ? `/api/bank-accounts/${accountId}` : '/api/bank-accounts';
+          const method = accountId ? 'PUT' : 'POST';
+
+          const response = await fetch(url, {
+            method,
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(accountData)
+          });
+
+          const data = await response.json();
+          if (data.success) {
+            alert(accountId ? 'Cập nhật thành công!' : 'Thêm tài khoản thành công!');
+            closeAccountModal();
+            loadBankAccounts();
+          }
+        } catch (error) {
+          console.error('Error saving account:', error);
+          alert('Có lỗi xảy ra!');
         }
+      });
 
-        async function editAccount(id) {
-            const account = accounts.find(a => a._id === id);
-            if (!account) return;
+      async function savePreferences() {
+        const language = document.getElementById('language').value;
+        const currency = document.getElementById('currency').value;
 
-            document.getElementById('modalTitle').textContent = 'Chỉnh Sửa Tài Khoản Ngân Hàng';
-            document.getElementById('accountId').value = account._id;
-            document.getElementById('bank').value = account.bank;
-            document.getElementById('accountHolder').value = account.accountHolder;
-            document.getElementById('accountNumber').value = account.accountNumber;
-            document.getElementById('branch').value = account.branch || '';
-            document.getElementById('identifier').value = account.identifier || '';
-            document.getElementById('isDefault').checked = account.isDefault;
-            document.getElementById('isActive').checked = account.isActive;
-            document.getElementById('notes').value = account.notes || '';
-            document.getElementById('accountModal').style.display = 'block';
-        }
+        alert('Tính năng cập nhật tùy chỉnh đang được phát triển. Hiện tại chỉ lưu cục bộ.');
+        localStorage.setItem('language', language);
+        localStorage.setItem('currency', currency);
+      }
 
-        async function deleteAccount(id) {
-            if (!confirm('Bạn có chắc chắn muốn xóa tài khoản ngân hàng này?')) return;
-
-            try {
-                const response = await fetch(`/api/bank-accounts/${id}`, {
-                    method: 'DELETE',
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-
-                const data = await response.json();
-                if (data.success) {
-                    alert('Xóa thành công!');
-                    loadBankAccounts();
-                }
-            } catch (error) {
-                console.error('Error deleting account:', error);
-                alert('Có lỗi xảy ra!');
-            }
-        }
-
-        async function setDefaultAccount(id) {
-            try {
-                const response = await fetch(`/api/bank-accounts/${id}/set-default`, {
-                    method: 'PUT',
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-
-                const data = await response.json();
-                if (data.success) {
-                    alert('Đã đặt làm tài khoản mặc định!');
-                    loadBankAccounts();
-                }
-            } catch (error) {
-                console.error('Error setting default:', error);
-                alert('Có lỗi xảy ra!');
-            }
-        }
-
-        document.getElementById('accountForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const accountId = document.getElementById('accountId').value;
-            const accountData = {
-                bank: document.getElementById('bank').value,
-                accountHolder: document.getElementById('accountHolder').value,
-                accountNumber: document.getElementById('accountNumber').value,
-                branch: document.getElementById('branch').value,
-                identifier: document.getElementById('identifier').value,
-                isDefault: document.getElementById('isDefault').checked,
-                isActive: document.getElementById('isActive').checked,
-                notes: document.getElementById('notes').value
-            };
-
-            try {
-                const url = accountId ? `/api/bank-accounts/${accountId}` : '/api/bank-accounts';
-                const method = accountId ? 'PUT' : 'POST';
-
-                const response = await fetch(url, {
-                    method,
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(accountData)
-                });
-
-                const data = await response.json();
-                if (data.success) {
-                    alert(accountId ? 'Cập nhật thành công!' : 'Thêm tài khoản thành công!');
-                    closeAccountModal();
-                    loadBankAccounts();
-                }
-            } catch (error) {
-                console.error('Error saving account:', error);
-                alert('Có lỗi xảy ra!');
-            }
-        });
-
-        async function savePreferences() {
-            const language = document.getElementById('language').value;
-            const currency = document.getElementById('currency').value;
-
-            alert('Tính năng cập nhật tùy chỉnh đang được phát triển. Hiện tại chỉ lưu cục bộ.');
-            localStorage.setItem('language', language);
-            localStorage.setItem('currency', currency);
-        }
-
-        // Initial load
-        loadUserInfo();
-        loadBankAccounts();
+      // Initial load
+      loadUserInfo();
+      loadBankAccounts();
     </script>
-</body>
+  </body>
+
 </html>

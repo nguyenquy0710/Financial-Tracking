@@ -1,152 +1,154 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
+
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thuê phòng - FinTrack</title>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/dashboard.css">
-</head>
-<body>
+  </head>
+
+  <body>
     <div class="app-container">
-        <!-- Sidebar Navigation -->
-        <aside class="sidebar">
-            <div class="logo">
-                <h2>💰 FinTrack</h2>
+      <!-- Sidebar Navigation -->
+      <aside class="sidebar">
+        <div class="logo">
+          <h2>💰 FinTrack</h2>
+        </div>
+        <nav class="nav-menu">
+          <a href="/dashboard.html" class="nav-item">
+            <span class="icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+          <a href="/rentals.html" class="nav-item active">
+            <span class="icon">🏠</span>
+            <span>Thuê phòng</span>
+          </a>
+          <a href="/salaries.html" class="nav-item">
+            <span class="icon">💵</span>
+            <span>Lương</span>
+          </a>
+          <a href="/expenses.html" class="nav-item">
+            <span class="icon">💳</span>
+            <span>Chi tiêu</span>
+          </a>
+          <a href="/savings.html" class="nav-item">
+            <span class="icon">🏦</span>
+            <span>Tiết kiệm</span>
+          </a>
+          <a href="/excel.html" class="nav-item">
+            <span class="icon">📁</span>
+            <span>Excel Import/Export</span>
+          </a>
+          <a href="/settings.html" class="nav-item">
+            <span class="icon">⚙️</span>
+            <span>Cài đặt</span>
+          </a>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <header class="top-bar">
+          <h1>Quản lý thuê phòng</h1>
+          <div class="user-info">
+            <span id="user-name">User</span>
+            <button class="btn-logout" onclick="logout()">Đăng xuất</button>
+          </div>
+        </header>
+
+        <div class="content">
+          <!-- Summary Cards -->
+          <div class="summary-grid">
+            <div class="summary-card">
+              <div class="card-icon">🏠</div>
+              <div class="card-content">
+                <h3>Tổng tiền thuê</h3>
+                <p class="amount" id="total-rent">0 VND</p>
+                <span class="period">Tháng này</span>
+              </div>
             </div>
-            <nav class="nav-menu">
-                <a href="/dashboard.html" class="nav-item">
-                    <span class="icon">📊</span>
-                    <span>Dashboard</span>
-                </a>
-                <a href="/rentals.html" class="nav-item active">
-                    <span class="icon">🏠</span>
-                    <span>Thuê phòng</span>
-                </a>
-                <a href="/salaries.html" class="nav-item">
-                    <span class="icon">💵</span>
-                    <span>Lương</span>
-                </a>
-                <a href="/expenses.html" class="nav-item">
-                    <span class="icon">💳</span>
-                    <span>Chi tiêu</span>
-                </a>
-                <a href="/savings.html" class="nav-item">
-                    <span class="icon">🏦</span>
-                    <span>Tiết kiệm</span>
-                </a>
-                <a href="/excel.html" class="nav-item">
-                    <span class="icon">📁</span>
-                    <span>Excel Import/Export</span>
-                </a>
-                <a href="/settings.html" class="nav-item">
-                    <span class="icon">⚙️</span>
-                    <span>Cài đặt</span>
-                </a>
-            </nav>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <header class="top-bar">
-                <h1>Quản lý thuê phòng</h1>
-                <div class="user-info">
-                    <span id="user-name">User</span>
-                    <button class="btn-logout" onclick="logout()">Đăng xuất</button>
-                </div>
-            </header>
-
-            <div class="content">
-                <!-- Summary Cards -->
-                <div class="summary-grid">
-                    <div class="summary-card">
-                        <div class="card-icon">🏠</div>
-                        <div class="card-content">
-                            <h3>Tổng tiền thuê</h3>
-                            <p class="amount" id="total-rent">0 VND</p>
-                            <span class="period">Tháng này</span>
-                        </div>
-                    </div>
-                    <div class="summary-card">
-                        <div class="card-icon">⚡</div>
-                        <div class="card-content">
-                            <h3>Tiền điện</h3>
-                            <p class="amount" id="total-electricity">0 VND</p>
-                            <span class="period">Tháng này</span>
-                        </div>
-                    </div>
-                    <div class="summary-card">
-                        <div class="card-icon">💧</div>
-                        <div class="card-content">
-                            <h3>Tiền nước</h3>
-                            <p class="amount" id="total-water">0 VND</p>
-                            <span class="period">Tháng này</span>
-                        </div>
-                    </div>
-                    <div class="summary-card">
-                        <div class="card-icon">📡</div>
-                        <div class="card-content">
-                            <h3>Dịch vụ khác</h3>
-                            <p class="amount" id="total-services">0 VND</p>
-                            <span class="period">Tháng này</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Rentals List -->
-                <div class="card">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                        <h2>Danh sách thuê phòng</h2>
-                        <button class="btn btn-primary" onclick="showAddModal()">
-                            <span class="icon">➕</span> Thêm mới
-                        </button>
-                    </div>
-                    
-                    <div id="rentals-list" class="table-container">
-                        <p class="loading">Đang tải dữ liệu...</p>
-                    </div>
-                </div>
+            <div class="summary-card">
+              <div class="card-icon">⚡</div>
+              <div class="card-content">
+                <h3>Tiền điện</h3>
+                <p class="amount" id="total-electricity">0 VND</p>
+                <span class="period">Tháng này</span>
+              </div>
             </div>
-        </main>
+            <div class="summary-card">
+              <div class="card-icon">💧</div>
+              <div class="card-content">
+                <h3>Tiền nước</h3>
+                <p class="amount" id="total-water">0 VND</p>
+                <span class="period">Tháng này</span>
+              </div>
+            </div>
+            <div class="summary-card">
+              <div class="card-icon">📡</div>
+              <div class="card-content">
+                <h3>Dịch vụ khác</h3>
+                <p class="amount" id="total-services">0 VND</p>
+                <span class="period">Tháng này</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rentals List -->
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+              <h2>Danh sách thuê phòng</h2>
+              <button class="btn btn-primary" onclick="showAddModal()">
+                <span class="icon">➕</span> Thêm mới
+              </button>
+            </div>
+
+            <div id="rentals-list" class="table-container">
+              <p class="loading">Đang tải dữ liệu...</p>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
 
     <script src="/js/auth.js"></script>
     <script>
-        // Load rentals data
-        document.addEventListener('DOMContentLoaded', async () => {
-            await loadRentals();
-        });
+      // Load rentals data
+      document.addEventListener('DOMContentLoaded', async () => {
+        await loadRentals();
+      });
 
-        const loadRentals = async () => {
-            const container = document.getElementById('rentals-list');
-            container.innerHTML = '<p class="loading">Đang tải...</p>';
+      const loadRentals = async () => {
+        const container = document.getElementById('rentals-list');
+        container.innerHTML = '<p class="loading">Đang tải...</p>';
 
-            try {
-                const response = await apiCall('/rentals');
-                
-                if (response.success && response.data) {
-                    if (response.data.length === 0) {
-                        container.innerHTML = '<p class="loading">Chưa có dữ liệu. Vui lòng import từ Excel hoặc thêm mới.</p>';
-                        return;
-                    }
+        try {
+          const response = await apiCall('/rentals');
 
-                    // Calculate totals
-                    let totalRent = 0, totalElectricity = 0, totalWater = 0, totalServices = 0;
-                    
-                    response.data.forEach(rental => {
-                        totalRent += rental.rentAmount || 0;
-                        totalElectricity += rental.electricity?.amount || 0;
-                        totalWater += rental.water?.amount || 0;
-                        totalServices += (rental.internet || 0) + (rental.parking || 0) + (rental.garbage || 0);
-                    });
+          if (response.success && response.data) {
+            if (response.data.length === 0) {
+              container.innerHTML = '<p class="loading">Chưa có dữ liệu. Vui lòng import từ Excel hoặc thêm mới.</p>';
+              return;
+            }
 
-                    document.getElementById('total-rent').textContent = formatCurrency(totalRent);
-                    document.getElementById('total-electricity').textContent = formatCurrency(totalElectricity);
-                    document.getElementById('total-water').textContent = formatCurrency(totalWater);
-                    document.getElementById('total-services').textContent = formatCurrency(totalServices);
+            // Calculate totals
+            let totalRent = 0, totalElectricity = 0, totalWater = 0, totalServices = 0;
 
-                    // Display rentals
-                    container.innerHTML = `
+            response.data.forEach(rental => {
+              totalRent += rental.rentAmount || 0;
+              totalElectricity += rental.electricity?.amount || 0;
+              totalWater += rental.water?.amount || 0;
+              totalServices += (rental.internet || 0) + (rental.parking || 0) + (rental.garbage || 0);
+            });
+
+            document.getElementById('total-rent').textContent = formatCurrency(totalRent);
+            document.getElementById('total-electricity').textContent = formatCurrency(totalElectricity);
+            document.getElementById('total-water').textContent = formatCurrency(totalWater);
+            document.getElementById('total-services').textContent = formatCurrency(totalServices);
+
+            // Display rentals
+            container.innerHTML = `
                         <table class="data-table">
                             <thead>
                                 <tr>
@@ -164,7 +166,7 @@
                                 ${response.data.map(rental => `
                                     <tr>
                                         <td><strong>${rental.propertyName}</strong></td>
-                                        <td>${new Date(rental.month).toLocaleDateString('vi-VN', {month: '2-digit', year: 'numeric'})}</td>
+                                        <td>${new Date(rental.month).toLocaleDateString('vi-VN', { month: '2-digit', year: 'numeric' })}</td>
                                         <td>${formatCurrency(rental.rentAmount)}</td>
                                         <td>${formatCurrency(rental.electricity?.amount || 0)}</td>
                                         <td>${formatCurrency(rental.water?.amount || 0)}</td>
@@ -180,70 +182,71 @@
                             </tbody>
                         </table>
                     `;
-                } else {
-                    container.innerHTML = '<p class="loading">Không thể tải dữ liệu</p>';
-                }
-            } catch (error) {
-                console.error('Failed to load rentals:', error);
-                container.innerHTML = '<p class="loading">Lỗi: Không thể tải dữ liệu. Hãy import dữ liệu từ Excel.</p>';
-            }
-        };
+          } else {
+            container.innerHTML = '<p class="loading">Không thể tải dữ liệu</p>';
+          }
+        } catch (error) {
+          console.error('Failed to load rentals:', error);
+          container.innerHTML = '<p class="loading">Lỗi: Không thể tải dữ liệu. Hãy import dữ liệu từ Excel.</p>';
+        }
+      };
 
-        const formatCurrency = (amount) => {
-            return new Intl.NumberFormat('vi-VN', {
-                style: 'currency',
-                currency: 'VND'
-            }).format(amount);
-        };
+      const formatCurrency = (amount) => {
+        return new Intl.NumberFormat('vi-VN', {
+          style: 'currency',
+          currency: 'VND'
+        }).format(amount);
+      };
 
-        const showAddModal = () => {
-            alert('Chức năng thêm mới sẽ được cập nhật sau. Hiện tại vui lòng sử dụng Excel Import.');
-        };
+      const showAddModal = () => {
+        alert('Chức năng thêm mới sẽ được cập nhật sau. Hiện tại vui lòng sử dụng Excel Import.');
+      };
     </script>
-    
+
     <style>
-        .table-container {
-            overflow-x: auto;
-        }
+      .table-container {
+        overflow-x: auto;
+      }
 
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
 
-        .data-table th,
-        .data-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #e0e0e0;
-        }
+      .data-table th,
+      .data-table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #e0e0e0;
+      }
 
-        .data-table th {
-            background: #f5f7fa;
-            font-weight: 600;
-            color: #2c3e50;
-        }
+      .data-table th {
+        background: #f5f7fa;
+        font-weight: 600;
+        color: #2c3e50;
+      }
 
-        .data-table tbody tr:hover {
-            background: #f8f9fa;
-        }
+      .data-table tbody tr:hover {
+        background: #f8f9fa;
+      }
 
-        .badge {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 500;
-        }
+      .badge {
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 500;
+      }
 
-        .badge-success {
-            background: #d4edda;
-            color: #155724;
-        }
+      .badge-success {
+        background: #d4edda;
+        color: #155724;
+      }
 
-        .badge-warning {
-            background: #fff3cd;
-            color: #856404;
-        }
+      .badge-warning {
+        background: #fff3cd;
+        color: #856404;
+      }
     </style>
-</body>
+  </body>
+
 </html>

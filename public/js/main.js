@@ -3,11 +3,11 @@ async function checkAPIHealth() {
   try {
     const response = await fetch('/health');
     const data = await response.json();
-    
+
     if (data.success) {
       document.getElementById('api-status').textContent = '🟢 Online';
       document.getElementById('api-status').style.color = '#48bb78';
-      
+
       // Update uptime
       const uptimeSeconds = Math.floor(data.uptime);
       const hours = Math.floor(uptimeSeconds / 3600);
@@ -38,7 +38,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // Check API health on page load
 document.addEventListener('DOMContentLoaded', () => {
   checkAPIHealth();
-  
+
   // Check API health every 30 seconds
   setInterval(checkAPIHealth, 30000);
 });
