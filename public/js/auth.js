@@ -74,3 +74,9 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.href = '/login';
   }
 });
+
+// Attach logout function to logout button if exists
+const logoutButtons = document.getElementsByClassName("btn-logout");
+Array.from(logoutButtons).forEach(button => {
+  button.addEventListener("click", logout);
+});

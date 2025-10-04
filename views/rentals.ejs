@@ -8,7 +8,7 @@
           <h1>Quản lý thuê phòng</h1>
           <div class="user-info">
             <span id="user-name">User</span>
-            <button class="btn-logout" onclick="logout()">Đăng xuất</button>
+            <button class="btn-logout">Đăng xuất</button>
           </div>
         </header>
 
@@ -177,7 +177,6 @@
     </div>
   </div>
 
-  <script src="/js/auth.js"></script>
   <script>
     let rentals = [];
     let token = localStorage.getItem('authToken');
@@ -650,4 +649,4 @@
       background: #5a6268;
     }
   </style>
-  <%- include('partials/footer', { additionalJS: ['/js/auth.js'] }) %>
+  <%- include('partials/footer', { additionalJS: [ ] }) %>

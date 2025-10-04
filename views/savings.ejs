@@ -1,51 +1,51 @@
 <%- include('partials/header', { title: 'Tiết kiệm' , additionalCSS: ['/css/dashboard.css'] }) %>
   <div class="app-container">
     <%- include('partials/sidebar', { currentPage: 'savings' }) %>
-    <main class="main-content">
-      <header class="top-bar">
-        <h1>Quản lý tiết kiệm</h1>
-        <div class="user-info">
-          <span id="user-name">User</span>
-          <button class="btn-logout" onclick="logout()">Đăng xuất</button>
-        </div>
-      </header>
-      <div class="content">
-        <div class="stats-grid">
-          <div class="stat-card">
-            <h3>Gửi Mẹ</h3>
-            <p class="stat-value" id="totalMother">0 VNĐ</p>
+      <main class="main-content">
+        <header class="top-bar">
+          <h1>Quản lý tiết kiệm</h1>
+          <div class="user-info">
+            <span id="user-name">User</span>
+            <button class="btn-logout">Đăng xuất</button>
           </div>
-          <div class="stat-card">
-            <h3>Gửi Quỹ</h3>
-            <p class="stat-value" id="totalFund">0 VNĐ</p>
+        </header>
+        <div class="content">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <h3>Gửi Mẹ</h3>
+              <p class="stat-value" id="totalMother">0 VNĐ</p>
+            </div>
+            <div class="stat-card">
+              <h3>Gửi Quỹ</h3>
+              <p class="stat-value" id="totalFund">0 VNĐ</p>
+            </div>
+            <div class="stat-card">
+              <h3>Tổng Cộng</h3>
+              <p class="stat-value" id="totalSavings">0 VNĐ</p>
+            </div>
           </div>
-          <div class="stat-card">
-            <h3>Tổng Cộng</h3>
-            <p class="stat-value" id="totalSavings">0 VNĐ</p>
-          </div>
-        </div>
 
-        <div class="card">
-          <div class="card-header">
-            <h2>Danh Sách Tiết Kiệm</h2>
-            <button class="btn btn-primary" onclick="showAddSavingForm()">+ Thêm Tiết Kiệm</button>
-          </div>
-          <div class="card-body">
-            <div class="filters">
-              <select id="typeFilter" onchange="filterSavings()">
-                <option value="">Tất cả loại</option>
-                <option value="mother">Gửi Mẹ</option>
-                <option value="fund">Gửi Quỹ</option>
-              </select>
-              <input type="month" id="monthFilter" onchange="filterSavings()">
+          <div class="card">
+            <div class="card-header">
+              <h2>Danh Sách Tiết Kiệm</h2>
+              <button class="btn btn-primary" onclick="showAddSavingForm()">+ Thêm Tiết Kiệm</button>
             </div>
-            <div id="savingsList" class="table-responsive">
-              <p class="loading">Đang tải dữ liệu...</p>
+            <div class="card-body">
+              <div class="filters">
+                <select id="typeFilter" onchange="filterSavings()">
+                  <option value="">Tất cả loại</option>
+                  <option value="mother">Gửi Mẹ</option>
+                  <option value="fund">Gửi Quỹ</option>
+                </select>
+                <input type="month" id="monthFilter" onchange="filterSavings()">
+              </div>
+              <div id="savingsList" class="table-responsive">
+                <p class="loading">Đang tải dữ liệu...</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
   </div>
 
   <!-- Add/Edit Saving Modal -->
@@ -102,7 +102,6 @@
     </div>
   </div>
 
-  <script src="/js/auth.js"></script>
   <script>
     let savings = [];
     let token = localStorage.getItem('token');
@@ -303,4 +302,4 @@
     loadSavings();
     loadStats();
   </script>
-  <%- include('partials/footer', { additionalJS: ['/js/auth.js', '/js/savings.js' ] }) %>
+  <%- include('partials/footer', { additionalJS: [ '/js/savings.js' ] }) %>

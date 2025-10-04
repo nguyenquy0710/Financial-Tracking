@@ -1,56 +1,56 @@
 <%- include('partials/header', { title: 'Cài đặt' , additionalCSS: ['/css/dashboard.css'] }) %>
   <div class="app-container">
     <%- include('partials/sidebar', { currentPage: 'settings' }) %>
-    <main class="main-content">
-      <header class="top-bar">
-        <h1>Cài đặt</h1>
-        <div class="user-info">
-          <span id="user-name">User</span>
-          <button class="btn-logout" onclick="logout()">Đăng xuất</button>
-        </div>
-      </header>
-      <div class="content">
-        <div class="card">
-          <h2>👤 Thông tin cá nhân</h2>
-          <div id="userInfo">
-            <p class="loading">Đang tải dữ liệu...</p>
+      <main class="main-content">
+        <header class="top-bar">
+          <h1>Cài đặt</h1>
+          <div class="user-info">
+            <span id="user-name">User</span>
+            <button class="btn-logout">Đăng xuất</button>
           </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <h2>🏦 Tài khoản ngân hàng</h2>
-            <button class="btn btn-primary" onclick="showAddAccountForm()">+ Thêm Tài Khoản</button>
-          </div>
-          <div class="card-body">
-            <div id="bankAccountsList">
+        </header>
+        <div class="content">
+          <div class="card">
+            <h2>👤 Thông tin cá nhân</h2>
+            <div id="userInfo">
               <p class="loading">Đang tải dữ liệu...</p>
             </div>
           </div>
-        </div>
 
-        <div class="card">
-          <h2>🎨 Tùy chỉnh</h2>
-          <div class="settings-form">
-            <div class="form-group">
-              <label for="language">Ngôn ngữ</label>
-              <select id="language">
-                <option value="vi">Tiếng Việt</option>
-                <option value="en">English</option>
-              </select>
+          <div class="card">
+            <div class="card-header">
+              <h2>🏦 Tài khoản ngân hàng</h2>
+              <button class="btn btn-primary" onclick="showAddAccountForm()">+ Thêm Tài Khoản</button>
             </div>
-            <div class="form-group">
-              <label for="currency">Đơn vị tiền tệ</label>
-              <select id="currency">
-                <option value="VND">VNĐ</option>
-                <option value="USD">USD</option>
-              </select>
+            <div class="card-body">
+              <div id="bankAccountsList">
+                <p class="loading">Đang tải dữ liệu...</p>
+              </div>
             </div>
-            <button class="btn btn-primary" onclick="savePreferences()">Lưu Tùy Chỉnh</button>
+          </div>
+
+          <div class="card">
+            <h2>🎨 Tùy chỉnh</h2>
+            <div class="settings-form">
+              <div class="form-group">
+                <label for="language">Ngôn ngữ</label>
+                <select id="language">
+                  <option value="vi">Tiếng Việt</option>
+                  <option value="en">English</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="currency">Đơn vị tiền tệ</label>
+                <select id="currency">
+                  <option value="VND">VNĐ</option>
+                  <option value="USD">USD</option>
+                </select>
+              </div>
+              <button class="btn btn-primary" onclick="savePreferences()">Lưu Tùy Chỉnh</button>
+            </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
   </div>
 
   <!-- Add/Edit Bank Account Modal -->
@@ -113,7 +113,6 @@
     </div>
   </div>
 
-  <script src="/js/auth.js"></script>
   <script>
     let accounts = [];
     let token = localStorage.getItem('token');
@@ -332,4 +331,4 @@
     loadUserInfo();
     loadBankAccounts();
   </script>
-  <%- include('partials/footer', { additionalJS: ['/js/auth.js', '/js/settings.js' ] }) %>
+  <%- include('partials/footer', { additionalJS: [ '/js/settings.js' ] }) %>

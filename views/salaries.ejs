@@ -2,66 +2,65 @@
   <div class="app-container">
     <%- include('partials/sidebar', { currentPage: 'salaries' }) %>
 
-    <!-- Main Content -->
-    <main class="main-content">
-      <header class="top-bar">
-        <h1>Quản lý lương</h1>
-        <div class="user-info">
-          <span id="user-name">User</span>
-          <button class="btn-logout" onclick="logout()">Đăng xuất</button>
-        </div>
-      </header>
+      <!-- Main Content -->
+      <main class="main-content">
+        <header class="top-bar">
+          <h1>Quản lý lương</h1>
+          <div class="user-info">
+            <span id="user-name">User</span>
+            <button class="btn-logout">Đăng xuất</button>
+          </div>
+        </header>
 
-      <div class="content">
-        <!-- Summary Cards -->
-        <div class="summary-grid">
-          <div class="summary-card">
-            <div class="card-icon">💰</div>
-            <div class="card-content">
-              <h3>Tổng thu nhập</h3>
-              <p class="amount" id="total-income">0 VND</p>
-              <span class="period">Tất cả</span>
+        <div class="content">
+          <!-- Summary Cards -->
+          <div class="summary-grid">
+            <div class="summary-card">
+              <div class="card-icon">💰</div>
+              <div class="card-content">
+                <h3>Tổng thu nhập</h3>
+                <p class="amount" id="total-income">0 VND</p>
+                <span class="period">Tất cả</span>
+              </div>
+            </div>
+            <div class="summary-card">
+              <div class="card-icon">🏢</div>
+              <div class="card-content">
+                <h3>Lương công ty</h3>
+                <p class="amount" id="company-salary">0 VND</p>
+                <span class="period">Trung bình</span>
+              </div>
+            </div>
+            <div class="summary-card">
+              <div class="card-icon">💼</div>
+              <div class="card-content">
+                <h3>Freelance</h3>
+                <p class="amount" id="freelance-income">0 VND</p>
+                <span class="period">Trung bình</span>
+              </div>
+            </div>
+            <div class="summary-card">
+              <div class="card-icon">📈</div>
+              <div class="card-content">
+                <h3>Tăng trưởng</h3>
+                <p class="amount" id="growth-rate">0%</p>
+                <span class="period">So với tháng trước</span>
+              </div>
             </div>
           </div>
-          <div class="summary-card">
-            <div class="card-icon">🏢</div>
-            <div class="card-content">
-              <h3>Lương công ty</h3>
-              <p class="amount" id="company-salary">0 VND</p>
-              <span class="period">Trung bình</span>
-            </div>
-          </div>
-          <div class="summary-card">
-            <div class="card-icon">💼</div>
-            <div class="card-content">
-              <h3>Freelance</h3>
-              <p class="amount" id="freelance-income">0 VND</p>
-              <span class="period">Trung bình</span>
-            </div>
-          </div>
-          <div class="summary-card">
-            <div class="card-icon">📈</div>
-            <div class="card-content">
-              <h3>Tăng trưởng</h3>
-              <p class="amount" id="growth-rate">0%</p>
-              <span class="period">So với tháng trước</span>
+
+          <!-- Salaries List -->
+          <div class="card">
+            <h2>Lịch sử lương</h2>
+
+            <div id="salaries-list" class="table-container">
+              <p class="loading">Đang tải dữ liệu...</p>
             </div>
           </div>
         </div>
-
-        <!-- Salaries List -->
-        <div class="card">
-          <h2>Lịch sử lương</h2>
-
-          <div id="salaries-list" class="table-container">
-            <p class="loading">Đang tải dữ liệu...</p>
-          </div>
-        </div>
-      </div>
-    </main>
+      </main>
   </div>
 
-  <script src="/js/auth.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
       await loadSalaries();
@@ -170,4 +169,4 @@
       background: #f8f9fa;
     }
   </style>
-  <%- include('partials/footer', { additionalJS: ['/js/auth.js', '/js/salaries.js' ] }) %>
+  <%- include('partials/footer', { additionalJS: [ '/js/salaries.js' ] }) %>
