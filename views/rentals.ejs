@@ -2,68 +2,68 @@
   <div class="app-container">
     <%- include('partials/sidebar', { currentPage: 'rentals' }) %>
 
-    <!-- Main Content -->
-    <main class="main-content">
-      <header class="top-bar">
-        <h1>Quản lý thuê phòng</h1>
-        <div class="user-info">
-          <span id="user-name">User</span>
-          <button class="btn-logout" onclick="logout()">Đăng xuất</button>
-        </div>
-      </header>
+      <!-- Main Content -->
+      <main class="main-content">
+        <header class="top-bar">
+          <h1>Quản lý thuê phòng</h1>
+          <div class="user-info">
+            <span id="user-name">User</span>
+            <button class="btn-logout" onclick="logout()">Đăng xuất</button>
+          </div>
+        </header>
 
-      <div class="content">
-        <!-- Summary Cards -->
-        <div class="summary-grid">
-          <div class="summary-card">
-            <div class="card-icon">🏠</div>
-            <div class="card-content">
-              <h3>Tổng tiền thuê</h3>
-              <p class="amount" id="total-rent">0 VND</p>
-              <span class="period">Tháng này</span>
+        <div class="content">
+          <!-- Summary Cards -->
+          <div class="summary-grid">
+            <div class="summary-card">
+              <div class="card-icon">🏠</div>
+              <div class="card-content">
+                <h3>Tổng tiền thuê</h3>
+                <p class="amount" id="total-rent">0 VND</p>
+                <span class="period">Tháng này</span>
+              </div>
             </div>
-          </div>
-          <div class="summary-card">
-            <div class="card-icon">⚡</div>
-            <div class="card-content">
-              <h3>Tiền điện</h3>
-              <p class="amount" id="total-electricity">0 VND</p>
-              <span class="period">Tháng này</span>
+            <div class="summary-card">
+              <div class="card-icon">⚡</div>
+              <div class="card-content">
+                <h3>Tiền điện</h3>
+                <p class="amount" id="total-electricity">0 VND</p>
+                <span class="period">Tháng này</span>
+              </div>
             </div>
-          </div>
-          <div class="summary-card">
-            <div class="card-icon">💧</div>
-            <div class="card-content">
-              <h3>Tiền nước</h3>
-              <p class="amount" id="total-water">0 VND</p>
-              <span class="period">Tháng này</span>
+            <div class="summary-card">
+              <div class="card-icon">💧</div>
+              <div class="card-content">
+                <h3>Tiền nước</h3>
+                <p class="amount" id="total-water">0 VND</p>
+                <span class="period">Tháng này</span>
+              </div>
             </div>
-          </div>
-          <div class="summary-card">
-            <div class="card-icon">📡</div>
-            <div class="card-content">
-              <h3>Dịch vụ khác</h3>
-              <p class="amount" id="total-services">0 VND</p>
-              <span class="period">Tháng này</span>
+            <div class="summary-card">
+              <div class="card-icon">📡</div>
+              <div class="card-content">
+                <h3>Dịch vụ khác</h3>
+                <p class="amount" id="total-services">0 VND</p>
+                <span class="period">Tháng này</span>
+              </div>
             </div>
-          </div>
-        </div>
-
-        <!-- Rentals List -->
-        <div class="card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h2>Danh sách thuê phòng</h2>
-            <button class="btn btn-primary" onclick="showAddModal()">
-              <span class="icon">➕</span> Thêm mới
-            </button>
           </div>
 
-          <div id="rentals-list" class="table-container">
-            <p class="loading">Đang tải dữ liệu...</p>
+          <!-- Rentals List -->
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+              <h2>Danh sách thuê phòng</h2>
+              <button class="btn btn-primary" onclick="showAddModal()">
+                <span class="icon">➕</span> Thêm mới
+              </button>
+            </div>
+
+            <div id="rentals-list" class="table-container">
+              <p class="loading">Đang tải dữ liệu...</p>
+            </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
   </div>
 
   <!-- Add/Edit Rental Modal -->
@@ -282,12 +282,12 @@
       document.getElementById('rentalForm').reset();
       document.getElementById('rentalId').value = '';
       document.getElementById('paymentDateGroup').style.display = 'none';
-      
+
       // Set default month to current month
       const now = new Date();
       const monthStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
       document.getElementById('month').value = monthStr;
-      
+
       document.getElementById('rentalModal').style.display = 'block';
     };
 
@@ -303,40 +303,40 @@
       document.getElementById('rentalId').value = rental._id;
       document.getElementById('propertyName').value = rental.propertyName;
       document.getElementById('address').value = rental.address || '';
-      
+
       // Format month for input type="month"
       const monthDate = new Date(rental.month);
       const monthStr = `${monthDate.getFullYear()}-${String(monthDate.getMonth() + 1).padStart(2, '0')}`;
       document.getElementById('month').value = monthStr;
-      
+
       document.getElementById('rentAmount').value = rental.rentAmount || 0;
-      
+
       // Electricity
       document.getElementById('electricityStart').value = rental.electricity?.startReading || 0;
       document.getElementById('electricityEnd').value = rental.electricity?.endReading || 0;
       document.getElementById('electricityRate').value = rental.electricity?.rate || 0;
-      
+
       // Water
       document.getElementById('waterStart').value = rental.water?.startReading || 0;
       document.getElementById('waterEnd').value = rental.water?.endReading || 0;
       document.getElementById('waterRate').value = rental.water?.rate || 0;
-      
+
       // Services
       document.getElementById('internet').value = rental.internet || 0;
       document.getElementById('parking').value = rental.parking || 0;
       document.getElementById('garbage').value = rental.garbage || 0;
       document.getElementById('bonus').value = rental.bonus || 0;
-      
+
       document.getElementById('notes').value = rental.notes || '';
       document.getElementById('isPaid').checked = rental.isPaid || false;
-      
+
       if (rental.paymentDate) {
         document.getElementById('paymentDate').value = rental.paymentDate.split('T')[0];
         document.getElementById('paymentDateGroup').style.display = 'block';
       } else {
         document.getElementById('paymentDateGroup').style.display = 'none';
       }
-      
+
       document.getElementById('rentalModal').style.display = 'block';
     };
 
@@ -346,7 +346,7 @@
       try {
         const response = await fetch(`/api/rentals/${id}`, {
           method: 'DELETE',
-          headers: { 
+          headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
           }
@@ -369,7 +369,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       const isPaidCheckbox = document.getElementById('isPaid');
       const paymentDateGroup = document.getElementById('paymentDateGroup');
-      
+
       if (isPaidCheckbox) {
         isPaidCheckbox.addEventListener('change', (e) => {
           if (e.target.checked) {
@@ -388,30 +388,30 @@
       e.preventDefault();
 
       const rentalId = document.getElementById('rentalId').value;
-      
+
       // Calculate electricity
       const elecStart = parseFloat(document.getElementById('electricityStart').value) || 0;
       const elecEnd = parseFloat(document.getElementById('electricityEnd').value) || 0;
       const elecRate = parseFloat(document.getElementById('electricityRate').value) || 0;
       const elecConsumption = Math.max(0, elecEnd - elecStart);
       const elecAmount = elecConsumption * elecRate;
-      
+
       // Calculate water
       const waterStart = parseFloat(document.getElementById('waterStart').value) || 0;
       const waterEnd = parseFloat(document.getElementById('waterEnd').value) || 0;
       const waterRate = parseFloat(document.getElementById('waterRate').value) || 0;
       const waterConsumption = Math.max(0, waterEnd - waterStart);
       const waterAmount = waterConsumption * waterRate;
-      
+
       const rentAmount = parseFloat(document.getElementById('rentAmount').value) || 0;
       const internet = parseFloat(document.getElementById('internet').value) || 0;
       const parking = parseFloat(document.getElementById('parking').value) || 0;
       const garbage = parseFloat(document.getElementById('garbage').value) || 0;
       const bonus = parseFloat(document.getElementById('bonus').value) || 0;
-      
+
       // Calculate total
       const total = rentAmount + elecAmount + waterAmount + internet + parking + garbage + bonus;
-      
+
       const rentalData = {
         propertyName: document.getElementById('propertyName').value,
         address: document.getElementById('address').value,

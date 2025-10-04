@@ -56,7 +56,8 @@ app.use(helmet({
       ],
       fontSrc: [
         '\'self\'',
-        'https://cdnjs.cloudflare.com'
+        'https://cdnjs.cloudflare.com',
+        'https://cdn.jsdelivr.net'
       ],
       imgSrc: ['\'self\'', 'data:', 'https:'],
       connectSrc: ['\'self\'']
