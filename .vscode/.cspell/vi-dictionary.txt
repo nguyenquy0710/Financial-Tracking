@@ -29,7 +29,7 @@ dừng
 dụng
 đúng
 được
-Đường
+đường
 giao
 giúp
 hàng
@@ -43,14 +43,14 @@ hoạt
 khách
 khóa
 khoản
-Khôi
+khôi
 không
-Kiểm
+kiểm
 kiểu
 lệnh
 liệu
 linh
-Loại
+loại
 lòng
 minh
 muốn
@@ -66,7 +66,8 @@ phân
 phần
 phản
 phục
-Phương
+phương
+Quản
 rằng
 sách
 tảng
@@ -90,8 +91,8 @@ thường
 tích
 tiếp
 tiết
-Tiêu
-Tính
+tiêu
+tính
 toán
 trạng
 trên

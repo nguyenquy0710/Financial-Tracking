@@ -20,7 +20,7 @@ orcid
 pids
 pycache
 reranker
-Sapo
+sapo
 vite
 vitepress
 vuepress
