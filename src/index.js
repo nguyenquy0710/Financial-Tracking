@@ -40,26 +40,26 @@ connectDB();
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
-      defaultSrc: ["'self'"],
+      defaultSrc: ['\'self\''],
       scriptSrc: [
-        "'self'",
-        "'unsafe-inline'",
-        "https://code.jquery.com",
-        "https://cdn.jsdelivr.net",
-        "https://cdnjs.cloudflare.com"
+        '\'self\'',
+        '\'unsafe-inline\'',
+        'https://code.jquery.com',
+        'https://cdn.jsdelivr.net',
+        'https://cdnjs.cloudflare.com'
       ],
       styleSrc: [
-        "'self'",
-        "'unsafe-inline'",
-        "https://cdn.jsdelivr.net",
-        "https://cdnjs.cloudflare.com"
+        '\'self\'',
+        '\'unsafe-inline\'',
+        'https://cdn.jsdelivr.net',
+        'https://cdnjs.cloudflare.com'
       ],
       fontSrc: [
-        "'self'",
-        "https://cdnjs.cloudflare.com"
+        '\'self\'',
+        'https://cdnjs.cloudflare.com'
       ],
-      imgSrc: ["'self'", "data:", "https:"],
-      connectSrc: ["'self'"]
+      imgSrc: ['\'self\'', 'data:', 'https:'],
+      connectSrc: ['\'self\'']
     }
   }
 })); // Security headers
