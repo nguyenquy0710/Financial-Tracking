@@ -5,7 +5,7 @@
           <h2>💰 FinTrack</h2>
         </div>
         <nav class="nav-menu">
-          <a href="/dashboard.html" class="nav-item">
+          <a href="/dashboard" class="nav-item">
             <span class="icon">📊</span>
             <span>Dashboard</span>
           </a>
@@ -162,7 +162,7 @@
       let currentUser = null;
 
       if (!token) {
-        window.location.href = '/index.html';
+        window.location.href = '/';
       }
 
       async function loadUserInfo() {
