@@ -66,8 +66,126 @@
     </main>
   </div>
 
+  <!-- Add/Edit Rental Modal -->
+  <div id="rentalModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close" onclick="closeRentalModal()">&times;</span>
+      <h2 id="modalTitle">Thêm thuê phòng</h2>
+      <form id="rentalForm">
+        <input type="hidden" id="rentalId">
+
+        <div class="form-group">
+          <label for="propertyName">Tên phòng *</label>
+          <input type="text" id="propertyName" required>
+        </div>
+
+        <div class="form-group">
+          <label for="address">Địa chỉ</label>
+          <input type="text" id="address">
+        </div>
+
+        <div class="form-group">
+          <label for="month">Tháng *</label>
+          <input type="month" id="month" required>
+        </div>
+
+        <div class="form-group">
+          <label for="rentAmount">Tiền nhà *</label>
+          <input type="number" id="rentAmount" required min="0">
+        </div>
+
+        <div class="form-section">
+          <h3>Điện</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="electricityStart">Chỉ số đầu</label>
+              <input type="number" id="electricityStart" min="0" step="0.01">
+            </div>
+            <div class="form-group">
+              <label for="electricityEnd">Chỉ số cuối</label>
+              <input type="number" id="electricityEnd" min="0" step="0.01">
+            </div>
+            <div class="form-group">
+              <label for="electricityRate">Đơn giá</label>
+              <input type="number" id="electricityRate" min="0">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Nước</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="waterStart">Chỉ số đầu</label>
+              <input type="number" id="waterStart" min="0" step="0.01">
+            </div>
+            <div class="form-group">
+              <label for="waterEnd">Chỉ số cuối</label>
+              <input type="number" id="waterEnd" min="0" step="0.01">
+            </div>
+            <div class="form-group">
+              <label for="waterRate">Đơn giá</label>
+              <input type="number" id="waterRate" min="0">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="internet">Internet</label>
+            <input type="number" id="internet" min="0" value="0">
+          </div>
+          <div class="form-group">
+            <label for="parking">Gửi xe</label>
+            <input type="number" id="parking" min="0" value="0">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="garbage">Rác</label>
+            <input type="number" id="garbage" min="0" value="0">
+          </div>
+          <div class="form-group">
+            <label for="bonus">Phụ thu/Giảm trừ</label>
+            <input type="number" id="bonus" value="0">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="notes">Ghi chú</label>
+          <textarea id="notes" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="isPaid">
+            <input type="checkbox" id="isPaid">
+            Đã thanh toán
+          </label>
+        </div>
+
+        <div class="form-group" id="paymentDateGroup" style="display: none;">
+          <label for="paymentDate">Ngày thanh toán</label>
+          <input type="date" id="paymentDate">
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeRentalModal()">Hủy</button>
+          <button type="submit" class="btn btn-primary">Lưu</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script src="/js/auth.js"></script>
   <script>
+    let rentals = [];
+    let token = localStorage.getItem('token');
+
+    if (!token) {
+      window.location.href = '/';
+    }
+
     // Load rentals data
     document.addEventListener('DOMContentLoaded', async () => {
       await loadRentals();
@@ -81,7 +199,9 @@
         const response = await apiCall('/rentals');
 
         if (response.success && response.data) {
-          if (response.data.length === 0) {
+          rentals = response.data;
+
+          if (rentals.length === 0) {
             container.innerHTML = '<p class="loading">Chưa có dữ liệu. Vui lòng import từ Excel hoặc thêm mới.</p>';
             return;
           }
@@ -89,7 +209,7 @@
           // Calculate totals
           let totalRent = 0, totalElectricity = 0, totalWater = 0, totalServices = 0;
 
-          response.data.forEach(rental => {
+          rentals.forEach(rental => {
             totalRent += rental.rentAmount || 0;
             totalElectricity += rental.electricity?.amount || 0;
             totalWater += rental.water?.amount || 0;
@@ -114,10 +234,11 @@
                                     <th>Internet</th>
                                     <th>Tổng</th>
                                     <th>Trạng thái</th>
+                                    <th>Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                ${response.data.map(rental => `
+                                ${rentals.map(rental => `
                                     <tr>
                                         <td><strong>${rental.propertyName}</strong></td>
                                         <td>${new Date(rental.month).toLocaleDateString('vi-VN', { month: '2-digit', year: 'numeric' })}</td>
@@ -130,6 +251,10 @@
                                             <span class="badge ${rental.isPaid ? 'badge-success' : 'badge-warning'}">
                                                 ${rental.isPaid ? 'Đã thanh toán' : 'Chưa thanh toán'}
                                             </span>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm" onclick="editRental('${rental._id}')">✏️</button>
+                                            <button class="btn btn-sm btn-danger" onclick="deleteRental('${rental._id}')">🗑️</button>
                                         </td>
                                     </tr>
                                 `).join('')}
@@ -153,8 +278,195 @@
     };
 
     const showAddModal = () => {
-      alert('Chức năng thêm mới sẽ được cập nhật sau. Hiện tại vui lòng sử dụng Excel Import.');
+      document.getElementById('modalTitle').textContent = 'Thêm thuê phòng';
+      document.getElementById('rentalForm').reset();
+      document.getElementById('rentalId').value = '';
+      document.getElementById('paymentDateGroup').style.display = 'none';
+      
+      // Set default month to current month
+      const now = new Date();
+      const monthStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+      document.getElementById('month').value = monthStr;
+      
+      document.getElementById('rentalModal').style.display = 'block';
     };
+
+    const closeRentalModal = () => {
+      document.getElementById('rentalModal').style.display = 'none';
+    };
+
+    const editRental = (id) => {
+      const rental = rentals.find(r => r._id === id);
+      if (!rental) return;
+
+      document.getElementById('modalTitle').textContent = 'Chỉnh sửa thuê phòng';
+      document.getElementById('rentalId').value = rental._id;
+      document.getElementById('propertyName').value = rental.propertyName;
+      document.getElementById('address').value = rental.address || '';
+      
+      // Format month for input type="month"
+      const monthDate = new Date(rental.month);
+      const monthStr = `${monthDate.getFullYear()}-${String(monthDate.getMonth() + 1).padStart(2, '0')}`;
+      document.getElementById('month').value = monthStr;
+      
+      document.getElementById('rentAmount').value = rental.rentAmount || 0;
+      
+      // Electricity
+      document.getElementById('electricityStart').value = rental.electricity?.startReading || 0;
+      document.getElementById('electricityEnd').value = rental.electricity?.endReading || 0;
+      document.getElementById('electricityRate').value = rental.electricity?.rate || 0;
+      
+      // Water
+      document.getElementById('waterStart').value = rental.water?.startReading || 0;
+      document.getElementById('waterEnd').value = rental.water?.endReading || 0;
+      document.getElementById('waterRate').value = rental.water?.rate || 0;
+      
+      // Services
+      document.getElementById('internet').value = rental.internet || 0;
+      document.getElementById('parking').value = rental.parking || 0;
+      document.getElementById('garbage').value = rental.garbage || 0;
+      document.getElementById('bonus').value = rental.bonus || 0;
+      
+      document.getElementById('notes').value = rental.notes || '';
+      document.getElementById('isPaid').checked = rental.isPaid || false;
+      
+      if (rental.paymentDate) {
+        document.getElementById('paymentDate').value = rental.paymentDate.split('T')[0];
+        document.getElementById('paymentDateGroup').style.display = 'block';
+      } else {
+        document.getElementById('paymentDateGroup').style.display = 'none';
+      }
+      
+      document.getElementById('rentalModal').style.display = 'block';
+    };
+
+    const deleteRental = async (id) => {
+      if (!confirm('Bạn có chắc chắn muốn xóa bản ghi thuê phòng này?')) return;
+
+      try {
+        const response = await fetch(`/api/rentals/${id}`, {
+          method: 'DELETE',
+          headers: { 
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        const data = await response.json();
+        if (data.success) {
+          alert('Xóa bản ghi thành công!');
+          loadRentals();
+        } else {
+          alert('Lỗi: ' + (data.message || 'Không thể xóa'));
+        }
+      } catch (error) {
+        console.error('Error deleting rental:', error);
+        alert('Có lỗi xảy ra!');
+      }
+    };
+
+    // Toggle payment date field based on isPaid checkbox
+    document.addEventListener('DOMContentLoaded', () => {
+      const isPaidCheckbox = document.getElementById('isPaid');
+      const paymentDateGroup = document.getElementById('paymentDateGroup');
+      
+      if (isPaidCheckbox) {
+        isPaidCheckbox.addEventListener('change', (e) => {
+          if (e.target.checked) {
+            paymentDateGroup.style.display = 'block';
+            if (!document.getElementById('paymentDate').value) {
+              document.getElementById('paymentDate').value = new Date().toISOString().split('T')[0];
+            }
+          } else {
+            paymentDateGroup.style.display = 'none';
+          }
+        });
+      }
+    });
+
+    document.getElementById('rentalForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const rentalId = document.getElementById('rentalId').value;
+      
+      // Calculate electricity
+      const elecStart = parseFloat(document.getElementById('electricityStart').value) || 0;
+      const elecEnd = parseFloat(document.getElementById('electricityEnd').value) || 0;
+      const elecRate = parseFloat(document.getElementById('electricityRate').value) || 0;
+      const elecConsumption = Math.max(0, elecEnd - elecStart);
+      const elecAmount = elecConsumption * elecRate;
+      
+      // Calculate water
+      const waterStart = parseFloat(document.getElementById('waterStart').value) || 0;
+      const waterEnd = parseFloat(document.getElementById('waterEnd').value) || 0;
+      const waterRate = parseFloat(document.getElementById('waterRate').value) || 0;
+      const waterConsumption = Math.max(0, waterEnd - waterStart);
+      const waterAmount = waterConsumption * waterRate;
+      
+      const rentAmount = parseFloat(document.getElementById('rentAmount').value) || 0;
+      const internet = parseFloat(document.getElementById('internet').value) || 0;
+      const parking = parseFloat(document.getElementById('parking').value) || 0;
+      const garbage = parseFloat(document.getElementById('garbage').value) || 0;
+      const bonus = parseFloat(document.getElementById('bonus').value) || 0;
+      
+      // Calculate total
+      const total = rentAmount + elecAmount + waterAmount + internet + parking + garbage + bonus;
+      
+      const rentalData = {
+        propertyName: document.getElementById('propertyName').value,
+        address: document.getElementById('address').value,
+        month: new Date(document.getElementById('month').value + '-01'),
+        rentAmount: rentAmount,
+        electricity: {
+          startReading: elecStart,
+          endReading: elecEnd,
+          consumption: elecConsumption,
+          rate: elecRate,
+          amount: elecAmount
+        },
+        water: {
+          startReading: waterStart,
+          endReading: waterEnd,
+          consumption: waterConsumption,
+          rate: waterRate,
+          amount: waterAmount
+        },
+        internet: internet,
+        parking: parking,
+        garbage: garbage,
+        bonus: bonus,
+        total: total,
+        notes: document.getElementById('notes').value,
+        isPaid: document.getElementById('isPaid').checked,
+        paymentDate: document.getElementById('isPaid').checked ? document.getElementById('paymentDate').value : undefined
+      };
+
+      try {
+        const url = rentalId ? `/api/rentals/${rentalId}` : '/api/rentals';
+        const method = rentalId ? 'PUT' : 'POST';
+
+        const response = await fetch(url, {
+          method,
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(rentalData)
+        });
+
+        const data = await response.json();
+        if (data.success) {
+          alert(rentalId ? 'Cập nhật thành công!' : 'Thêm thuê phòng thành công!');
+          closeRentalModal();
+          loadRentals();
+        } else {
+          alert('Lỗi: ' + (data.message || 'Không thể lưu'));
+        }
+      } catch (error) {
+        console.error('Error saving rental:', error);
+        alert('Có lỗi xảy ra!');
+      }
+    });
   </script>
 
   <style>
@@ -199,6 +511,143 @@
     .badge-warning {
       background: #fff3cd;
       color: #856404;
+    }
+
+    /* Modal styles */
+    .modal {
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      overflow-y: auto;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 50px auto;
+      padding: 30px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 700px;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .close {
+      position: absolute;
+      right: 20px;
+      top: 15px;
+      font-size: 28px;
+      font-weight: bold;
+      color: #aaa;
+      cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #000;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      color: #2c3e50;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="number"],
+    .form-group input[type="month"],
+    .form-group input[type="date"],
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .form-group input[type="checkbox"] {
+      width: auto;
+      margin-right: 8px;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      font-family: inherit;
+    }
+
+    .form-section {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+    }
+
+    .form-section h3 {
+      margin: 0 0 15px 0;
+      font-size: 16px;
+      color: #2c3e50;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .btn-sm {
+      padding: 4px 8px;
+      font-size: 14px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      background: #f0f0f0;
+      margin-right: 5px;
+    }
+
+    .btn-sm:hover {
+      background: #e0e0e0;
+    }
+
+    .btn-danger {
+      background: #dc3545;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #c82333;
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn-secondary:hover {
+      background: #5a6268;
     }
   </style>
   <%- include('partials/footer', { additionalJS: ['/js/auth.js', '/js/rentals.js' ] }) %>
