@@ -1,196 +1,196 @@
-<%- include('partials/header', { title: 'Tiết kiệm', additionalCSS: ['/css/dashboard.css'] }) %>
-    <div class="app-container">
-      <aside class="sidebar">
-        <div class="logo">
-          <h2>💰 FinTrack</h2>
-        </div>
-        <nav class="nav-menu">
-          <a href="/dashboard" class="nav-item">
-            <span class="icon">📊</span>
-            <span>Dashboard</span>
-          </a>
-          <a href="/rentals.html" class="nav-item">
-            <span class="icon">🏠</span>
-            <span>Thuê phòng</span>
-          </a>
-          <a href="/salaries.html" class="nav-item">
-            <span class="icon">💵</span>
-            <span>Lương</span>
-          </a>
-          <a href="/expenses.html" class="nav-item">
-            <span class="icon">💳</span>
-            <span>Chi tiêu</span>
-          </a>
-          <a href="/savings.html" class="nav-item active">
-            <span class="icon">🏦</span>
-            <span>Tiết kiệm</span>
-          </a>
-          <a href="/deposits.html" class="nav-item">
-            <span class="icon">💰</span>
-            <span>Đầu tư</span>
-          </a>
-          <a href="/recurring-bills.html" class="nav-item">
-            <span class="icon">📋</span>
-            <span>Hóa đơn</span>
-          </a>
-          <a href="/excel.html" class="nav-item">
-            <span class="icon">📁</span>
-            <span>Excel Import/Export</span>
-          </a>
-          <a href="/settings.html" class="nav-item">
-            <span class="icon">⚙️</span>
-            <span>Cài đặt</span>
-          </a>
-        </nav>
-      </aside>
-      <main class="main-content">
-        <header class="top-bar">
-          <h1>Quản lý tiết kiệm</h1>
-          <div class="user-info">
-            <span id="user-name">User</span>
-            <button class="btn-logout" onclick="logout()">Đăng xuất</button>
-          </div>
-        </header>
-        <div class="content">
-          <div class="stats-grid">
-            <div class="stat-card">
-              <h3>Gửi Mẹ</h3>
-              <p class="stat-value" id="totalMother">0 VNĐ</p>
-            </div>
-            <div class="stat-card">
-              <h3>Gửi Quỹ</h3>
-              <p class="stat-value" id="totalFund">0 VNĐ</p>
-            </div>
-            <div class="stat-card">
-              <h3>Tổng Cộng</h3>
-              <p class="stat-value" id="totalSavings">0 VNĐ</p>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <h2>Danh Sách Tiết Kiệm</h2>
-              <button class="btn btn-primary" onclick="showAddSavingForm()">+ Thêm Tiết Kiệm</button>
-            </div>
-            <div class="card-body">
-              <div class="filters">
-                <select id="typeFilter" onchange="filterSavings()">
-                  <option value="">Tất cả loại</option>
-                  <option value="mother">Gửi Mẹ</option>
-                  <option value="fund">Gửi Quỹ</option>
-                </select>
-                <input type="month" id="monthFilter" onchange="filterSavings()">
-              </div>
-              <div id="savingsList" class="table-responsive">
-                <p class="loading">Đang tải dữ liệu...</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
-
-    <!-- Add/Edit Saving Modal -->
-    <div id="savingModal" class="modal" style="display: none;">
-      <div class="modal-content">
-        <span class="close" onclick="closeSavingModal()">&times;</span>
-        <h2 id="modalTitle">Thêm Tiết Kiệm</h2>
-        <form id="savingForm">
-          <input type="hidden" id="savingId">
-
-          <div class="form-group">
-            <label for="month">Tháng *</label>
-            <input type="month" id="month" required>
-          </div>
-
-          <div class="form-group">
-            <label for="type">Loại *</label>
-            <select id="type" required>
-              <option value="mother">Gửi Mẹ</option>
-              <option value="fund">Gửi Quỹ</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="depositDate">Ngày gửi *</label>
-            <input type="date" id="depositDate" required>
-          </div>
-
-          <div class="form-group">
-            <label for="amount">Số tiền *</label>
-            <input type="number" id="amount" required min="0">
-          </div>
-
-          <div class="form-group">
-            <label for="accountNumber">Số tài khoản</label>
-            <input type="text" id="accountNumber">
-          </div>
-
-          <div class="form-group">
-            <label for="recipient">Người nhận</label>
-            <input type="text" id="recipient">
-          </div>
-
-          <div class="form-group">
-            <label for="notes">Ghi chú</label>
-            <textarea id="notes" rows="3"></textarea>
-          </div>
-
-          <div class="form-actions">
-            <button type="button" class="btn btn-secondary" onclick="closeSavingModal()">Hủy</button>
-            <button type="submit" class="btn btn-primary">Lưu</button>
-          </div>
-        </form>
+<%- include('partials/header', { title: 'Tiết kiệm' , additionalCSS: ['/css/dashboard.css'] }) %>
+  <div class="app-container">
+    <aside class="sidebar">
+      <div class="logo">
+        <h2>💰 FinTrack</h2>
       </div>
+      <nav class="nav-menu">
+        <a href="/dashboard" class="nav-item">
+          <span class="icon">📊</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="/rentals.html" class="nav-item">
+          <span class="icon">🏠</span>
+          <span>Thuê phòng</span>
+        </a>
+        <a href="/salaries.html" class="nav-item">
+          <span class="icon">💵</span>
+          <span>Lương</span>
+        </a>
+        <a href="/expenses.html" class="nav-item">
+          <span class="icon">💳</span>
+          <span>Chi tiêu</span>
+        </a>
+        <a href="/savings.html" class="nav-item active">
+          <span class="icon">🏦</span>
+          <span>Tiết kiệm</span>
+        </a>
+        <a href="/deposits.html" class="nav-item">
+          <span class="icon">💰</span>
+          <span>Đầu tư</span>
+        </a>
+        <a href="/recurring-bills.html" class="nav-item">
+          <span class="icon">📋</span>
+          <span>Hóa đơn</span>
+        </a>
+        <a href="/excel.html" class="nav-item">
+          <span class="icon">📁</span>
+          <span>Excel Import/Export</span>
+        </a>
+        <a href="/settings.html" class="nav-item">
+          <span class="icon">⚙️</span>
+          <span>Cài đặt</span>
+        </a>
+      </nav>
+    </aside>
+    <main class="main-content">
+      <header class="top-bar">
+        <h1>Quản lý tiết kiệm</h1>
+        <div class="user-info">
+          <span id="user-name">User</span>
+          <button class="btn-logout" onclick="logout()">Đăng xuất</button>
+        </div>
+      </header>
+      <div class="content">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <h3>Gửi Mẹ</h3>
+            <p class="stat-value" id="totalMother">0 VNĐ</p>
+          </div>
+          <div class="stat-card">
+            <h3>Gửi Quỹ</h3>
+            <p class="stat-value" id="totalFund">0 VNĐ</p>
+          </div>
+          <div class="stat-card">
+            <h3>Tổng Cộng</h3>
+            <p class="stat-value" id="totalSavings">0 VNĐ</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2>Danh Sách Tiết Kiệm</h2>
+            <button class="btn btn-primary" onclick="showAddSavingForm()">+ Thêm Tiết Kiệm</button>
+          </div>
+          <div class="card-body">
+            <div class="filters">
+              <select id="typeFilter" onchange="filterSavings()">
+                <option value="">Tất cả loại</option>
+                <option value="mother">Gửi Mẹ</option>
+                <option value="fund">Gửi Quỹ</option>
+              </select>
+              <input type="month" id="monthFilter" onchange="filterSavings()">
+            </div>
+            <div id="savingsList" class="table-responsive">
+              <p class="loading">Đang tải dữ liệu...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add/Edit Saving Modal -->
+  <div id="savingModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close" onclick="closeSavingModal()">&times;</span>
+      <h2 id="modalTitle">Thêm Tiết Kiệm</h2>
+      <form id="savingForm">
+        <input type="hidden" id="savingId">
+
+        <div class="form-group">
+          <label for="month">Tháng *</label>
+          <input type="month" id="month" required>
+        </div>
+
+        <div class="form-group">
+          <label for="type">Loại *</label>
+          <select id="type" required>
+            <option value="mother">Gửi Mẹ</option>
+            <option value="fund">Gửi Quỹ</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="depositDate">Ngày gửi *</label>
+          <input type="date" id="depositDate" required>
+        </div>
+
+        <div class="form-group">
+          <label for="amount">Số tiền *</label>
+          <input type="number" id="amount" required min="0">
+        </div>
+
+        <div class="form-group">
+          <label for="accountNumber">Số tài khoản</label>
+          <input type="text" id="accountNumber">
+        </div>
+
+        <div class="form-group">
+          <label for="recipient">Người nhận</label>
+          <input type="text" id="recipient">
+        </div>
+
+        <div class="form-group">
+          <label for="notes">Ghi chú</label>
+          <textarea id="notes" rows="3"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeSavingModal()">Hủy</button>
+          <button type="submit" class="btn btn-primary">Lưu</button>
+        </div>
+      </form>
     </div>
+  </div>
 
-    <script src="/js/auth.js"></script>
-    <script>
-      let savings = [];
-      let token = localStorage.getItem('token');
+  <script src="/js/auth.js"></script>
+  <script>
+    let savings = [];
+    let token = localStorage.getItem('token');
 
-      if (!token) {
-        window.location.href = '/';
-      }
+    if (!token) {
+      window.location.href = '/';
+    }
 
-      async function loadSavings() {
-        try {
-          const typeFilter = document.getElementById('typeFilter').value;
-          const monthFilter = document.getElementById('monthFilter').value;
+    async function loadSavings() {
+      try {
+        const typeFilter = document.getElementById('typeFilter').value;
+        const monthFilter = document.getElementById('monthFilter').value;
 
-          let url = '/api/savings?limit=100';
-          if (typeFilter) url += `&type=${typeFilter}`;
-          if (monthFilter) {
-            const startDate = new Date(monthFilter + '-01').toISOString();
-            const endMonth = new Date(monthFilter);
-            endMonth.setMonth(endMonth.getMonth() + 1);
-            const endDate = new Date(endMonth).toISOString();
-            url += `&startDate=${startDate}&endDate=${endDate}`;
-          }
-
-          const response = await fetch(url, {
-            headers: { 'Authorization': `Bearer ${token}` }
-          });
-          const data = await response.json();
-
-          if (data.success) {
-            savings = data.data;
-            displaySavings(savings);
-          }
-        } catch (error) {
-          console.error('Error loading savings:', error);
-        }
-      }
-
-      function displaySavings(savingsData) {
-        const container = document.getElementById('savingsList');
-
-        if (savingsData.length === 0) {
-          container.innerHTML = '<p>Chưa có dữ liệu tiết kiệm.</p>';
-          return;
+        let url = '/api/savings?limit=100';
+        if (typeFilter) url += `&type=${typeFilter}`;
+        if (monthFilter) {
+          const startDate = new Date(monthFilter + '-01').toISOString();
+          const endMonth = new Date(monthFilter);
+          endMonth.setMonth(endMonth.getMonth() + 1);
+          const endDate = new Date(endMonth).toISOString();
+          url += `&startDate=${startDate}&endDate=${endDate}`;
         }
 
-        const table = `
+        const response = await fetch(url, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await response.json();
+
+        if (data.success) {
+          savings = data.data;
+          displaySavings(savings);
+        }
+      } catch (error) {
+        console.error('Error loading savings:', error);
+      }
+    }
+
+    function displaySavings(savingsData) {
+      const container = document.getElementById('savingsList');
+
+      if (savingsData.length === 0) {
+        container.innerHTML = '<p>Chưa có dữ liệu tiết kiệm.</p>';
+        return;
+      }
+
+      const table = `
                 <table>
                     <thead>
                         <tr>
@@ -222,127 +222,127 @@
                 </table>
             `;
 
-        container.innerHTML = table;
-      }
+      container.innerHTML = table;
+    }
 
-      async function loadStats() {
-        try {
-          const response = await fetch('/api/savings/stats/summary', {
-            headers: { 'Authorization': `Bearer ${token}` }
-          });
-          const data = await response.json();
+    async function loadStats() {
+      try {
+        const response = await fetch('/api/savings/stats/summary', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await response.json();
 
-          if (data.success) {
-            const byType = data.data.byType;
-            const motherData = byType.find(item => item._id === 'mother');
-            const fundData = byType.find(item => item._id === 'fund');
+        if (data.success) {
+          const byType = data.data.byType;
+          const motherData = byType.find(item => item._id === 'mother');
+          const fundData = byType.find(item => item._id === 'fund');
 
-            document.getElementById('totalMother').textContent =
-              (motherData?.totalAmount || 0).toLocaleString('vi-VN') + ' VNĐ';
-            document.getElementById('totalFund').textContent =
-              (fundData?.totalAmount || 0).toLocaleString('vi-VN') + ' VNĐ';
-            document.getElementById('totalSavings').textContent =
-              (data.data.total.total || 0).toLocaleString('vi-VN') + ' VNĐ';
-          }
-        } catch (error) {
-          console.error('Error loading stats:', error);
+          document.getElementById('totalMother').textContent =
+            (motherData?.totalAmount || 0).toLocaleString('vi-VN') + ' VNĐ';
+          document.getElementById('totalFund').textContent =
+            (fundData?.totalAmount || 0).toLocaleString('vi-VN') + ' VNĐ';
+          document.getElementById('totalSavings').textContent =
+            (data.data.total.total || 0).toLocaleString('vi-VN') + ' VNĐ';
         }
+      } catch (error) {
+        console.error('Error loading stats:', error);
       }
+    }
 
-      function filterSavings() {
-        loadSavings();
-      }
-
-      function showAddSavingForm() {
-        document.getElementById('modalTitle').textContent = 'Thêm Tiết Kiệm';
-        document.getElementById('savingForm').reset();
-        document.getElementById('savingId').value = '';
-        document.getElementById('savingModal').style.display = 'block';
-      }
-
-      function closeSavingModal() {
-        document.getElementById('savingModal').style.display = 'none';
-      }
-
-      async function editSaving(id) {
-        const saving = savings.find(s => s._id === id);
-        if (!saving) return;
-
-        document.getElementById('modalTitle').textContent = 'Chỉnh Sửa Tiết Kiệm';
-        document.getElementById('savingId').value = saving._id;
-        document.getElementById('month').value = saving.month.split('T')[0].substring(0, 7);
-        document.getElementById('type').value = saving.type;
-        document.getElementById('depositDate').value = saving.depositDate.split('T')[0];
-        document.getElementById('amount').value = saving.amount;
-        document.getElementById('accountNumber').value = saving.accountNumber || '';
-        document.getElementById('recipient').value = saving.recipient || '';
-        document.getElementById('notes').value = saving.notes || '';
-        document.getElementById('savingModal').style.display = 'block';
-      }
-
-      async function deleteSaving(id) {
-        if (!confirm('Bạn có chắc chắn muốn xóa khoản tiết kiệm này?')) return;
-
-        try {
-          const response = await fetch(`/api/savings/${id}`, {
-            method: 'DELETE',
-            headers: { 'Authorization': `Bearer ${token}` }
-          });
-
-          const data = await response.json();
-          if (data.success) {
-            alert('Xóa thành công!');
-            loadSavings();
-            loadStats();
-          }
-        } catch (error) {
-          console.error('Error deleting saving:', error);
-          alert('Có lỗi xảy ra!');
-        }
-      }
-
-      document.getElementById('savingForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const savingId = document.getElementById('savingId').value;
-        const savingData = {
-          month: document.getElementById('month').value + '-01',
-          type: document.getElementById('type').value,
-          depositDate: document.getElementById('depositDate').value,
-          amount: parseFloat(document.getElementById('amount').value),
-          accountNumber: document.getElementById('accountNumber').value,
-          recipient: document.getElementById('recipient').value,
-          notes: document.getElementById('notes').value
-        };
-
-        try {
-          const url = savingId ? `/api/savings/${savingId}` : '/api/savings';
-          const method = savingId ? 'PUT' : 'POST';
-
-          const response = await fetch(url, {
-            method,
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(savingData)
-          });
-
-          const data = await response.json();
-          if (data.success) {
-            alert(savingId ? 'Cập nhật thành công!' : 'Thêm tiết kiệm thành công!');
-            closeSavingModal();
-            loadSavings();
-            loadStats();
-          }
-        } catch (error) {
-          console.error('Error saving:', error);
-          alert('Có lỗi xảy ra!');
-        }
-      });
-
-      // Initial load
+    function filterSavings() {
       loadSavings();
-      loadStats();
-    </script>
-<%- include('partials/footer', { additionalJS: ['/js/auth.js', '/js/savings.js'] }) %>
+    }
+
+    function showAddSavingForm() {
+      document.getElementById('modalTitle').textContent = 'Thêm Tiết Kiệm';
+      document.getElementById('savingForm').reset();
+      document.getElementById('savingId').value = '';
+      document.getElementById('savingModal').style.display = 'block';
+    }
+
+    function closeSavingModal() {
+      document.getElementById('savingModal').style.display = 'none';
+    }
+
+    async function editSaving(id) {
+      const saving = savings.find(s => s._id === id);
+      if (!saving) return;
+
+      document.getElementById('modalTitle').textContent = 'Chỉnh Sửa Tiết Kiệm';
+      document.getElementById('savingId').value = saving._id;
+      document.getElementById('month').value = saving.month.split('T')[0].substring(0, 7);
+      document.getElementById('type').value = saving.type;
+      document.getElementById('depositDate').value = saving.depositDate.split('T')[0];
+      document.getElementById('amount').value = saving.amount;
+      document.getElementById('accountNumber').value = saving.accountNumber || '';
+      document.getElementById('recipient').value = saving.recipient || '';
+      document.getElementById('notes').value = saving.notes || '';
+      document.getElementById('savingModal').style.display = 'block';
+    }
+
+    async function deleteSaving(id) {
+      if (!confirm('Bạn có chắc chắn muốn xóa khoản tiết kiệm này?')) return;
+
+      try {
+        const response = await fetch(`/api/savings/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        const data = await response.json();
+        if (data.success) {
+          alert('Xóa thành công!');
+          loadSavings();
+          loadStats();
+        }
+      } catch (error) {
+        console.error('Error deleting saving:', error);
+        alert('Có lỗi xảy ra!');
+      }
+    }
+
+    document.getElementById('savingForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const savingId = document.getElementById('savingId').value;
+      const savingData = {
+        month: document.getElementById('month').value + '-01',
+        type: document.getElementById('type').value,
+        depositDate: document.getElementById('depositDate').value,
+        amount: parseFloat(document.getElementById('amount').value),
+        accountNumber: document.getElementById('accountNumber').value,
+        recipient: document.getElementById('recipient').value,
+        notes: document.getElementById('notes').value
+      };
+
+      try {
+        const url = savingId ? `/api/savings/${savingId}` : '/api/savings';
+        const method = savingId ? 'PUT' : 'POST';
+
+        const response = await fetch(url, {
+          method,
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(savingData)
+        });
+
+        const data = await response.json();
+        if (data.success) {
+          alert(savingId ? 'Cập nhật thành công!' : 'Thêm tiết kiệm thành công!');
+          closeSavingModal();
+          loadSavings();
+          loadStats();
+        }
+      } catch (error) {
+        console.error('Error saving:', error);
+        alert('Có lỗi xảy ra!');
+      }
+    });
+
+    // Initial load
+    loadSavings();
+    loadStats();
+  </script>
+  <%- include('partials/footer', { additionalJS: ['/js/auth.js', '/js/savings.js' ] }) %>

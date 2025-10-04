@@ -31,7 +31,7 @@ describe('Transactions', () => {
         password: 'password123',
         name: 'Test User'
       });
-    
+
     token = res.body.data.token;
     userId = res.body.data.user._id;
 
@@ -44,7 +44,7 @@ describe('Transactions', () => {
         type: 'expense',
         icon: '🍔'
       });
-    
+
     categoryId = categoryRes.body.data.category._id;
   });
 

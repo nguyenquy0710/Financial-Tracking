@@ -1,160 +1,160 @@
-<%- include('partials/header', { title: 'Chi tiêu', additionalCSS: ['/css/dashboard.css'] }) %>
-    <div class="app-container">
-      <!-- Sidebar Navigation -->
-      <aside class="sidebar">
-        <div class="logo">
-          <h2>💰 FinTrack</h2>
+<%- include('partials/header', { title: 'Chi tiêu' , additionalCSS: ['/css/dashboard.css'] }) %>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="logo">
+        <h2>💰 FinTrack</h2>
+      </div>
+      <nav class="nav-menu">
+        <a href="/dashboard" class="nav-item">
+          <span class="icon">📊</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="/rentals.html" class="nav-item">
+          <span class="icon">🏠</span>
+          <span>Thuê phòng</span>
+        </a>
+        <a href="/salaries.html" class="nav-item">
+          <span class="icon">💵</span>
+          <span>Lương</span>
+        </a>
+        <a href="/expenses.html" class="nav-item active">
+          <span class="icon">💳</span>
+          <span>Chi tiêu</span>
+        </a>
+        <a href="/savings.html" class="nav-item">
+          <span class="icon">🏦</span>
+          <span>Tiết kiệm</span>
+        </a>
+        <a href="/excel.html" class="nav-item">
+          <span class="icon">📁</span>
+          <span>Excel Import/Export</span>
+        </a>
+        <a href="/settings.html" class="nav-item">
+          <span class="icon">⚙️</span>
+          <span>Cài đặt</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="top-bar">
+        <h1>Quản lý chi tiêu</h1>
+        <div class="user-info">
+          <span id="user-name">User</span>
+          <button class="btn-logout" onclick="logout()">Đăng xuất</button>
         </div>
-        <nav class="nav-menu">
-          <a href="/dashboard" class="nav-item">
-            <span class="icon">📊</span>
-            <span>Dashboard</span>
-          </a>
-          <a href="/rentals.html" class="nav-item">
-            <span class="icon">🏠</span>
-            <span>Thuê phòng</span>
-          </a>
-          <a href="/salaries.html" class="nav-item">
-            <span class="icon">💵</span>
-            <span>Lương</span>
-          </a>
-          <a href="/expenses.html" class="nav-item active">
-            <span class="icon">💳</span>
-            <span>Chi tiêu</span>
-          </a>
-          <a href="/savings.html" class="nav-item">
-            <span class="icon">🏦</span>
-            <span>Tiết kiệm</span>
-          </a>
-          <a href="/excel.html" class="nav-item">
-            <span class="icon">📁</span>
-            <span>Excel Import/Export</span>
-          </a>
-          <a href="/settings.html" class="nav-item">
-            <span class="icon">⚙️</span>
-            <span>Cài đặt</span>
-          </a>
-        </nav>
-      </aside>
+      </header>
 
-      <!-- Main Content -->
-      <main class="main-content">
-        <header class="top-bar">
-          <h1>Quản lý chi tiêu</h1>
-          <div class="user-info">
-            <span id="user-name">User</span>
-            <button class="btn-logout" onclick="logout()">Đăng xuất</button>
-          </div>
-        </header>
-
-        <div class="content">
-          <!-- 6 Jars Summary -->
-          <div class="card">
-            <h2>Phân bổ 6 lọ (6 Jars Method)</h2>
-            <div class="jars-grid">
-              <div class="jar-card">
-                <div class="jar-icon">🎁</div>
-                <h4>Gửi Mẹ</h4>
-                <p class="jar-amount" id="jar-mother">0 VND</p>
-              </div>
-              <div class="jar-card">
-                <div class="jar-icon">🏠</div>
-                <h4>NEC (55%)</h4>
-                <p class="jar-subtitle">Nhu cầu thiết yếu</p>
-                <p class="jar-amount" id="jar-nec">0 VND</p>
-              </div>
-              <div class="jar-card">
-                <div class="jar-icon">💎</div>
-                <h4>FFA (10%)</h4>
-                <p class="jar-subtitle">Tự do tài chính</p>
-                <p class="jar-amount" id="jar-ffa">0 VND</p>
-              </div>
-              <div class="jar-card">
-                <div class="jar-icon">📚</div>
-                <h4>EDUC (10%)</h4>
-                <p class="jar-subtitle">Giáo dục Đào tạo</p>
-                <p class="jar-amount" id="jar-educ">0 VND</p>
-              </div>
-              <div class="jar-card">
-                <div class="jar-icon">🎉</div>
-                <h4>PLAY (10%)</h4>
-                <p class="jar-subtitle">Hưởng thụ</p>
-                <p class="jar-amount" id="jar-play">0 VND</p>
-              </div>
-              <div class="jar-card">
-                <div class="jar-icon">❤️</div>
-                <h4>GIVE (7%)</h4>
-                <p class="jar-subtitle">Cho đi</p>
-                <p class="jar-amount" id="jar-give">0 VND</p>
-              </div>
-              <div class="jar-card">
-                <div class="jar-icon">🏦</div>
-                <h4>LTS (10%)</h4>
-                <p class="jar-subtitle">Tiết kiệm</p>
-                <p class="jar-amount" id="jar-lts">0 VND</p>
-              </div>
+      <div class="content">
+        <!-- 6 Jars Summary -->
+        <div class="card">
+          <h2>Phân bổ 6 lọ (6 Jars Method)</h2>
+          <div class="jars-grid">
+            <div class="jar-card">
+              <div class="jar-icon">🎁</div>
+              <h4>Gửi Mẹ</h4>
+              <p class="jar-amount" id="jar-mother">0 VND</p>
             </div>
-          </div>
-
-          <!-- Expenses List -->
-          <div class="card">
-            <h2>Danh sách chi tiêu</h2>
-
-            <div id="expenses-list" class="table-container">
-              <p class="loading">Đang tải dữ liệu...</p>
+            <div class="jar-card">
+              <div class="jar-icon">🏠</div>
+              <h4>NEC (55%)</h4>
+              <p class="jar-subtitle">Nhu cầu thiết yếu</p>
+              <p class="jar-amount" id="jar-nec">0 VND</p>
+            </div>
+            <div class="jar-card">
+              <div class="jar-icon">💎</div>
+              <h4>FFA (10%)</h4>
+              <p class="jar-subtitle">Tự do tài chính</p>
+              <p class="jar-amount" id="jar-ffa">0 VND</p>
+            </div>
+            <div class="jar-card">
+              <div class="jar-icon">📚</div>
+              <h4>EDUC (10%)</h4>
+              <p class="jar-subtitle">Giáo dục Đào tạo</p>
+              <p class="jar-amount" id="jar-educ">0 VND</p>
+            </div>
+            <div class="jar-card">
+              <div class="jar-icon">🎉</div>
+              <h4>PLAY (10%)</h4>
+              <p class="jar-subtitle">Hưởng thụ</p>
+              <p class="jar-amount" id="jar-play">0 VND</p>
+            </div>
+            <div class="jar-card">
+              <div class="jar-icon">❤️</div>
+              <h4>GIVE (7%)</h4>
+              <p class="jar-subtitle">Cho đi</p>
+              <p class="jar-amount" id="jar-give">0 VND</p>
+            </div>
+            <div class="jar-card">
+              <div class="jar-icon">🏦</div>
+              <h4>LTS (10%)</h4>
+              <p class="jar-subtitle">Tiết kiệm</p>
+              <p class="jar-amount" id="jar-lts">0 VND</p>
             </div>
           </div>
         </div>
-      </main>
-    </div>
 
-    <script src="/js/auth.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', async () => {
-        await loadExpenses();
-      });
+        <!-- Expenses List -->
+        <div class="card">
+          <h2>Danh sách chi tiêu</h2>
 
-      const loadExpenses = async () => {
-        const container = document.getElementById('expenses-list');
-        container.innerHTML = '<p class="loading">Đang tải...</p>';
+          <div id="expenses-list" class="table-container">
+            <p class="loading">Đang tải dữ liệu...</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
 
-        try {
-          const response = await apiCall('/expenses');
+  <script src="/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadExpenses();
+    });
 
-          if (response.success && response.data) {
-            if (response.data.length === 0) {
-              container.innerHTML = '<p class="loading">Chưa có dữ liệu. Vui lòng import từ Excel.</p>';
-              return;
+    const loadExpenses = async () => {
+      const container = document.getElementById('expenses-list');
+      container.innerHTML = '<p class="loading">Đang tải...</p>';
+
+      try {
+        const response = await apiCall('/expenses');
+
+        if (response.success && response.data) {
+          if (response.data.length === 0) {
+            container.innerHTML = '<p class="loading">Chưa có dữ liệu. Vui lòng import từ Excel.</p>';
+            return;
+          }
+
+          // Calculate 6 jars totals
+          let jars = {
+            mother: 0, nec: 0, ffa: 0, educ: 0, play: 0, give: 0, lts: 0
+          };
+
+          response.data.forEach(expense => {
+            if (expense.allocation) {
+              jars.mother += expense.allocation.motherGift || 0;
+              jars.nec += expense.allocation.nec || 0;
+              jars.ffa += expense.allocation.ffa || 0;
+              jars.educ += expense.allocation.educ || 0;
+              jars.play += expense.allocation.play || 0;
+              jars.give += expense.allocation.give || 0;
+              jars.lts += expense.allocation.lts || 0;
             }
+          });
 
-            // Calculate 6 jars totals
-            let jars = {
-              mother: 0, nec: 0, ffa: 0, educ: 0, play: 0, give: 0, lts: 0
-            };
+          // Update jar displays
+          document.getElementById('jar-mother').textContent = formatCurrency(jars.mother);
+          document.getElementById('jar-nec').textContent = formatCurrency(jars.nec);
+          document.getElementById('jar-ffa').textContent = formatCurrency(jars.ffa);
+          document.getElementById('jar-educ').textContent = formatCurrency(jars.educ);
+          document.getElementById('jar-play').textContent = formatCurrency(jars.play);
+          document.getElementById('jar-give').textContent = formatCurrency(jars.give);
+          document.getElementById('jar-lts').textContent = formatCurrency(jars.lts);
 
-            response.data.forEach(expense => {
-              if (expense.allocation) {
-                jars.mother += expense.allocation.motherGift || 0;
-                jars.nec += expense.allocation.nec || 0;
-                jars.ffa += expense.allocation.ffa || 0;
-                jars.educ += expense.allocation.educ || 0;
-                jars.play += expense.allocation.play || 0;
-                jars.give += expense.allocation.give || 0;
-                jars.lts += expense.allocation.lts || 0;
-              }
-            });
-
-            // Update jar displays
-            document.getElementById('jar-mother').textContent = formatCurrency(jars.mother);
-            document.getElementById('jar-nec').textContent = formatCurrency(jars.nec);
-            document.getElementById('jar-ffa').textContent = formatCurrency(jars.ffa);
-            document.getElementById('jar-educ').textContent = formatCurrency(jars.educ);
-            document.getElementById('jar-play').textContent = formatCurrency(jars.play);
-            document.getElementById('jar-give').textContent = formatCurrency(jars.give);
-            document.getElementById('jar-lts').textContent = formatCurrency(jars.lts);
-
-            // Display table
-            container.innerHTML = `
+          // Display table
+          container.innerHTML = `
                         <table class="data-table">
                             <thead>
                                 <tr>
@@ -180,86 +180,86 @@
                             </tbody>
                         </table>
                     `;
-          } else {
-            container.innerHTML = '<p class="loading">Không thể tải dữ liệu</p>';
-          }
-        } catch (error) {
-          console.error('Failed to load expenses:', error);
-          container.innerHTML = '<p class="loading">Lỗi: Không thể tải dữ liệu. Hãy import dữ liệu từ Excel.</p>';
+        } else {
+          container.innerHTML = '<p class="loading">Không thể tải dữ liệu</p>';
         }
-      };
-
-      const formatCurrency = (amount) => {
-        return new Intl.NumberFormat('vi-VN', {
-          style: 'currency',
-          currency: 'VND'
-        }).format(amount);
-      };
-    </script>
-
-    <style>
-      .jars-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 15px;
-        margin: 20px 0;
+      } catch (error) {
+        console.error('Failed to load expenses:', error);
+        container.innerHTML = '<p class="loading">Lỗi: Không thể tải dữ liệu. Hãy import dữ liệu từ Excel.</p>';
       }
+    };
 
-      .jar-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 20px;
-        border-radius: 10px;
-        text-align: center;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      }
+    const formatCurrency = (amount) => {
+      return new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND'
+      }).format(amount);
+    };
+  </script>
 
-      .jar-icon {
-        font-size: 32px;
-        margin-bottom: 10px;
-      }
+  <style>
+    .jars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
 
-      .jar-card h4 {
-        margin: 5px 0;
-        font-size: 16px;
-      }
+    .jar-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
 
-      .jar-subtitle {
-        font-size: 11px;
-        opacity: 0.9;
-        margin: 5px 0;
-      }
+    .jar-icon {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
 
-      .jar-amount {
-        font-size: 18px;
-        font-weight: bold;
-        margin: 10px 0 0 0;
-      }
+    .jar-card h4 {
+      margin: 5px 0;
+      font-size: 16px;
+    }
 
-      .table-container {
-        overflow-x: auto;
-      }
+    .jar-subtitle {
+      font-size: 11px;
+      opacity: 0.9;
+      margin: 5px 0;
+    }
 
-      .data-table {
-        width: 100%;
-        border-collapse: collapse;
-      }
+    .jar-amount {
+      font-size: 18px;
+      font-weight: bold;
+      margin: 10px 0 0 0;
+    }
 
-      .data-table th,
-      .data-table td {
-        padding: 12px;
-        text-align: left;
-        border-bottom: 1px solid #e0e0e0;
-      }
+    .table-container {
+      overflow-x: auto;
+    }
 
-      .data-table th {
-        background: #f5f7fa;
-        font-weight: 600;
-        color: #2c3e50;
-      }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
 
-      .data-table tbody tr:hover {
-        background: #f8f9fa;
-      }
-    </style>
-<%- include('partials/footer', { additionalJS: ['/js/auth.js', '/js/expenses.js'] }) %>
+    .data-table th,
+    .data-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .data-table th {
+      background: #f5f7fa;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .data-table tbody tr:hover {
+      background: #f8f9fa;
+    }
+  </style>
+  <%- include('partials/footer', { additionalJS: ['/js/auth.js', '/js/expenses.js' ] }) %>

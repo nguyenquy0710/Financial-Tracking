@@ -1,135 +1,135 @@
-<%- include('partials/header', { title: 'Excel Import/Export', additionalCSS: ['/css/dashboard.css'] }) %>
-    <div class="app-container">
-      <!-- Sidebar Navigation -->
-      <aside class="sidebar">
-        <div class="logo">
-          <h2>💰 FinTrack</h2>
+<%- include('partials/header', { title: 'Excel Import/Export' , additionalCSS: ['/css/dashboard.css'] }) %>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="logo">
+        <h2>💰 FinTrack</h2>
+      </div>
+      <nav class="nav-menu">
+        <a href="/dashboard" class="nav-item">
+          <span class="icon">📊</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="/rentals.html" class="nav-item">
+          <span class="icon">🏠</span>
+          <span>Thuê phòng</span>
+        </a>
+        <a href="/salaries.html" class="nav-item">
+          <span class="icon">💵</span>
+          <span>Lương</span>
+        </a>
+        <a href="/expenses.html" class="nav-item">
+          <span class="icon">💳</span>
+          <span>Chi tiêu</span>
+        </a>
+        <a href="/savings.html" class="nav-item">
+          <span class="icon">🏦</span>
+          <span>Tiết kiệm</span>
+        </a>
+        <a href="/excel.html" class="nav-item active">
+          <span class="icon">📁</span>
+          <span>Excel Import/Export</span>
+        </a>
+        <a href="/settings.html" class="nav-item">
+          <span class="icon">⚙️</span>
+          <span>Cài đặt</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="top-bar">
+        <h1>Excel Import/Export</h1>
+        <div class="user-info">
+          <span id="user-name">User</span>
+          <button class="btn-logout" onclick="logout()">Đăng xuất</button>
         </div>
-        <nav class="nav-menu">
-          <a href="/dashboard" class="nav-item">
-            <span class="icon">📊</span>
-            <span>Dashboard</span>
-          </a>
-          <a href="/rentals.html" class="nav-item">
-            <span class="icon">🏠</span>
-            <span>Thuê phòng</span>
-          </a>
-          <a href="/salaries.html" class="nav-item">
-            <span class="icon">💵</span>
-            <span>Lương</span>
-          </a>
-          <a href="/expenses.html" class="nav-item">
-            <span class="icon">💳</span>
-            <span>Chi tiêu</span>
-          </a>
-          <a href="/savings.html" class="nav-item">
-            <span class="icon">🏦</span>
-            <span>Tiết kiệm</span>
-          </a>
-          <a href="/excel.html" class="nav-item active">
-            <span class="icon">📁</span>
-            <span>Excel Import/Export</span>
-          </a>
-          <a href="/settings.html" class="nav-item">
-            <span class="icon">⚙️</span>
-            <span>Cài đặt</span>
-          </a>
-        </nav>
-      </aside>
+      </header>
 
-      <!-- Main Content -->
-      <main class="main-content">
-        <header class="top-bar">
-          <h1>Excel Import/Export</h1>
-          <div class="user-info">
-            <span id="user-name">User</span>
-            <button class="btn-logout" onclick="logout()">Đăng xuất</button>
-          </div>
-        </header>
+      <div class="content">
+        <!-- Import Section -->
+        <div class="card">
+          <h2>📤 Import từ Excel</h2>
+          <p>Tải lên file Excel chứa dữ liệu tài chính của bạn. File sẽ được phân tích và import vào hệ thống.</p>
 
-        <div class="content">
-          <!-- Import Section -->
-          <div class="card">
-            <h2>📤 Import từ Excel</h2>
-            <p>Tải lên file Excel chứa dữ liệu tài chính của bạn. File sẽ được phân tích và import vào hệ thống.</p>
-
-            <div class="upload-area" id="upload-area">
-              <div class="upload-icon">📁</div>
-              <p>Kéo thả file Excel vào đây hoặc click để chọn file</p>
-              <p class="file-types">Hỗ trợ: .xlsx, .xls (tối đa 10MB)</p>
-              <input type="file" id="file-input" accept=".xlsx,.xls" style="display: none;">
-              <button class="btn btn-primary" onclick="document.getElementById('file-input').click()">
-                Chọn file
-              </button>
-            </div>
-
-            <div id="selected-file" class="selected-file" style="display: none;">
-              <p><strong>File đã chọn:</strong> <span id="file-name"></span></p>
-              <button class="btn btn-success" onclick="uploadFile()">
-                <span class="icon">⬆️</span> Upload & Import
-              </button>
-              <button class="btn btn-secondary" onclick="clearFile()">Hủy</button>
-            </div>
-
-            <div id="import-status" class="status-message" style="display: none;"></div>
-          </div>
-
-          <!-- Export Section -->
-          <div class="card">
-            <h2>📥 Export ra Excel</h2>
-            <p>Xuất tất cả dữ liệu tài chính của bạn ra file Excel.</p>
-
-            <div class="export-options">
-              <div class="form-group">
-                <label>Từ ngày:</label>
-                <input type="date" id="export-start-date" class="form-control">
-              </div>
-              <div class="form-group">
-                <label>Đến ngày:</label>
-                <input type="date" id="export-end-date" class="form-control">
-              </div>
-            </div>
-
-            <button class="btn btn-primary" onclick="exportData()">
-              <span class="icon">📥</span> Export to Excel
+          <div class="upload-area" id="upload-area">
+            <div class="upload-icon">📁</div>
+            <p>Kéo thả file Excel vào đây hoặc click để chọn file</p>
+            <p class="file-types">Hỗ trợ: .xlsx, .xls (tối đa 10MB)</p>
+            <input type="file" id="file-input" accept=".xlsx,.xls" style="display: none;">
+            <button class="btn btn-primary" onclick="document.getElementById('file-input').click()">
+              Chọn file
             </button>
           </div>
 
-          <!-- Format Guide -->
-          <div class="card">
-            <h2>📋 Hướng dẫn định dạng file Excel</h2>
-            <p>File Excel cần có các sheet sau:</p>
-            <ul class="format-guide">
-              <li>
-                <strong>Rental Sheets (Thuê phòng):</strong> Sheet có tên chứa "P" + số phòng (ví dụ: P3L1-600.QGV.HCM)
-                <br>Chứa thông tin: Tiền nhà, điện, nước, internet, gửi xe, rác, bonus
-              </li>
-              <li>
-                <strong>Salary (Lương):</strong> Sheet tên "salary"
-                <br>Chứa thông tin: Lương cơ bản, KPI, dự án, OT, thưởng, freelance
-              </li>
-              <li>
-                <strong>Chi-tieu (Chi tiêu):</strong> Sheet tên "chi-tieu"
-                <br>Chứa thông tin: Danh mục, tên khoản chi, số lượng, đơn giá, phân bổ 6 jars
-              </li>
-              <li>
-                <strong>Tiết kiệm:</strong> Sheet tên "Tiết kiệm"
-                <br>Chứa thông tin: Gửi mẹ, gửi quỹ, số tiền, ngày gửi
-              </li>
-              <li>
-                <strong>Deposit no. (Tiền gửi số):</strong> Sheet tên "deposit no."
-                <br>Chứa thông tin: Ngân hàng, STK, số tiền gốc, lãi suất, kỳ hạn
-              </li>
-              <li>
-                <strong>Setting (Cài đặt):</strong> Sheet tên "setting"
-                <br>Chứa thông tin tài khoản ngân hàng
-              </li>
-            </ul>
+          <div id="selected-file" class="selected-file" style="display: none;">
+            <p><strong>File đã chọn:</strong> <span id="file-name"></span></p>
+            <button class="btn btn-success" onclick="uploadFile()">
+              <span class="icon">⬆️</span> Upload & Import
+            </button>
+            <button class="btn btn-secondary" onclick="clearFile()">Hủy</button>
           </div>
-        </div>
-      </main>
-    </div>
 
-    <script src="/js/auth.js"></script>
-    <script src="/js/excel.js"></script>
-<%- include('partials/footer', { additionalJS: ['/js/auth.js', '/js/excel.js'] }) %>
+          <div id="import-status" class="status-message" style="display: none;"></div>
+        </div>
+
+        <!-- Export Section -->
+        <div class="card">
+          <h2>📥 Export ra Excel</h2>
+          <p>Xuất tất cả dữ liệu tài chính của bạn ra file Excel.</p>
+
+          <div class="export-options">
+            <div class="form-group">
+              <label>Từ ngày:</label>
+              <input type="date" id="export-start-date" class="form-control">
+            </div>
+            <div class="form-group">
+              <label>Đến ngày:</label>
+              <input type="date" id="export-end-date" class="form-control">
+            </div>
+          </div>
+
+          <button class="btn btn-primary" onclick="exportData()">
+            <span class="icon">📥</span> Export to Excel
+          </button>
+        </div>
+
+        <!-- Format Guide -->
+        <div class="card">
+          <h2>📋 Hướng dẫn định dạng file Excel</h2>
+          <p>File Excel cần có các sheet sau:</p>
+          <ul class="format-guide">
+            <li>
+              <strong>Rental Sheets (Thuê phòng):</strong> Sheet có tên chứa "P" + số phòng (ví dụ: P3L1-600.QGV.HCM)
+              <br>Chứa thông tin: Tiền nhà, điện, nước, internet, gửi xe, rác, bonus
+            </li>
+            <li>
+              <strong>Salary (Lương):</strong> Sheet tên "salary"
+              <br>Chứa thông tin: Lương cơ bản, KPI, dự án, OT, thưởng, freelance
+            </li>
+            <li>
+              <strong>Chi-tieu (Chi tiêu):</strong> Sheet tên "chi-tieu"
+              <br>Chứa thông tin: Danh mục, tên khoản chi, số lượng, đơn giá, phân bổ 6 jars
+            </li>
+            <li>
+              <strong>Tiết kiệm:</strong> Sheet tên "Tiết kiệm"
+              <br>Chứa thông tin: Gửi mẹ, gửi quỹ, số tiền, ngày gửi
+            </li>
+            <li>
+              <strong>Deposit no. (Tiền gửi số):</strong> Sheet tên "deposit no."
+              <br>Chứa thông tin: Ngân hàng, STK, số tiền gốc, lãi suất, kỳ hạn
+            </li>
+            <li>
+              <strong>Setting (Cài đặt):</strong> Sheet tên "setting"
+              <br>Chứa thông tin tài khoản ngân hàng
+            </li>
+          </ul>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/auth.js"></script>
+  <script src="/js/excel.js"></script>
+  <%- include('partials/footer', { additionalJS: ['/js/auth.js', '/js/excel.js' ] }) %>

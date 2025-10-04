@@ -1,139 +1,139 @@
-<%- include('partials/header', { title: 'Lương', additionalCSS: ['/css/dashboard.css'] }) %>
-    <div class="app-container">
-      <!-- Sidebar Navigation -->
-      <aside class="sidebar">
-        <div class="logo">
-          <h2>💰 FinTrack</h2>
+<%- include('partials/header', { title: 'Lương' , additionalCSS: ['/css/dashboard.css'] }) %>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="logo">
+        <h2>💰 FinTrack</h2>
+      </div>
+      <nav class="nav-menu">
+        <a href="/dashboard" class="nav-item">
+          <span class="icon">📊</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="/rentals.html" class="nav-item">
+          <span class="icon">🏠</span>
+          <span>Thuê phòng</span>
+        </a>
+        <a href="/salaries.html" class="nav-item active">
+          <span class="icon">💵</span>
+          <span>Lương</span>
+        </a>
+        <a href="/expenses.html" class="nav-item">
+          <span class="icon">💳</span>
+          <span>Chi tiêu</span>
+        </a>
+        <a href="/savings.html" class="nav-item">
+          <span class="icon">🏦</span>
+          <span>Tiết kiệm</span>
+        </a>
+        <a href="/excel.html" class="nav-item">
+          <span class="icon">📁</span>
+          <span>Excel Import/Export</span>
+        </a>
+        <a href="/settings.html" class="nav-item">
+          <span class="icon">⚙️</span>
+          <span>Cài đặt</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="top-bar">
+        <h1>Quản lý lương</h1>
+        <div class="user-info">
+          <span id="user-name">User</span>
+          <button class="btn-logout" onclick="logout()">Đăng xuất</button>
         </div>
-        <nav class="nav-menu">
-          <a href="/dashboard" class="nav-item">
-            <span class="icon">📊</span>
-            <span>Dashboard</span>
-          </a>
-          <a href="/rentals.html" class="nav-item">
-            <span class="icon">🏠</span>
-            <span>Thuê phòng</span>
-          </a>
-          <a href="/salaries.html" class="nav-item active">
-            <span class="icon">💵</span>
-            <span>Lương</span>
-          </a>
-          <a href="/expenses.html" class="nav-item">
-            <span class="icon">💳</span>
-            <span>Chi tiêu</span>
-          </a>
-          <a href="/savings.html" class="nav-item">
-            <span class="icon">🏦</span>
-            <span>Tiết kiệm</span>
-          </a>
-          <a href="/excel.html" class="nav-item">
-            <span class="icon">📁</span>
-            <span>Excel Import/Export</span>
-          </a>
-          <a href="/settings.html" class="nav-item">
-            <span class="icon">⚙️</span>
-            <span>Cài đặt</span>
-          </a>
-        </nav>
-      </aside>
+      </header>
 
-      <!-- Main Content -->
-      <main class="main-content">
-        <header class="top-bar">
-          <h1>Quản lý lương</h1>
-          <div class="user-info">
-            <span id="user-name">User</span>
-            <button class="btn-logout" onclick="logout()">Đăng xuất</button>
-          </div>
-        </header>
-
-        <div class="content">
-          <!-- Summary Cards -->
-          <div class="summary-grid">
-            <div class="summary-card">
-              <div class="card-icon">💰</div>
-              <div class="card-content">
-                <h3>Tổng thu nhập</h3>
-                <p class="amount" id="total-income">0 VND</p>
-                <span class="period">Tất cả</span>
-              </div>
-            </div>
-            <div class="summary-card">
-              <div class="card-icon">🏢</div>
-              <div class="card-content">
-                <h3>Lương công ty</h3>
-                <p class="amount" id="company-salary">0 VND</p>
-                <span class="period">Trung bình</span>
-              </div>
-            </div>
-            <div class="summary-card">
-              <div class="card-icon">💼</div>
-              <div class="card-content">
-                <h3>Freelance</h3>
-                <p class="amount" id="freelance-income">0 VND</p>
-                <span class="period">Trung bình</span>
-              </div>
-            </div>
-            <div class="summary-card">
-              <div class="card-icon">📈</div>
-              <div class="card-content">
-                <h3>Tăng trưởng</h3>
-                <p class="amount" id="growth-rate">0%</p>
-                <span class="period">So với tháng trước</span>
-              </div>
+      <div class="content">
+        <!-- Summary Cards -->
+        <div class="summary-grid">
+          <div class="summary-card">
+            <div class="card-icon">💰</div>
+            <div class="card-content">
+              <h3>Tổng thu nhập</h3>
+              <p class="amount" id="total-income">0 VND</p>
+              <span class="period">Tất cả</span>
             </div>
           </div>
-
-          <!-- Salaries List -->
-          <div class="card">
-            <h2>Lịch sử lương</h2>
-
-            <div id="salaries-list" class="table-container">
-              <p class="loading">Đang tải dữ liệu...</p>
+          <div class="summary-card">
+            <div class="card-icon">🏢</div>
+            <div class="card-content">
+              <h3>Lương công ty</h3>
+              <p class="amount" id="company-salary">0 VND</p>
+              <span class="period">Trung bình</span>
+            </div>
+          </div>
+          <div class="summary-card">
+            <div class="card-icon">💼</div>
+            <div class="card-content">
+              <h3>Freelance</h3>
+              <p class="amount" id="freelance-income">0 VND</p>
+              <span class="period">Trung bình</span>
+            </div>
+          </div>
+          <div class="summary-card">
+            <div class="card-icon">📈</div>
+            <div class="card-content">
+              <h3>Tăng trưởng</h3>
+              <p class="amount" id="growth-rate">0%</p>
+              <span class="period">So với tháng trước</span>
             </div>
           </div>
         </div>
-      </main>
-    </div>
 
-    <script src="/js/auth.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', async () => {
-        await loadSalaries();
-      });
+        <!-- Salaries List -->
+        <div class="card">
+          <h2>Lịch sử lương</h2>
 
-      const loadSalaries = async () => {
-        const container = document.getElementById('salaries-list');
-        container.innerHTML = '<p class="loading">Đang tải...</p>';
+          <div id="salaries-list" class="table-container">
+            <p class="loading">Đang tải dữ liệu...</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
 
-        try {
-          const response = await apiCall('/salaries');
+  <script src="/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadSalaries();
+    });
 
-          if (response.success && response.data) {
-            if (response.data.length === 0) {
-              container.innerHTML = '<p class="loading">Chưa có dữ liệu. Vui lòng import từ Excel.</p>';
-              return;
-            }
+    const loadSalaries = async () => {
+      const container = document.getElementById('salaries-list');
+      container.innerHTML = '<p class="loading">Đang tải...</p>';
 
-            // Calculate stats
-            const totalIncome = response.data.reduce((sum, s) => sum + (s.totalIncome || 0), 0);
-            const avgCompanySalary = response.data.reduce((sum, s) => sum + (s.totalCompanySalary || 0), 0) / response.data.length;
-            const avgFreelance = response.data.reduce((sum, s) => sum + (s.freelance?.total || 0), 0) / response.data.length;
+      try {
+        const response = await apiCall('/salaries');
 
-            document.getElementById('total-income').textContent = formatCurrency(totalIncome);
-            document.getElementById('company-salary').textContent = formatCurrency(avgCompanySalary);
-            document.getElementById('freelance-income').textContent = formatCurrency(avgFreelance);
+        if (response.success && response.data) {
+          if (response.data.length === 0) {
+            container.innerHTML = '<p class="loading">Chưa có dữ liệu. Vui lòng import từ Excel.</p>';
+            return;
+          }
 
-            // Calculate growth
-            if (response.data.length >= 2) {
-              const latest = response.data[0].totalIncome || 0;
-              const previous = response.data[1].totalIncome || 0;
-              const growth = previous > 0 ? ((latest - previous) / previous * 100).toFixed(1) : 0;
-              document.getElementById('growth-rate').textContent = `${growth}%`;
-            }
+          // Calculate stats
+          const totalIncome = response.data.reduce((sum, s) => sum + (s.totalIncome || 0), 0);
+          const avgCompanySalary = response.data.reduce((sum, s) => sum + (s.totalCompanySalary || 0), 0) / response.data.length;
+          const avgFreelance = response.data.reduce((sum, s) => sum + (s.freelance?.total || 0), 0) / response.data.length;
 
-            // Display table
-            container.innerHTML = `
+          document.getElementById('total-income').textContent = formatCurrency(totalIncome);
+          document.getElementById('company-salary').textContent = formatCurrency(avgCompanySalary);
+          document.getElementById('freelance-income').textContent = formatCurrency(avgFreelance);
+
+          // Calculate growth
+          if (response.data.length >= 2) {
+            const latest = response.data[0].totalIncome || 0;
+            const previous = response.data[1].totalIncome || 0;
+            const growth = previous > 0 ? ((latest - previous) / previous * 100).toFixed(1) : 0;
+            document.getElementById('growth-rate').textContent = `${growth}%`;
+          }
+
+          // Display table
+          container.innerHTML = `
                         <table class="data-table">
                             <thead>
                                 <tr>
@@ -161,48 +161,48 @@
                             </tbody>
                         </table>
                     `;
-          } else {
-            container.innerHTML = '<p class="loading">Không thể tải dữ liệu</p>';
-          }
-        } catch (error) {
-          console.error('Failed to load salaries:', error);
-          container.innerHTML = '<p class="loading">Lỗi: Không thể tải dữ liệu. Hãy import dữ liệu từ Excel.</p>';
+        } else {
+          container.innerHTML = '<p class="loading">Không thể tải dữ liệu</p>';
         }
-      };
-
-      const formatCurrency = (amount) => {
-        return new Intl.NumberFormat('vi-VN', {
-          style: 'currency',
-          currency: 'VND'
-        }).format(amount);
-      };
-    </script>
-
-    <style>
-      .table-container {
-        overflow-x: auto;
+      } catch (error) {
+        console.error('Failed to load salaries:', error);
+        container.innerHTML = '<p class="loading">Lỗi: Không thể tải dữ liệu. Hãy import dữ liệu từ Excel.</p>';
       }
+    };
 
-      .data-table {
-        width: 100%;
-        border-collapse: collapse;
-      }
+    const formatCurrency = (amount) => {
+      return new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND'
+      }).format(amount);
+    };
+  </script>
 
-      .data-table th,
-      .data-table td {
-        padding: 12px;
-        text-align: left;
-        border-bottom: 1px solid #e0e0e0;
-      }
+  <style>
+    .table-container {
+      overflow-x: auto;
+    }
 
-      .data-table th {
-        background: #f5f7fa;
-        font-weight: 600;
-        color: #2c3e50;
-      }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
 
-      .data-table tbody tr:hover {
-        background: #f8f9fa;
-      }
-    </style>
-<%- include('partials/footer', { additionalJS: ['/js/auth.js', '/js/salaries.js'] }) %>
+    .data-table th,
+    .data-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .data-table th {
+      background: #f5f7fa;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .data-table tbody tr:hover {
+      background: #f8f9fa;
+    }
+  </style>
+  <%- include('partials/footer', { additionalJS: ['/js/auth.js', '/js/salaries.js' ] }) %>

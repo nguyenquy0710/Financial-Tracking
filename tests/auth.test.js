@@ -135,7 +135,7 @@ describe('Authentication', () => {
           password: 'password123',
           name: 'Test User'
         });
-      
+
       token = res.body.data.token;
     });
 

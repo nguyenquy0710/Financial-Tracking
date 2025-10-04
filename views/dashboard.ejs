@@ -1,6 +1,6 @@
-<%- include('partials/header', { title: 'Dashboard', additionalCSS: ['/css/dashboard.css'] }) %>
-    <div class="app-container">
-      <%- include('partials/sidebar', { currentPage: 'dashboard' }) %>
+<%- include('partials/header', { title: 'Dashboard' , additionalCSS: ['/css/dashboard.css'] }) %>
+  <div class="app-container">
+    <%- include('partials/sidebar', { currentPage: 'dashboard' }) %>
 
       <!-- Main Content -->
       <main class="main-content">
@@ -74,6 +74,6 @@
           </div>
         </div>
       </main>
-    </div>
+  </div>
 
-<%- include('partials/footer', { additionalJS: ['/js/auth.js', '/js/dashboard.js'] }) %>
+  <%- include('partials/footer', { additionalJS: ['/js/auth.js', '/js/dashboard.js' ] }) %>
