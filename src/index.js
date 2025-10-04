@@ -128,12 +128,13 @@ app.listen(PORT, () => {
   console.log(`
 ╔═══════════════════════════════════════════════════════════╗
 ║                                                           ║
-║   FinTrack - Smart Financial Companion Platform          ║
-║   Người bạn đồng hành tài chính thông minh               ║
+║   FinTrack - Smart Financial Companion Platform           ║
+║   Người bạn đồng hành tài chính thông minh                ║
 ║                                                           ║
-║   Server running on port ${PORT}                            ║
-║   Environment: ${config.server.env}                              ║
-║   API Documentation: http://localhost:${PORT}/api-docs        ║
+║   Server running on port ${PORT}                          ║
+║   Environment: ${config.server.env}                       ║
+║   WebApp: http://localhost:${PORT}                        ║
+║   API Documentation: http://localhost:${PORT}/api-docs    ║
 ║                                                           ║
 ╚═══════════════════════════════════════════════════════════╝
   `);
