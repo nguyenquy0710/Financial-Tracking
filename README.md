@@ -124,6 +124,29 @@ Server sẽ chạy tại / Server will run at: `http://localhost:3000`
 
 ## 📚 API Documentation
 
+### Swagger UI (Interactive Documentation)
+
+FinTrack cung cấp tài liệu API đầy đủ và tương tác thông qua Swagger UI:
+
+**🔗 Truy cập Swagger UI:** `http://localhost:3000/api-docs`
+
+Swagger UI cho phép bạn:
+- 📖 Xem tất cả các API endpoints có sẵn
+- 🧪 Test API trực tiếp từ trình duyệt
+- 🔐 Authenticate với JWT token
+- 📝 Xem chi tiết request/response schemas
+- 💡 Xem ví dụ về request body và responses
+
+**Để sử dụng Swagger UI:**
+1. Mở `http://localhost:3000/api-docs` trong trình duyệt
+2. Click vào nút **"Authorize"** ở góc trên bên phải
+3. Nhập JWT token (lấy từ endpoint login) với format: `Bearer <your-token>`
+4. Bây giờ bạn có thể test các protected endpoints
+
+**API JSON Specification:** `http://localhost:3000/api-docs.json`
+
+### API Endpoints Overview
+
 ### Authentication Endpoints
 
 #### Register
@@ -542,7 +565,8 @@ Financial-Tracking/
 ├── src/
 │   ├── config/           # Cấu hình ứng dụng
 │   │   ├── config.js
-│   │   └── database.js
+│   │   ├── database.js
+│   │   └── swagger.js          # NEW - Swagger configuration
 │   ├── controllers/      # Business logic
 │   │   ├── authController.js
 │   │   ├── transactionController.js
