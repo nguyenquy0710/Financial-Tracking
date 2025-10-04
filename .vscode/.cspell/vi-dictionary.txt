@@ -14,9 +14,11 @@ chọn
 chưa
 chứa
 chuẩn
+chuyển
 công
 cộng
 cuối
+dàng
 dạng
 đăng
 danh
@@ -44,6 +46,8 @@ hiệu
 hình
 hoặc
 hoạt
+hướng
+khác
 khách
 khẩu
 khóa
@@ -62,6 +66,7 @@ lòng
 Lương
 minh
 muốn
+ngay
 nghĩa
 người
 nguyên
@@ -118,5 +123,6 @@ trường
 truy
 tương
 tượng
+tuyệt
 xong
 xuất
