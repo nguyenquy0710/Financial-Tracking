@@ -4,6 +4,8 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const compression = require('compression');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./config/swagger');
 const connectDB = require('./config/database');
 const errorHandler = require('./middleware/errorHandler');
 const config = require('./config/config');
@@ -46,6 +48,18 @@ if (config.server.env === 'development') {
   app.use(morgan('combined'));
 }
 
+// Swagger Documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: 'FinTrack API Documentation'
+}));
+
+// Swagger JSON
+app.get('/api-docs.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/transactions', transactionRoutes);
@@ -78,6 +92,7 @@ app.get('/', (req, res) => {
     message: 'Welcome to FinTrack API',
     version: '1.0.0',
     description: 'Smart Financial Companion Platform - Người bạn đồng hành tài chính thông minh',
+    documentation: '/api-docs',
     endpoints: {
       auth: '/api/auth',
       transactions: '/api/transactions',
@@ -118,7 +133,7 @@ app.listen(PORT, () => {
 ║                                                           ║
 ║   Server running on port ${PORT}                            ║
 ║   Environment: ${config.server.env}                              ║
-║   API Documentation: http://localhost:${PORT}/                ║
+║   API Documentation: http://localhost:${PORT}/api-docs        ║
 ║                                                           ║
 ╚═══════════════════════════════════════════════════════════╝
   `);
