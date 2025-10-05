@@ -21,6 +21,7 @@ pids
 pycache
 reranker
 sapo
+Swal
 vite
 vitepress
 vuepress

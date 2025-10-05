@@ -45,6 +45,7 @@ hiện
 hiệu
 hình
 hoặc
+Hoàn
 hoạt
 hướng
 khác
@@ -53,11 +54,14 @@ khẩu
 khóa
 khoản
 khôi
+Khởi
 không
 khớp
 kiểm
 kiệm
+kiện
 kiểu
+Lắng
 lệnh
 liệu
 linh
@@ -69,6 +73,7 @@ muốn
 năng
 ngân
 ngay
+nghe
 nghĩa
 người
 nguyên
