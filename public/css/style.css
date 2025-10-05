@@ -122,12 +122,6 @@ nav a:hover {
   color: #333;
 }
 
-.feature-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-}
-
 .feature-card {
   background: #f8f9fa;
   padding: 2rem;
@@ -136,6 +130,7 @@ nav a:hover {
   transition:
     transform 0.3s,
     box-shadow 0.3s;
+  height: 100%;
 }
 
 .feature-card:hover {
@@ -223,18 +218,13 @@ nav a:hover {
   color: #333;
 }
 
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 2rem;
-}
-
 .stat-card {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   padding: 2rem;
   border-radius: 10px;
   text-align: center;
+  height: 100%;
 }
 
 .stat-value {
@@ -304,9 +294,7 @@ footer p {
     align-items: center;
   }
 
-  .feature-grid,
-  .api-examples,
-  .stats-grid {
+  .api-examples {
     grid-template-columns: 1fr;
   }
 }
