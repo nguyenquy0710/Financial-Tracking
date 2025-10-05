@@ -74,34 +74,83 @@
       </main>
   </div>
 
-  <!-- Add/Edit Rental Modal -->
+  <!-- Add/Edit Salary Modal -->
   <div id="salaryModal" class="modal">
     <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <h2 id="modal-title">Thêm Lương</h2>
-      <form id="salary-form">
-        <input type="hidden" id="salary-id" />
+      <span class="close" onclick="closeSalaryModal()">&times;</span>
+      <h2 id="modalTitle">Thêm Lương</h2>
+      <form id="salaryForm">
+        <input type="hidden" id="salaryId" />
+        
         <div class="form-group">
-          <label for="salary-amount">Số tiền (VND):</label>
-          <input type="number" id="salary-amount" required />
+          <label for="month">Tháng:</label>
+          <input type="month" id="month" required />
         </div>
+
         <div class="form-group">
-          <label for="salary-source">Nguồn:</label>
-          <select id="salary-source" required>
-            <option value="">Chọn nguồn</option>
-            <option value="company">Công ty</option>
-            <option value="freelance">Freelance</option>
-            <option value="other">Khác</option>
-          </select>
+          <label for="company">Công ty:</label>
+          <input type="text" id="company" value="VIHAT" />
         </div>
+
+        <h3>Lương công ty</h3>
         <div class="form-group">
-          <label for="salary-date">Ngày nhận:</label>
-          <input type="date" id="salary-date" required />
+          <label for="baseSalary">Lương cơ bản (VND):</label>
+          <input type="number" id="baseSalary" min="0" value="0" />
         </div>
+
         <div class="form-group">
-          <label for="salary-notes">Ghi chú:</label>
-          <textarea id="salary-notes" rows="3"></textarea>
+          <label for="kpi">KPI (VND):</label>
+          <input type="number" id="kpi" min="0" value="0" />
         </div>
+
+        <div class="form-group">
+          <label for="leader">Leader (VND):</label>
+          <input type="number" id="leader" min="0" value="0" />
+        </div>
+
+        <div class="form-group">
+          <label for="project">Dự án (VND):</label>
+          <input type="number" id="project" min="0" value="0" />
+        </div>
+
+        <div class="form-group">
+          <label for="overtime">Tăng ca (VND):</label>
+          <input type="number" id="overtime" min="0" value="0" />
+        </div>
+
+        <div class="form-group">
+          <label for="bonus13thMonth">Thưởng tháng 13 (VND):</label>
+          <input type="number" id="bonus13thMonth" min="0" value="0" />
+        </div>
+
+        <h3>Freelance</h3>
+        <div class="form-group">
+          <label for="freelanceDakiatech">Dakiatech (VND):</label>
+          <input type="number" id="freelanceDakiatech" min="0" value="0" />
+        </div>
+
+        <div class="form-group">
+          <label for="freelanceOther">Khác (VND):</label>
+          <input type="number" id="freelanceOther" min="0" value="0" />
+        </div>
+
+        <div class="form-group">
+          <label for="receiveDate">Ngày nhận lương:</label>
+          <input type="date" id="receiveDate" />
+        </div>
+
+        <div class="form-group">
+          <label for="notes">Ghi chú:</label>
+          <textarea id="notes" rows="3"></textarea>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px; padding: 15px; background: #f5f7fa; border-radius: 8px;">
+          <h4>Tổng cộng:</h4>
+          <p><strong>Lương công ty:</strong> <span id="displayTotalCompany">0 VND</span></p>
+          <p><strong>Freelance:</strong> <span id="displayTotalFreelance">0 VND</span></p>
+          <p style="font-size: 1.2em; color: #2ecc71;"><strong>Tổng thu nhập:</strong> <span id="displayTotalIncome">0 VND</span></p>
+        </div>
+
         <button type="submit" class="btn btn-primary">Lưu</button>
       </form>
     </div>
@@ -132,6 +181,104 @@
 
     .data-table tbody tr:hover {
       background: #f8f9fa;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 2% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 90%;
+      max-width: 800px;
+      border-radius: 8px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-content h3 {
+      color: #2c3e50;
+      margin-top: 20px;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #3498db;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      color: #2c3e50;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+
+    .btn-sm {
+      padding: 5px 10px;
+      font-size: 0.9em;
+      margin: 0 2px;
+      border: none;
+      background: #3498db;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn-sm:hover {
+      background: #2980b9;
+    }
+
+    .btn-danger {
+      background: #e74c3c;
+    }
+
+    .btn-danger:hover {
+      background: #c0392b;
     }
   </style>
 
