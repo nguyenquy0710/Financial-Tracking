@@ -200,13 +200,21 @@ async function deleteDeposit(id) {
 
     const data = await response.json();
     if (data.success) {
-      alert('Xóa sổ tiết kiệm thành công!');
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.SUCCESS,
+        title: "Thành công",
+        text: 'Xóa sổ tiết kiệm thành công!',
+      });
       loadDeposits();
       loadStats();
     }
   } catch (error) {
     console.error('Error deleting deposit:', error);
-    alert('Có lỗi xảy ra!');
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.ERROR,
+      title: "Lỗi",
+      text: 'Có lỗi xảy ra khi xóa sổ tiết kiệm!',
+    });
   }
 }
 
@@ -253,7 +261,11 @@ document.getElementById('depositForm').addEventListener('submit', async (e) => {
     }
   } catch (error) {
     console.error('Error saving deposit:', error);
-    alert('Có lỗi xảy ra!');
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.ERROR,
+      title: "Lỗi",
+      text: 'Có lỗi xảy ra khi lưu sổ tiết kiệm!',
+    });
   }
 });
 

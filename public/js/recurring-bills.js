@@ -219,13 +219,21 @@ async function deleteBill(id) {
 
     const data = await response.json();
     if (data.success) {
-      alert('Xóa hóa đơn thành công!');
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.SUCCESS,
+        title: "Thành công",
+        text: 'Xóa hóa đơn thành công!'
+      });
       loadBills();
       loadStats();
     }
   } catch (error) {
     console.error('Error deleting bill:', error);
-    alert('Có lỗi xảy ra!');
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.ERROR,
+      title: "Lỗi",
+      text: 'Có lỗi xảy ra khi xóa hóa đơn!'
+    });
   }
 }
 
@@ -248,14 +256,22 @@ async function markAsPaid(id) {
 
     const data = await response.json();
     if (data.success) {
-      alert('Đã đánh dấu thanh toán!');
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.SUCCESS,
+        title: "Thành công",
+        text: 'Đánh dấu đã thanh toán thành công!'
+      });
       loadBills();
       loadUpcomingBills();
       loadStats();
     }
   } catch (error) {
     console.error('Error marking as paid:', error);
-    alert('Có lỗi xảy ra!');
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.ERROR,
+      title: "Lỗi",
+      text: 'Có lỗi xảy ra khi đánh dấu là đã thanh toán!'
+    });
   }
 }
 
@@ -290,14 +306,22 @@ document.getElementById('billForm').addEventListener('submit', async (e) => {
 
     const data = await response.json();
     if (data.success) {
-      alert(billId ? 'Cập nhật thành công!' : 'Thêm hóa đơn thành công!');
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.SUCCESS,
+        title: "Thành công",
+        text: billId ? 'Cập nhật thành công!' : 'Thêm hóa đơn thành công!'
+      });
       closeBillModal();
       loadBills();
       loadStats();
     }
   } catch (error) {
     console.error('Error saving bill:', error);
-    alert('Có lỗi xảy ra!');
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.ERROR,
+      title: "Lỗi",
+      text: 'Có lỗi xảy ra khi lưu hóa đơn!'
+    });
   }
 });
 

@@ -1,4 +1,5 @@
-<%- include('partials/header', { title: 'Chi tiêu' , additionalCSS: ['/css/dashboard.css'] }) %>
+<%- include('partials/header', { title: 'Chi tiêu' , additionalCSS: [ '/css/dashboard.css' , '/css/expenses.scss' ] }) %>
+
   <div class="app-container">
     <%- include('partials/sidebar', { currentPage: 'expenses' }) %>
 
@@ -17,14 +18,14 @@
           <div class="card">
             <h2>Phân bổ 6 lọ (6 Jars Method)</h2>
             <div class="row g-3">
-              <div class="col-lg-3 col-md-6">
+              <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="jar-card">
                   <div class="jar-icon">🎁</div>
                   <h4>Gửi Mẹ</h4>
                   <p class="jar-amount" id="jar-mother">0 VND</p>
                 </div>
               </div>
-              <div class="col-lg-3 col-md-6">
+              <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="jar-card">
                   <div class="jar-icon">🏠</div>
                   <h4>NEC (55%)</h4>
@@ -32,7 +33,7 @@
                   <p class="jar-amount" id="jar-nec">0 VND</p>
                 </div>
               </div>
-              <div class="col-lg-3 col-md-6">
+              <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="jar-card">
                   <div class="jar-icon">💎</div>
                   <h4>FFA (10%)</h4>
@@ -40,7 +41,7 @@
                   <p class="jar-amount" id="jar-ffa">0 VND</p>
                 </div>
               </div>
-              <div class="col-lg-3 col-md-6">
+              <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="jar-card">
                   <div class="jar-icon">📚</div>
                   <h4>EDUC (10%)</h4>
@@ -48,7 +49,7 @@
                   <p class="jar-amount" id="jar-educ">0 VND</p>
                 </div>
               </div>
-              <div class="col-lg-3 col-md-6">
+              <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="jar-card">
                   <div class="jar-icon">🎉</div>
                   <h4>PLAY (10%)</h4>
@@ -56,7 +57,7 @@
                   <p class="jar-amount" id="jar-play">0 VND</p>
                 </div>
               </div>
-              <div class="col-lg-3 col-md-6">
+              <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="jar-card">
                   <div class="jar-icon">❤️</div>
                   <h4>GIVE (7%)</h4>
@@ -64,7 +65,7 @@
                   <p class="jar-amount" id="jar-give">0 VND</p>
                 </div>
               </div>
-              <div class="col-lg-3 col-md-6">
+              <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="jar-card">
                   <div class="jar-icon">🏦</div>
                   <h4>LTS (10%)</h4>
@@ -86,71 +87,5 @@
         </div>
       </main>
   </div>
-
-  <style>
-    .jars-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 15px;
-      margin: 20px 0;
-    }
-
-    .jar-card {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 20px;
-      border-radius: 10px;
-      text-align: center;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .jar-icon {
-      font-size: 32px;
-      margin-bottom: 10px;
-    }
-
-    .jar-card h4 {
-      margin: 5px 0;
-      font-size: 16px;
-    }
-
-    .jar-subtitle {
-      font-size: 11px;
-      opacity: 0.9;
-      margin: 5px 0;
-    }
-
-    .jar-amount {
-      font-size: 18px;
-      font-weight: bold;
-      margin: 10px 0 0 0;
-    }
-
-    .table-container {
-      overflow-x: auto;
-    }
-
-    .data-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .data-table th,
-    .data-table td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #e0e0e0;
-    }
-
-    .data-table th {
-      background: #f5f7fa;
-      font-weight: 600;
-      color: #2c3e50;
-    }
-
-    .data-table tbody tr:hover {
-      background: #f8f9fa;
-    }
-  </style>
 
   <%- include('partials/footer', { additionalJS: [ '/js/expenses.js' ] }) %>

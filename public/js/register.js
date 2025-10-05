@@ -76,34 +76,54 @@ $(document).ready(function () {
     // Validate name
     if (name.length < 2) {
       $('#name').addClass('is-invalid');
-      showAlert('Vui lòng nhập họ và tên hợp lệ (tối thiểu 2 ký tự)', 'danger');
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.ERROR,
+        title: "Lỗi",
+        text: 'Vui lòng nhập họ và tên hợp lệ (tối thiểu 2 ký tự)'
+      });
       return;
     }
 
     // Validate email
     if (!validateEmail(email)) {
       $('#email').addClass('is-invalid');
-      showAlert('Vui lòng nhập địa chỉ email hợp lệ', 'danger');
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.ERROR,
+        title: "Lỗi",
+        text: 'Vui lòng nhập địa chỉ email hợp lệ'
+      });
       return;
     }
 
     // Validate password
     if (password.length < 6) {
       $('#password').addClass('is-invalid');
-      showAlert('Mật khẩu phải có ít nhất 6 ký tự', 'danger');
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.ERROR,
+        title: "Lỗi",
+        text: 'Mật khẩu phải có ít nhất 6 ký tự'
+      });
       return;
     }
 
     // Validate confirm password
     if (password !== confirmPassword) {
       $('#confirm-password').addClass('is-invalid');
-      showAlert('Mật khẩu xác nhận không khớp', 'danger');
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.ERROR,
+        title: "Lỗi",
+        text: 'Mật khẩu xác nhận không khớp'
+      });
       return;
     }
 
     // Validate terms
     if (!termsAccepted) {
-      showAlert('Vui lòng đồng ý với điều khoản dịch vụ', 'danger');
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.ERROR,
+        title: "Lỗi",
+        text: 'Vui lòng đồng ý với điều khoản dịch vụ'
+      });
       return;
     }
 
@@ -142,7 +162,11 @@ $(document).ready(function () {
         }
 
         // Show success message
-        showAlert('Đăng ký thành công! Đang chuyển hướng...', 'success');
+        AppSDK.Alert.show({
+          icon: AppSDK.Enums.AlertIcon.SUCCESS,
+          title: "Thành công",
+          text: 'Đăng ký thành công! Chuyển hướng đến trang tổng quan...',
+        });
 
         // Add smooth transition effect
         $('body').fadeOut(500, function () {

@@ -145,13 +145,21 @@ async function deleteSaving(id) {
 
     const data = await response.json();
     if (data.success) {
-      alert('Xóa thành công!');
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.SUCCESS,
+        title: "Thành công",
+        text: 'Xóa thành công!'
+      });
       loadSavings();
       loadStats();
     }
   } catch (error) {
     console.error('Error deleting saving:', error);
-    alert('Có lỗi xảy ra!');
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.ERROR,
+      title: "Lỗi",
+      text: 'Có lỗi xảy ra!'
+    });
   }
 }
 
@@ -196,7 +204,11 @@ document.getElementById('savingForm').addEventListener('submit', async (e) => {
     }
   } catch (error) {
     console.error('Error saving:', error);
-    alert('Có lỗi xảy ra!');
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.ERROR,
+      title: "Lỗi",
+      text: 'Có lỗi xảy ra!'
+    });
   }
 });
 

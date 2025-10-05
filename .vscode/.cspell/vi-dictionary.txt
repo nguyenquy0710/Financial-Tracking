@@ -8,6 +8,7 @@ Cảnh
 chăm
 chấp
 chạy
+chiếm
 chính
 chỉnh
 chối
@@ -36,6 +37,7 @@ dụng
 đúng
 được
 đường
+giãn
 giao
 giây
 giúp
@@ -93,6 +95,7 @@ phải
 phân
 phần
 phản
+pháp
 phòng
 phục
 phương

@@ -70,14 +70,22 @@ $(document).ready(function () {
     // Validate email
     if (!validateEmail(email)) {
       $('#email').addClass('is-invalid');
-      showAlert('Vui lòng nhập địa chỉ email hợp lệ', 'danger');
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.ERROR,
+        title: "Lỗi",
+        text: 'Vui lòng nhập email hợp lệ!',
+      });
       return;
     }
 
     // Validate password
     if (password.length < 6) {
       $('#password').addClass('is-invalid');
-      showAlert('Mật khẩu phải có ít nhất 6 ký tự', 'danger');
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.ERROR,
+        title: "Lỗi",
+        text: 'Mật khẩu phải có ít nhất 6 ký tự!',
+      })
       return;
     }
 
@@ -110,7 +118,11 @@ $(document).ready(function () {
         }
 
         // Show success message
-        showAlert('Đăng nhập thành công! Đang chuyển hướng...', 'success');
+        AppSDK.Alert.show({
+          icon: AppSDK.Enums.AlertIcon.SUCCESS,
+          title: "Thành công",
+          text: 'Đăng nhập thành công! Chuyển hướng đến trang tổng quan...',
+        });
 
         // Add smooth transition effect
         $('body').fadeOut(500, function () {
@@ -155,7 +167,11 @@ $(document).ready(function () {
   // Handle forgot password
   $('#forgot-password').on('click', function (e) {
     e.preventDefault();
-    showAlert('Tính năng đặt lại mật khẩu sẽ sớm được cập nhật', 'info');
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.INFO,
+      title: "Thông tin",
+      text: 'Vui lòng liên hệ quản trị viên để đặt lại mật khẩu.',
+    });
   });
 
   // Add shake animation CSS

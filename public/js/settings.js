@@ -137,12 +137,20 @@ async function deleteAccount(id) {
 
     const data = await response.json();
     if (data.success) {
-      alert('Xóa thành công!');
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.SUCCESS,
+        title: "Thành công",
+        text: 'Xóa thành công!'
+      });
       loadBankAccounts();
     }
   } catch (error) {
     console.error('Error deleting account:', error);
-    alert('Có lỗi xảy ra!');
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.ERROR,
+      title: "Lỗi",
+      text: 'Có lỗi xảy ra!'
+    });
   }
 }
 
@@ -155,12 +163,20 @@ async function setDefaultAccount(id) {
 
     const data = await response.json();
     if (data.success) {
-      alert('Đã đặt làm tài khoản mặc định!');
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.SUCCESS,
+        title: "Thành công",
+        text: 'Đã đặt làm tài khoản mặc định!'
+      });
       loadBankAccounts();
     }
   } catch (error) {
     console.error('Error setting default:', error);
-    alert('Có lỗi xảy ra!');
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.ERROR,
+      title: "Lỗi",
+      text: 'Có lỗi xảy ra!'
+    });
   }
 }
 
@@ -194,13 +210,21 @@ document.getElementById('accountForm').addEventListener('submit', async (e) => {
 
     const data = await response.json();
     if (data.success) {
-      alert(accountId ? 'Cập nhật thành công!' : 'Thêm tài khoản thành công!');
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.SUCCESS,
+        title: "Thành công",
+        text: accountId ? 'Cập nhật thành công!' : 'Thêm tài khoản thành công!'
+      });
       closeAccountModal();
       loadBankAccounts();
     }
   } catch (error) {
     console.error('Error saving account:', error);
-    alert('Có lỗi xảy ra!');
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.ERROR,
+      title: "Lỗi",
+      text: 'Có lỗi xảy ra!'
+    });
   }
 });
 

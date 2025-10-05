@@ -175,14 +175,26 @@ const deleteRental = async (id) => {
 
     const data = await response.json();
     if (data.success) {
-      alert('Xóa bản ghi thành công!');
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.SUCCESS,
+        title: "Thành công",
+        text: 'Xóa bản ghi thành công!'
+      });
       loadRentals();
     } else {
-      alert('Lỗi: ' + (data.message || 'Không thể xóa'));
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.ERROR,
+        title: "Lỗi",
+        text: 'Lỗi: ' + (data.message || 'Không thể xóa')
+      });
     }
   } catch (error) {
     console.error('Error deleting rental:', error);
-    alert('Có lỗi xảy ra!');
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.ERROR,
+      title: "Lỗi",
+      text: 'Có lỗi xảy ra!'
+    });
   }
 };
 
@@ -277,14 +289,26 @@ document.getElementById('rentalForm').addEventListener('submit', async (e) => {
 
     const data = await response.json();
     if (data.success) {
-      alert(rentalId ? 'Cập nhật thành công!' : 'Thêm thuê phòng thành công!');
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.SUCCESS,
+        title: "Thành công",
+        text: rentalId ? 'Cập nhật thành công!' : 'Thêm thuê phòng thành công!'
+      });
       closeRentalModal();
       loadRentals();
     } else {
-      alert('Lỗi: ' + (data.message || 'Không thể lưu'));
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.ERROR,
+        title: "Lỗi",
+        text: 'Lỗi: ' + (data.message || 'Không thể lưu')
+      });
     }
   } catch (error) {
     console.error('Error saving rental:', error);
-    alert('Có lỗi xảy ra!');
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.ERROR,
+      title: "Lỗi",
+      text: 'Có lỗi xảy ra!'
+    });
   }
 });
