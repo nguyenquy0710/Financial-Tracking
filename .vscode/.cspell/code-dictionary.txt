@@ -7,7 +7,7 @@ dotenv
 esms
 esmsvn
 haravan
-INITDB
+initdb
 jscoverage
 jspm
 miscased
@@ -22,7 +22,7 @@ pids
 pycache
 reranker
 sapo
-Swal
+swal
 vietqr
 vite
 vitepress

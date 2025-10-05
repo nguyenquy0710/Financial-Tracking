@@ -93,7 +93,7 @@ app.use(express.static('public'));
 
 // ================ Logging ================ //
 // Tạo đường dẫn đến file log
-const logDirectory = path.join(__dirname, 'logs');
+const logDirectory = path.join(__dirname, '..', 'logs');
 if (!fs.existsSync(logDirectory)) {
   fs.mkdirSync(logDirectory);
 }
@@ -110,7 +110,7 @@ const accessLogStream = rfs.createStream('access.log', {
 
 // ⚙️ Kích hoạt Morgan với luồng ghi log xoay
 if (config.server.env === 'development') {
-  app.use(morgan('dev'));
+  app.use(morgan('dev')); // In log ra console + ghi vào file access.log
 } else {
   app.use(morgan('combined', { stream: accessLogStream })); // Ghi log vào file access.log
 }
