@@ -40,6 +40,41 @@
           </div>
           <div class="col-lg-3 col-md-6">
             <div class="feature-card">
+              <div class="icon">💵</div>
+              <h3>Quản lý lương</h3>
+              <p>Theo dõi lương công ty, freelance. Phân tích tăng trưởng thu nhập.</p>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="feature-card">
+              <div class="icon">🏠</div>
+              <h3>Quản lý thuê phòng</h3>
+              <p>Theo dõi tiền thuê, điện, nước, internet. Tính toán tự động tổng chi phí.</p>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="feature-card">
+              <div class="icon">💳</div>
+              <h3>Phương pháp 6 lọ</h3>
+              <p>Quản lý chi tiêu theo mô hình 6 lọ: NEC, FFA, EDUC, PLAY, GIVE, LTS.</p>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="feature-card">
+              <div class="icon">💰</div>
+              <h3>Tiết kiệm & Đầu tư</h3>
+              <p>Gửi tiết kiệm, sổ ngân hàng. Theo dõi kỳ hạn và lãi suất.</p>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="feature-card">
+              <div class="icon">📋</div>
+              <h3>Hóa đơn định kỳ</h3>
+              <p>Quản lý các khoản thanh toán định kỳ. Nhắc nhở đến hạn tự động.</p>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="feature-card">
               <div class="icon">📊</div>
               <h3>Phân tích & báo cáo</h3>
               <p>Biểu đồ chi tiêu chi tiết. Cảnh báo khi vượt hạn mức.</p>
@@ -47,16 +82,23 @@
           </div>
           <div class="col-lg-3 col-md-6">
             <div class="feature-card">
-              <div class="icon">💰</div>
-              <h3>Ngân sách</h3>
-              <p>Đặt hạn mức chi cho từng hạng mục. Theo dõi chi tiêu theo thời gian thực.</p>
+              <div class="icon">💸</div>
+              <h3>Ngân sách & Mục tiêu</h3>
+              <p>Đặt hạn mức chi tiêu. Lập kế hoạch tiết kiệm và theo dõi tiến độ.</p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6">
             <div class="feature-card">
-              <div class="icon">🎯</div>
-              <h3>Mục tiêu tài chính</h3>
-              <p>Lập kế hoạch tiết kiệm. Nhắc nhở tiến độ mục tiêu.</p>
+              <div class="icon">📁</div>
+              <h3>Excel Import/Export</h3>
+              <p>Import dữ liệu từ Excel. Export toàn bộ dữ liệu ra file Excel.</p>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="feature-card">
+              <div class="icon">🏦</div>
+              <h3>Tài khoản ngân hàng</h3>
+              <p>Quản lý nhiều tài khoản. Theo dõi số dư và giao dịch.</p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6">
@@ -100,6 +142,58 @@ GET /api/transactions/stats/summary</code></pre>
           </div>
 
           <div class="api-example">
+            <h3>Salary & Income</h3>
+            <pre><code>GET /api/salaries
+POST /api/salaries
+GET /api/salaries/stats/summary
+PUT /api/salaries/:id
+DELETE /api/salaries/:id</code></pre>
+          </div>
+
+          <div class="api-example">
+            <h3>Rental Management</h3>
+            <pre><code>GET /api/rentals
+POST /api/rentals
+GET /api/rentals/stats/summary
+PUT /api/rentals/:id
+DELETE /api/rentals/:id</code></pre>
+          </div>
+
+          <div class="api-example">
+            <h3>Expenses (6 Jars)</h3>
+            <pre><code>GET /api/expenses
+POST /api/expenses
+GET /api/expenses/stats/by-jar
+PUT /api/expenses/:id
+DELETE /api/expenses/:id</code></pre>
+          </div>
+
+          <div class="api-example">
+            <h3>Savings & Deposits</h3>
+            <pre><code>GET /api/savings
+POST /api/savings
+GET /api/deposits
+POST /api/deposits
+GET /api/deposits/upcoming</code></pre>
+          </div>
+
+          <div class="api-example">
+            <h3>Recurring Bills</h3>
+            <pre><code>GET /api/recurring-bills
+POST /api/recurring-bills
+GET /api/recurring-bills/upcoming
+PUT /api/recurring-bills/:id</code></pre>
+          </div>
+
+          <div class="api-example">
+            <h3>Bank Accounts</h3>
+            <pre><code>GET /api/bank-accounts
+POST /api/bank-accounts
+PUT /api/bank-accounts/:id
+DELETE /api/bank-accounts/:id</code></pre>
+          </div>
+
+          <div class="api-example">
             <h3>Budgets & Goals</h3>
             <pre><code>GET /api/budgets
 POST /api/budgets
@@ -108,6 +202,14 @@ GET /api/budgets/alerts
 GET /api/goals
 POST /api/goals
 POST /api/goals/:id/contribute</code></pre>
+          </div>
+
+          <div class="api-example">
+            <h3>Excel Import/Export</h3>
+            <pre><code>POST /api/excel/import
+GET /api/excel/export
+POST /api/excel/import/rentals
+POST /api/excel/import/salaries</code></pre>
           </div>
         </div>
 
