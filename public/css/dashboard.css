@@ -211,6 +211,13 @@
 }
 
 /* Charts */
+.chart-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  align-items: center;
+}
+
 .charts-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -247,6 +254,14 @@
   position: relative;
   height: 300px;
   width: 100%;
+}
+
+.chart-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #95a5a6;
 }
 
 /* Recent Activities */

@@ -13,6 +13,25 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Load charts
   await loadCharts();
+
+  // Setup refresh button
+  const refreshBtn = document.getElementById('refresh-charts');
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', async () => {
+      refreshBtn.disabled = true;
+      refreshBtn.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Đang tải...';
+      
+      try {
+        await loadSummaryData();
+        await loadCharts();
+      } catch (error) {
+        console.error('Failed to refresh data:', error);
+      } finally {
+        refreshBtn.disabled = false;
+        refreshBtn.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Làm mới';
+      }
+    });
+  }
 });
 
 // Load user information
@@ -107,6 +126,10 @@ const formatCurrency = (amount) => {
 // Load and render charts
 const loadCharts = async () => {
   try {
+    // Show loading state
+    showChartLoading('expense-chart-container');
+    showChartLoading('income-expense-chart-container');
+
     // Get current month date range
     const now = new Date();
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -119,6 +142,30 @@ const loadCharts = async () => {
     ]);
   } catch (error) {
     console.error('Failed to load charts:', error);
+  }
+};
+
+// Show loading state for charts
+const showChartLoading = (containerId) => {
+  const container = document.getElementById(containerId);
+  if (container) {
+    container.innerHTML = '<div class="chart-loading"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Đang tải...</span></div></div>';
+  }
+};
+
+// Show empty state for charts
+const showChartEmpty = (containerId, message) => {
+  const container = document.getElementById(containerId);
+  if (container) {
+    container.innerHTML = `<p class="chart-placeholder" style="display: flex; align-items: center; justify-content: center; height: 300px; color: #95a5a6;">${message}</p>`;
+  }
+};
+
+// Restore canvas for chart
+const restoreChartCanvas = (containerId, canvasId) => {
+  const container = document.getElementById(containerId);
+  if (container) {
+    container.innerHTML = `<canvas id="${canvasId}"></canvas>`;
   }
 };
 
@@ -145,15 +192,16 @@ const loadExpenseChart = async (startDate, endDate) => {
     
     // If no data, show message
     if (labels.length === 0) {
-      document.getElementById('expense-chart-container').innerHTML = '<p class="chart-placeholder" style="display: flex; align-items: center; justify-content: center; height: 300px; color: #95a5a6;">Chưa có dữ liệu chi tiêu</p>';
+      showChartEmpty('expense-chart-container', 'Chưa có dữ liệu chi tiêu');
       return;
     }
 
-    // Create chart
+    // Restore canvas and create chart
+    restoreChartCanvas('expense-chart-container', 'expense-chart');
     renderExpenseChart(labels, data);
   } catch (error) {
     console.error('Failed to load expense chart:', error);
-    document.getElementById('expense-chart-container').innerHTML = '<p class="chart-placeholder" style="display: flex; align-items: center; justify-content: center; height: 300px; color: #95a5a6;">Không thể tải biểu đồ chi tiêu</p>';
+    showChartEmpty('expense-chart-container', 'Không thể tải biểu đồ chi tiêu');
   }
 };
 
@@ -261,15 +309,16 @@ const loadIncomeExpenseChart = async (startDate, endDate) => {
 
     // If no data, show message
     if (incomes.every(v => v === 0) && expenses.every(v => v === 0)) {
-      document.getElementById('income-expense-chart-container').innerHTML = '<p class="chart-placeholder" style="display: flex; align-items: center; justify-content: center; height: 300px; color: #95a5a6;">Chưa có dữ liệu thu chi</p>';
+      showChartEmpty('income-expense-chart-container', 'Chưa có dữ liệu thu chi');
       return;
     }
 
-    // Create chart
+    // Restore canvas and create chart
+    restoreChartCanvas('income-expense-chart-container', 'income-expense-chart');
     renderIncomeExpenseChart(months, incomes, expenses);
   } catch (error) {
     console.error('Failed to load income vs expense chart:', error);
-    document.getElementById('income-expense-chart-container').innerHTML = '<p class="chart-placeholder" style="display: flex; align-items: center; justify-content: center; height: 300px; color: #95a5a6;">Không thể tải biểu đồ thu chi</p>';
+    showChartEmpty('income-expense-chart-container', 'Không thể tải biểu đồ thu chi');
   }
 };
 
