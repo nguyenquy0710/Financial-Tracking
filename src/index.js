@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const helmet = require('helmet');
+// const helmet = require('helmet');
 const morgan = require('morgan');
 const compression = require('compression');
 const swaggerUi = require('swagger-ui-express');
@@ -25,6 +25,7 @@ const depositRoutes = require('./routes/depositRoutes');
 const recurringBillRoutes = require('./routes/recurringBillRoutes');
 const bankAccountRoutes = require('./routes/bankAccountRoutes');
 const viewRoutes = require('./routes/viewRoutes');
+const externalRoutes = require('./routes/externalRoutes');
 
 // Initialize app
 const app = express();
@@ -102,6 +103,7 @@ app.use('/', viewRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/categories', categoryRoutes);
+app.use('/api/externals', externalRoutes);
 app.use('/api/budgets', budgetRoutes);
 app.use('/api/goals', goalRoutes);
 app.use('/api/rentals', rentalRoutes);

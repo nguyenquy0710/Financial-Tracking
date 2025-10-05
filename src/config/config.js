@@ -110,5 +110,15 @@ module.exports = {
       { name: 'Gift', nameVi: 'Quà tặng', icon: '🎁', keywords: ['gift', 'bonus', 'quà'] },
       { name: 'Other Income', nameVi: 'Thu nhập khác', icon: '💰', keywords: ['other', 'khác'] }
     ]
+  },
+
+  // External API Configurations
+  externalAPIs: {
+    vietQR: {
+      clientID: process.env.VIETQR_CLIENT_ID || 'your-client-id',
+      apiKey: process.env.VIETQR_API_KEY || 'your-api-key',
+      baseURL: 'https://api.vietqr.io/v2'
+    }
   }
+
 };

@@ -1,17 +1,17 @@
-// main-apps.js
+// apps-main.js
 class AppSDK {
   constructor(baseURL = '') {
     this.baseURL = baseURL;
     this.intervalId = null;
     this.onStatusChange = null; // callback khi trạng thái thay đổi
-    this.onError = null; // callback khi có lỗi
+    this.onError = (err) => { }; // callback khi có lỗi
   }
 
   // Hàm hủy và dọn dẹp
   destroy() {
     this.stopAutoCheck();
     this.onStatusChange = null;
-    this.onError = null;
+    this.onError = (err) => { }; // callback khi có lỗi
   }
 
   // Hàm kiểm tra API health
@@ -80,11 +80,11 @@ class AppSDK {
 // =============================================
 // Metadata (thông tin) của SDK
 // =============================================
-AppSDK.version = "1.0.0";
-AppSDK.author = "Nguyen Quy";
-AppSDK.license = "MIT";
-AppSDK.baseURL = window.location.origin ?? "http://localhost:3000"; // Thay đổi URL base của API nếu cần
-AppSDK.apiBaseURL = AppSDK.baseURL + "/api"; // URL base cho API
+AppSDK.VERSION = "1.0.0";
+AppSDK.AUTHOR = "Nguyen Quy";
+AppSDK.LICENSE = "MIT";
+AppSDK.BASE_URL = window.location.origin ?? "http://localhost:3000"; // Thay đổi URL base của API nếu cần
+AppSDK.API_BASE_URL = AppSDK.BASE_URL + "/api"; // URL base cho API
 
 // =============================================
 // Các enum (hằng số) dùng trong SDK
@@ -180,7 +180,7 @@ if (typeof module !== 'undefined' && module.exports) {
 // Khởi tạo SDK với cấu hình authToken
 // Nếu chạy trên browser đã import <script src="main-apps.js"></script>
 // =============================================
-const sdk = new AppSDK(baseURL = AppSDK.baseURL);
+const sdk = new AppSDK(baseURL = AppSDK.BASE_URL);
 
 // Gọi thủ công
 // AppSDK.Alert.show({
