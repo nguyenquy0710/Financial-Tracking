@@ -15,7 +15,7 @@ class AppSDK {
   }
 
   // Hàm hiển thị SweetAlert2 (https://sweetalert2.github.io/#examples)
-  sweetAlert({ icon = "info", title = "Thông báo", text = "", draggable = false } = {}) {
+  sweetAlert({ icon = AppSDK.Enums.AlertIcon.INFO, title = "Thông báo", text = "", draggable = false } = {}) {
     if (typeof Swal !== "undefined") {
       Swal.fire({
         icon, title, text, draggable,
@@ -67,7 +67,7 @@ class AppSDK {
 
         // Gọi SweetAlert2
         this.sweetAlert({
-          icon: "error",
+          icon: AppSDK.Enums.AlertIcon.ERROR,
           title: "API Offline",
           text: "Máy chủ API hiện không phản hồi!"
         });
@@ -79,7 +79,7 @@ class AppSDK {
       if (this.onError) this.onError(error);
 
       this.sweetAlert({
-        icon: "warning",
+        icon: AppSDK.Enums.AlertIcon.WARNING,
         title: "Kết nối thất bại",
         text: "Không thể kết nối tới API. Vui lòng kiểm tra lại!"
       });
@@ -104,7 +104,40 @@ class AppSDK {
   }
 }
 
-// Xuất module
+// =============================================
+// Metadata (thông tin) của SDK
+// =============================================
+AppSDK.version = "1.0.0";
+AppSDK.author = "Nguyen Quy";
+AppSDK.license = "MIT";
+AppSDK.baseURL = window.location.origin ?? "http://localhost:3000"; // Thay đổi URL base của API nếu cần
+AppSDK.apiBaseURL = AppSDK.baseURL + "/api"; // URL base cho API
+
+// =============================================
+// Các enum (hằng số) dùng trong SDK
+// =============================================
+AppSDK['Enums'] = Object.freeze({
+  AlertIcon: Object.freeze({
+    SUCCESS: "success",
+    ERROR: "error",
+    INFO: "info",
+    WARNING: "warning"
+  }),
+  Status: Object.freeze({
+    ONLINE: "online",
+    OFFLINE: "offline"
+  }),
+  KeyStorage: Object.freeze({
+    AUTH_TOKEN: "authToken",
+    USER_NAME: "userName",
+    USER_EMAIL: "userEmail"
+  }),
+});
+
+// =============================================
+// Xuất module cho Node.js / Electron
+// hoặc gán vào window cho browser
+// =============================================
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = AppSDK; // Cho Node.js / Electron
 } else {
@@ -112,14 +145,14 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 // =============================================
-// Khởi tạo SDK
+// Khởi tạo SDK với cấu hình authToken
 // Nếu chạy trên browser đã import <script src="main-apps.js"></script>
 // =============================================
-const sdk = new AppSDK("http://localhost:3000");
+const sdk = new AppSDK(baseURL = AppSDK.baseURL);
 
 // Gọi thủ công
 // sdk.sweetAlert({
-//   icon: "success",
+//   icon: AppSDK.Enums.AlertIcon.SUCCESS,
 //   title: "Hoàn tất",
 //   draggable: true,
 //   text: "API đã phản hồi thành công!"

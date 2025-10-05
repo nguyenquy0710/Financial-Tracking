@@ -1,7 +1,7 @@
 // js/savings.js
 
 let savings = [];
-let token = localStorage.getItem('token');
+let token = localStorage.getItem(AppSDK.Enums.KeyStorage.AUTH_TOKEN ?? 'authToken');
 
 if (!token) {
   window.location.href = `/login?redirectUrl=${encodeURIComponent(window.location.pathname)}`;

@@ -34,7 +34,7 @@ describe('Authentication', () => {
       expect(res.statusCode).toBe(201);
       expect(res.body.success).toBe(true);
       expect(res.body.data.user).toHaveProperty('email', 'test@example.com');
-      expect(res.body.data).toHaveProperty('token');
+      expect(res.body.data).toHaveProperty('authToken');
     });
 
     it('should not register user with existing email', async () => {
@@ -94,7 +94,7 @@ describe('Authentication', () => {
 
       expect(res.statusCode).toBe(200);
       expect(res.body.success).toBe(true);
-      expect(res.body.data).toHaveProperty('token');
+      expect(res.body.data).toHaveProperty('authToken');
       expect(res.body.data.user).toHaveProperty('email', 'test@example.com');
     });
 

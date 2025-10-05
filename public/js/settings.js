@@ -1,7 +1,7 @@
 // js/settings.js
 
 let accounts = [];
-let token = localStorage.getItem('token');
+let token = localStorage.getItem(AppSDK.Enums.KeyStorage.AUTH_TOKEN ?? 'authToken');
 let currentUser = null;
 
 if (!token) {
