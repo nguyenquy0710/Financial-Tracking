@@ -65,8 +65,16 @@ const loadSummaryData = async () => {
     // Load expenses
     const expenseData = await apiCall(`/expenses?startDate=${startOfMonth.toISOString()}&endDate=${endOfMonth.toISOString()}`);
     let totalExpense = 0;
+    let transactionCount = 0;
+    const categoryTotals = {};
+    
     if (expenseData.success && expenseData.data) {
-      totalExpense = expenseData.data.reduce((sum, e) => sum + (e.totalAmount || 0), 0);
+      transactionCount = expenseData.data.length;
+      expenseData.data.forEach(expense => {
+        totalExpense += expense.totalAmount || 0;
+        const category = expense.category || 'Khác';
+        categoryTotals[category] = (categoryTotals[category] || 0) + expense.totalAmount;
+      });
     }
     document.getElementById('total-expense').textContent = formatCurrency(totalExpense);
 
@@ -75,12 +83,16 @@ const loadSummaryData = async () => {
     let totalRent = 0;
     if (rentalData.success && rentalData.data) {
       totalRent = rentalData.data.reduce((sum, r) => sum + (r.total || 0), 0);
+      transactionCount += rentalData.data.length;
     }
     document.getElementById('total-rent').textContent = formatCurrency(totalRent);
 
     // Calculate savings (income - expenses - rent)
     const savings = totalIncome - totalExpense - totalRent;
     document.getElementById('total-savings').textContent = formatCurrency(savings);
+
+    // Update quick stats
+    updateQuickStats(transactionCount, totalExpense, totalRent, categoryTotals, now);
 
     // Load recent activities
     await loadRecentActivities();
@@ -89,23 +101,109 @@ const loadSummaryData = async () => {
   }
 };
 
+// Update quick stats
+const updateQuickStats = (transactionCount, totalExpense, totalRent, categoryTotals, currentDate) => {
+  // Transaction count
+  document.getElementById('transaction-count').textContent = transactionCount;
+
+  // Average daily expense
+  const daysInMonth = currentDate.getDate(); // Days passed in current month
+  const totalSpent = totalExpense + totalRent;
+  const avgDailyExpense = daysInMonth > 0 ? totalSpent / daysInMonth : 0;
+  document.getElementById('avg-daily-expense').textContent = formatCurrency(avgDailyExpense);
+
+  // Top category
+  let topCategory = 'Chưa có';
+  let maxAmount = 0;
+  
+  for (const [category, amount] of Object.entries(categoryTotals)) {
+    if (amount > maxAmount) {
+      maxAmount = amount;
+      topCategory = category;
+    }
+  }
+  
+  document.getElementById('top-category').textContent = topCategory;
+};
+
 // Load recent activities
 const loadRecentActivities = async () => {
   const activitiesList = document.getElementById('activities-list');
   activitiesList.innerHTML = '<p class="loading">Đang tải...</p>';
 
   try {
-    // This is a simplified version - you can expand this to show combined activities
-    const expenses = await apiCall('/expenses?perPage=5');
+    // Load different types of activities
+    const [expenses, salaries, rentals] = await Promise.all([
+      apiCall('/expenses?perPage=3'),
+      apiCall('/salaries?perPage=2'),
+      apiCall('/rentals?perPage=2')
+    ]);
 
-    if (expenses.success && expenses.data && expenses.data.length > 0) {
-      activitiesList.innerHTML = expenses.data.map(expense => `
-                <div class="activity-item">
-                    <strong>${expense.itemName}</strong>
-                    <p>${expense.category} - ${formatCurrency(expense.totalAmount)}</p>
-                    <small>${new Date(expense.month).toLocaleDateString('vi-VN')}</small>
-                </div>
-            `).join('');
+    const activities = [];
+
+    // Add expenses
+    if (expenses.success && expenses.data) {
+      expenses.data.forEach(expense => {
+        activities.push({
+          type: 'expense',
+          icon: '💸',
+          title: expense.itemName,
+          description: `${expense.category} - ${formatCurrency(expense.totalAmount)}`,
+          date: new Date(expense.month),
+          color: '#e74c3c'
+        });
+      });
+    }
+
+    // Add salaries
+    if (salaries.success && salaries.data) {
+      salaries.data.forEach(salary => {
+        activities.push({
+          type: 'income',
+          icon: '💰',
+          title: 'Thu nhập',
+          description: formatCurrency(salary.totalIncome),
+          date: new Date(salary.month),
+          color: '#27ae60'
+        });
+      });
+    }
+
+    // Add rentals
+    if (rentals.success && rentals.data) {
+      rentals.data.forEach(rental => {
+        activities.push({
+          type: 'rent',
+          icon: '🏠',
+          title: 'Tiền thuê nhà',
+          description: formatCurrency(rental.total),
+          date: new Date(rental.month),
+          color: '#3498db'
+        });
+      });
+    }
+
+    // Sort by date (most recent first)
+    activities.sort((a, b) => b.date - a.date);
+
+    // Limit to 10 most recent
+    const recentActivities = activities.slice(0, 10);
+
+    if (recentActivities.length > 0) {
+      activitiesList.innerHTML = recentActivities.map(activity => `
+        <div class="activity-item" style="border-left-color: ${activity.color};">
+          <div class="activity-icon">${activity.icon}</div>
+          <div class="activity-content">
+            <strong>${activity.title}</strong>
+            <p>${activity.description}</p>
+            <small>${activity.date.toLocaleDateString('vi-VN', { 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric' 
+            })}</small>
+          </div>
+        </div>
+      `).join('');
     } else {
       activitiesList.innerHTML = '<p class="loading">Chưa có hoạt động nào</p>';
     }
