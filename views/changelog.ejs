@@ -1,0 +1,29 @@
+<%- include('partials/header', { title: 'Nhật ký phát triển' , additionalCSS: ['/css/dashboard.css'] }) %>
+
+  <div class="app-container">
+    <%- include('partials/sidebar', { currentPage: 'changelog' }) %>
+      <main class="main-content">
+        <header class="top-bar">
+          <h1>📋 Nhật ký phát triển</h1>
+          <div class="user-info">
+            <span id="user-name">User</span>
+            <button class="btn-logout">Đăng xuất</button>
+          </div>
+        </header>
+        <div class="content">
+          <div class="card">
+            <div class="card-header">
+              <h2>Changelog</h2>
+              <p class="text-muted">Tất cả các thay đổi quan trọng của dự án được ghi lại ở đây.</p>
+            </div>
+            <div class="card-body">
+              <div id="changelogContent">
+                <p class="loading">Đang tải nội dung...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+  </div>
+
+  <%- include('partials/footer', { additionalJS: [ '/js/changelog.js' ] }) %>
