@@ -1,6 +1,7 @@
 // js/settings.js
 
 let accounts = [];
+let vietQrBanks = [];
 let token = localStorage.getItem(AppSDK.Enums.KeyStorage.AUTH_TOKEN ?? 'authToken');
 let currentUser = null;
 
@@ -48,6 +49,35 @@ function displayUserInfo(user) {
   if (user.currency) {
     document.getElementById('currency').value = user.currency;
   }
+}
+
+async function loadVietQrBanks() {
+  try {
+    vietQrBanks = await AppExternal.VietQR.getBanks();
+    console.log('✅ Loaded VietQR banks:', vietQrBanks.length);
+  } catch (error) {
+    console.error('Error loading VietQR banks:', error);
+    vietQrBanks = [];
+  }
+}
+
+function populateBankDropdown() {
+  const bankSelect = document.getElementById('bank');
+  if (!bankSelect) return;
+
+  // Clear existing options except the first one
+  bankSelect.innerHTML = '<option value="">-- Chọn ngân hàng --</option>';
+
+  // Add banks from VietQR
+  vietQrBanks.forEach(bank => {
+    const option = document.createElement('option');
+    option.value = bank.shortName || bank.name;
+    option.textContent = `${bank.shortName || bank.code} - ${bank.name}`;
+    option.dataset.bankCode = bank.code;
+    option.dataset.bankBin = bank.bin;
+    option.dataset.bankLogo = bank.logo;
+    bankSelect.appendChild(option);
+  });
 }
 
 function showEditProfileForm() {
@@ -228,6 +258,7 @@ function showAddAccountForm() {
   document.getElementById('accountForm').reset();
   document.getElementById('accountId').value = '';
   document.getElementById('isActive').checked = true;
+  populateBankDropdown();
   document.getElementById('accountModal').style.display = 'block';
 }
 
@@ -241,6 +272,7 @@ async function editAccount(id) {
 
   document.getElementById('modalTitle').textContent = 'Chỉnh Sửa Tài Khoản Ngân Hàng';
   document.getElementById('accountId').value = account._id;
+  populateBankDropdown();
   document.getElementById('bank').value = account.bank;
   document.getElementById('accountHolder').value = account.accountHolder;
   document.getElementById('accountNumber').value = account.accountNumber;
@@ -396,3 +428,4 @@ async function savePreferences() {
 // Initial load
 loadUserInfo();
 loadBankAccounts();
+loadVietQrBanks();
