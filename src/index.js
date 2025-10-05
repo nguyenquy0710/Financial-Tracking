@@ -92,26 +92,26 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded
 app.use(express.static('public'));
 
 // ================ Logging ================ //
-// Tạo đường dẫn đến file log
-const logDirectory = path.join(__dirname, '..', 'logs');
-if (!fs.existsSync(logDirectory)) {
-  fs.mkdirSync(logDirectory);
-}
-
-// 🔁 Tạo luồng ghi log xoay theo ngày + giới hạn dung lượng
-const accessLogStream = rfs.createStream('access.log', {
-  interval: '1d',        // Xoay log mỗi ngày (1d = one day)
-  size: '10M',           // Giới hạn kích thước mỗi file: 10MB
-  compress: 'gzip',      // Tự động nén log cũ để tiết kiệm dung lượng
-  path: logDirectory,    // Thư mục chứa log
-  maxFiles: 30,          // (Tuỳ chọn) Giữ tối đa 30 file log
-  teeToStdout: false     // Không in ra console (nếu muốn in thêm thì bật morgan('dev'))
-});
-
 // ⚙️ Kích hoạt Morgan với luồng ghi log xoay
 if (config.server.env === 'development') {
   app.use(morgan('dev')); // In log ra console + ghi vào file access.log
 } else {
+  // Tạo đường dẫn đến file log
+  const logDirectory = path.join(__dirname, '..', 'logs');
+  if (!fs.existsSync(logDirectory)) {
+    fs.mkdirSync(logDirectory);
+  }
+
+  // 🔁 Tạo luồng ghi log xoay theo ngày + giới hạn dung lượng
+  const accessLogStream = rfs.createStream('access.log', {
+    interval: '1d',        // Xoay log mỗi ngày (1d = one day)
+    size: '10M',           // Giới hạn kích thước mỗi file: 10MB
+    compress: 'gzip',      // Tự động nén log cũ để tiết kiệm dung lượng
+    path: logDirectory,    // Thư mục chứa log
+    maxFiles: 30,          // (Tuỳ chọn) Giữ tối đa 30 file log
+    teeToStdout: false     // Không in ra console (nếu muốn in thêm thì bật morgan('dev'))
+  });
+
   app.use(morgan('combined', { stream: accessLogStream })); // Ghi log vào file access.log
 }
 
