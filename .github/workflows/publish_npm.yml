@@ -1,0 +1,127 @@
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# Workflow Publish Package to npmjs
+# ---------------------------------------------------
+# https://docs.npmjs.com/trusted-publishers#supported-cicd-providers
+# https://dev.to/astagi/publish-to-npm-using-github-actions-23fn
+# https://docs.github.com/en/actions/use-cases-and-examples/publishing-packages/publishing-nodejs-packages
+# https://docs.github.com/en/actions/guides/publishing-nodejs-packages
+# https://docs.github.com/en/actions/guides/publishing-docker-images
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+name: 'Publish: Package to npmjs'
+run-name: 'Publish to npmjs by @${{ github.actor }} on ${{ github.event_name }}'
+
+on:
+  workflow_dispatch: # Cho phép chạy thủ công
+  # push:
+  #   branches: ['main']
+  #   tags:
+  #     - 'v*'
+  release:
+    types: [published] # Chỉ chạy khi release được publish
+
+# Remove all permissions by default
+permissions: write-all
+
+env:
+  SERVER: production
+  BRANCH: ${{ github.ref_name }}
+  REPOSITORY: ${{ github.repository }}
+  ORIGINAL_NAME: ''
+  CLEAN_NAME: ''
+  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  # Tạo version: nếu là main hoặc tag thì là dạng 1.0.{run_number}, còn lại là 1.0.{run_number}-dev
+  VERSION: ${{ ((github.ref_type == 'branch' && github.ref_name == 'main') || (github.ref_type == 'tag')) && format('1.0.{0}', github.run_number) || format('1.0.{0}-dev', github.run_number) }}
+
+jobs:
+  publish-npm-github:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 3. Checkout code từ repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 3.1. Lấy giá trị name gốc từ package.json
+      - name: Get original package name
+        run: |
+          # 3.1.1 Lấy giá trị name gốc từ package.json
+          ORIGINAL_NAME=$(jq -r '.name' package.json)
+          echo "ORIGINAL_NAME=$ORIGINAL_NAME" >> $GITHUB_ENV
+
+          CLEAN_NAME=$(echo "$ORIGINAL_NAME" | sed 's/-beta$//')
+          echo "CLEAN_NAME=$CLEAN_NAME" >> $GITHUB_ENV
+
+          # 3.1.2. Lấy giá trị version gốc từ package.json
+          ORIGINAL_VERSION=$(jq -r '.version' package.json)
+          echo "ORIGINAL_VERSION=$ORIGINAL_VERSION"
+
+          # 3.1.3. Tạo biến BASE_VERSION từ ORIGINAL_VERSION
+          BASE_VERSION=$(echo "$ORIGINAL_VERSION" | cut -d. -f1-2)
+          echo "BASE_VERSION=$BASE_VERSION"
+
+          # 3.1.4. Đặt giá trị VERSION mới cho môi trường
+          # echo "VERSION=$BASE_VERSION.${{ github.run_number }}" >> $GITHUB_ENV
+
+      # 3.2. Ghi đè giá trị version và name (bổ sung -beta) trong package.json
+      - name: Override package.json version and name
+        run: |
+          # Ghi đè giá trị name và version trong package.json
+          #jq '.version = "${{ env.VERSION }}" | .name = "${{ env.ORIGINAL_NAME }}-beta"' package.json > package.tmp.json && mv package.tmp.json package.json
+          # Sử dụng CLEAN_NAME và thêm -beta
+          # jq --arg version "${{ env.VERSION }}" --arg name "${{ env.CLEAN_NAME }}-beta" '.version = $version | .name = $name' package.json > package.tmp.json && mv package.tmp.json package.json
+          jq '.version = "${{ env.VERSION }}"' package.json > package.tmp.json && mv package.tmp.json package.json
+
+      # 4. Thiết lập Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22.12' # Bạn có thể thay đổi version nếu cần
+          registry-url: 'https://registry.npmjs.org/' # Registry chính thức của npm
+          # scope: '@nqdev'  # Scope của package
+
+      # 5. Cài đặt pnpm
+      - name: Setup pnpm (optional, nếu dùng pnpm cho global tools)
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10.11.0
+          # run_install: |
+          #   - recursive: true
+          #     args: [--frozen-lockfile, --strict-peer-dependencies]
+          #   - args: [--global, gulp, eslint, typescript]
+
+      # 6. Cài đặt dependencies
+      - name: Install dependencies with yarn
+        # run: pnpm install --frozen-lockfile
+        # run: pnpm install --no-frozen-lockfile
+        run: yarn install --immutable
+
+      # 7. Build and Lint with yarn
+      - name: Build and Lint
+        # run: pnpm run prepublishOnly
+        run: yarn prepublishOnly
+
+      # 7. Build package
+      - name: Build with yarn
+        # run: pnpm run build
+        run: yarn build
+
+      # 8. Publish lên npm
+      # https://github.com/marketplace/actions/npm-publish
+      - name: Publish to npm with yarn
+        if: success()
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        # run: pnpm publish --access public --no-git-checks
+        run: NODE_AUTH_TOKEN=${{ secrets.NPM_TOKEN }} yarn publish --access public --no-git-checks
+
+      # 9. Tạo Git tag với version mới
+      - name: Create and push git tag
+        if: success()
+        env:
+          VERSION: ${{ env.VERSION }}
+        run: |
+          git config --local user.name "GitHub Actions"
+          git config --local user.email "github-actions@github.com"
+          git tag -a v${{ env.VERSION }} -m "Release v${{ env.VERSION }}"
+          git push origin v${{ env.VERSION }}
