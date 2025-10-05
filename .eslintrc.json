@@ -10,7 +10,8 @@
   },
   "ignorePatterns": ["public/*"],
   "rules": {
-    "indent": ["error", 2],
+    // "indent": ["error", 2],
+    "indent": "off",
     "linebreak-style": ["error", "windows"],
     // "quotes": ["error", "single"],
     "quotes": "off",

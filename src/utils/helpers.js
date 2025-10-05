@@ -95,40 +95,40 @@ function getDateRange(period, date = new Date()) {
   const endDate = new Date(date);
 
   switch (period) {
-  case 'today':
-    startDate.setHours(0, 0, 0, 0);
-    endDate.setHours(23, 59, 59, 999);
-    break;
+    case 'today':
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(23, 59, 59, 999);
+      break;
 
-  case 'week': {
-    const dayOfWeek = startDate.getDay();
-    const diff = startDate.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1);
-    startDate.setDate(diff);
-    startDate.setHours(0, 0, 0, 0);
-    endDate.setDate(startDate.getDate() + 6);
-    endDate.setHours(23, 59, 59, 999);
-    break;
-  }
+    case 'week': {
+      const dayOfWeek = startDate.getDay();
+      const diff = startDate.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1);
+      startDate.setDate(diff);
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setDate(startDate.getDate() + 6);
+      endDate.setHours(23, 59, 59, 999);
+      break;
+    }
 
-  case 'month':
-    startDate.setDate(1);
-    startDate.setHours(0, 0, 0, 0);
-    endDate.setMonth(endDate.getMonth() + 1, 0);
-    endDate.setHours(23, 59, 59, 999);
-    break;
+    case 'month':
+      startDate.setDate(1);
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setMonth(endDate.getMonth() + 1, 0);
+      endDate.setHours(23, 59, 59, 999);
+      break;
 
-  case 'year':
-    startDate.setMonth(0, 1);
-    startDate.setHours(0, 0, 0, 0);
-    endDate.setMonth(11, 31);
-    endDate.setHours(23, 59, 59, 999);
-    break;
+    case 'year':
+      startDate.setMonth(0, 1);
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setMonth(11, 31);
+      endDate.setHours(23, 59, 59, 999);
+      break;
 
-  default:
-    startDate.setDate(1);
-    startDate.setHours(0, 0, 0, 0);
-    endDate.setMonth(endDate.getMonth() + 1, 0);
-    endDate.setHours(23, 59, 59, 999);
+    default:
+      startDate.setDate(1);
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setMonth(endDate.getMonth() + 1, 0);
+      endDate.setHours(23, 59, 59, 999);
   }
 
   return { startDate, endDate };
