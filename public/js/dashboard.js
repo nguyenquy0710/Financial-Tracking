@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     refreshBtn.addEventListener('click', async () => {
       refreshBtn.disabled = true;
       refreshBtn.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Đang tải...';
-      
+
       try {
         await loadSummaryData();
         await loadCharts();
@@ -67,7 +67,7 @@ const loadSummaryData = async () => {
     let totalExpense = 0;
     let transactionCount = 0;
     const categoryTotals = {};
-    
+
     if (expenseData.success && expenseData.data) {
       transactionCount = expenseData.data.length;
       expenseData.data.forEach(expense => {
@@ -115,14 +115,14 @@ const updateQuickStats = (transactionCount, totalExpense, totalRent, categoryTot
   // Top category
   let topCategory = 'Chưa có';
   let maxAmount = 0;
-  
+
   for (const [category, amount] of Object.entries(categoryTotals)) {
     if (amount > maxAmount) {
       maxAmount = amount;
       topCategory = category;
     }
   }
-  
+
   document.getElementById('top-category').textContent = topCategory;
 };
 
@@ -196,11 +196,11 @@ const loadRecentActivities = async () => {
           <div class="activity-content">
             <strong>${activity.title}</strong>
             <p>${activity.description}</p>
-            <small>${activity.date.toLocaleDateString('vi-VN', { 
-              year: 'numeric', 
-              month: 'long', 
-              day: 'numeric' 
-            })}</small>
+            <small>${activity.date.toLocaleDateString('vi-VN', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      })}</small>
           </div>
         </div>
       `).join('');
@@ -215,10 +215,11 @@ const loadRecentActivities = async () => {
 
 // Format currency
 const formatCurrency = (amount) => {
-  return new Intl.NumberFormat('vi-VN', {
-    style: 'currency',
-    currency: 'VND'
-  }).format(amount);
+  return AppSDK.Utility.formatCurrency(amount);
+  // return new Intl.NumberFormat('vi-VN', {
+  //   style: 'currency',
+  //   currency: 'VND'
+  // }).format(amount);
 };
 
 // Load and render charts
@@ -271,7 +272,7 @@ const restoreChartCanvas = (containerId, canvasId) => {
 const loadExpenseChart = async (startDate, endDate) => {
   try {
     const expenseData = await apiCall(`/expenses?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`);
-    
+
     // Group expenses by category
     const categoryData = {};
     if (expenseData.success && expenseData.data) {
@@ -287,7 +288,7 @@ const loadExpenseChart = async (startDate, endDate) => {
     // Prepare chart data
     const labels = Object.keys(categoryData);
     const data = Object.values(categoryData);
-    
+
     // If no data, show message
     if (labels.length === 0) {
       showChartEmpty('expense-chart-container', 'Chưa có dữ liệu chi tiêu');
@@ -346,7 +347,7 @@ const renderExpenseChart = (labels, data) => {
         },
         tooltip: {
           callbacks: {
-            label: function(context) {
+            label: function (context) {
               const label = context.label || '';
               const value = context.parsed || 0;
               const total = context.dataset.data.reduce((a, b) => a + b, 0);
@@ -458,7 +459,7 @@ const renderIncomeExpenseChart = (labels, incomes, expenses) => {
         y: {
           beginAtZero: true,
           ticks: {
-            callback: function(value) {
+            callback: function (value) {
               return new Intl.NumberFormat('vi-VN', {
                 notation: 'compact',
                 compactDisplay: 'short'
@@ -479,7 +480,7 @@ const renderIncomeExpenseChart = (labels, incomes, expenses) => {
         },
         tooltip: {
           callbacks: {
-            label: function(context) {
+            label: function (context) {
               const label = context.dataset.label || '';
               const value = context.parsed.y || 0;
               return `${label}: ${formatCurrency(value)}`;
