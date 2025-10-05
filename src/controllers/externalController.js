@@ -21,7 +21,7 @@ exports.getVietQrBanks = async (req, res, next) => {
     // list banks are supported create QR code by Vietqr
     const getBanks = await vietQR.getBanks(),
       dataBanks = getBanks?.data ?? [];
-    console.log("🚀 QuyNH: exports.getVietQrBanks -> banks", getBanks);
+    // console.log("🚀 QuyNH: exports.getVietQrBanks -> banks", getBanks);
 
     // Filtering
     const total = dataBanks.length;

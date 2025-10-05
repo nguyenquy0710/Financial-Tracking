@@ -3,11 +3,56 @@
 This guide covers various deployment options for FinTrack.
 
 ## Table of Contents
+- [Automated CI/CD with GitHub Actions](#automated-cicd-with-github-actions)
 - [Docker Deployment](#docker-deployment)
 - [Manual Deployment](#manual-deployment)
 - [Cloud Deployment](#cloud-deployment)
 - [Environment Variables](#environment-variables)
 - [Security Considerations](#security-considerations)
+
+## Automated CI/CD with GitHub Actions
+
+FinTrack includes a GitHub Actions workflow that automatically builds and publishes Docker images to GitHub Container Registry (GHCR).
+
+### Workflow Triggers
+
+The workflow (`.github/workflows/publish_ghcr.yml`) is triggered by:
+- **Manual dispatch**: Run the workflow manually from GitHub Actions tab
+- **Repository dispatch**: Trigger from external systems or other workflows
+- **Release creation**: Automatically run when a new release is created
+
+### What the Workflow Does
+
+1. Checks out the repository code
+2. Sets up Node.js environment
+3. Configures Docker Buildx for advanced builds
+4. Authenticates with GitHub Container Registry
+5. Extracts metadata and generates proper image tags
+6. Builds the Docker image
+7. Pushes the image to ghcr.io with appropriate tags
+8. Uses GitHub Actions cache for faster subsequent builds
+
+### Image Tags Generated
+
+- `latest` - For builds from the main branch
+- `v{major}.{minor}.{patch}` - Semantic version tags from releases
+- `{major}.{minor}` - Major.minor version tags
+- `{major}` - Major version tags
+- Custom version tags based on run number
+
+### Running the Workflow Manually
+
+1. Go to your repository on GitHub
+2. Click on **Actions** tab
+3. Select **Publish: Docker Image to GHCR** workflow
+4. Click **Run workflow** button
+5. Select the branch and click **Run workflow**
+
+### Using the Published Images
+
+Images are published to: `ghcr.io/nguyenquy0710/financial-tracking`
+
+See [Using Pre-built Images from GitHub Container Registry](#using-pre-built-images-from-github-container-registry) section below for usage instructions.
 
 ## Docker Deployment
 
@@ -72,6 +117,48 @@ docker run -d \
   -e JWT_SECRET=your-secret-key \
   --name fintrack-api \
   fintrack:latest
+```
+
+### Using Pre-built Images from GitHub Container Registry
+
+FinTrack Docker images are automatically published to GitHub Container Registry (GHCR) when a new release is created.
+
+**Pull and run the latest image:**
+```bash
+# Pull the latest image
+docker pull ghcr.io/nguyenquy0710/financial-tracking:latest
+
+# Run the container
+docker run -d \
+  -p 3000:3000 \
+  -e MONGODB_URI=mongodb://your-mongodb:27017/fintrack \
+  -e JWT_SECRET=your-secret-key \
+  --name fintrack-api \
+  ghcr.io/nguyenquy0710/financial-tracking:latest
+```
+
+**Using with Docker Compose:**
+Update your `docker-compose.yml` to use the GHCR image:
+```yaml
+services:
+  api:
+    image: ghcr.io/nguyenquy0710/financial-tracking:latest
+    # ... rest of your configuration
+```
+
+**Available tags:**
+- `latest` - Latest stable release from main branch
+- `v1.0.x` - Specific version tags
+- `main` - Latest build from main branch
+- Semantic version tags (e.g., `1.0`, `1`)
+
+**Authentication (for private repositories):**
+```bash
+# Login to GHCR
+echo $GITHUB_TOKEN | docker login ghcr.io -u USERNAME --password-stdin
+
+# Pull the image
+docker pull ghcr.io/nguyenquy0710/financial-tracking:latest
 ```
 
 ## Manual Deployment

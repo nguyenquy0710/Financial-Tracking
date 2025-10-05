@@ -58,18 +58,41 @@
             </div>
           </div>
 
+          <!-- Chart Controls -->
+          <div class="chart-controls mb-3">
+            <button class="btn btn-primary btn-sm" id="refresh-charts" title="Làm mới dữ liệu">
+              <i class="bi bi-arrow-clockwise"></i> Làm mới
+            </button>
+          </div>
+
+          <!-- Quick Stats -->
+          <div class="quick-stats mb-4">
+            <div class="stat-item">
+              <span class="stat-label">Số giao dịch tháng này</span>
+              <span class="stat-value" id="transaction-count">-</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Chi tiêu trung bình/ngày</span>
+              <span class="stat-value" id="avg-daily-expense">-</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Danh mục chi nhiều nhất</span>
+              <span class="stat-value" id="top-category">-</span>
+            </div>
+          </div>
+
           <!-- Charts -->
           <div class="charts-grid">
             <div class="chart-card">
               <h3>Chi tiêu theo danh mục</h3>
-              <div id="expense-chart" class="chart-placeholder">
-                <p>Biểu đồ chi tiêu sẽ hiển thị ở đây</p>
+              <div id="expense-chart-container" style="position: relative; height: 300px;">
+                <canvas id="expense-chart"></canvas>
               </div>
             </div>
             <div class="chart-card">
               <h3>Thu nhập vs Chi tiêu</h3>
-              <div id="income-expense-chart" class="chart-placeholder">
-                <p>Biểu đồ so sánh sẽ hiển thị ở đây</p>
+              <div id="income-expense-chart-container" style="position: relative; height: 300px;">
+                <canvas id="income-expense-chart"></canvas>
               </div>
             </div>
           </div>
