@@ -1,0 +1,370 @@
+<%- include('partials/header', { title: 'Thuê phòng' , additionalCSS: ['/css/dashboard.css'] }) %>
+  <div class="app-container">
+    <%- include('partials/sidebar', { currentPage: 'rentals' }) %>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <header class="top-bar">
+          <h1>Quản lý thuê phòng</h1>
+          <div class="user-info">
+            <span id="user-name">User</span>
+            <button class="btn-logout">Đăng xuất</button>
+          </div>
+        </header>
+
+        <div class="content">
+          <!-- Summary Cards -->
+          <div class="row g-3 mb-4">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="summary-card">
+                <div class="card-icon">🏠</div>
+                <div class="card-content">
+                  <h3>Tổng tiền thuê</h3>
+                  <p class="amount" id="total-rent">0 VND</p>
+                  <span class="period">Tháng này</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="summary-card">
+                <div class="card-icon">⚡</div>
+                <div class="card-content">
+                  <h3>Tiền điện</h3>
+                  <p class="amount" id="total-electricity">0 VND</p>
+                  <span class="period">Tháng này</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="summary-card">
+                <div class="card-icon">💧</div>
+                <div class="card-content">
+                  <h3>Tiền nước</h3>
+                  <p class="amount" id="total-water">0 VND</p>
+                  <span class="period">Tháng này</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="summary-card">
+                <div class="card-icon">📡</div>
+                <div class="card-content">
+                  <h3>Dịch vụ khác</h3>
+                  <p class="amount" id="total-services">0 VND</p>
+                  <span class="period">Tháng này</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rentals List -->
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+              <h2>Danh sách thuê phòng</h2>
+              <button class="btn btn-primary" onclick="showAddModal()">
+                <span class="icon">➕</span> Thêm mới
+              </button>
+            </div>
+
+            <div id="rentals-list" class="table-container">
+              <p class="loading">Đang tải dữ liệu...</p>
+            </div>
+          </div>
+        </div>
+      </main>
+  </div>
+
+  <!-- Add/Edit Rental Modal -->
+  <div id="rentalModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close" onclick="closeRentalModal()">&times;</span>
+      <h2 id="modalTitle">Thêm thuê phòng</h2>
+      <form id="rentalForm">
+        <input type="hidden" id="rentalId">
+
+        <div class="form-group">
+          <label for="propertyName">Tên phòng *</label>
+          <input type="text" id="propertyName" required>
+        </div>
+
+        <div class="form-group">
+          <label for="address">Địa chỉ</label>
+          <input type="text" id="address">
+        </div>
+
+        <div class="form-group">
+          <label for="month">Tháng *</label>
+          <input type="month" id="month" required>
+        </div>
+
+        <div class="form-group">
+          <label for="rentAmount">Tiền nhà *</label>
+          <input type="number" id="rentAmount" required min="0">
+        </div>
+
+        <div class="form-section">
+          <h3>Điện</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="electricityStart">Chỉ số đầu</label>
+              <input type="number" id="electricityStart" min="0" step="0.01">
+            </div>
+            <div class="form-group">
+              <label for="electricityEnd">Chỉ số cuối</label>
+              <input type="number" id="electricityEnd" min="0" step="0.01">
+            </div>
+            <div class="form-group">
+              <label for="electricityRate">Đơn giá</label>
+              <input type="number" id="electricityRate" min="0">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Nước</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="waterStart">Chỉ số đầu</label>
+              <input type="number" id="waterStart" min="0" step="0.01">
+            </div>
+            <div class="form-group">
+              <label for="waterEnd">Chỉ số cuối</label>
+              <input type="number" id="waterEnd" min="0" step="0.01">
+            </div>
+            <div class="form-group">
+              <label for="waterRate">Đơn giá</label>
+              <input type="number" id="waterRate" min="0">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="internet">Internet</label>
+            <input type="number" id="internet" min="0" value="0">
+          </div>
+          <div class="form-group">
+            <label for="parking">Gửi xe</label>
+            <input type="number" id="parking" min="0" value="0">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="garbage">Rác</label>
+            <input type="number" id="garbage" min="0" value="0">
+          </div>
+          <div class="form-group">
+            <label for="bonus">Phụ thu/Giảm trừ</label>
+            <input type="number" id="bonus" value="0">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="notes">Ghi chú</label>
+          <textarea id="notes" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="isPaid">
+            <input type="checkbox" id="isPaid">
+            Đã thanh toán
+          </label>
+        </div>
+
+        <div class="form-group" id="paymentDateGroup" style="display: none;">
+          <label for="paymentDate">Ngày thanh toán</label>
+          <input type="date" id="paymentDate">
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeRentalModal()">Hủy</button>
+          <button type="submit" class="btn btn-primary">Lưu</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <style>
+    .table-container {
+      overflow-x: auto;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .data-table th,
+    .data-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .data-table th {
+      background: #f5f7fa;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .data-table tbody tr:hover {
+      background: #f8f9fa;
+    }
+
+    .badge {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .badge-success {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .badge-warning {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    /* Modal styles */
+    .modal {
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      overflow-y: auto;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 50px auto;
+      padding: 30px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 700px;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .close {
+      position: absolute;
+      right: 20px;
+      top: 15px;
+      font-size: 28px;
+      font-weight: bold;
+      color: #aaa;
+      cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #000;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      color: #2c3e50;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="number"],
+    .form-group input[type="month"],
+    .form-group input[type="date"],
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .form-group input[type="checkbox"] {
+      width: auto;
+      margin-right: 8px;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      font-family: inherit;
+    }
+
+    .form-section {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+    }
+
+    .form-section h3 {
+      margin: 0 0 15px 0;
+      font-size: 16px;
+      color: #2c3e50;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .btn-sm {
+      padding: 4px 8px;
+      font-size: 14px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      background: #f0f0f0;
+      margin-right: 5px;
+    }
+
+    .btn-sm:hover {
+      background: #e0e0e0;
+    }
+
+    .btn-danger {
+      background: #dc3545;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #c82333;
+    }
+
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn-secondary:hover {
+      background: #5a6268;
+    }
+  </style>
+
+  <%- include('partials/footer', { additionalJS: [ '/js/rentals.js' ] }) %>
