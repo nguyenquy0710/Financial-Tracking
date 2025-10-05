@@ -35,6 +35,10 @@ function displayUserInfo(user) {
                     <p><strong>Ngôn ngữ:</strong> ${user.language || 'vi'}</p>
                     <p><strong>Tiền tệ:</strong> ${user.currency || 'VND'}</p>
                 </div>
+                <div style="margin-top: 15px;">
+                    <button class="btn btn-primary" onclick="showEditProfileForm()">✏️ Chỉnh sửa thông tin</button>
+                    <button class="btn btn-secondary" onclick="showChangePasswordForm()">🔒 Đổi mật khẩu</button>
+                </div>
             `;
 
   // Set preferences
@@ -45,6 +49,128 @@ function displayUserInfo(user) {
     document.getElementById('currency').value = user.currency;
   }
 }
+
+function showEditProfileForm() {
+  if (!currentUser) return;
+  
+  document.getElementById('editProfileName').value = currentUser.name || '';
+  document.getElementById('editProfilePhone').value = currentUser.phone || '';
+  document.getElementById('profileModal').style.display = 'block';
+}
+
+function closeProfileModal() {
+  document.getElementById('profileModal').style.display = 'none';
+}
+
+function showChangePasswordForm() {
+  document.getElementById('changePasswordForm').reset();
+  document.getElementById('passwordModal').style.display = 'block';
+}
+
+function closePasswordModal() {
+  document.getElementById('passwordModal').style.display = 'none';
+}
+
+document.getElementById('editProfileForm')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const profileData = {
+    name: document.getElementById('editProfileName').value,
+    phone: document.getElementById('editProfilePhone').value
+  };
+
+  try {
+    const response = await fetch('/api/auth/profile', {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(profileData)
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.SUCCESS,
+        title: "Thành công",
+        text: 'Cập nhật thông tin thành công!'
+      });
+      closeProfileModal();
+      loadUserInfo();
+    } else {
+      throw new Error(data.message || 'Có lỗi xảy ra');
+    }
+  } catch (error) {
+    console.error('Error updating profile:', error);
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.ERROR,
+      title: "Lỗi",
+      text: 'Không thể cập nhật thông tin!'
+    });
+  }
+});
+
+document.getElementById('changePasswordForm')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const currentPassword = document.getElementById('currentPassword').value;
+  const newPassword = document.getElementById('newPassword').value;
+  const confirmPassword = document.getElementById('confirmPassword').value;
+
+  if (newPassword !== confirmPassword) {
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.ERROR,
+      title: "Lỗi",
+      text: 'Mật khẩu mới và xác nhận mật khẩu không khớp!'
+    });
+    return;
+  }
+
+  if (newPassword.length < 6) {
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.ERROR,
+      title: "Lỗi",
+      text: 'Mật khẩu mới phải có ít nhất 6 ký tự!'
+    });
+    return;
+  }
+
+  try {
+    const response = await fetch('/api/auth/change-password', {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ currentPassword, newPassword })
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.SUCCESS,
+        title: "Thành công",
+        text: 'Đổi mật khẩu thành công!'
+      });
+      closePasswordModal();
+      document.getElementById('changePasswordForm').reset();
+    } else {
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.ERROR,
+        title: "Lỗi",
+        text: data.message || 'Không thể đổi mật khẩu!'
+      });
+    }
+  } catch (error) {
+    console.error('Error changing password:', error);
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.ERROR,
+      title: "Lỗi",
+      text: 'Không thể đổi mật khẩu!'
+    });
+  }
+});
 
 async function loadBankAccounts() {
   try {
@@ -232,13 +358,39 @@ async function savePreferences() {
   const language = document.getElementById('language').value;
   const currency = document.getElementById('currency').value;
 
-  AppSDK.Alert.show({
-    icon: AppSDK.Enums.AlertIcon.WARNING,
-    title: 'Lưu cài đặt',
-    text: 'Tính năng cập nhật tùy chỉnh đang được phát triển. Hiện tại chỉ lưu cục bộ.',
-  });
-  localStorage.setItem('language', language);
-  localStorage.setItem('currency', currency);
+  try {
+    const response = await fetch('/api/auth/profile', {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ language, currency })
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.SUCCESS,
+        title: "Thành công",
+        text: 'Cập nhật tùy chỉnh thành công!'
+      });
+      // Update local storage as backup
+      localStorage.setItem('language', language);
+      localStorage.setItem('currency', currency);
+      // Reload user info
+      loadUserInfo();
+    } else {
+      throw new Error(data.message || 'Có lỗi xảy ra');
+    }
+  } catch (error) {
+    console.error('Error saving preferences:', error);
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.ERROR,
+      title: "Lỗi",
+      text: 'Không thể lưu tùy chỉnh!'
+    });
+  }
 }
 
 // Initial load
