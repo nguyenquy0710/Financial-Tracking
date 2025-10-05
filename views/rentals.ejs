@@ -182,7 +182,7 @@
     let token = localStorage.getItem('authToken');
 
     if (!token) {
-      window.location.href = '/';
+      window.location.href = `/login?redirectUrl=${encodeURIComponent(window.location.pathname)}`;
     }
 
     // Load rentals data

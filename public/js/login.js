@@ -1,9 +1,12 @@
 // Login page JavaScript with jQuery
 
 $(document).ready(function () {
+  const redirectUrl = getQueryParam("redirectUrl");
+  console.log("🚀 QuyNH: redirectUrl", redirectUrl)
+
   // Check if already logged in
   if (localStorage.getItem('authToken')) {
-    window.location.href = '/dashboard';
+    window.location.href = `/dashboard?redirectUrl=${redirectUrl ? encodeURIComponent(redirectUrl) : ''}`;
     return;
   }
 
@@ -20,6 +23,13 @@ $(document).ready(function () {
       icon.removeClass('fa-eye-slash').addClass('fa-eye');
     }
   });
+
+  // Get query parameters from URL
+  function getQueryParam(name) {
+    const params = new URLSearchParams(window.location.search);
+    const value = params.get(name);
+    return value ? decodeURIComponent(value) : null;
+  }
 
   // Form validation
   function validateEmail(email) {

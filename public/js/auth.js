@@ -26,7 +26,7 @@ const logout = () => {
   removeAuthToken();
   localStorage.removeItem('userName');
   localStorage.removeItem('userEmail');
-  window.location.href = '/login';
+  window.location.href = '/login?logout=true&redirect=' + encodeURIComponent(window.location.pathname);
 };
 
 // API call with authentication
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const publicPages = ['/', '/login', '/register'];
 
   if (!publicPages.includes(currentPage) && !isAuthenticated()) {
-    window.location.href = '/login';
+    window.location.href = '/login?redirectUrl=' + encodeURIComponent(currentPage);
   }
 });
 

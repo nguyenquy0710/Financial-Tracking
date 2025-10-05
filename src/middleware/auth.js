@@ -3,6 +3,7 @@ const config = require('../config/config');
 const User = require('../models/User');
 
 const auth = async (req, res, next) => {
+  const path = req.path ?? ''; // path hiện tại
   try {
     // Get token from header
     const token = req.header('Authorization')?.replace('Bearer ', '');
@@ -10,7 +11,9 @@ const auth = async (req, res, next) => {
     if (!token) {
       return res.status(401).json({
         success: false,
-        message: 'No authentication token, access denied'
+        message: 'No authentication token, access denied',
+        originUrl: path,
+        redirectUrl: path.startsWith('/api') ? null : '/login',
       });
     }
 
@@ -23,7 +26,9 @@ const auth = async (req, res, next) => {
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: 'User not found, authorization denied'
+        message: 'User not found, authorization denied',
+        originUrl: path,
+        redirectUrl: path.startsWith('/api') ? null : '/login',
       });
     }
 
@@ -36,20 +41,26 @@ const auth = async (req, res, next) => {
     if (error.name === 'JsonWebTokenError') {
       return res.status(401).json({
         success: false,
-        message: 'Invalid token'
+        message: 'Invalid token',
+        originUrl: path,
+        redirectUrl: path.startsWith('/api') ? null : '/login',
       });
     }
 
     if (error.name === 'TokenExpiredError') {
       return res.status(401).json({
         success: false,
-        message: 'Token expired'
+        message: 'Token expired',
+        originUrl: path,
+        redirectUrl: path.startsWith('/api') ? null : '/login',
       });
     }
 
     res.status(500).json({
       success: false,
-      message: 'Server error during authentication'
+      message: 'Server error during authentication',
+      originUrl: path,
+      redirectUrl: path.startsWith('/api') ? null : '/login',
     });
   }
 };
