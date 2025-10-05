@@ -90,4 +90,11 @@ router.get('/settings', (req, res) => {
   });
 });
 
+router.get('/changelog', (req, res) => {
+  res.render('changelog', {
+    title: 'Nhật ký phát triển',
+    currentPage: 'changelog'
+  });
+});
+
 module.exports = router;
