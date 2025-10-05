@@ -22,7 +22,7 @@ const swaggerDefinition = {
       description: 'Development server'
     },
     {
-      url: 'https://api.fintrack.com',
+      url: 'https://fintrack-minipc.quyit.id.vn',
       description: 'Production server'
     }
   ],
@@ -225,6 +225,43 @@ const swaggerDefinition = {
             type: 'object',
             description: 'Response data'
           }
+        }
+      },
+      VietQrBank: {
+        type: 'object',
+        properties: {
+          id: {
+            type: 'number',
+            description: 'ID ngân hàng trong hệ thống VietQR, không phải ID của FinTrack'
+          },
+          name: {
+            type: 'string',
+            description: 'Tên pháp nhân ngân hàng (theo giấy phép hoạt động)',
+          },
+          code: {
+            type: 'string',
+            description: 'Tên mã ngân hàng (theo chuẩn ISO 9362 - BIC)'
+          },
+          bin: {
+            type: 'string',
+            description: 'Mã ngân hàng, sử dụng mã này trong Quick Link của VietQR'
+          },
+          shortName: {
+            type: 'string',
+            description: 'Tên ngắn gọn thường gọi của ngân hàng (trong giao dịch chuyển tiền)'
+          },
+          logo: {
+            type: 'string',
+            description: '	Đường dẫn tới logo ngân hàng (trong hệ thống của FinTrack)',
+          },
+          transferSupported: {
+            type: 'number',
+            description: 'App của Bank hỗ trợ chuyển tiền bằng cách quét mã VietQR hay không, 1: hỗ trợ, 0: không hỗ trợ',
+          },
+          lookupSupported: {
+            type: 'number',
+            description: 'Số tài khoản của Bank có thể tra cứu bằng API tra cứu số tài khoản hay không, 1: hỗ trợ, 0: không hỗ trợ',
+          },
         }
       }
     }
