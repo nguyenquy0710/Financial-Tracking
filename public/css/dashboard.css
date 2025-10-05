@@ -241,6 +241,14 @@
   color: #95a5a6;
 }
 
+/* Chart containers */
+#expense-chart-container,
+#income-expense-chart-container {
+  position: relative;
+  height: 300px;
+  width: 100%;
+}
+
 /* Recent Activities */
 .recent-activities {
   background: white;
@@ -866,6 +874,15 @@ table tbody tr:hover {
     grid-template-columns: 1fr;
   }
 
+  .chart-card {
+    min-height: 350px;
+  }
+
+  #expense-chart-container,
+  #income-expense-chart-container {
+    height: 280px;
+  }
+
   .export-options {
     grid-template-columns: 1fr;
   }
@@ -921,5 +938,19 @@ table tbody tr:hover {
 
   .content {
     padding: 15px;
+  }
+
+  .charts-grid {
+    gap: 15px;
+  }
+
+  .chart-card {
+    padding: 15px;
+    min-height: 320px;
+  }
+
+  #expense-chart-container,
+  #income-expense-chart-container {
+    height: 250px;
   }
 }
