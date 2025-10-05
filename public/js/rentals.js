@@ -37,10 +37,10 @@ const loadRentals = async () => {
         totalServices += (rental.internet || 0) + (rental.parking || 0) + (rental.garbage || 0);
       });
 
-      document.getElementById('total-rent').textContent = formatCurrency(totalRent);
-      document.getElementById('total-electricity').textContent = formatCurrency(totalElectricity);
-      document.getElementById('total-water').textContent = formatCurrency(totalWater);
-      document.getElementById('total-services').textContent = formatCurrency(totalServices);
+      document.getElementById('total-rent').textContent = AppSDK.Utility.formatCurrency(totalRent);
+      document.getElementById('total-electricity').textContent = AppSDK.Utility.formatCurrency(totalElectricity);
+      document.getElementById('total-water').textContent = AppSDK.Utility.formatCurrency(totalWater);
+      document.getElementById('total-services').textContent = AppSDK.Utility.formatCurrency(totalServices);
 
       // Display rentals
       container.innerHTML = `
@@ -63,11 +63,11 @@ const loadRentals = async () => {
                                     <tr>
                                         <td><strong>${rental.propertyName}</strong></td>
                                         <td>${new Date(rental.month).toLocaleDateString('vi-VN', { month: '2-digit', year: 'numeric' })}</td>
-                                        <td>${formatCurrency(rental.rentAmount)}</td>
-                                        <td>${formatCurrency(rental.electricity?.amount || 0)}</td>
-                                        <td>${formatCurrency(rental.water?.amount || 0)}</td>
-                                        <td>${formatCurrency(rental.internet || 0)}</td>
-                                        <td><strong>${formatCurrency(rental.total)}</strong></td>
+                                        <td>${AppSDK.Utility.formatCurrency(rental.rentAmount)}</td>
+                                        <td>${AppSDK.Utility.formatCurrency(rental.electricity?.amount || 0)}</td>
+                                        <td>${AppSDK.Utility.formatCurrency(rental.water?.amount || 0)}</td>
+                                        <td>${AppSDK.Utility.formatCurrency(rental.internet || 0)}</td>
+                                        <td><strong>${AppSDK.Utility.formatCurrency(rental.total)}</strong></td>
                                         <td>
                                             <span class="badge ${rental.isPaid ? 'badge-success' : 'badge-warning'}">
                                                 ${rental.isPaid ? 'Đã thanh toán' : 'Chưa thanh toán'}
@@ -89,13 +89,6 @@ const loadRentals = async () => {
     console.error('Failed to load rentals:', error);
     container.innerHTML = '<p class="loading">Lỗi: Không thể tải dữ liệu. Hãy import dữ liệu từ Excel.</p>';
   }
-};
-
-const formatCurrency = (amount) => {
-  return new Intl.NumberFormat('vi-VN', {
-    style: 'currency',
-    currency: 'VND'
-  }).format(amount);
 };
 
 const showAddModal = () => {

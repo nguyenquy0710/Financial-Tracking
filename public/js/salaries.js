@@ -1,5 +1,12 @@
 // js/salaries.js
 
+let rentals = [];
+let token = localStorage.getItem('authToken');
+
+if (!token) {
+  window.location.href = `/login?redirectUrl=${encodeURIComponent(window.location.pathname)}`;
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   await loadSalaries();
 });
@@ -22,9 +29,9 @@ const loadSalaries = async () => {
       const avgCompanySalary = response.data.reduce((sum, s) => sum + (s.totalCompanySalary || 0), 0) / response.data.length;
       const avgFreelance = response.data.reduce((sum, s) => sum + (s.freelance?.total || 0), 0) / response.data.length;
 
-      document.getElementById('total-income').textContent = formatCurrency(totalIncome);
-      document.getElementById('company-salary').textContent = formatCurrency(avgCompanySalary);
-      document.getElementById('freelance-income').textContent = formatCurrency(avgFreelance);
+      document.getElementById('total-income').textContent = AppSDK.Utility.formatCurrency(totalIncome);
+      document.getElementById('company-salary').textContent = AppSDK.Utility.formatCurrency(avgCompanySalary);
+      document.getElementById('freelance-income').textContent = AppSDK.Utility.formatCurrency(avgFreelance);
 
       // Calculate growth
       if (response.data.length >= 2) {
@@ -72,9 +79,16 @@ const loadSalaries = async () => {
   }
 };
 
-const formatCurrency = (amount) => {
-  return new Intl.NumberFormat('vi-VN', {
-    style: 'currency',
-    currency: 'VND'
-  }).format(amount);
+const showAddModal = () => {
+  document.getElementById('modalTitle').textContent = 'Thêm lương';
+  document.getElementById('salaryForm').reset();
+  document.getElementById('salaryId').value = '';
+  document.getElementById('paymentDateGroup').style.display = 'none';
+
+  // Set default month to current month
+  const now = new Date();
+  const monthStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  document.getElementById('month').value = monthStr;
+
+  document.getElementById('salaryModal').style.display = 'block';
 };

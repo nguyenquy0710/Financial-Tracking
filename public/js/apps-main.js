@@ -166,6 +166,17 @@ AppSDK.Alert = {
 
 }
 
+AppSDK.Utility = {
+  // Hàm định dạng tiền tệ
+  formatCurrency: (amount = 0, locale = 'vi-VN', currency = 'VND') => {
+    return new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency
+    }).format(amount);
+  }
+
+};
+
 // =============================================
 // Xuất module cho Node.js / Electron
 // hoặc gán vào window cho browser
