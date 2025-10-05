@@ -68,7 +68,7 @@ const apiCall = async (endpoint, options = {}) => {
 // Check authentication on page load for protected pages
 document.addEventListener('DOMContentLoaded', () => {
   const currentPage = window.location.pathname;
-  const publicPages = ['/', '/login', '/register'];
+  const publicPages = ['/', '/login', '/register', '/changelog'];
 
   if (!publicPages.includes(currentPage) && !isAuthenticated()) {
     window.location.href = '/login?redirectUrl=' + encodeURIComponent(currentPage);

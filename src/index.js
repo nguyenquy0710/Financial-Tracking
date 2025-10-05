@@ -91,6 +91,11 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded
 // Serve static files
 app.use(express.static('public'));
 
+// Serve CHANGELOG.md file
+app.get('/CHANGELOG.md', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'CHANGELOG.md'));
+});
+
 // ================ Logging ================ //
 // ⚙️ Kích hoạt Morgan với luồng ghi log xoay
 if (config.server.env === 'development') {
