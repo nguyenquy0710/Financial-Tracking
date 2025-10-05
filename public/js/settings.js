@@ -28,14 +28,14 @@ async function loadUserInfo() {
 function displayUserInfo(user) {
   const container = document.getElementById('userInfo');
   container.innerHTML = `
-                <div class="user-details">
-                    <p><strong>Tên:</strong> ${user.name}</p>
-                    <p><strong>Email:</strong> ${user.email}</p>
-                    <p><strong>Điện thoại:</strong> ${user.phone || 'N/A'}</p>
-                    <p><strong>Ngôn ngữ:</strong> ${user.language || 'vi'}</p>
-                    <p><strong>Tiền tệ:</strong> ${user.currency || 'VND'}</p>
+                <div class="user-details" style="margin-bottom: 15px;">
+                    <p style="margin: 8px 0;"><strong>Tên:</strong> ${user.name}</p>
+                    <p style="margin: 8px 0;"><strong>Email:</strong> ${user.email}</p>
+                    <p style="margin: 8px 0;"><strong>Điện thoại:</strong> ${user.phone || 'Chưa cập nhật'}</p>
+                    <p style="margin: 8px 0;"><strong>Ngôn ngữ:</strong> ${user.language === 'en' ? 'English' : 'Tiếng Việt'}</p>
+                    <p style="margin: 8px 0;"><strong>Tiền tệ:</strong> ${user.currency || 'VND'}</p>
                 </div>
-                <div style="margin-top: 15px;">
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                     <button class="btn btn-primary" onclick="showEditProfileForm()">✏️ Chỉnh sửa thông tin</button>
                     <button class="btn btn-secondary" onclick="showChangePasswordForm()">🔒 Đổi mật khẩu</button>
                 </div>
