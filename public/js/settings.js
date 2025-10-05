@@ -16,7 +16,7 @@ async function loadUserInfo() {
     const data = await response.json();
 
     if (data.success) {
-      currentUser = data.data;
+      currentUser = data.data?.user ?? {};
       displayUserInfo(currentUser);
       document.getElementById('user-name').textContent = currentUser.name;
     }
@@ -208,7 +208,11 @@ async function savePreferences() {
   const language = document.getElementById('language').value;
   const currency = document.getElementById('currency').value;
 
-  alert('Tính năng cập nhật tùy chỉnh đang được phát triển. Hiện tại chỉ lưu cục bộ.');
+  sdk.sweetAlert({
+    icon: AppSDK.Enums.AlertIcon.WARNING,
+    title: 'Lưu cài đặt',
+    text: 'Tính năng cập nhật tùy chỉnh đang được phát triển. Hiện tại chỉ lưu cục bộ.',
+  });
   localStorage.setItem('language', language);
   localStorage.setItem('currency', currency);
 }

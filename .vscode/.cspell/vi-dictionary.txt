@@ -64,6 +64,7 @@ kiện
 kiểu
 Lắng
 lệnh
+Lịch
 liệu
 linh
 loại

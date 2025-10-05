@@ -3,17 +3,17 @@ var API_BASE_URL = AppSDK.apiBaseURL ?? window.location.origin + '/api';
 
 // Get auth token from localStorage
 var getAuthToken = () => {
-  return localStorage.getItem(AppSDK.Enums.KeyStorage.AUTH_TOKEN ?? 'authToken');
+  return localStorage.getItem(window?.AppSDK?.Enums.KeyStorage.AUTH_TOKEN ?? 'authToken');
 };
 
 // Set auth token to localStorage
 var setAuthToken = (token) => {
-  localStorage.setItem(AppSDK.Enums.KeyStorage.AUTH_TOKEN ?? 'authToken', token);
+  localStorage.setItem(window?.AppSDK?.Enums.KeyStorage.AUTH_TOKEN ?? 'authToken', token);
 };
 
 // Remove auth token from localStorage
 var removeAuthToken = () => {
-  localStorage.removeItem(AppSDK.Enums.KeyStorage.AUTH_TOKEN ?? 'authToken');
+  localStorage.removeItem(window?.AppSDK?.Enums.KeyStorage.AUTH_TOKEN ?? 'authToken');
 };
 
 // Check if user is authenticated
