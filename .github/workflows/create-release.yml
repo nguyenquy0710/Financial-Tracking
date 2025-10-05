@@ -2,9 +2,34 @@ name: 'Release: Create GitHub Release'
 run-name: 'Create GitHub Release by @${{ github.actor }} on ${{ github.event_name }}'
 
 on:
+  workflow_dispatch: # ✅ Cho phép chạy thủ công
+  repository_dispatch: # ✅ Cho phép kích hoạt từ bên ngoài (ví dụ: từ một workflow khác)
   push:
     tags:
       - 'v*' # Chỉ kích hoạt khi có tag dạng v*
+  # release:
+  #   # created : # ✅ Chỉ chạy khi release được tạo
+  #   # published: # ✅ Chỉ chạy khi release được phát hành
+  #   types: [published] # ✅ Chỉ chạy khi release được phát hành
+
+# Remove all permissions by default
+permissions: write-all # ⚠️ Nếu không cần ghi tất cả, bạn nên dùng principle of least privilege
+
+env:
+  SERVER: production
+  BRANCH: ${{ github.ref_name }}
+  REPO_NAME: # ✅ Sẽ được gán động trong steps
+  REPOSITORY: ${{ github.repository }}
+  # ✅ Default nếu không đọc từ file VERSION
+  # VERSION: ${{ ((github.ref_type == 'branch' && github.ref_name == 'main') || (github.ref_type == 'tag')) && format('1.0.{0}', github.run_number) || format('1.0.{0}-dev', github.run_number) }}
+  VERSION: >-
+    ${{
+      github.ref_type == 'branch' && github.ref_name == 'main'
+        && format('1.0.{0}-main', github.run_number)
+        || github.ref_type == 'tag'
+        && format('1.0.{0}', github.run_number)
+        || format('1.0.{0}-dev', github.run_number)
+    }}
 
 jobs:
   release:
@@ -72,4 +97,4 @@ jobs:
           files: |
             n8n-nodes-nqdev-${{ github.ref_name }}.zip
         env:
-          GITHUB_TOKEN: ${{ secrets.GHCR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
