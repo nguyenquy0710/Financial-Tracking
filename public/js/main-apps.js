@@ -193,6 +193,13 @@ const sdk = new AppSDK(baseURL = AppSDK.baseURL);
 // Lắng nghe sự kiện thay đổi
 sdk.onStatusChange = (status) => {
   console.log("✅ API Status:", status);
+  if (status.status === AppSDK.Enums.Status.OFFLINE) {
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.ERROR,
+      title: "Mất kết nối",
+      text: "API không hoạt động!"
+    });
+  }
 
   // Ví dụ cập nhật UI
   // document.getElementById('api-status').textContent = status.online ? '🟢 Online' : '🔴 Offline';
@@ -201,6 +208,13 @@ sdk.onStatusChange = (status) => {
 
 sdk.onError = (err) => {
   console.error("⚠️ API Error:", err);
+  if (err) {
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.ERROR,
+      title: "Lỗi kết nối",
+      text: "Không thể kết nối tới API!"
+    });
+  }
 };
 
 // Bắt đầu auto-check mỗi 30s
