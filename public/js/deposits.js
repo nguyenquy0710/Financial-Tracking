@@ -1,6 +1,7 @@
 // js/deposits.js
 
 let deposits = [];
+let vietQrBanks = [];
 let token = localStorage.getItem(AppSDK.Enums.KeyStorage.AUTH_TOKEN ?? 'authToken');
 
 if (!token) {
@@ -155,11 +156,41 @@ function filterDeposits() {
   loadDeposits();
 }
 
+async function loadVietQrBanks() {
+  try {
+    vietQrBanks = await AppExternal.VietQR.getBanks();
+    console.log('✅ Loaded VietQR banks:', vietQrBanks.length);
+  } catch (error) {
+    console.error('Error loading VietQR banks:', error);
+    vietQrBanks = [];
+  }
+}
+
+function populateBankDropdown() {
+  const bankSelect = document.getElementById('bank');
+  if (!bankSelect) return;
+
+  // Clear existing options except the first one
+  bankSelect.innerHTML = '<option value="">-- Chọn ngân hàng --</option>';
+
+  // Add banks from VietQR
+  vietQrBanks.forEach(bank => {
+    const option = document.createElement('option');
+    option.value = bank.shortName || bank.name;
+    option.textContent = `${bank.shortName || bank.code} - ${bank.name}`;
+    option.dataset.bankCode = bank.code;
+    option.dataset.bankBin = bank.bin;
+    option.dataset.bankLogo = bank.logo;
+    bankSelect.appendChild(option);
+  });
+}
+
 function showAddDepositForm() {
   document.getElementById('modalTitle').textContent = 'Thêm Sổ Tiết Kiệm';
   document.getElementById('depositForm').reset();
   document.getElementById('depositId').value = '';
   document.getElementById('status').value = 'active';
+  populateBankDropdown();
   document.getElementById('depositModal').style.display = 'block';
 }
 
@@ -173,6 +204,7 @@ async function editDeposit(id) {
 
   document.getElementById('modalTitle').textContent = 'Chỉnh Sửa Sổ Tiết Kiệm';
   document.getElementById('depositId').value = deposit._id;
+  populateBankDropdown();
   document.getElementById('bank').value = deposit.bank;
   document.getElementById('accountType').value = deposit.accountType || '';
   document.getElementById('accountNumber').value = deposit.accountNumber;
@@ -273,3 +305,4 @@ document.getElementById('depositForm').addEventListener('submit', async (e) => {
 loadDeposits();
 loadUpcomingDeposits();
 loadStats();
+loadVietQrBanks();
