@@ -1,5 +1,7 @@
 # Use official Node.js LTS image
-FROM node:18-alpine
+FROM node:22.12.0-alpine
+
+LABEL maintainer="Nguyen Quy <quy.nh@nhquydev.net>"
 
 # Set working directory
 WORKDIR /app
@@ -15,8 +17,8 @@ COPY . .
 
 # Create non-root user
 RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nodejs -u 1001 && \
-    chown -R nodejs:nodejs /app
+  adduser -S nodejs -u 1001 && \
+  chown -R nodejs:nodejs /app
 
 # Switch to non-root user
 USER nodejs
