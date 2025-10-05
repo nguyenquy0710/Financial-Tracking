@@ -14,33 +14,6 @@ class AppSDK {
     this.onError = null;
   }
 
-  // Hàm hiển thị SweetAlert2 (https://sweetalert2.github.io/#examples)
-  sweetAlert({ icon = AppSDK.Enums.AlertIcon.INFO, title = "Thông báo", text = "", draggable = false } = {}) {
-    if (typeof Swal !== "undefined") {
-      Swal.fire({
-        icon, title, text, draggable,
-        allowOutsideClick: () => !Swal.isLoading(),
-        showClass: {
-          popup: `
-            animate__animated
-            animate__fadeInUp
-            animate__faster
-          `
-        },
-        hideClass: {
-          popup: `
-            animate__animated
-            animate__fadeOutDown
-            animate__faster
-          `
-        }
-      });
-    } else {
-      console.warn("⚠️ SweetAlert2 (Swal) chưa được nạp. Hãy import script: https://cdn.jsdelivr.net/npm/sweetalert2@11");
-      alert(`${title}\n${text}`); // fallback
-    }
-  }
-
   // Hàm kiểm tra API health
   async checkAPIHealth() {
     try {
@@ -134,6 +107,65 @@ AppSDK['Enums'] = Object.freeze({
   }),
 });
 
+AppSDK.Alert = {
+  // Hàm hiển thị SweetAlert2 (https://sweetalert2.github.io/#examples)
+  show: ({ icon = AppSDK.Enums.AlertIcon.INFO, title = "Thông báo", text = "", draggable = false, options = {} } = {}) => {
+    if (typeof Swal !== "undefined") {
+      Swal.fire({
+        icon, title, text, draggable,
+        allowOutsideClick: () => !Swal.isLoading(),
+        showClass: {
+          popup: `
+            animate__animated
+            animate__fadeInUp
+            animate__faster
+          `
+        },
+        hideClass: {
+          popup: `
+            animate__animated
+            animate__fadeOutDown
+            animate__faster
+          `
+        },
+        ...options
+      });
+    } else {
+      console.warn("⚠️ SweetAlert2 (Swal) chưa được nạp. Hãy import script: https://cdn.jsdelivr.net/npm/sweetalert2@11");
+      alert(`${title}\n${text}`); // fallback
+    }
+  },
+
+  success: (text = "Thành công", title = "Thông báo", draggable = false, options = {}) => {
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.SUCCESS,
+      title, text, draggable, options
+    });
+  },
+
+  error: (text = "Đã xảy ra lỗi", title = "Thông báo", draggable = false, options = {}) => {
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.ERROR,
+      title, text, draggable, options
+    });
+  },
+
+  info: (text = "Thông tin", title = "Thông báo", draggable = false, options = {}) => {
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.INFO,
+      title, text, draggable, options
+    });
+  },
+
+  warning: (text = "Cảnh báo", title = "Thông báo", draggable = false, options = {}) => {
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.WARNING,
+      title, text, draggable, options
+    });
+  }
+
+}
+
 // =============================================
 // Xuất module cho Node.js / Electron
 // hoặc gán vào window cho browser
@@ -151,7 +183,7 @@ if (typeof module !== 'undefined' && module.exports) {
 const sdk = new AppSDK(baseURL = AppSDK.baseURL);
 
 // Gọi thủ công
-// sdk.sweetAlert({
+// AppSDK.Alert.show({
 //   icon: AppSDK.Enums.AlertIcon.SUCCESS,
 //   title: "Hoàn tất",
 //   draggable: true,

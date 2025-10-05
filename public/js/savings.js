@@ -184,7 +184,12 @@ document.getElementById('savingForm').addEventListener('submit', async (e) => {
 
     const data = await response.json();
     if (data.success) {
-      alert(savingId ? 'Cập nhật thành công!' : 'Thêm tiết kiệm thành công!');
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.SUCCESS,
+        title: savingId ? 'Cập nhật thành công!' : 'Thêm thành công!',
+        text: savingId ? 'Cập nhật thành công!' : 'Thêm tiết kiệm thành công!'
+      });
+
       closeSavingModal();
       loadSavings();
       loadStats();

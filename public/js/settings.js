@@ -208,7 +208,7 @@ async function savePreferences() {
   const language = document.getElementById('language').value;
   const currency = document.getElementById('currency').value;
 
-  sdk.sweetAlert({
+  AppSDK.Alert.show({
     icon: AppSDK.Enums.AlertIcon.WARNING,
     title: 'Lưu cài đặt',
     text: 'Tính năng cập nhật tùy chỉnh đang được phát triển. Hiện tại chỉ lưu cục bộ.',
