@@ -50,6 +50,12 @@ const expenseSchema = new mongoose.Schema(
       give: { type: Number, default: 0 }, // GIVE (7%) - Cho đi
       lts: { type: Number, default: 0 } // LTS (10%) - Tiết kiệm
     },
+    source: {
+      type: String,
+      enum: ['manual', 'MISA', 'Excel', 'API'],
+      default: 'manual',
+      trim: true
+    },
     notes: {
       type: String
     }

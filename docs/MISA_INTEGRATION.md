@@ -4,13 +4,16 @@ This document describes the integration of MISA Money Keeper (Sổ thủ chi) AP
 
 ## Overview
 
-The MISA integration provides 5 API endpoints to interact with MISA Money Keeper service:
+The MISA integration provides 8 API endpoints to interact with MISA Money Keeper service:
 
 1. **Login** - Authentication with MISA Money Keeper
 2. **Get User Info** - Retrieve user information
 3. **Get Wallet Accounts** - List wallet accounts with pagination
 4. **Get Wallet Summary** - Get summary of wallet accounts
 5. **Get Transaction Addresses** - Retrieve transaction addresses
+6. **Search Transactions** - Search for income/expense transactions (NEW)
+7. **Import Income Transactions** - Import income transactions to Salary records (NEW)
+8. **Import Expense Transactions** - Import expense transactions to Expense records (NEW)
 
 ## Configuration
 
@@ -264,6 +267,228 @@ curl --location 'http://localhost:3000/api/misa/transactions/addresses' \
 }'
 ```
 
+### 6. Search Transactions
+
+**POST** `/api/misa/transactions/search`
+
+Search for income and expense transactions from MISA Money Keeper.
+
+**Headers:**
+```
+Authorization: Bearer <your-fintrack-token>
+Content-Type: application/json
+```
+
+**Request Body:**
+```json
+{
+  "misaToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "fromDate": "2024-01-01",
+  "toDate": "2024-01-31",
+  "transactionType": 1,
+  "searchText": "",
+  "walletAccountIds": null,
+  "categoryIds": null,
+  "skip": 0,
+  "take": 20
+}
+```
+
+**Parameters:**
+- `misaToken` (required): MISA authentication token
+- `fromDate` (optional): Start date for filtering (ISO 8601)
+- `toDate` (optional): End date for filtering (ISO 8601)
+- `transactionType` (optional): 0 = expense, 1 = income, null = all
+- `searchText` (optional): Search by transaction content
+- `walletAccountIds` (optional): Array of wallet IDs to filter
+- `categoryIds` (optional): Array of category IDs to filter
+- `skip` (optional): Number of records to skip (pagination), default: 0
+- `take` (optional): Number of records to return, default: 20
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Transactions retrieved successfully",
+  "data": {
+    // MISA transaction data including income and expense records
+  }
+}
+```
+
+**Example cURL:**
+```bash
+curl --location 'http://localhost:3000/api/misa/transactions/search' \
+--header 'Authorization: Bearer <fintrack-token>' \
+--header 'Content-Type: application/json' \
+--data '{
+    "misaToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "fromDate": "2024-01-01",
+    "toDate": "2024-01-31",
+    "transactionType": null,
+    "skip": 0,
+    "take": 20
+}'
+```
+
+### 7. Import Income Transactions
+
+**POST** `/api/misa/transactions/import/income`
+
+Import income transactions from MISA Money Keeper into FinTrack Salary records.
+
+**Headers:**
+```
+Authorization: Bearer <your-fintrack-token>
+Content-Type: application/json
+```
+
+**Request Body:**
+```json
+{
+  "misaToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "transactions": [
+    {
+      "id": "misa-txn-1",
+      "transactionDate": "2024-01-15",
+      "amount": 5000000,
+      "note": "Freelance work"
+    },
+    {
+      "id": "misa-txn-2",
+      "transactionDate": "2024-01-20",
+      "amount": 3000000,
+      "note": "Bonus payment"
+    }
+  ]
+}
+```
+
+**Parameters:**
+- `misaToken` (required): MISA authentication token
+- `transactions` (required): Array of income transactions to import
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Imported 2 income transactions",
+  "data": {
+    "imported": [
+      {
+        "transactionId": "misa-txn-1",
+        "salaryId": "65abc123...",
+        "amount": 5000000,
+        "month": "2024-01-15T00:00:00.000Z"
+      }
+    ],
+    "errors": []
+  }
+}
+```
+
+**Example cURL:**
+```bash
+curl --location 'http://localhost:3000/api/misa/transactions/import/income' \
+--header 'Authorization: Bearer <fintrack-token>' \
+--header 'Content-Type: application/json' \
+--data '{
+    "misaToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "transactions": [
+        {
+            "id": "misa-txn-1",
+            "transactionDate": "2024-01-15",
+            "amount": 5000000,
+            "note": "Freelance work"
+        }
+    ]
+}'
+```
+
+### 8. Import Expense Transactions
+
+**POST** `/api/misa/transactions/import/expense`
+
+Import expense transactions from MISA Money Keeper into FinTrack Expense records.
+
+**Headers:**
+```
+Authorization: Bearer <your-fintrack-token>
+Content-Type: application/json
+```
+
+**Request Body:**
+```json
+{
+  "misaToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "transactions": [
+    {
+      "id": "misa-txn-3",
+      "transactionDate": "2024-01-10",
+      "amount": 500000,
+      "category": {
+        "name": "Food & Dining"
+      },
+      "note": "Restaurant"
+    },
+    {
+      "id": "misa-txn-4",
+      "transactionDate": "2024-01-12",
+      "amount": 200000,
+      "category": {
+        "name": "Transportation"
+      },
+      "note": "Taxi fare"
+    }
+  ]
+}
+```
+
+**Parameters:**
+- `misaToken` (required): MISA authentication token
+- `transactions` (required): Array of expense transactions to import
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "Imported 2 expense transactions",
+  "data": {
+    "imported": [
+      {
+        "transactionId": "misa-txn-3",
+        "expenseId": "65def456...",
+        "amount": 500000,
+        "month": "2024-01-10T00:00:00.000Z",
+        "category": "Food & Dining"
+      }
+    ],
+    "errors": []
+  }
+}
+```
+
+**Example cURL:**
+```bash
+curl --location 'http://localhost:3000/api/misa/transactions/import/expense' \
+--header 'Authorization: Bearer <fintrack-token>' \
+--header 'Content-Type: application/json' \
+--data '{
+    "misaToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "transactions": [
+        {
+            "id": "misa-txn-3",
+            "transactionDate": "2024-01-10",
+            "amount": 500000,
+            "category": {
+                "name": "Food & Dining"
+            },
+            "note": "Restaurant"
+        }
+    ]
+}'
+```
+
 ## Architecture
 
 ### Files Structure
@@ -342,6 +567,23 @@ The integration is based on the following MISA Money Keeper API endpoints:
 3. Wallet Accounts: `https://moneykeeperapp.misa.vn/g1/api/business/api/v1/wallets/accounts`
 4. Wallet Summary: `https://moneykeeperapp.misa.vn/g1/api/business/api/v1/wallets/account/summary`
 5. Transaction Addresses: `https://moneykeeperapp.misa.vn/g1/api/business/api/v1/transactions/addresses`
+6. Transactions Search: `https://moneykeeperapp.misa.vn/g1/api/business/api/v1/transactions`
+
+## Features
+
+### Transaction Import Workflow
+
+1. **Login to MISA** - Authenticate and get MISA token
+2. **Search Transactions** - Query income/expense transactions by date range
+3. **Review Transactions** - Filter and select transactions to import
+4. **Import to FinTrack** - Convert MISA transactions to Salary/Expense records
+
+### Automatic Mapping
+
+- **Income → Salary**: MISA income transactions are imported to the `freelance.other` field
+- **Expense → Expense**: MISA expense transactions are imported with default NEC allocation
+- **Source Tracking**: All imported records are marked with `source: 'MISA'`
+- **Month Grouping**: Transactions are grouped by month automatically
 
 ## Future Enhancements
 
@@ -349,10 +591,13 @@ Potential improvements for the MISA integration:
 
 1. **Token Caching**: Cache MISA tokens to reduce login requests
 2. **Webhook Integration**: Support MISA webhooks for real-time updates
-3. **Batch Operations**: Add batch import/export functionality
-4. **Data Synchronization**: Automatic sync between FinTrack and MISA
+3. **Batch Operations**: Enhanced batch import/export functionality with progress tracking
+4. **Data Synchronization**: Automatic sync between FinTrack and MISA with conflict resolution
 5. **Error Recovery**: Automatic retry logic for failed API calls
 6. **Rate Limiting**: Implement rate limiting for MISA API calls
+7. **Duplicate Detection**: Prevent importing the same transaction multiple times
+8. **Category Mapping**: Intelligent mapping between MISA and FinTrack categories
+9. **6 Jars Allocation**: Smart allocation of imported expenses across the 6 jars method
 
 ## Support
 
