@@ -296,3 +296,239 @@ const setupFormListeners = () => {
     }
   });
 };
+
+// MISA Import Functions
+let misaToken = null;
+let selectedMisaTransaction = null;
+
+const showMisaImportModal = () => {
+  document.getElementById('misaImportModal').style.display = 'block';
+  
+  // Reset to login section
+  document.getElementById('misaLoginSection').classList.add('active');
+  document.getElementById('misaSearchSection').classList.remove('active');
+  
+  // Set default month to current month for search
+  const now = new Date();
+  const monthStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+  document.getElementById('misaSearchMonth').value = monthStr;
+  
+  // Clear previous data
+  misaToken = null;
+  selectedMisaTransaction = null;
+  document.getElementById('misaTransactionList').innerHTML = '';
+};
+
+const closeMisaImportModal = () => {
+  document.getElementById('misaImportModal').style.display = 'none';
+};
+
+const loginToMisa = async () => {
+  const username = document.getElementById('misaUsername').value;
+  const password = document.getElementById('misaPassword').value;
+
+  if (!username || !password) {
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.WARNING,
+      title: "Cảnh báo",
+      text: 'Vui lòng nhập đầy đủ thông tin đăng nhập!'
+    });
+    return;
+  }
+
+  try {
+    const response = await fetch('/api/misa/login', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        UserName: username,
+        Password: password
+      })
+    });
+
+    const data = await response.json();
+    
+    if (data.success && data.data && data.data.token) {
+      misaToken = data.data.token;
+      
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.SUCCESS,
+        title: "Thành công",
+        text: 'Đăng nhập MISA thành công!'
+      });
+
+      // Switch to search section
+      document.getElementById('misaLoginSection').classList.remove('active');
+      document.getElementById('misaSearchSection').classList.add('active');
+    } else {
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.ERROR,
+        title: "Lỗi",
+        text: 'Đăng nhập MISA thất bại: ' + (data.message || 'Vui lòng kiểm tra lại thông tin')
+      });
+    }
+  } catch (error) {
+    console.error('Error logging into MISA:', error);
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.ERROR,
+      title: "Lỗi",
+      text: 'Có lỗi xảy ra khi đăng nhập MISA!'
+    });
+  }
+};
+
+const searchMisaTransactions = async () => {
+  if (!misaToken) {
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.WARNING,
+      title: "Cảnh báo",
+      text: 'Vui lòng đăng nhập MISA trước!'
+    });
+    return;
+  }
+
+  const monthValue = document.getElementById('misaSearchMonth').value;
+  if (!monthValue) {
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.WARNING,
+      title: "Cảnh báo",
+      text: 'Vui lòng chọn tháng tìm kiếm!'
+    });
+    return;
+  }
+
+  // Parse month and create date range
+  const [year, month] = monthValue.split('-');
+  const fromDate = new Date(year, month - 1, 1);
+  const toDate = new Date(year, month, 0); // Last day of month
+
+  try {
+    const response = await fetch('/api/misa/transactions/search', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        misaToken: misaToken,
+        fromDate: fromDate.toISOString().split('T')[0],
+        toDate: toDate.toISOString().split('T')[0],
+        transactionType: 1, // 1 = income only
+        skip: 0,
+        take: 100
+      })
+    });
+
+    const data = await response.json();
+    
+    if (data.success && data.data) {
+      displayMisaTransactions(data.data);
+    } else {
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.ERROR,
+        title: "Lỗi",
+        text: 'Không thể tìm kiếm giao dịch: ' + (data.message || 'Lỗi không xác định')
+      });
+    }
+  } catch (error) {
+    console.error('Error searching MISA transactions:', error);
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.ERROR,
+      title: "Lỗi",
+      text: 'Có lỗi xảy ra khi tìm kiếm giao dịch!'
+    });
+  }
+};
+
+const displayMisaTransactions = (data) => {
+  const container = document.getElementById('misaTransactionList');
+  
+  // Handle different response structures
+  const transactions = data.data || data.items || data.transactions || [];
+  
+  if (!transactions || transactions.length === 0) {
+    container.innerHTML = '<p style="text-align: center; color: #888;">Không tìm thấy giao dịch thu nhập nào trong tháng này.</p>';
+    return;
+  }
+
+  container.innerHTML = transactions.map((txn, index) => {
+    const date = new Date(txn.transactionDate || txn.date);
+    const amount = txn.amount || txn.totalAmount || 0;
+    const note = txn.note || txn.description || txn.content || 'Không có ghi chú';
+    
+    return `
+      <div class="transaction-item" data-index="${index}" onclick="selectMisaTransaction(${index})">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <strong>${date.toLocaleDateString('vi-VN')}</strong>
+            <p style="margin: 5px 0 0 0; color: #666;">${note}</p>
+          </div>
+          <div style="text-align: right;">
+            <strong style="color: #27ae60; font-size: 1.1em;">${formatCurrency(amount)}</strong>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Store transactions for later use
+  window.misaTransactionsData = transactions;
+};
+
+const selectMisaTransaction = (index) => {
+  // Remove previous selection
+  document.querySelectorAll('.transaction-item').forEach(item => {
+    item.classList.remove('selected');
+  });
+
+  // Add selection to clicked item
+  const selectedItem = document.querySelector(`.transaction-item[data-index="${index}"]`);
+  if (selectedItem) {
+    selectedItem.classList.add('selected');
+    selectedMisaTransaction = window.misaTransactionsData[index];
+  }
+};
+
+const importSelectedMisaTransaction = () => {
+  if (!selectedMisaTransaction) {
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.WARNING,
+      title: "Cảnh báo",
+      text: 'Vui lòng chọn một giao dịch để import!'
+    });
+    return;
+  }
+
+  // Populate the salary form with selected transaction data
+  const amount = selectedMisaTransaction.amount || selectedMisaTransaction.totalAmount || 0;
+  const note = selectedMisaTransaction.note || selectedMisaTransaction.description || selectedMisaTransaction.content || '';
+  const date = new Date(selectedMisaTransaction.transactionDate || selectedMisaTransaction.date);
+
+  // Set month from transaction date
+  const monthStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+  document.getElementById('month').value = monthStr;
+
+  // Add amount to freelance.other field
+  const currentOther = parseFloat(document.getElementById('freelanceOther').value) || 0;
+  document.getElementById('freelanceOther').value = currentOther + amount;
+
+  // Update notes
+  const currentNotes = document.getElementById('notes').value;
+  const newNote = `MISA Import: ${note} (${date.toLocaleDateString('vi-VN')})`;
+  document.getElementById('notes').value = currentNotes ? `${currentNotes}\n${newNote}` : newNote;
+
+  // Update totals display
+  updateTotalDisplay();
+
+  // Close MISA modal
+  closeMisaImportModal();
+
+  AppSDK.Alert.show({
+    icon: AppSDK.Enums.AlertIcon.SUCCESS,
+    title: "Thành công",
+    text: 'Đã import dữ liệu thu nhập từ MISA vào form!'
+  });
+};
