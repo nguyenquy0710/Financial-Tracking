@@ -173,6 +173,12 @@ Swagger UI cho phép bạn:
 
 **API JSON Specification:** `http://localhost:3000/api-docs.json`
 
+### Additional API Documentation
+
+- **[MISA Money Keeper Integration](./docs/MISA_INTEGRATION.md)** - Complete guide for MISA API integration
+- **[General API Documentation](./docs/API.md)** - Detailed API reference
+- **[Authentication Flow](./docs/AUTHENTICATION_FLOW.md)** - User authentication guide
+
 ### API Endpoints Overview
 
 ### Authentication Endpoints
@@ -757,6 +763,7 @@ npm run format     # Format code with Prettier
 
 ### Tích hợp Fintech / Fintech Integration
 
+- ✅ **MISA Money Keeper (Sổ thủ chi)** - Integrated / Đã tích hợp
 - 🏦 Kết nối ví điện tử (MoMo, ZaloPay, VNPay) / E-wallet integration
 - 💳 Kết nối ngân hàng / Bank integration
 - ₿ Crypto wallet support
