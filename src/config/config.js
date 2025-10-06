@@ -118,6 +118,11 @@ module.exports = {
       clientID: process.env.VIETQR_CLIENT_ID || 'your-client-id',
       apiKey: process.env.VIETQR_API_KEY || 'your-api-key',
       baseURL: 'https://api.vietqr.io/v2'
+    },
+    misa: {
+      baseURL: process.env.MISA_BASE_URL || 'https://moneykeeperapp.misa.vn/g1/api',
+      authURL: process.env.MISA_AUTH_URL || 'https://moneykeeperapp.misa.vn/g1/api/auth/api/v1/auths/loginforweb',
+      businessURL: process.env.MISA_BUSINESS_URL || 'https://moneykeeperapp.misa.vn/g1/api/business/api/v1'
     }
   }
 
