@@ -52,8 +52,8 @@ const expenseSchema = new mongoose.Schema(
     },
     source: {
       type: String,
-      enum: ['manual', 'MISA', 'Excel', 'API'],
-      default: 'manual',
+      enum: ['Manual', 'MISA', 'Excel', 'API'],
+      default: 'Manual',
       trim: true
     },
     notes: {

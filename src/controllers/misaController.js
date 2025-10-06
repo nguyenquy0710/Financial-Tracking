@@ -233,16 +233,16 @@ exports.getTransactionAddresses = async (req, res, next) => {
 // @access  Private
 exports.searchTransactions = async (req, res, next) => {
   try {
-    const { 
-      misaToken, 
-      fromDate, 
-      toDate, 
+    const {
+      misaToken,
+      fromDate,
+      toDate,
       transactionType = null, // 0 = expense, 1 = income, null = all
       searchText = '',
       walletAccountIds = null,
       categoryIds = null,
-      skip = 0, 
-      take = 20 
+      skip = 0,
+      take = 20
     } = req.body;
 
     if (!misaToken) {
@@ -323,11 +323,11 @@ exports.importIncomeTransactions = async (req, res, next) => {
         if (salaryRecord) {
           // Update freelance income
           salaryRecord.freelance.other += amount;
-          salaryRecord.totalFreelance = 
-            salaryRecord.freelance.dakiatech + 
+          salaryRecord.totalFreelance =
+            salaryRecord.freelance.dakiatech +
             salaryRecord.freelance.other;
-          salaryRecord.totalSalary = 
-            salaryRecord.totalCompanySalary + 
+          salaryRecord.totalSalary =
+            salaryRecord.totalCompanySalary +
             salaryRecord.totalFreelance;
         } else {
           // Create new salary record
