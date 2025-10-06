@@ -425,7 +425,199 @@ async function savePreferences() {
   }
 }
 
+// ============ MISA Configuration Functions ============
+
+async function loadMisaConfig() {
+  try {
+    const response = await fetch('/api/system-config', {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await response.json();
+
+    if (data.success) {
+      displayMisaConfig(data.data);
+    }
+  } catch (error) {
+    console.error('Error loading MISA config:', error);
+    document.getElementById('misaConfigInfo').innerHTML = '<p>Không thể tải cấu hình MISA</p>';
+  }
+}
+
+function displayMisaConfig(config) {
+  const container = document.getElementById('misaConfigInfo');
+  const misaConfig = config.misa || {};
+  
+  if (misaConfig.isConfigured) {
+    const lastValidated = misaConfig.lastValidated 
+      ? new Date(misaConfig.lastValidated).toLocaleString('vi-VN')
+      : 'Chưa xác minh';
+    
+    container.innerHTML = `
+      <div class="misa-config-details" style="margin-bottom: 15px;">
+        <p style="margin: 8px 0;"><strong>Username:</strong> ${misaConfig.username}</p>
+        <p style="margin: 8px 0;"><strong>Trạng thái:</strong> <span style="color: green;">✓ Đã cấu hình</span></p>
+        <p style="margin: 8px 0;"><strong>Xác minh lần cuối:</strong> ${lastValidated}</p>
+      </div>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <button class="btn btn-primary" onclick="showMisaConfigForm()">✏️ Cập nhật cấu hình</button>
+        <button class="btn btn-danger" onclick="deleteMisaConfig()">🗑️ Xóa cấu hình</button>
+      </div>
+    `;
+  } else {
+    container.innerHTML = `
+      <p style="margin-bottom: 15px; color: #666;">Chưa cấu hình tài khoản MISA Money Keeper</p>
+      <button class="btn btn-primary" onclick="showMisaConfigForm()">+ Thêm cấu hình MISA</button>
+    `;
+  }
+}
+
+function showMisaConfigForm() {
+  document.getElementById('misaConfigForm').reset();
+  document.getElementById('misaConfigModal').style.display = 'block';
+}
+
+function closeMisaConfigModal() {
+  document.getElementById('misaConfigModal').style.display = 'none';
+}
+
+async function testMisaCredentials() {
+  const username = document.getElementById('misaUsername').value;
+  const password = document.getElementById('misaPassword').value;
+
+  if (!username || !password) {
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.WARNING,
+      title: "Cảnh báo",
+      text: 'Vui lòng nhập đầy đủ username và password!'
+    });
+    return;
+  }
+
+  try {
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.INFO,
+      title: "Đang kiểm tra",
+      text: 'Đang kiểm tra kết nối với MISA...',
+      showConfirmButton: false,
+      timer: 2000
+    });
+
+    const response = await fetch('/api/system-config/misa/test', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ username, password })
+    });
+
+    const data = await response.json();
+    
+    if (data.success && data.valid) {
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.SUCCESS,
+        title: "Thành công",
+        text: 'Thông tin đăng nhập hợp lệ! Bạn có thể lưu cấu hình.'
+      });
+    } else {
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.ERROR,
+        title: "Lỗi",
+        text: data.message || 'Thông tin đăng nhập không hợp lệ!'
+      });
+    }
+  } catch (error) {
+    console.error('Error testing MISA credentials:', error);
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.ERROR,
+      title: "Lỗi",
+      text: 'Không thể kiểm tra kết nối với MISA!'
+    });
+  }
+}
+
+document.getElementById('misaConfigForm')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const username = document.getElementById('misaUsername').value;
+  const password = document.getElementById('misaPassword').value;
+
+  try {
+    const response = await fetch('/api/system-config/misa', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ username, password })
+    });
+
+    const data = await response.json();
+    
+    if (data.success) {
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.SUCCESS,
+        title: "Thành công",
+        text: data.message || 'Lưu cấu hình MISA thành công!'
+      });
+      closeMisaConfigModal();
+      loadMisaConfig();
+    } else {
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.ERROR,
+        title: "Lỗi",
+        text: data.message || 'Không thể lưu cấu hình MISA!'
+      });
+    }
+  } catch (error) {
+    console.error('Error saving MISA config:', error);
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.ERROR,
+      title: "Lỗi",
+      text: 'Không thể lưu cấu hình MISA!'
+    });
+  }
+});
+
+async function deleteMisaConfig() {
+  const result = await AppSDK.Alert.show({
+    icon: AppSDK.Enums.AlertIcon.WARNING,
+    title: "Xác nhận",
+    text: 'Bạn có chắc chắn muốn xóa cấu hình MISA?',
+    showCancelButton: true,
+    confirmButtonText: 'Xóa',
+    cancelButtonText: 'Hủy'
+  });
+
+  if (!result.isConfirmed) return;
+
+  try {
+    const response = await fetch('/api/system-config/misa', {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.SUCCESS,
+        title: "Thành công",
+        text: 'Xóa cấu hình MISA thành công!'
+      });
+      loadMisaConfig();
+    }
+  } catch (error) {
+    console.error('Error deleting MISA config:', error);
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.ERROR,
+      title: "Lỗi",
+      text: 'Không thể xóa cấu hình MISA!'
+    });
+  }
+}
+
 // Initial load
 loadUserInfo();
 loadBankAccounts();
 loadVietQrBanks();
+loadMisaConfig();
