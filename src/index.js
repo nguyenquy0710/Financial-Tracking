@@ -33,6 +33,7 @@ const recurringBillRoutes = require('./routes/recurringBillRoutes');
 const bankAccountRoutes = require('./routes/bankAccountRoutes');
 const viewRoutes = require('./routes/viewRoutes');
 const externalRoutes = require('./routes/externalRoutes');
+const misaRoutes = require('./routes/misaRoutes');
 
 // Initialize app
 const app = express();
@@ -140,6 +141,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/externals', externalRoutes);
+app.use('/api/misa', misaRoutes);
 app.use('/api/budgets', budgetRoutes);
 app.use('/api/goals', goalRoutes);
 app.use('/api/rentals', rentalRoutes);
