@@ -58,6 +58,17 @@
               </div>
             </div>
           </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h2>💼 Cấu hình MISA Money Keeper</h2>
+            </div>
+            <div class="card-body">
+              <div id="misaConfigInfo">
+                <p class="loading">Đang tải dữ liệu...</p>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
   </div>
@@ -172,6 +183,31 @@
         <div class="form-actions">
           <button type="button" class="btn btn-secondary" onclick="closePasswordModal()">Hủy</button>
           <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MISA Configuration Modal -->
+  <div id="misaConfigModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close" onclick="closeMisaConfigModal()">&times;</span>
+      <h2>Cấu hình tài khoản MISA</h2>
+      <form id="misaConfigForm">
+        <div class="form-group">
+          <label for="misaUsername">Username (Email) *</label>
+          <input type="text" id="misaUsername" required placeholder="user@example.com">
+        </div>
+
+        <div class="form-group">
+          <label for="misaPassword">Password *</label>
+          <input type="password" id="misaPassword" required minlength="6">
+        </div>
+
+        <div class="form-actions" style="display: flex; gap: 10px;">
+          <button type="button" class="btn btn-secondary" onclick="closeMisaConfigModal()">Hủy</button>
+          <button type="button" class="btn btn-info" onclick="testMisaCredentials()">Kiểm tra kết nối</button>
+          <button type="submit" class="btn btn-primary">Lưu cấu hình</button>
         </div>
       </form>
     </div>
