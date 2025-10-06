@@ -310,35 +310,63 @@ exports.importIncomeTransactions = async (req, res, next) => {
     const userId = req.userId;
     const importedRecords = [];
     const errors = [];
+    const skipped = [];
 
     for (const transaction of transactions) {
       try {
         // Convert MISA transaction to Salary record
-        const month = new Date(transaction.transactionDate || transaction.date);
+        const transactionDate = new Date(transaction.transactionDate || transaction.date);
         const amount = transaction.amount || transaction.totalAmount || 0;
+        
+        // Use the first day of the month for grouping
+        const month = new Date(transactionDate.getFullYear(), transactionDate.getMonth(), 1);
 
         // Check if salary record already exists for this month
         let salaryRecord = await Salary.findOne({ userId, month });
 
         if (salaryRecord) {
+          // Check for duplicate by comparing amount and date (prevent double import)
+          const isDuplicate = salaryRecord.notes && 
+            salaryRecord.notes.includes(`MISA-${transaction.id}`) ||
+            (salaryRecord.receiveDate && 
+             Math.abs(new Date(salaryRecord.receiveDate).getTime() - transactionDate.getTime()) < 86400000 && 
+             salaryRecord.freelance.other === amount);
+
+          if (isDuplicate) {
+            skipped.push({
+              transactionId: transaction.id || transaction._id,
+              reason: 'Duplicate transaction detected',
+              amount,
+              month
+            });
+            continue;
+          }
+
           // Update freelance income
           salaryRecord.freelance.other += amount;
-          salaryRecord.totalFreelance =
-            salaryRecord.freelance.dakiatech +
+          salaryRecord.freelance.total = 
+            salaryRecord.freelance.dakiatech + 
             salaryRecord.freelance.other;
-          salaryRecord.totalSalary =
-            salaryRecord.totalCompanySalary +
-            salaryRecord.totalFreelance;
+          salaryRecord.totalIncome = 
+            salaryRecord.totalCompanySalary + 
+            salaryRecord.freelance.total;
+          
+          // Add note to track imported transaction
+          const importNote = `\nImported from MISA - Transaction ID: ${transaction.id || 'N/A'} - Date: ${transactionDate.toISOString().split('T')[0]}`;
+          salaryRecord.notes = salaryRecord.notes ? salaryRecord.notes + importNote : importNote;
         } else {
           // Create new salary record
           salaryRecord = new Salary({
             userId,
             month,
             freelance: {
-              other: amount
+              dakiatech: 0,
+              other: amount,
+              total: amount
             },
-            totalFreelance: amount,
-            totalSalary: amount
+            totalIncome: amount,
+            receiveDate: transactionDate,
+            notes: `Imported from MISA - Transaction ID: ${transaction.id || 'N/A'} - ${transaction.note || ''}`
           });
         }
 
@@ -359,9 +387,10 @@ exports.importIncomeTransactions = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      message: `Imported ${importedRecords.length} income transactions`,
+      message: `Imported ${importedRecords.length} income transactions${skipped.length > 0 ? `, skipped ${skipped.length} duplicates` : ''}`,
       data: {
         imported: importedRecords,
+        skipped: skipped.length > 0 ? skipped : undefined,
         errors: errors.length > 0 ? errors : undefined
       }
     });
@@ -394,14 +423,36 @@ exports.importExpenseTransactions = async (req, res, next) => {
     const userId = req.userId;
     const importedRecords = [];
     const errors = [];
+    const skipped = [];
 
     for (const transaction of transactions) {
       try {
         // Convert MISA transaction to Expense record
-        const month = new Date(transaction.transactionDate || transaction.date);
+        const transactionDate = new Date(transaction.transactionDate || transaction.date);
         const amount = transaction.amount || transaction.totalAmount || 0;
         const category = transaction.category?.name || transaction.categoryName || 'Other';
         const itemName = transaction.note || transaction.description || 'MISA imported expense';
+        const transactionId = transaction.id || transaction._id || 'N/A';
+        
+        // Use the first day of the month for grouping
+        const month = new Date(transactionDate.getFullYear(), transactionDate.getMonth(), 1);
+
+        // Check for duplicate transaction
+        const existingExpense = await Expense.findOne({
+          userId,
+          source: 'MISA',
+          notes: { $regex: `Transaction ID: ${transactionId}` }
+        });
+
+        if (existingExpense) {
+          skipped.push({
+            transactionId,
+            reason: 'Duplicate transaction detected',
+            amount,
+            category
+          });
+          continue;
+        }
 
         // Create expense record with default allocation
         const expenseRecord = new Expense({
@@ -422,12 +473,12 @@ exports.importExpenseTransactions = async (req, res, next) => {
             lts: 0
           },
           source: 'MISA',
-          notes: `Imported from MISA Money Keeper - Transaction ID: ${transaction.id || 'N/A'}`
+          notes: `Imported from MISA Money Keeper - Transaction ID: ${transactionId} - Date: ${transactionDate.toISOString().split('T')[0]}`
         });
 
         await expenseRecord.save();
         importedRecords.push({
-          transactionId: transaction.id || transaction._id,
+          transactionId,
           expenseId: expenseRecord._id,
           amount,
           month,
@@ -443,9 +494,10 @@ exports.importExpenseTransactions = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      message: `Imported ${importedRecords.length} expense transactions`,
+      message: `Imported ${importedRecords.length} expense transactions${skipped.length > 0 ? `, skipped ${skipped.length} duplicates` : ''}`,
       data: {
         imported: importedRecords,
+        skipped: skipped.length > 0 ? skipped : undefined,
         errors: errors.length > 0 ? errors : undefined
       }
     });

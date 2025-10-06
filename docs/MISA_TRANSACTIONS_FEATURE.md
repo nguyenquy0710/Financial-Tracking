@@ -143,9 +143,24 @@ Imports expense transactions from MISA into FinTrack Expense records.
 
 Both import endpoints return:
 - `imported`: Array of successfully imported transactions
+- `skipped`: Array of transactions that were skipped (e.g., duplicates)
 - `errors`: Array of transactions that failed with error messages
 
 This allows partial success - some transactions can import while others fail without blocking the entire operation.
+
+## Duplicate Detection
+
+The import functionality includes built-in duplicate detection:
+
+### Income Import
+- Checks for transaction ID in salary record notes
+- Compares receive date and amount to detect duplicates
+- Prevents importing the same income multiple times
+
+### Expense Import
+- Checks for existing expenses with same MISA transaction ID
+- Uses source field and notes to identify duplicates
+- Skips re-importing previously imported transactions
 
 ## Testing
 
@@ -181,7 +196,7 @@ Imported records are automatically associated with the authenticated user.
 ## Future Enhancements
 
 Potential improvements:
-- Duplicate detection based on transaction IDs
+- ~~Duplicate detection based on transaction IDs~~ ✅ **IMPLEMENTED**
 - Smart category mapping using keywords
 - Automatic 6 Jars allocation for expenses
 - Scheduled automatic sync
