@@ -3,14 +3,16 @@
 :: Description: Start the development environment for the project.
 :: Author: Nguyen Quy
 :: Date: 2025-10-07
-:: Version: 1.2
+:: Version: 1.3
 :: Last Updated: 2025-10-07
 :: Dependencies: Node.js, npm, MongoDB, nssm (Non-Sucking Service Manager)
 :: Usage:
-::   run-dev.bat                  - không chạy format và lint
-::   run-dev.bat --format         - chỉ chạy format
-::   run-dev.bat --lint           - chỉ chạy lint fix
-::   run-dev.bat --format --lint  - chạy cả format và lint fix
+::   run-dev.bat                   - không chạy format, lint, test
+::   run-dev.bat --format          - chỉ chạy format
+::   run-dev.bat --lint            - chỉ chạy lint fix
+::   run-dev.bat --test            - chỉ chạy test
+::   run-dev.bat --format --lint   - chạy cả format và lint fix
+::   run-dev.bat --format --test   - chạy format và test
 :: =============================================================================
 
 @echo off
@@ -25,12 +27,14 @@ echo .
 :: Parse command line arguments
 set RUN_FORMAT=false
 set RUN_LINT=false
+set RUN_TEST=false
 
 :parse_args
 if "%~1"=="" goto args_done
 
 if /i "%~1"=="--format" set RUN_FORMAT=true
 if /i "%~1"=="--lint" set RUN_LINT=true
+if /i "%~1"=="--test" set RUN_TEST=true
 
 shift
 goto parse_args
@@ -76,6 +80,16 @@ if "%RUN_LINT%"=="true" (
     call npm run lint:fix
     if %ERRORLEVEL% NEQ 0 (
         echo !!! npm run lint:fix failed. Please check the errors above.
+        goto end
+    )
+)
+
+:: Run test if requested
+if "%RUN_TEST%"=="true" (
+    echo === Running tests ===
+    call npm run test
+    if %ERRORLEVEL% NEQ 0 (
+        echo !!! npm run test failed. Please check the errors above.
         goto end
     )
 )
