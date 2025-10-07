@@ -1,5 +1,5 @@
 name: Update Changelog on Release
-run-name: "Update Changelog on Releaser on ${{ github.event_name }} by @${{ github.actor }}"
+run-name: 'Update Changelog on Releaser on ${{ github.event_name }} by @${{ github.actor }} #${{ github.ref }}'
 
 on:
   workflow_dispatch: # ✅ Cho phép chạy thủ công
@@ -20,12 +20,12 @@ env:
   # ✅ Default nếu không đọc từ file VERSION
   # VERSION: ${{ ((github.ref_type == 'branch' && github.ref_name == 'main') || (github.ref_type == 'tag')) && format('1.0.{0}', github.run_number) || format('1.0.{0}-dev', github.run_number) }}
   VERSION: >-
-    ${{ 
-      github.ref_type == 'branch' && github.ref_name == 'main' 
-        && format('1.0.{0}-main', github.run_number) 
-        || github.ref_type == 'tag' 
-        && format('1.0.{0}', github.run_number) 
-        || format('1.0.{0}-dev', github.run_number) 
+    ${{
+      github.ref_type == 'branch' && github.ref_name == 'main'
+        && format('1.0.{0}-main', github.run_number)
+        || github.ref_type == 'tag'
+        && format('1.0.{0}', github.run_number)
+        || format('1.0.{0}-dev', github.run_number)
     }}
 
 jobs:
@@ -55,7 +55,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: '18'
 
       - name: Install auto-changelog
         run: npm install -g auto-changelog # https://www.npmjs.com/package/auto-changelog
