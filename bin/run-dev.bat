@@ -10,9 +10,8 @@
 ::   run-dev.bat                   - không chạy format, lint, test
 ::   run-dev.bat --format          - chỉ chạy format
 ::   run-dev.bat --lint            - chỉ chạy lint fix
-::   run-dev.bat --test            - chỉ chạy test
+::   run-dev.bat --test            - chỉ chạy test + mở báo cáo coverage
 ::   run-dev.bat --format --lint   - chạy cả format và lint fix
-::   run-dev.bat --format --test   - chạy format và test
 :: =============================================================================
 
 @echo off
@@ -91,6 +90,14 @@ if "%RUN_TEST%"=="true" (
     if %ERRORLEVEL% NEQ 0 (
         echo !!! npm run test failed. Please check the errors above.
         goto end
+    )
+
+    :: Open coverage report if exists
+    if exist coverage\lcov-report\index.html (
+        echo === Opening test coverage report ===
+        call start "" "coverage\lcov-report\index.html"
+    ) else (
+        echo !!! Coverage report not found.
     )
 )
 
