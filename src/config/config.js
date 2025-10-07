@@ -3,7 +3,9 @@ module.exports = {
   app: {
     name: process.env.APP_NAME || 'FinTrack',
     version: process.env.APP_VERSION || '1.0.0',
-    description: process.env.APP_DESCRIPTION || 'FinTrack (Financial Tracking) – Người bạn đồng hành tài chính thông minh - Smart Financial Companion Platform',
+    description:
+      process.env.APP_DESCRIPTION ||
+      'FinTrack (Financial Tracking) – Người bạn đồng hành tài chính thông minh - Smart Financial Companion Platform',
     baseURL: process.env.APP_BASE_URL || 'https://fintrack.quyit.id.vn'
   },
 
@@ -129,9 +131,11 @@ module.exports = {
     },
     misa: {
       baseURL: process.env.MISA_BASE_URL || 'https://moneykeeperapp.misa.vn/g1/api',
-      authURL: process.env.MISA_AUTH_URL || 'https://moneykeeperapp.misa.vn/g1/api/auth/api/v1/auths/loginforweb',
-      businessURL: process.env.MISA_BUSINESS_URL || 'https://moneykeeperapp.misa.vn/g1/api/business/api/v1'
+      authURL:
+        process.env.MISA_AUTH_URL ||
+        'https://moneykeeperapp.misa.vn/g1/api/auth/api/v1/auths/loginforweb',
+      businessURL:
+        process.env.MISA_BUSINESS_URL || 'https://moneykeeperapp.misa.vn/g1/api/business/api/v1'
     }
   }
-
 };

@@ -13,7 +13,7 @@ const auth = async (req, res, next) => {
         success: false,
         message: 'No authentication token, access denied',
         originUrl: path,
-        redirectUrl: path.startsWith('/api') ? null : '/login',
+        redirectUrl: path.startsWith('/api') ? null : '/login'
       });
     }
 
@@ -28,7 +28,7 @@ const auth = async (req, res, next) => {
         success: false,
         message: 'User not found, authorization denied',
         originUrl: path,
-        redirectUrl: path.startsWith('/api') ? null : '/login',
+        redirectUrl: path.startsWith('/api') ? null : '/login'
       });
     }
 
@@ -43,7 +43,7 @@ const auth = async (req, res, next) => {
         success: false,
         message: 'Invalid token',
         originUrl: path,
-        redirectUrl: path.startsWith('/api') ? null : '/login',
+        redirectUrl: path.startsWith('/api') ? null : '/login'
       });
     }
 
@@ -52,7 +52,7 @@ const auth = async (req, res, next) => {
         success: false,
         message: 'Token expired',
         originUrl: path,
-        redirectUrl: path.startsWith('/api') ? null : '/login',
+        redirectUrl: path.startsWith('/api') ? null : '/login'
       });
     }
 
@@ -60,7 +60,7 @@ const auth = async (req, res, next) => {
       success: false,
       message: 'Server error during authentication',
       originUrl: path,
-      redirectUrl: path.startsWith('/api') ? null : '/login',
+      redirectUrl: path.startsWith('/api') ? null : '/login'
     });
   }
 };

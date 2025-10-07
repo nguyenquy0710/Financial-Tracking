@@ -79,14 +79,16 @@ connectDB();
 //   }
 // })); // Security headers
 app.use(cors(config.cors)); // CORS
-app.use(compression({
-  threshold: 1024, // chỉ nén response >1KB
-  level: 6,        // mức nén gzip (1–9, 9 là mạnh nhất)
-  filter: (req, res) => {
-    if (req.headers['x-no-compression']) return false;
-    return compression.filter(req, res);
-  }
-})); // Compress responses
+app.use(
+  compression({
+    threshold: 1024, // chỉ nén response >1KB
+    level: 6, // mức nén gzip (1–9, 9 là mạnh nhất)
+    filter: (req, res) => {
+      if (req.headers['x-no-compression']) return false;
+      return compression.filter(req, res);
+    }
+  })
+); // Compress responses
 app.use(express.json()); // Parse JSON
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded
 
@@ -111,22 +113,26 @@ if (config.server.env === 'development') {
 
   // 🔁 Tạo luồng ghi log xoay theo ngày + giới hạn dung lượng
   const accessLogStream = rfs.createStream('access.log', {
-    interval: '1d',        // Xoay log mỗi ngày (1d = one day)
-    size: '10M',           // Giới hạn kích thước mỗi file: 10MB
-    compress: 'gzip',      // Tự động nén log cũ để tiết kiệm dung lượng
-    path: logDirectory,    // Thư mục chứa log
-    maxFiles: 30,          // (Tuỳ chọn) Giữ tối đa 30 file log
-    teeToStdout: false     // Không in ra console (nếu muốn in thêm thì bật morgan('dev'))
+    interval: '1d', // Xoay log mỗi ngày (1d = one day)
+    size: '10M', // Giới hạn kích thước mỗi file: 10MB
+    compress: 'gzip', // Tự động nén log cũ để tiết kiệm dung lượng
+    path: logDirectory, // Thư mục chứa log
+    maxFiles: 30, // (Tuỳ chọn) Giữ tối đa 30 file log
+    teeToStdout: false // Không in ra console (nếu muốn in thêm thì bật morgan('dev'))
   });
 
   app.use(morgan('combined', { stream: accessLogStream })); // Ghi log vào file access.log
 }
 
 // ================ Swagger Documentation ================ //
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
-  customCss: '.swagger-ui .topbar { display: none }',
-  customSiteTitle: 'FinTrack API Documentation',
-}));
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, {
+    customCss: '.swagger-ui .topbar { display: none }',
+    customSiteTitle: 'FinTrack API Documentation'
+  })
+);
 
 // Swagger JSON
 app.get('/api-docs.json', (req, res) => {

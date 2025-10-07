@@ -1,7 +1,22 @@
+:: =============================================================================
+:: Script: git-merge-main.bat
+:: Description: Merge changes from the main branch into the current branch.
+:: Author: Nguyen Quy
+:: Date: 2025-10-07
+:: Version: 1.0
+:: Last Updated: 2025-10-07
+:: Dependencies: Git
+:: Usage: Just double-click this script or run it from the command line.
+:: =============================================================================
+
 @echo off
 setlocal EnableDelayedExpansion
 chcp 65001 > nul
 cls
+
+:: Show current directory
+echo === Current Directory: %cd%
+echo .
 
 :: Get and show current branch
 for /f "tokens=*" %%i in ('git rev-parse --abbrev-ref HEAD') do set current_branch=%%i

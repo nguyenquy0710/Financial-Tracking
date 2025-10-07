@@ -98,7 +98,7 @@ exports.updateCategory = async (req, res, next) => {
     if (!category.userId || category.userId.toString() !== req.userId.toString()) {
       return res.status(403).json({
         success: false,
-        message: 'Cannot update default or other user\'s category'
+        message: "Cannot update default or other user's category"
       });
     }
 
@@ -135,7 +135,7 @@ exports.deleteCategory = async (req, res, next) => {
     if (!category.userId || category.userId.toString() !== req.userId.toString()) {
       return res.status(403).json({
         success: false,
-        message: 'Cannot delete default or other user\'s category'
+        message: "Cannot delete default or other user's category"
       });
     }
 

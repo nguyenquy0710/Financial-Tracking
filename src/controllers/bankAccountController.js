@@ -80,10 +80,7 @@ exports.createBankAccount = async (req, res, next) => {
 
     // If this is set as default, unset other defaults
     if (accountData.isDefault) {
-      await BankAccount.updateMany(
-        { userId: req.user._id, isDefault: true },
-        { isDefault: false }
-      );
+      await BankAccount.updateMany({ userId: req.user._id, isDefault: true }, { isDefault: false });
     }
 
     const account = await BankAccount.create(accountData);
@@ -184,10 +181,7 @@ exports.setDefaultBankAccount = async (req, res, next) => {
     }
 
     // Unset all other defaults
-    await BankAccount.updateMany(
-      { userId: req.user._id, isDefault: true },
-      { isDefault: false }
-    );
+    await BankAccount.updateMany({ userId: req.user._id, isDefault: true }, { isDefault: false });
 
     // Set this as default
     account.isDefault = true;

@@ -8,7 +8,7 @@ const makeMisaRequest = async (url, method = 'GET', headers = {}, body = null) =
   const options = {
     method,
     headers: {
-      'accept': 'application/json, text/plain, */*',
+      accept: 'application/json, text/plain, */*',
       'content-type': 'application/json',
       ...headers
     }
@@ -74,15 +74,21 @@ exports.saveMisaConfig = async (req, res, next) => {
 
     // Validate credentials by attempting to login
     const url = config.externalAPIs.misa.authURL;
-    const result = await makeMisaRequest(url, 'POST', {}, {
-      UserName: username,
-      Password: password
-    });
+    const result = await makeMisaRequest(
+      url,
+      'POST',
+      {},
+      {
+        UserName: username,
+        Password: password
+      }
+    );
 
     if (!result.ok) {
       return res.status(400).json({
         success: false,
-        message: 'Thông tin đăng nhập MISA không hợp lệ. Vui lòng kiểm tra lại username và password.',
+        message:
+          'Thông tin đăng nhập MISA không hợp lệ. Vui lòng kiểm tra lại username và password.',
         validationFailed: true
       });
     }
@@ -137,10 +143,15 @@ exports.testMisaConfig = async (req, res, next) => {
 
     // Test credentials by attempting to login
     const url = config.externalAPIs.misa.authURL;
-    const result = await makeMisaRequest(url, 'POST', {}, {
-      UserName: username,
-      Password: password
-    });
+    const result = await makeMisaRequest(
+      url,
+      'POST',
+      {},
+      {
+        UserName: username,
+        Password: password
+      }
+    );
 
     if (!result.ok) {
       return res.status(400).json({

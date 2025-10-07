@@ -9,7 +9,7 @@ const makeMisaRequest = async (url, method = 'GET', headers = {}, body = null) =
   const options = {
     method,
     headers: {
-      'accept': 'application/json, text/plain, */*',
+      accept: 'application/json, text/plain, */*',
       'content-type': 'application/json',
       ...headers
     }
@@ -80,7 +80,7 @@ exports.getUsers = async (req, res, next) => {
 
     const url = `${config.externalAPIs.misa.businessURL}/users/true`;
     const result = await makeMisaRequest(url, 'GET', {
-      'authorization': `Bearer ${misaToken}`
+      authorization: `Bearer ${misaToken}`
     });
 
     if (!result.ok) {
@@ -106,7 +106,15 @@ exports.getUsers = async (req, res, next) => {
 // @access  Private
 exports.getWalletAccounts = async (req, res, next) => {
   try {
-    const { misaToken, searchText = '', walletType = null, inActive = null, excludeReport = null, skip = 0, take = 10 } = req.body;
+    const {
+      misaToken,
+      searchText = '',
+      walletType = null,
+      inActive = null,
+      excludeReport = null,
+      skip = 0,
+      take = 10
+    } = req.body;
 
     if (!misaToken) {
       return res.status(400).json({
@@ -125,9 +133,14 @@ exports.getWalletAccounts = async (req, res, next) => {
       take
     };
 
-    const result = await makeMisaRequest(url, 'POST', {
-      'authorization': `Bearer ${misaToken}`
-    }, requestBody);
+    const result = await makeMisaRequest(
+      url,
+      'POST',
+      {
+        authorization: `Bearer ${misaToken}`
+      },
+      requestBody
+    );
 
     if (!result.ok) {
       return res.status(result.status).json({
@@ -152,7 +165,13 @@ exports.getWalletAccounts = async (req, res, next) => {
 // @access  Private
 exports.getWalletAccountSummary = async (req, res, next) => {
   try {
-    const { misaToken, searchText = '', walletType = null, inActive = null, excludeReport = null } = req.body;
+    const {
+      misaToken,
+      searchText = '',
+      walletType = null,
+      inActive = null,
+      excludeReport = null
+    } = req.body;
 
     if (!misaToken) {
       return res.status(400).json({
@@ -169,9 +188,14 @@ exports.getWalletAccountSummary = async (req, res, next) => {
       excludeReport
     };
 
-    const result = await makeMisaRequest(url, 'POST', {
-      'authorization': `Bearer ${misaToken}`
-    }, requestBody);
+    const result = await makeMisaRequest(
+      url,
+      'POST',
+      {
+        authorization: `Bearer ${misaToken}`
+      },
+      requestBody
+    );
 
     if (!result.ok) {
       return res.status(result.status).json({
@@ -207,7 +231,7 @@ exports.getTransactionAddresses = async (req, res, next) => {
 
     const url = `${config.externalAPIs.misa.businessURL}/transactions/addresses`;
     const result = await makeMisaRequest(url, 'GET', {
-      'authorization': `Bearer ${misaToken}`
+      authorization: `Bearer ${misaToken}`
     });
 
     if (!result.ok) {
@@ -264,9 +288,14 @@ exports.searchTransactions = async (req, res, next) => {
       take
     };
 
-    const result = await makeMisaRequest(url, 'POST', {
-      'authorization': `Bearer ${misaToken}`
-    }, requestBody);
+    const result = await makeMisaRequest(
+      url,
+      'POST',
+      {
+        authorization: `Bearer ${misaToken}`
+      },
+      requestBody
+    );
 
     if (!result.ok) {
       return res.status(result.status).json({
@@ -326,10 +355,11 @@ exports.importIncomeTransactions = async (req, res, next) => {
 
         if (salaryRecord) {
           // Check for duplicate by comparing amount and date (prevent double import)
-          const isDuplicate = salaryRecord.notes &&
-            salaryRecord.notes.includes(`MISA-${transaction.id}`) ||
+          const isDuplicate =
+            (salaryRecord.notes && salaryRecord.notes.includes(`MISA-${transaction.id}`)) ||
             (salaryRecord.receiveDate &&
-              Math.abs(new Date(salaryRecord.receiveDate).getTime() - transactionDate.getTime()) < 86400000 &&
+              Math.abs(new Date(salaryRecord.receiveDate).getTime() - transactionDate.getTime()) <
+                86400000 &&
               salaryRecord.freelance.other === amount);
 
           if (isDuplicate) {
@@ -345,11 +375,8 @@ exports.importIncomeTransactions = async (req, res, next) => {
           // Update freelance income
           salaryRecord.freelance.other += amount;
           salaryRecord.freelance.total =
-            salaryRecord.freelance.dakiatech +
-            salaryRecord.freelance.other;
-          salaryRecord.totalIncome =
-            salaryRecord.totalCompanySalary +
-            salaryRecord.freelance.total;
+            salaryRecord.freelance.dakiatech + salaryRecord.freelance.other;
+          salaryRecord.totalIncome = salaryRecord.totalCompanySalary + salaryRecord.freelance.total;
 
           // Add note to track imported transaction
           const importNote = `\nImported from MISA - Transaction ID: ${transaction.id || 'N/A'} - Date: ${transactionDate.toISOString().split('T')[0]}`;
