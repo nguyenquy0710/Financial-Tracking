@@ -105,7 +105,7 @@ npm install
 cp .env.example .env
 ```
 
-Chỉnh sửa file `.env` với thông tin của bạn / Edit `.env` with your configuration:
+Chỉnh sửa file [`.env`](.env.example) với thông tin của bạn / Edit `.env` with your configuration:
 
 ```env
 PORT=3000
