@@ -3,10 +3,14 @@
 :: Description: Start the development environment for the project.
 :: Author: Nguyen Quy
 :: Date: 2025-10-07
-:: Version: 1.0
+:: Version: 1.2
 :: Last Updated: 2025-10-07
 :: Dependencies: Node.js, npm, MongoDB, nssm (Non-Sucking Service Manager)
-:: Usage: Just double-click this script or run it from the command line.
+:: Usage:
+::   run-dev.bat                  - không chạy format và lint
+::   run-dev.bat --format         - chỉ chạy format
+::   run-dev.bat --lint           - chỉ chạy lint fix
+::   run-dev.bat --format --lint  - chạy cả format và lint fix
 :: =============================================================================
 
 @echo off
@@ -17,6 +21,21 @@ cls
 :: Show current directory
 echo === Current Directory: %cd%
 echo .
+
+:: Parse command line arguments
+set RUN_FORMAT=false
+set RUN_LINT=false
+
+:parse_args
+if "%~1"=="" goto args_done
+
+if /i "%~1"=="--format" set RUN_FORMAT=true
+if /i "%~1"=="--lint" set RUN_LINT=true
+
+shift
+goto parse_args
+
+:args_done
 
 :: Check MongoDB service status
 echo === Checking MongoDB service (nqdev-mongodb-service) status ===
@@ -41,20 +60,24 @@ if not exist node_modules (
     echo === node_modules already exists. Skipping npm install ===
 )
 
-:: Run code formatter
-echo === Running code formatter ===
-call npm run format
-if %ERRORLEVEL% NEQ 0 (
-    echo !!! npm run format failed. Please check the errors above.
-    goto end
+:: Run code formatter if requested
+if "%RUN_FORMAT%"=="true" (
+    echo === Running code formatter ===
+    call npm run format
+    if %ERRORLEVEL% NEQ 0 (
+        echo !!! npm run format failed. Please check the errors above.
+        goto end
+    )
 )
 
-:: Run lint fix
-echo === Running lint fix ===
-call npm run lint:fix
-if %ERRORLEVEL% NEQ 0 (
-    echo !!! npm run lint:fix failed. Please check the errors above.
-    goto end
+:: Run lint fix if requested
+if "%RUN_LINT%"=="true" (
+    echo === Running lint fix ===
+    call npm run lint:fix
+    if %ERRORLEVEL% NEQ 0 (
+        echo !!! npm run lint:fix failed. Please check the errors above.
+        goto end
+    )
 )
 
 :: Run development server
