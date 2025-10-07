@@ -2,6 +2,8 @@ const config = require('../config/config');
 const Salary = require('../models/Salary');
 const Expense = require('../models/Expense');
 
+const misaDomain = require('../domains/misa/misaDomain');
+
 /**
  * Helper function to make HTTP requests to MISA API
  */
@@ -34,31 +36,7 @@ const makeMisaRequest = async (url, method = 'GET', headers = {}, body = null) =
 // @access  Private
 exports.loginForWeb = async (req, res, next) => {
   try {
-    const { UserName, Password } = req.body;
-
-    if (!UserName || !Password) {
-      return res.status(400).json({
-        success: false,
-        message: 'UserName and Password are required'
-      });
-    }
-
-    const url = config.externalAPIs.misa.authURL;
-    const result = await makeMisaRequest(url, 'POST', {}, { UserName, Password });
-
-    if (!result.ok) {
-      return res.status(result.status).json({
-        success: false,
-        message: 'MISA login failed',
-        data: result.data
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      message: 'Login successful',
-      data: result.data
-    });
+    return misaDomain.loginForWeb(req, res, next);
   } catch (error) {
     next(error);
   }
@@ -317,7 +295,7 @@ exports.importIncomeTransactions = async (req, res, next) => {
         // Convert MISA transaction to Salary record
         const transactionDate = new Date(transaction.transactionDate || transaction.date);
         const amount = transaction.amount || transaction.totalAmount || 0;
-        
+
         // Use the first day of the month for grouping
         const month = new Date(transactionDate.getFullYear(), transactionDate.getMonth(), 1);
 
@@ -326,11 +304,11 @@ exports.importIncomeTransactions = async (req, res, next) => {
 
         if (salaryRecord) {
           // Check for duplicate by comparing amount and date (prevent double import)
-          const isDuplicate = salaryRecord.notes && 
+          const isDuplicate = salaryRecord.notes &&
             salaryRecord.notes.includes(`MISA-${transaction.id}`) ||
-            (salaryRecord.receiveDate && 
-             Math.abs(new Date(salaryRecord.receiveDate).getTime() - transactionDate.getTime()) < 86400000 && 
-             salaryRecord.freelance.other === amount);
+            (salaryRecord.receiveDate &&
+              Math.abs(new Date(salaryRecord.receiveDate).getTime() - transactionDate.getTime()) < 86400000 &&
+              salaryRecord.freelance.other === amount);
 
           if (isDuplicate) {
             skipped.push({
@@ -344,13 +322,13 @@ exports.importIncomeTransactions = async (req, res, next) => {
 
           // Update freelance income
           salaryRecord.freelance.other += amount;
-          salaryRecord.freelance.total = 
-            salaryRecord.freelance.dakiatech + 
+          salaryRecord.freelance.total =
+            salaryRecord.freelance.dakiatech +
             salaryRecord.freelance.other;
-          salaryRecord.totalIncome = 
-            salaryRecord.totalCompanySalary + 
+          salaryRecord.totalIncome =
+            salaryRecord.totalCompanySalary +
             salaryRecord.freelance.total;
-          
+
           // Add note to track imported transaction
           const importNote = `\nImported from MISA - Transaction ID: ${transaction.id || 'N/A'} - Date: ${transactionDate.toISOString().split('T')[0]}`;
           salaryRecord.notes = salaryRecord.notes ? salaryRecord.notes + importNote : importNote;
@@ -433,7 +411,7 @@ exports.importExpenseTransactions = async (req, res, next) => {
         const category = transaction.category?.name || transaction.categoryName || 'Other';
         const itemName = transaction.note || transaction.description || 'MISA imported expense';
         const transactionId = transaction.id || transaction._id || 'N/A';
-        
+
         // Use the first day of the month for grouping
         const month = new Date(transactionDate.getFullYear(), transactionDate.getMonth(), 1);
 

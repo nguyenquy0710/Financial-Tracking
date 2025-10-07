@@ -1,4 +1,12 @@
 module.exports = {
+  // Application Settings
+  app: {
+    name: process.env.APP_NAME || 'FinTrack',
+    version: process.env.APP_VERSION || '1.0.0',
+    description: process.env.APP_DESCRIPTION || 'FinTrack (Financial Tracking) – Người bạn đồng hành tài chính thông minh - Smart Financial Companion Platform',
+    baseURL: process.env.APP_BASE_URL || 'https://fintrack.quyit.id.vn'
+  },
+
   // JWT Configuration
   jwt: {
     secret: process.env.JWT_SECRET || 'fintrack-secret-key-change-in-production',
