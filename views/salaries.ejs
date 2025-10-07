@@ -79,6 +79,11 @@
     <div class="modal-content">
       <span class="close" onclick="closeSalaryModal()">&times;</span>
       <h2 id="modalTitle">Thêm Lương</h2>
+      <div style="margin-bottom: 15px;">
+        <button type="button" class="btn btn-secondary" onclick="showMisaImportModal()">
+          <span class="icon">📥</span> Import từ MISA
+        </button>
+      </div>
       <form id="salaryForm">
         <input type="hidden" id="salaryId" />
         
@@ -280,6 +285,94 @@
     .btn-danger:hover {
       background: #c0392b;
     }
+
+    .btn-secondary {
+      background: #95a5a6;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .btn-secondary:hover {
+      background: #7f8c8d;
+    }
+
+    .transaction-item {
+      padding: 12px;
+      border: 1px solid #ddd;
+      margin-bottom: 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      background: #fff;
+    }
+
+    .transaction-item:hover {
+      background: #f8f9fa;
+      border-color: #3498db;
+    }
+
+    .transaction-item.selected {
+      background: #e3f2fd;
+      border-color: #3498db;
+      border-width: 2px;
+    }
+
+    .transaction-list {
+      max-height: 400px;
+      overflow-y: auto;
+      margin: 15px 0;
+    }
+
+    .misa-login-section, .misa-search-section {
+      display: none;
+    }
+
+    .misa-login-section.active, .misa-search-section.active {
+      display: block;
+    }
   </style>
+
+  <!-- MISA Import Modal -->
+  <div id="misaImportModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeMisaImportModal()">&times;</span>
+      <h2>Import thu nhập từ MISA</h2>
+
+      <!-- Login Section -->
+      <div id="misaLoginSection" class="misa-login-section active">
+        <p>Đăng nhập vào MISA Money Keeper để tìm kiếm giao dịch thu nhập:</p>
+        <div class="form-group">
+          <label for="misaUsername">Email/Tên đăng nhập:</label>
+          <input type="text" id="misaUsername" placeholder="username@gmail.com" />
+        </div>
+        <div class="form-group">
+          <label for="misaPassword">Mật khẩu:</label>
+          <input type="password" id="misaPassword" placeholder="Nhập mật khẩu" />
+        </div>
+        <button type="button" class="btn btn-primary" onclick="loginToMisa()">Đăng nhập</button>
+      </div>
+
+      <!-- Search Section -->
+      <div id="misaSearchSection" class="misa-search-section">
+        <p>Tìm kiếm giao dịch thu nhập theo tháng:</p>
+        <div class="form-group">
+          <label for="misaSearchMonth">Chọn tháng:</label>
+          <input type="month" id="misaSearchMonth" />
+        </div>
+        <button type="button" class="btn btn-primary" onclick="searchMisaTransactions()">Tìm kiếm</button>
+
+        <!-- Transaction List -->
+        <div id="misaTransactionList" class="transaction-list"></div>
+
+        <div style="margin-top: 15px;">
+          <button type="button" class="btn btn-primary" onclick="importSelectedMisaTransaction()">Import đã chọn</button>
+          <button type="button" class="btn btn-secondary" onclick="closeMisaImportModal()">Hủy</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <%- include('partials/footer', { additionalJS: [ '/js/salaries.js' ] }) %>

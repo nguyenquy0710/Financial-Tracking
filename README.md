@@ -19,6 +19,7 @@ Building a "Smart Financial Companion Platform" that not only tracks income and 
 - ✅ Nhập thủ công hoặc quét hóa đơn / Manual entry or receipt scanning
 - ✅ Đồng bộ giao dịch từ ví điện tử, ngân hàng (nếu tích hợp API) / Sync transactions from e-wallets and banks (with API integration)
 - ✅ Phân loại tự động theo danh mục / Auto-categorization by category (food, transportation, entertainment, etc.)
+- ✅ **Tích hợp MISA Money Keeper** (NEW): Tìm kiếm và import log thu nhập, chi tiêu từ MISA / Search and import income/expense logs from MISA Money Keeper
 
 ### 🏠 Quản lý thuê phòng / Rental Management (NEW)
 
@@ -172,6 +173,13 @@ Swagger UI cho phép bạn:
 4. Bây giờ bạn có thể test các protected endpoints
 
 **API JSON Specification:** `http://localhost:3000/api-docs.json`
+
+### Additional API Documentation
+
+- **[MISA Money Keeper Integration](./docs/MISA_INTEGRATION.md)** - Complete guide for MISA API integration (8 endpoints)
+- **[MISA Transaction Search & Import](./docs/MISA_TRANSACTIONS_FEATURE.md)** - NEW: Search and import income/expense transactions from MISA
+- **[General API Documentation](./docs/API.md)** - Detailed API reference
+- **[Authentication Flow](./docs/AUTHENTICATION_FLOW.md)** - User authentication guide
 
 ### API Endpoints Overview
 
@@ -757,6 +765,7 @@ npm run format     # Format code with Prettier
 
 ### Tích hợp Fintech / Fintech Integration
 
+- ✅ **MISA Money Keeper (Sổ thủ chi)** - Integrated / Đã tích hợp
 - 🏦 Kết nối ví điện tử (MoMo, ZaloPay, VNPay) / E-wallet integration
 - 💳 Kết nối ngân hàng / Bank integration
 - ₿ Crypto wallet support

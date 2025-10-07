@@ -1,4 +1,12 @@
 module.exports = {
+  // Application Settings
+  app: {
+    name: process.env.APP_NAME || 'FinTrack',
+    version: process.env.APP_VERSION || '1.0.0',
+    description: process.env.APP_DESCRIPTION || 'FinTrack (Financial Tracking) – Người bạn đồng hành tài chính thông minh - Smart Financial Companion Platform',
+    baseURL: process.env.APP_BASE_URL || 'https://fintrack.quyit.id.vn'
+  },
+
   // JWT Configuration
   jwt: {
     secret: process.env.JWT_SECRET || 'fintrack-secret-key-change-in-production',
@@ -118,6 +126,11 @@ module.exports = {
       clientID: process.env.VIETQR_CLIENT_ID || 'your-client-id',
       apiKey: process.env.VIETQR_API_KEY || 'your-api-key',
       baseURL: 'https://api.vietqr.io/v2'
+    },
+    misa: {
+      baseURL: process.env.MISA_BASE_URL || 'https://moneykeeperapp.misa.vn/g1/api',
+      authURL: process.env.MISA_AUTH_URL || 'https://moneykeeperapp.misa.vn/g1/api/auth/api/v1/auths/loginforweb',
+      businessURL: process.env.MISA_BUSINESS_URL || 'https://moneykeeperapp.misa.vn/g1/api/business/api/v1'
     }
   }
 

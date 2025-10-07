@@ -38,6 +38,8 @@ Authorization: Bearer {your_jwt_token}
 
 ## Endpoints
 
+> **Note**: For MISA Money Keeper API integration, see [MISA Integration Documentation](./MISA_INTEGRATION.md)
+
 ### Authentication
 
 #### Register User

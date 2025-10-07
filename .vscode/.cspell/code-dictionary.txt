@@ -10,6 +10,7 @@ haravan
 initdb
 jscoverage
 jspm
+Misa
 miscased
 myharavan
 mysapogo

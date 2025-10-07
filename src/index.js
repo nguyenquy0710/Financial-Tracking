@@ -33,6 +33,8 @@ const recurringBillRoutes = require('./routes/recurringBillRoutes');
 const bankAccountRoutes = require('./routes/bankAccountRoutes');
 const viewRoutes = require('./routes/viewRoutes');
 const externalRoutes = require('./routes/externalRoutes');
+const misaRoutes = require('./routes/misaRoutes');
+const systemConfigRoutes = require('./routes/systemConfigRoutes');
 
 // Initialize app
 const app = express();
@@ -140,6 +142,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/externals', externalRoutes);
+app.use('/api/misa', misaRoutes);
 app.use('/api/budgets', budgetRoutes);
 app.use('/api/goals', goalRoutes);
 app.use('/api/rentals', rentalRoutes);
@@ -150,6 +153,7 @@ app.use('/api/savings', savingRoutes);
 app.use('/api/deposits', depositRoutes);
 app.use('/api/recurring-bills', recurringBillRoutes);
 app.use('/api/bank-accounts', bankAccountRoutes);
+app.use('/api/system-config', systemConfigRoutes);
 
 // Health check
 app.get('/health', (req, res) => {

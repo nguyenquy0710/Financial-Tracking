@@ -22,7 +22,7 @@ const swaggerDefinition = {
       description: 'Development server'
     },
     {
-      url: 'https://fintrack-minipc.quyit.id.vn',
+      url: `${config.app.baseURL}`,
       description: 'Production server'
     }
   ],
