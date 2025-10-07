@@ -10,7 +10,7 @@ echo.
 
 :: Fetch latest from origin
 echo === Fetching latest from origin ===
-git fetch origin
+git fetch origin --prune --prune-tags --force --verbose --tags --recurse-submodules
 echo.
 
 :: Merge 'origin/main' into current branch
