@@ -27,14 +27,13 @@ env:
   REPO_NAME: # ✅ Sẽ được gán động trong steps
   REPOSITORY: ${{ github.repository }}
   # ✅ Default nếu không đọc từ file VERSION
-  # VERSION: ${{ ((github.ref_type == 'branch' && github.ref_name == 'main') || (github.ref_type == 'tag')) && format('1.0.{0}', github.run_number) || format('1.0.{0}-dev', github.run_number) }}
   VERSION: >-
     ${{
       github.ref_type == 'branch' && github.ref_name == 'main'
         && format('1.0.{0}-main', github.run_number)
         || github.ref_type == 'tag'
         && format('1.0.{0}', github.run_number)
-        || format('1.0.{0}-dev', github.run_number)
+        || format('0.0.{0}-dev', github.run_number)
     }}
 
 jobs:
