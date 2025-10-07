@@ -1,6 +1,6 @@
-const config = require('../config/config');
-const Salary = require('../models/Salary');
-const Expense = require('../models/Expense');
+const config = require('../../config/config');
+const Salary = require('../../models/Salary');
+const Expense = require('../../models/Expense');
 
 /**
  * Helper function to make HTTP requests to MISA API
