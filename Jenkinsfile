@@ -29,17 +29,17 @@ node {
 
     stage('checkout code') {
       checkout scm
-      sh "git checkout ${env.BRANCH_NAME} && git reset --hard origin/${env.BRANCH_NAME}"
+      bat "git checkout ${env.BRANCH_NAME} && git reset --hard origin/${env.BRANCH_NAME}"
     }
 
     stage('Install Dependencies') {
       echo '🔧 Installing dependencies...'
-      sh 'npm install'
+      bat 'npm install'
     }
 
     stage('Lint') {
       echo '🔍 Running ESLint...'
-      sh 'npm run lint'
+      bat 'npm run lint'
     }
 
     stage('Build') {
@@ -64,7 +64,7 @@ node {
 
     sshagent(['jenkins-ssh']) {
       stage('remove old code') {
-        sh """
+        bat """
           ssh -o StrictHostKeyChecking=no ${remoteHost} 'cd ${path} && sudo rm -rf ./{,.[!.],..?}*'
         """
       }
