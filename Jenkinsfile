@@ -1,4 +1,4 @@
-#!/usr/bin/env nodejs
+#!/usr/bin/env groovy
 
 /**
  * Jenkins Pipeline for FinTrack Project
@@ -10,7 +10,7 @@
 node {
   properties([disableConcurrentBuilds()])
   // ansiColor('xterm') // Sử dụng màu sắc trong console output
-  timestamps() // Thêm timestamp vào log
+  // timestamps() // Thêm timestamp vào log
   // timeout(time: 30, unit: 'MINUTES')
 
   environment {
