@@ -1,5 +1,5 @@
 
-const { misaDomain } = require('../domains/misa/misa.domain');
+const { misaDomain } = require('../domains/misa.domain');
 
 // @desc    Login to MISA Money Keeper
 // @route   POST /api/misa/login

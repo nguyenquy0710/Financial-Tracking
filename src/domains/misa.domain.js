@@ -1,6 +1,6 @@
-const config = require('../../config/config');
-const Salary = require('../../models/Salary');
-const Expense = require('../../models/Expense');
+const config = require('../config/config');
+const Salary = require('../models/Salary');
+const Expense = require('../models/Expense');
 
 const MISA_CONFIG = config.externalAPIs.misa;
 
@@ -37,8 +37,36 @@ const makeMisaRequest = async (url, method = 'GET', headers = {}, body = null) =
 };
 
 /**
- * MisaDomain Class
- * This class serves as a domain layer for MISA-related operations.
+ * MisaDomain class to handle MISA API interactions and data processing
+ * @class MisaDomain
+ * @property {string} baseURL - Base URL for MISA API
+ * @property {string} authURL - Authentication URL for MISA API
+ * @property {string} businessURL - Business URL for MISA API
+ * @property {string|null} token - Authentication token
+ * @property {object|null} userInfo - User information
+ * @property {object|null} businessInfo - Business information
+ *
+ * @method loginForWeb - Login to MISA API
+ * @method getUsers - Get MISA user information
+ * @method getWalletAccounts - Get MISA wallet accounts
+ * @method getWalletSummary - Get MISA wallet account summary
+ * @method getTransactionAddresses - Get MISA transaction addresses
+ * @method searchTransactions - Search MISA transactions (income/expense)
+ * @method importIncomeTransactions - Import MISA income transactions to Salary records
+ * @method importExpenseTransactions - Import MISA expense transactions to Expense records
+ *
+ * @returns {MisaDomain} Instance of MisaDomain class
+ * ================== Example Usage =================
+ * @example
+ * const misaDomain = new MisaDomain();
+ * await misaDomain.loginForWeb('username', 'password');
+ * const users = await misaDomain.getUsers(misaDomain.token);
+ * const accounts = await misaDomain.getWalletAccounts(misaDomain.token, { /* params *\/ });
+ * const summary = await misaDomain.getWalletSummary(misaDomain.token, { /* params *\/ });
+ * const addresses = await misaDomain.getTransactionAddresses(misaDomain.token);
+ * const transactions = await misaDomain.searchTransactions(misaDomain.token, { /* params *\/ });
+ * const importResult = await misaDomain.importIncomeTransactions(userId, misaDomain.token, transactions);
+ * const expenseImportResult = await misaDomain.importExpenseTransactions(userId, misaDomain.token, transactions);
  */
 class MisaDomain {
 
@@ -54,6 +82,20 @@ class MisaDomain {
     this.businessInfo = null; // To store business information
   }
 
+  async getToken() {
+    if (!this.token) {
+      throw new Error('Not authenticated. Please login first.');
+    }
+
+    return this.token;
+  }
+
+  /**
+   * Login to MISA API for web access
+   * @param {*} username
+   * @param {*} password
+   * @returns {Promise<{success: boolean, token?: string, user?: object, message?: string}>} Response object
+   */
   async loginForWeb(username, password) {
     const url = this.authURL ?? MISA_CONFIG.authURL;
     const body = { userName: username, password: password };
@@ -104,6 +146,12 @@ class MisaDomain {
     });
   }
 
+  /**
+   * Search MISA transactions (income/expense)
+   * @param {*} misaToken MISA authentication token
+   * @param {*} body Request body with search parameters
+   * @returns {Promise<{status: number, ok: boolean, data: any}>} Response object
+   */
   async searchTransactions(misaToken, body) {
     const url = `${this.businessURL}/transactions`;
     return await makeMisaRequest(url, 'POST', {
@@ -111,6 +159,13 @@ class MisaDomain {
     }, body);
   }
 
+  /**
+   * Import income transactions from MISA to Salary records in the database
+   * @param {*} userId User ID in the local system
+   * @param {*} misaToken MISA authentication token
+   * @param {*} transactions Array of income transactions from MISA API
+   * @returns {Promise<{imported: Array, skipped: Array, errors: Array}>} Result of import operation
+   */
   async importIncomeTransactions(userId, misaToken, transactions) {
     const imported = [], skipped = [], errors = [];
 
@@ -166,6 +221,13 @@ class MisaDomain {
     return { imported, skipped, errors };
   }
 
+  /**
+   * Import expense transactions from MISA to Expense records in the database
+   * @param {*} userId User ID in the local system
+   * @param {*} misaToken MISA authentication token
+   * @param {*} transactions Array of expense transactions from MISA API
+   * @returns {Promise<{imported: Array, skipped: Array, errors: Array}>} Result of import operation
+   */
   async importExpenseTransactions(userId, misaToken, transactions) {
     const imported = [], skipped = [], errors = [];
 
