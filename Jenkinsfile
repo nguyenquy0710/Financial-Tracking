@@ -9,9 +9,9 @@
 
 node {
   properties([disableConcurrentBuilds()])
-  ansiColor('xterm') // Sử dụng màu sắc trong console output
+  // ansiColor('xterm') // Sử dụng màu sắc trong console output
   timestamps() // Thêm timestamp vào log
-  timeout(time: 30, unit: 'MINUTES')
+  // timeout(time: 30, unit: 'MINUTES')
 
   environment {
     NODE_ENV = 'production'
