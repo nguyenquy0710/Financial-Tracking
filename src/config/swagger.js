@@ -6,7 +6,8 @@ const swaggerDefinition = {
   info: {
     title: 'FinTrack API Documentation',
     version: '1.0.0',
-    description: 'FinTrack (Financial Tracking) – Người bạn đồng hành tài chính thông minh - Smart Financial Companion Platform',
+    description:
+      'FinTrack (Financial Tracking) – Người bạn đồng hành tài chính thông minh - Smart Financial Companion Platform',
     contact: {
       name: 'Nguyễn Hữu Quý',
       email: 'support@fintrack.com'
@@ -236,7 +237,7 @@ const swaggerDefinition = {
           },
           name: {
             type: 'string',
-            description: 'Tên pháp nhân ngân hàng (theo giấy phép hoạt động)',
+            description: 'Tên pháp nhân ngân hàng (theo giấy phép hoạt động)'
           },
           code: {
             type: 'string',
@@ -252,16 +253,18 @@ const swaggerDefinition = {
           },
           logo: {
             type: 'string',
-            description: '	Đường dẫn tới logo ngân hàng (trong hệ thống của FinTrack)',
+            description: '	Đường dẫn tới logo ngân hàng (trong hệ thống của FinTrack)'
           },
           transferSupported: {
             type: 'number',
-            description: 'App của Bank hỗ trợ chuyển tiền bằng cách quét mã VietQR hay không, 1: hỗ trợ, 0: không hỗ trợ',
+            description:
+              'App của Bank hỗ trợ chuyển tiền bằng cách quét mã VietQR hay không, 1: hỗ trợ, 0: không hỗ trợ'
           },
           lookupSupported: {
             type: 'number',
-            description: 'Số tài khoản của Bank có thể tra cứu bằng API tra cứu số tài khoản hay không, 1: hỗ trợ, 0: không hỗ trợ',
-          },
+            description:
+              'Số tài khoản của Bank có thể tra cứu bằng API tra cứu số tài khoản hay không, 1: hỗ trợ, 0: không hỗ trợ'
+          }
         }
       }
     }
@@ -275,11 +278,7 @@ const swaggerDefinition = {
 
 const options = {
   swaggerDefinition,
-  apis: [
-    './src/routes/*.js',
-    './src/controllers/*.js',
-    './src/models/*.js'
-  ]
+  apis: ['./src/routes/*.js', './src/controllers/*.js', './src/models/*.js']
 };
 
 const swaggerSpec = swaggerJsdoc(options);

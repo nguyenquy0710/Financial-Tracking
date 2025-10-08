@@ -22,10 +22,7 @@ exports.getAllSavings = async (req, res, next) => {
 
     // Execute query with pagination
     const skip = (page - 1) * limit;
-    const savings = await Saving.find(query)
-      .sort({ month: -1 })
-      .skip(skip)
-      .limit(parseInt(limit));
+    const savings = await Saving.find(query).sort({ month: -1 }).skip(skip).limit(parseInt(limit));
 
     const total = await Saving.countDocuments(query);
 

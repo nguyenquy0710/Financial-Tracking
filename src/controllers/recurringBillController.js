@@ -180,21 +180,21 @@ exports.markBillAsPaid = async (req, res, next) => {
     let nextDue = new Date(lastPaid);
 
     switch (bill.frequency) {
-    case 'daily':
-      nextDue.setDate(nextDue.getDate() + 1);
-      break;
-    case 'weekly':
-      nextDue.setDate(nextDue.getDate() + 7);
-      break;
-    case 'monthly':
-      nextDue.setMonth(nextDue.getMonth() + 1);
-      break;
-    case 'quarterly':
-      nextDue.setMonth(nextDue.getMonth() + 3);
-      break;
-    case 'yearly':
-      nextDue.setFullYear(nextDue.getFullYear() + 1);
-      break;
+      case 'daily':
+        nextDue.setDate(nextDue.getDate() + 1);
+        break;
+      case 'weekly':
+        nextDue.setDate(nextDue.getDate() + 7);
+        break;
+      case 'monthly':
+        nextDue.setMonth(nextDue.getMonth() + 1);
+        break;
+      case 'quarterly':
+        nextDue.setMonth(nextDue.getMonth() + 3);
+        break;
+      case 'yearly':
+        nextDue.setFullYear(nextDue.getFullYear() + 1);
+        break;
     }
 
     bill.lastPaidDate = lastPaid;
@@ -219,7 +219,7 @@ exports.markBillAsPaid = async (req, res, next) => {
 exports.getUpcomingBills = async (req, res, next) => {
   try {
     const { days = 7 } = req.query;
-    
+
     const today = new Date();
     const futureDate = new Date();
     futureDate.setDate(today.getDate() + parseInt(days));

@@ -211,10 +211,10 @@ exports.getDepositsStats = async (req, res, next) => {
       data: {
         byStatus: stats,
         byBank,
-        total: totalStats[0] || { 
-          totalPrincipal: 0, 
-          totalInterest: 0, 
-          totalAmount: 0, 
+        total: totalStats[0] || {
+          totalPrincipal: 0,
+          totalInterest: 0,
+          totalAmount: 0,
           count: 0,
           avgInterestRate: 0
         }
@@ -231,7 +231,7 @@ exports.getDepositsStats = async (req, res, next) => {
 exports.getUpcomingMaturityDeposits = async (req, res, next) => {
   try {
     const { days = 30 } = req.query;
-    
+
     const today = new Date();
     const futureDate = new Date();
     futureDate.setDate(today.getDate() + parseInt(days));
