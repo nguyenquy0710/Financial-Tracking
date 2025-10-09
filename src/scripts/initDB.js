@@ -1,6 +1,5 @@
 require('dotenv').config();
 const connectDB = require('../config/database');
-const { initializeDefaultCategories } = require('./category.initialize');
 
 async function initializeDatabase() {
   try {
@@ -10,7 +9,28 @@ async function initializeDatabase() {
     await connectDB();
 
     // Initialize default categories
-    await initializeDefaultCategories();
+    console.log("🚀 QuyNH: initializeDatabase -> initializeDefaultCategories");
+    await (await require('./category.initialize')).initializeDefaultCategories().catch(err => {
+      console.error('✗ Error initializing default categories:', err);
+    });
+
+    // Initialize default system configurations
+    console.log("🚀 QuyNH: initializeDatabase -> initializeDefaultSystemConfigs");
+    await (await require('./system-config.initialize')).initializeDefaultSystemConfigs().catch(err => {
+      console.error('✗ Error initializing default system configurations:', err);
+    });
+
+    // Initialize default user configurations
+    // console.log("🚀 QuyNH: initializeDatabase -> initializeDefaultUserConfigs");
+    // await (await require('./user-config.initialize')).initializeDefaultUserConfigs().catch(err => {
+    //   console.error('✗ Error initializing default user configurations:', err);
+    // });
+
+    // Initialize default data for user QuyNH
+    console.log("🚀 QuyNH: initializeDatabase -> initializeDefaultDataUserQuyNH");
+    await (await require('./data.quynh.initialize')).initializeDefaultDataUserQuyNH().catch(err => {
+      console.error('✗ Error initializing default data for user QuyNH:', err);
+    });
 
     console.log('✅ Database initialization completed successfully!');
     process.exit(0);

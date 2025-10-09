@@ -7,11 +7,6 @@ const config = require('../config/config');
 exports.getVietQrBanks = async (req, res, next) => {
   try {
     const { bank, isActive, page = 1, limit = 20 } = req.query;
-    console.log('🚀 QuyNH: exports.getVietQrBanks -> bank, isActive', bank, isActive);
-
-    // Build query
-    const query = { userId: req.user?._id };
-    console.log('🚀 QuyNH: exports.getVietQrBanks -> query', query);
 
     let vietQR = new VietQR({
       clientID: config.externalAPIs.vietQR.clientID,
@@ -20,8 +15,12 @@ exports.getVietQrBanks = async (req, res, next) => {
 
     // list banks are supported create QR code by Vietqr
     const getBanks = await vietQR.getBanks(),
-      dataBanks = getBanks?.data ?? [];
-    // console.log("🚀 QuyNH: exports.getVietQrBanks -> banks", getBanks);
+      dataBanks = (getBanks?.data ?? []).filter(b => {
+        if (bank && !b.name.toLowerCase().includes(bank.toLowerCase())) return false;
+        if (isActive !== undefined && String(b.isActive) !== String(isActive)) return false;
+        return true;
+      });
+    console.log('🚀 QuyNH: exports.getVietQrBanks -> dataBanks', dataBanks);
 
     // Filtering
     const total = dataBanks.length;

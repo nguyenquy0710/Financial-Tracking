@@ -10,7 +10,7 @@
     "copy-env": "copyfiles -u 0 .env dist/",
     "build": "npm run clean && tsc --build && tsc-alias && gulp build:icons --verbose && npm run copyfiles && npm run copy-package",
     "start": "node dist/src/index.js",
-    "dev": "nodemon --watch src --ext js,ts,json --exec ts-node -r tsconfig-paths/register src/index.js",
+    "dev": "nodemon --watch src --ext js,ts,json --exec ts-node -r tsconfig-paths/register src/index.js --ignore src/scripts/",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
     "lint": "eslint src/**/*.js --ignore-pattern public/*",

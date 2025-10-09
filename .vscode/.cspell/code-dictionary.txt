@@ -24,6 +24,7 @@ oaid
 orcid
 pids
 pycache
+quynh
 reranker
 sapo
 swal

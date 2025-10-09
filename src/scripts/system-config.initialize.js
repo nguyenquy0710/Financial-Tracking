@@ -1,37 +1,55 @@
-const UserConfig = require('../models/UserConfig');
+const SystemConfig = require('../models/SystemConfig');
 
-// Default user configurations to be initialized
-const defaultUserConfigs = {
+// Default system configurations to be initialized
+const defaultSystemConfigs = {
   currency: 'USD',
+  language: 'en',
+  timezone: 'UTC',
+  dateFormat: 'YYYY-MM-DD',
+  timeFormat: '24',
+  decimalSeparator: '.',
+  thousandSeparator: ',',
+  defaultAccountType: 'checking',
+  defaultBudgetPeriod: 'monthly',
+  notificationsEnabled: 'true',
+  backupFrequency: 'weekly',
+  theme: 'light',
+  autoLogoutTime: '15', // in minutes
+  dataRetentionPeriod: '365', // in days
 };
 
 module.exports = {
-  /** Default user configurations for the system */
-  defaultUserConfigs: defaultUserConfigs,
+  /** Default system configurations for the system */
+  defaultSystemConfigs: defaultSystemConfigs,
 
   /**
-   * Initialize default user configurations
+   * Initialize default system configurations
    */
-  initializeDefaultUserConfigs: async function initializeDefaultUserConfigs() {
+  initializeDefaultSystemConfigs: async function initializeDefaultSystemConfigs() {
     try {
       // Check if default configurations already exist
-      const existingConfigs = await UserConfig.countDocuments({ isDefault: true });
+      const existingConfigs = await SystemConfig.countDocuments({ isDefault: true });
       if (existingConfigs > 0) {
-        console.log('✓ Default user configurations already initialized');
+        console.log('✓ Default system configurations already initialized');
         return;
       }
 
       // Create default configurations
-      const configsToInsert = Object.entries(defaultUserConfigs).map(([key, value]) => ({
-        key,
-        value,
-        isDefault: true,
-        userId: null,
-      }));
-      await UserConfig.insertMany(configsToInsert);
-      console.log('✓ Default user configurations initialized successfully');
+      const configsToInsert = Object.entries(defaultSystemConfigs)
+        .map(([key, value]) => ({
+          configName: key,
+          configValue: value,
+          isActive: true,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        }));
+
+      // Insert all configurations
+      await SystemConfig.insertMany([...configsToInsert]);
+
+      console.log('✓ Default system configurations initialized successfully');
     } catch (error) {
-      console.error('✗ Error initializing default user configurations:', error);
+      console.error('✗ Error initializing default system configurations:', error);
     }
   },
 
