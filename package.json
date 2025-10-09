@@ -16,7 +16,7 @@
     "lint": "eslint src/**/*.js --ignore-pattern public/*",
     "lint:fix": "eslint src/**/*.js --fix --ignore-pattern public/*",
     "format": "prettier --write \"src/**/*.js\" --ignore-path .prettierignore",
-    "init:db": "node src/scripts/initDB.js"
+    "init:db": "node src/scripts/initDB.js -- --data"
   },
   "keywords": [
     "financial-tracking",
