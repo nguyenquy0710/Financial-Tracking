@@ -1,7 +1,28 @@
+# FinTrack Dockerfile
+# Multi-stage Dockerfile for building and running FinTrack application efficiently in production.
+# Optimized for smaller image size and security by using a non-root user.
+# ---------------------------------------------------------------------
+# Instructions to build and run the Docker container:
+# 1. Build the Docker image:
+#    docker build -t financial-tracking:latest .
+# 2. Run the Docker container:
+#    docker run -d -p 3000:3000 --name fintrack financial-tracking:latest
+# 3. (Optional) Use an environment file for configuration:
+#    docker run -d -p 3000:3000 --name fintrack --env-file .env financial-tracking:latest
+# 4. (Optional) Use Docker Scout to analyze the image:
+#    docker scout quickview
+# Reference: https://scout.docker.com/nguyenquy0710/Financial-Tracking
+# ---------------------------------------------------------------------
+
+# Use Node.js Alpine image for smaller size
+# You can change the Node.js version as needed (e.g., 18, 20, 22)
+# Check available tags at https://hub.docker.com/_/node
+ARG NODE_VERSION=22-alpine3.21
+
 # ---------------------
 # Stage 1: BUILD STAGE
 # ---------------------
-FROM node:22.12.0-alpine AS build
+FROM node:${NODE_VERSION} AS build
 
 WORKDIR /app
 
@@ -24,7 +45,7 @@ RUN npm run build
 # -----------------------
 # Stage 2: RUNTIME STAGE
 # -----------------------
-FROM node:22.12.0-alpine AS runtime
+FROM node:${NODE_VERSION} AS runtime
 
 LABEL maintainer="Nguyen Quy <quy.nh@nhquydev.net>"
 LABEL org.opencontainers.image.source="https://github.com/nguyenquy0710/Financial-Tracking"
@@ -57,4 +78,5 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD node -e "require('http').get('http://localhost:3000/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})"
 
-CMD ["node", "src/index.js"]
+# CMD ["node", "src/index.js"]
+ENTRYPOINT ["node", "src/index.js"]
