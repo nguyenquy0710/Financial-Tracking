@@ -1,4 +1,11 @@
-version: '3.8'
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#  This file is part of the FinTrack project.
+# -----------------------------------------
+# https://github.com/nguyenquy0710/Financial-Tracking
+# -----------------------------------------
+# START: docker-compose up -d --build --force-recreate --remove-orphans
+# STOP: docker-compose down -v
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 services:
   # MongoDB Database
@@ -21,24 +28,44 @@ services:
       retries: 5
 
   # FinTrack API Application
-  api:
+  fintrack:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: fintrack-api
+    image: ghcr.io/nguyenquy0710/financial-tracking:latest
+    container_name: fintrack_app
     restart: unless-stopped
+    # network_mode: host
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=production
-      - PORT=3000
-      - MONGODB_URI=mongodb://mongodb:27017/fintrack
+      - TZ=Asia/Ho_Chi_Minh
+      # Server Configuration
+      - PORT=${PORT:-3000}
+      - NODE_ENV=${NODE_ENV:-production}
+      - CORS_ORIGIN=${CORS_ORIGIN:-*}
+      # JWT Configuration
       - JWT_SECRET=${JWT_SECRET:-fintrack-secret-key-change-in-production}
-      - JWT_EXPIRES_IN=7d
-      - CORS_ORIGIN=*
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-1d}
+      # Application Settings
+      - APP_BASE_URL=${APP_BASE_URL:-http://localhost:3000}
+      # Database Configuration
+      - MONGODB_URI=${MONGODB_URI:-mongodb://mongodb:27017/fintrack}
+      # External API Configurations
+      - VIETQR_CLIENT_ID=${VIETQR_CLIENT_ID:-your-vietqr-client-id}
+      - VIETQR_CLIENT_SECRET=${VIETQR_CLIENT_SECRET:-your-vietqr-client-secret}
+      # MISA API Configurations
+      - MISA_BASE_URL=${MISA_BASE_URL:-https://api.misa.com.vn}
+    # env_file:
+    #   - .env
+    volumes:
+      - ./.env:/app/.env:rw
+      - ./data/logs:/app/logs:rw
     depends_on:
       mongodb:
         condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # Để kết nối đến localhost của host từ container
     networks:
       - fintrack-network
     healthcheck:
@@ -47,6 +74,13 @@ services:
       timeout: 3s
       retries: 3
       start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50" # Giới hạn 80% CPU
+          memory: "1G" # Giới hạn 3.2GB RAM (80% của 4GB)
+        reservations:
+          memory: "256M" # Đảm bảo container có ít nhất 256MB RAM
 
 volumes:
   mongodb_data:

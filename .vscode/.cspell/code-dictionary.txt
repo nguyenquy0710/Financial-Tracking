@@ -2,6 +2,7 @@
 campaignid
 cffinit
 chcp
+cpus
 cskh
 dakiatech
 dotenv
