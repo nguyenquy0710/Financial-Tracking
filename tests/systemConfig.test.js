@@ -2,9 +2,9 @@ const request = require('supertest');
 const mongoose = require('mongoose');
 const app = require('../src/index');
 const User = require('../src/models/User');
-const SystemConfig = require('../src/models/SystemConfig');
+const UserConfig = require('../src/models/UserConfig');
 
-describe('System Configuration', () => {
+describe('User Configuration', () => {
   let authToken;
   let userId;
 
@@ -13,9 +13,9 @@ describe('System Configuration', () => {
     const userResponse = await request(app)
       .post('/api/auth/register')
       .send({
-        email: 'systemconfig-test@example.com',
+        email: 'user-config-test@example.com',
         password: 'password123',
-        name: 'System Config Test User'
+        name: 'User Config Test User'
       });
 
     authToken = userResponse.body.data.token;
@@ -24,13 +24,13 @@ describe('System Configuration', () => {
 
   afterEach(async () => {
     // Clean up system configs after each test
-    await SystemConfig.deleteMany({});
+    await UserConfig.deleteMany({});
   });
 
   afterAll(async () => {
     // Clean up and close connection
     await User.deleteMany({});
-    await SystemConfig.deleteMany({});
+    await UserConfig.deleteMany({});
     await mongoose.connection.close();
   });
 
@@ -55,7 +55,7 @@ describe('System Configuration', () => {
 
     it('should return existing config if configured', async () => {
       // Create a config first
-      await SystemConfig.create({
+      await UserConfig.create({
         userId,
         misa: {
           username: 'test@example.com',
@@ -155,7 +155,7 @@ describe('System Configuration', () => {
       expect(res.body).toHaveProperty('success');
 
       // Config should not be saved
-      const config = await SystemConfig.findOne({ userId });
+      const config = await UserConfig.findOne({ userId });
       expect(config).toBeNull();
     });
   });
@@ -180,7 +180,7 @@ describe('System Configuration', () => {
 
     it('should delete existing MISA config', async () => {
       // Create a config first
-      await SystemConfig.create({
+      await UserConfig.create({
         userId,
         misa: {
           username: 'test@example.com',

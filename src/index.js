@@ -34,7 +34,7 @@ const bankAccountRoutes = require('./routes/bankAccountRoutes');
 const viewRoutes = require('./routes/viewRoutes');
 const externalRoutes = require('./routes/externalRoutes');
 const misaRoutes = require('./routes/misaRoutes');
-const systemConfigRoutes = require('./routes/systemConfigRoutes');
+const userConfigRoutes = require('./routes/userConfigRoutes');
 
 // Initialize app
 const app = express();
@@ -159,7 +159,7 @@ app.use('/api/savings', savingRoutes);
 app.use('/api/deposits', depositRoutes);
 app.use('/api/recurring-bills', recurringBillRoutes);
 app.use('/api/bank-accounts', bankAccountRoutes);
-app.use('/api/system-config', systemConfigRoutes);
+app.use('/api/system-config', userConfigRoutes);
 
 // Health check
 app.get('/health', (req, res) => {

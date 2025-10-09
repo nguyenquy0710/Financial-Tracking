@@ -1,6 +1,6 @@
 require('dotenv').config();
 const connectDB = require('../config/database');
-const { initializeDefaultCategories } = require('../utils/helpers');
+const { initializeDefaultCategories } = require('./category.initialize');
 
 async function initializeDatabase() {
   try {
