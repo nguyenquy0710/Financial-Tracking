@@ -3,6 +3,7 @@ campaignid
 cffinit
 chcp
 cskh
+dakiatech
 dotenv
 esms
 esmsvn

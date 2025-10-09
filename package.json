@@ -6,6 +6,9 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
+    "clean": "rimraf dist .tsbuildinfo",
+    "build": "npm run clean && npx tsc --build && tsc-alias && gulp build:icons --verbose && npm run copyfiles",
+    "copyfiles": "copyfiles -u 0 package.json package-lock.json .env.example dist/ && copyfiles -u 1 \"public/**/*\" dist/public/ && copyfiles -u 1 \"views/**/*\" dist/views/",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
     "lint": "eslint src/**/*.js --ignore-pattern public/*",
@@ -44,11 +47,20 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.7.0",
+    "@typescript-eslint/eslint-plugin": "^8.46.0",
+    "@typescript-eslint/parser": "^8.46.0",
+    "copyfiles": "^2.4.1",
     "eslint": "^8.56.0",
+    "gulp": "^5.0.1",
     "jest": "^29.7.0",
     "nodemon": "^3.0.2",
     "prettier": "^3.1.1",
-    "supertest": "^6.3.3"
+    "supertest": "^6.3.3",
+    "tsc-alias": "^1.8.16",
+    "typescript": "^5.9.3",
+    "typescript-transform-paths": "^3.5.5"
   },
   "engines": {
     "node": ">=18.0.0",
