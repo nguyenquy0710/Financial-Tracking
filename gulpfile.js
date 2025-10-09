@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 const path = require('path');
 const { task, src, dest } = require('gulp');
 
