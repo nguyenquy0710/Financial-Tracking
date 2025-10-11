@@ -88,6 +88,7 @@ ngay
 ngày
 nghe
 nghĩa
+Ngôn
 người
 nguyên
 nguyễn
@@ -109,6 +110,7 @@ phòng
 phục
 phương
 quản
+Quang
 quên
 rằng
 sách
@@ -138,6 +140,7 @@ thương
 thường
 tích
 tiền
+Tiếng
 tiếp
 tiết
 tiêu
@@ -150,6 +153,7 @@ triển
 trong
 trọng
 trực
+Trung
 trước
 trường
 truy
@@ -157,6 +161,7 @@ tương
 tượng
 tuyệt
 viet
+Việt
 xoay
 xong
 xuất
