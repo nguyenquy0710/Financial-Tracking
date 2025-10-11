@@ -9,20 +9,29 @@ const router = express.Router();
 // Home page
 router.get('/', (req, res) => {
   res.render('index', {
-    title: 'Người bạn đồng hành tài chính thông minh'
+    title: 'Người bạn đồng hành tài chính thông minh',
+    currentPage: 'home'
   });
 });
 
 // Authentication pages
 router.get('/login', (req, res) => {
+  const defaultDataUserQuyNH = require('../scripts/data.quynh.initialize').defaultDataUserQuyNH ?? {};
+  const { email, password } = defaultDataUserQuyNH.user || {};
+
   res.render('login', {
-    title: 'Đăng nhập'
+    title: 'Đăng nhập',
+    currentPage: 'login',
+    defaultData: {
+      user: { email, password }
+    }
   });
 });
 
 router.get('/register', (req, res) => {
   res.render('register', {
-    title: 'Đăng ký'
+    title: 'Đăng ký',
+    currentPage: 'register',
   });
 });
 

@@ -25,6 +25,26 @@ async function initializeDatabase() {
         console.error('✗ Error initializing default system configurations:', err);
       });
 
+    // Nếu có tham số --data, khởi tạo dữ liệu mẫu
+    try {
+      if (args.includes('--data')) {
+        console.log("✅ Phát hiện tham số --data, đang chạy với dữ liệu mẫu...");
+
+        // Initialize default data for user QuyNH
+        console.log("🚀 QuyNH: initializeDatabase -> initializeDefaultDataUserQuyNH");
+        await initializeDefaultDataUserQuyNH();
+
+        console.log("✅ Khởi tạo dữ liệu mẫu hoàn tất.");
+        process.exit(0);
+      } else {
+        console.log("ℹ️ Không có tham số --data, chỉ tạo cấu trúc DB...");
+        process.exit(0);
+      }
+    } catch (error) {
+      console.error('❌ Lỗi khi xử lý tham số dòng lệnh:', error);
+      process.exit(1);
+    }
+
     // Initialize default user configurations
     // console.log("🚀 QuyNH: initializeDatabase -> initializeDefaultUserConfigs");
     // await (await require('./user-config.initialize')).initializeDefaultUserConfigs().catch(err => {
@@ -37,6 +57,8 @@ async function initializeDatabase() {
     console.error('❌ Database initialization failed:', error);
     process.exit(1);
   }
+
+  return true;
 }
 
 /**
@@ -52,41 +74,16 @@ async function initializeDefaultDataUserQuyNH() {
       });
   } catch (error) {
     console.error('✗ Error initializing default data for user QuyNH:', error);
-    throw error;
+
+    return false;
   }
+
+  return true;
 }
 
 // ============================================================================
+// Lấy tham số dòng lệnh
+const args = process.argv.slice(2);
+
 // Run initialization
-initializeDatabase().then(async () => {
-  console.log("✅ Cấu trúc DB đã được tạo.");
-
-  // =============================================================================
-  // Nếu có tham số --data, khởi tạo dữ liệu mẫu
-  // Lấy tham số dòng lệnh
-  const args = process.argv.slice(2);
-
-  try {
-    if (args.includes('--data')) {
-      console.log("✅ Phát hiện tham số --data, đang chạy với dữ liệu mẫu...");
-
-      await initializeDefaultDataUserQuyNH().catch(err => {
-        console.error('❌ Lỗi khi khởi tạo dữ liệu mẫu:', err);
-        process.exit(1);
-      });
-
-      console.log("✅ Khởi tạo dữ liệu mẫu hoàn tất.");
-      process.exit(0);
-    } else {
-      console.log("ℹ️ Không có tham số --data, chỉ tạo cấu trúc DB...");
-      process.exit(0);
-    }
-  } catch (error) {
-    console.error('❌ Lỗi khi xử lý tham số dòng lệnh:', error);
-    process.exit(1);
-  }
-
-}).catch(err => {
-  console.error('❌ Lỗi khi tạo cấu trúc DB:', err);
-  process.exit(1);
-});
+initializeDatabase(args);
