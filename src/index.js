@@ -36,6 +36,9 @@ const externalRoutes = require('./routes/externalRoutes');
 const misaRoutes = require('./routes/misaRoutes');
 const userConfigRoutes = require('./routes/userConfigRoutes');
 
+// admin area
+const viewAdminRoutes = require('./routes/admin/viewRoutes');
+
 // Initialize app
 const app = express();
 
@@ -142,6 +145,7 @@ app.get('/api-docs.json', (req, res) => {
 
 // Web UI Routes - Must come before API routes
 app.use('/', viewRoutes);
+app.use('/admin', viewAdminRoutes);
 
 // API Routes
 app.use('/api/auth', authRoutes);
