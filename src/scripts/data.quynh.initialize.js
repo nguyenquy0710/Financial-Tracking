@@ -1,5 +1,5 @@
-const User = require('../models/User');
-const BankAccount = require('../models/BankAccount');
+const User = require('../schemas/User.schema');
+const BankAccount = require('../schemas/BankAccount.schema');
 
 // Default data initialization for user QuyNH
 const defaultDataUserQuyNH = {

@@ -18,9 +18,9 @@ const connectDB = require('./config/database');
 const errorHandler = require('./middleware/errorHandler');
 
 // Import routes modules
-const viewRoutes = require('./routes/viewRoutes');
-const viewAdminRoutes = require('./routes/admin/viewRoutes');
-const apiRoutes = require('./routes/apis/apiRoutes');
+const viewRoutes = require('./routes/view.route');
+const viewAdminRoutes = require('./routes/admin/view.route');
+const apiRoutes = require('./routes/apis/api.route');
 
 // Initialize app
 const app = express();

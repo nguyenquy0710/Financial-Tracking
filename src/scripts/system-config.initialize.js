@@ -1,4 +1,4 @@
-const SystemConfig = require('../models/SystemConfig');
+const SystemConfig = require('../schemas/SystemConfig.schema');
 
 // Default system configurations to be initialized
 const defaultSystemConfigs = {

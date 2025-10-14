@@ -1,6 +1,6 @@
 import config from '../config/config';
-import Salary from '../models/Salary';
-import Expense from '../models/Expense';
+import Salary from '../schemas/Salary.schema';
+import Expense from '../schemas/Expense.schema';
 
 import { ImportResult, MisaLoginResponse, MisaResponse, MisaTransaction } from './misa.response.models';
 

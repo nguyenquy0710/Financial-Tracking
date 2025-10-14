@@ -1,6 +1,6 @@
 import RentalModel from '@/models/rental.model';
 
-import RentalSchema from '../models/Rental';
+import RentalSchema from '../schemas/rental.schema';
 
 export class RentalDomain {
   constructor() {
