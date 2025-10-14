@@ -14,34 +14,7 @@ const bankAccountController = require('../../controllers/bankAccountController')
 // All routes require authentication
 router.use(authHandler);
 
-/**
- * @swagger
- * /api/bank-accounts/default:
- *   get:
- *     summary: Get the default bank account for the authenticated user
- *    tags: [BankAccounts]
- *   security:
- *    - bearerAuth: []
- *  responses:
- *    200:
- *    description: Default bank account retrieved successfully
- *   content:
- *    application/json:
- *    schema:
- *    type: object
- *   properties:
- *  success:
- *  type: boolean
- *  example: true
- *  data:
- * $ref: '#/components/schemas/BankAccount'
- *  404:
- *  description: No default bank account set
- *  content:
- *  application/json:
- *  schema:
- *  $ref: '#/components/schemas/Error'
- */
+// Get default bank account
 router.get('/default', bankAccountController.getDefaultBankAccount);
 
 router.put('/:id/set-default', bankAccountController.setDefaultBankAccount);

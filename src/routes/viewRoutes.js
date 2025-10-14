@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const rentalRoutes = require('./rentalRoutes');
+
 /**
  * Web UI Routes
  * These routes render EJS templates for the web interface
@@ -11,6 +13,14 @@ router.get('/', (req, res) => {
   res.render('index', {
     title: 'Người bạn đồng hành tài chính thông minh',
     currentPage: 'home'
+  });
+});
+
+// Changelog page - renders CHANGELOG.md content in a styled format
+router.get('/changelog', (req, res) => {
+  res.render('changelog', {
+    title: 'Nhật ký phát triển',
+    currentPage: 'changelog'
   });
 });
 
@@ -28,6 +38,7 @@ router.get('/login', (req, res) => {
   });
 });
 
+// Registration page - simplified, no invite code required for now
 router.get('/register', (req, res) => {
   res.render('register', {
     title: 'Đăng ký',
@@ -43,12 +54,14 @@ router.get('/dashboard', (req, res) => {
   });
 });
 
-router.get('/rentals', (req, res) => {
-  res.render('rentals', {
-    title: 'Thuê phòng',
-    currentPage: 'rentals'
-  });
-});
+// Financial management pages - examples below
+router.use('/rentals', rentalRoutes);
+// router.get('/rentals', (req, res) => {
+//   res.render('rentals', {
+//     title: 'Thuê phòng',
+//     currentPage: 'rentals'
+//   });
+// });
 
 router.get('/salaries', (req, res) => {
   res.render('salaries', {
@@ -96,13 +109,6 @@ router.get('/settings', (req, res) => {
   res.render('settings', {
     title: 'Cài đặt',
     currentPage: 'settings'
-  });
-});
-
-router.get('/changelog', (req, res) => {
-  res.render('changelog', {
-    title: 'Nhật ký phát triển',
-    currentPage: 'changelog'
   });
 });
 
