@@ -7,8 +7,8 @@ const {
   updateExpense,
   deleteExpense,
   getExpenseStats
-} = require('../controllers/expenseController');
-const auth = require('../middleware/auth');
+} = require('../../controllers/expenseController');
+const auth = require('../../middleware/auth');
 
 router.use(auth);
 

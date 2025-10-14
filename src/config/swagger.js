@@ -1,6 +1,7 @@
 const swaggerJsdoc = require('swagger-jsdoc');
 const config = require('./config');
 
+// Swagger definition and options for swagger-jsdoc setup
 const swaggerDefinition = {
   openapi: '3.0.0',
   info: {
@@ -17,6 +18,7 @@ const swaggerDefinition = {
       url: 'https://opensource.org/licenses/MIT'
     }
   },
+
   servers: [
     {
       url: `http://localhost:${config.server.port}`,
@@ -27,6 +29,7 @@ const swaggerDefinition = {
       description: 'Production server'
     }
   ],
+
   components: {
     securitySchemes: {
       bearerAuth: {
@@ -269,6 +272,7 @@ const swaggerDefinition = {
       }
     }
   },
+
   security: [
     {
       bearerAuth: []
@@ -278,7 +282,13 @@ const swaggerDefinition = {
 
 const options = {
   swaggerDefinition,
-  apis: ['./src/routes/*.js', './src/controllers/*.js', './src/models/*.js']
+  apis: [
+    './src/routes/*.js',
+    './src/routes/apis/*.js',
+    './src/routes/admin/*.js',
+    './src/controllers/*.js',
+    './src/models/*.js'
+  ]
 };
 
 const swaggerSpec = swaggerJsdoc(options);

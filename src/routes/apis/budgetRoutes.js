@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const budgetController = require('../controllers/budgetController');
-const auth = require('../middleware/auth');
-const { budgetValidation } = require('../middleware/validator');
+const budgetController = require('../../controllers/budgetController');
+const auth = require('../../middleware/auth');
+const { budgetValidation } = require('../../middleware/validator');
 
 /**
  * @swagger

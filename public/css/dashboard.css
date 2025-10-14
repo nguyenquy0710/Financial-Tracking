@@ -116,7 +116,7 @@
 /* Add padding for mobile toggle button */
 @media (max-width: 991.98px) {
   .top-bar {
-    padding-left: 60px;
+    padding-left: 65px;
   }
 }
 

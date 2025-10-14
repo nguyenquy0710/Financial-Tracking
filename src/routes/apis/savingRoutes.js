@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../middleware/auth');
-const savingController = require('../controllers/savingController');
+const auth = require('../../middleware/auth');
+const savingController = require('../../controllers/savingController');
 
 // All routes require authentication
 router.use(auth);

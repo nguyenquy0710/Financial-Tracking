@@ -1,7 +1,21 @@
-* {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: inherit;
+  color: inherit;
+  order: 0;
+  outline: 0;
+  text-decoration: none;
+  list-style: none;
+  vertical-align: baseline;
+  transition: all 0.2s ease-in-out;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {

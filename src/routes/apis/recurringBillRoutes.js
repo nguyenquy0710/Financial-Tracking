@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../middleware/auth');
-const recurringBillController = require('../controllers/recurringBillController');
+const auth = require('../../middleware/auth');
+const recurringBillController = require('../../controllers/recurringBillController');
 
 // All routes require authentication
 router.use(auth);

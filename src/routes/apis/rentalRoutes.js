@@ -7,8 +7,8 @@ const {
   updateRental,
   deleteRental,
   getRentalStats
-} = require('../controllers/rentalController');
-const auth = require('../middleware/auth');
+} = require('../../controllers/rentalController');
+const auth = require('../../middleware/auth');
 
 router.use(auth);
 

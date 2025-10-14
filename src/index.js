@@ -17,27 +17,10 @@ const connectDB = require('./config/database');
 // Import custom middleware
 const errorHandler = require('./middleware/errorHandler');
 
-// Import routes
-const authRoutes = require('./routes/authRoutes');
-const transactionRoutes = require('./routes/transactionRoutes');
-const categoryRoutes = require('./routes/categoryRoutes');
-const budgetRoutes = require('./routes/budgetRoutes');
-const goalRoutes = require('./routes/goalRoutes');
-const rentalRoutes = require('./routes/rentalRoutes');
-const salaryRoutes = require('./routes/salaryRoutes');
-const expenseRoutes = require('./routes/expenseRoutes');
-const excelRoutes = require('./routes/excelRoutes');
-const savingRoutes = require('./routes/savingRoutes');
-const depositRoutes = require('./routes/depositRoutes');
-const recurringBillRoutes = require('./routes/recurringBillRoutes');
-const bankAccountRoutes = require('./routes/bankAccountRoutes');
+// Import routes modules
 const viewRoutes = require('./routes/viewRoutes');
-const externalRoutes = require('./routes/externalRoutes');
-const misaRoutes = require('./routes/misaRoutes');
-const userConfigRoutes = require('./routes/userConfigRoutes');
-
-// admin area
 const viewAdminRoutes = require('./routes/admin/viewRoutes');
+const apiRoutes = require('./routes/apis/apiRoutes');
 
 // Initialize app
 const app = express();
@@ -98,11 +81,6 @@ app.use(express.urlencoded({ extended: true })); // Parse URL-encoded
 // Serve static files
 app.use(express.static('public'));
 
-// Serve CHANGELOG.md file
-app.get('/CHANGELOG.md', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'CHANGELOG.md'));
-});
-
 // ================ Logging ================ //
 // ⚙️ Kích hoạt Morgan với luồng ghi log xoay
 if (config.server.env === 'development') {
@@ -144,26 +122,14 @@ app.get('/api-docs.json', (req, res) => {
 });
 
 // Web UI Routes - Must come before API routes
-app.use('/', viewRoutes);
-app.use('/admin', viewAdminRoutes);
+app.use('/', viewRoutes); // Main web app routes (removed welcome route)
+app.use('/admin', viewAdminRoutes); // Admin routes
+app.use('/api', apiRoutes); // General API routes like auth, users, profile etc.
 
-// API Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/transactions', transactionRoutes);
-app.use('/api/categories', categoryRoutes);
-app.use('/api/externals', externalRoutes);
-app.use('/api/misa', misaRoutes);
-app.use('/api/budgets', budgetRoutes);
-app.use('/api/goals', goalRoutes);
-app.use('/api/rentals', rentalRoutes);
-app.use('/api/salaries', salaryRoutes);
-app.use('/api/expenses', expenseRoutes);
-app.use('/api/excel', excelRoutes);
-app.use('/api/savings', savingRoutes);
-app.use('/api/deposits', depositRoutes);
-app.use('/api/recurring-bills', recurringBillRoutes);
-app.use('/api/bank-accounts', bankAccountRoutes);
-app.use('/api/system-config', userConfigRoutes);
+// Serve CHANGELOG.md file
+app.get('/CHANGELOG.md', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'CHANGELOG.md'));
+});
 
 // Health check
 app.get('/health', (req, res) => {
