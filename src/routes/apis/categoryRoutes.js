@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const categoryController = require('../../controllers/categoryController');
-const auth = require('../../middleware/auth');
+const authHandler = require('../../middleware/auth');
 const { categoryValidation } = require('../../middleware/validator');
 
 /**
@@ -11,7 +11,8 @@ const { categoryValidation } = require('../../middleware/validator');
  *   description: Category management for transactions
  */
 
-router.use(auth);
+// All routes require authentication
+router.use(authHandler);
 
 /**
  * @swagger

@@ -1,10 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../../middleware/auth');
+const authHandler = require('../../middleware/auth');
 const recurringBillController = require('../../controllers/recurringBillController');
 
+/**
+ * @swagger
+ * tags:
+ *  name: Recurring Bills
+ *  description: API endpoints for managing recurring bills
+ */
+
 // All routes require authentication
-router.use(auth);
+router.use(authHandler);
 
 // Get upcoming bills
 router.get('/upcoming', recurringBillController.getUpcomingBills);

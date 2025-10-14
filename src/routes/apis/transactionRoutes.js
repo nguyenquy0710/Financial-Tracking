@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const transactionController = require('../../controllers/transactionController');
-const auth = require('../../middleware/auth');
+const authHandler = require('../../middleware/auth');
 const { transactionValidation } = require('../../middleware/validator');
 
 /**
@@ -11,7 +11,8 @@ const { transactionValidation } = require('../../middleware/validator');
  *   description: Transaction management endpoints
  */
 
-router.use(auth);
+// All routes require authentication
+router.use(authHandler);
 
 /**
  * @swagger

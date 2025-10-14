@@ -8,9 +8,17 @@ const {
   deleteRental,
   getRentalStats
 } = require('../../controllers/rentalController');
-const auth = require('../../middleware/auth');
+const authHandler = require('../../middleware/auth');
 
-router.use(auth);
+/**
+ * @swagger
+ * tags:
+ *  name: Rentals
+ *  description: API for managing rentals
+ */
+
+// All routes require authentication
+router.use(authHandler);
 
 router.route('/').get(getRentals).post(createRental);
 

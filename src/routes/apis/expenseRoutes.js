@@ -8,9 +8,17 @@ const {
   deleteExpense,
   getExpenseStats
 } = require('../../controllers/expenseController');
-const auth = require('../../middleware/auth');
+const authHandler = require('../../middleware/auth');
 
-router.use(auth);
+/**
+ * @swagger
+ * tags:
+ *  name: Expenses
+ *  description: API for managing expenses
+ */
+
+// All routes require authentication
+router.use(authHandler);
 
 router.route('/').get(getExpenses).post(createExpense);
 

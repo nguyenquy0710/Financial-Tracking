@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const goalController = require('../../controllers/goalController');
-const auth = require('../../middleware/auth');
+const authHandler = require('../../middleware/auth');
 const { goalValidation } = require('../../middleware/validator');
 
 /**
@@ -11,7 +11,8 @@ const { goalValidation } = require('../../middleware/validator');
  *   description: Financial goal management and tracking
  */
 
-router.use(auth);
+// All routes require authentication
+router.use(authHandler);
 
 /**
  * @swagger

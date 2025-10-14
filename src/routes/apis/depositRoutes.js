@@ -1,10 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../../middleware/auth');
+const authHandler = require('../../middleware/auth');
 const depositController = require('../../controllers/depositController');
 
+/**
+ * @swagger
+ * tags:
+ *  name: Deposits
+ *  description: API endpoints for managing deposits
+ */
+
 // All routes require authentication
-router.use(auth);
+router.use(authHandler);
 
 // Get upcoming maturity deposits
 router.get('/upcoming', depositController.getUpcomingMaturityDeposits);

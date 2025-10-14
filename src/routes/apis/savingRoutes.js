@@ -1,10 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../../middleware/auth');
+const authHandler = require('../../middleware/auth');
 const savingController = require('../../controllers/savingController');
 
+/**
+ * @swagger
+ * tags:
+ *  name: Savings
+ *  description: API for managing savings
+ */
+
 // All routes require authentication
-router.use(auth);
+router.use(authHandler);
 
 // Get savings statistics
 router.get('/stats/summary', savingController.getSavingsStats);

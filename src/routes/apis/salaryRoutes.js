@@ -8,9 +8,17 @@ const {
   deleteSalary,
   getSalaryStats
 } = require('../../controllers/salaryController');
-const auth = require('../../middleware/auth');
+const authHandler = require('../../middleware/auth');
 
-router.use(auth);
+/**
+ * @swagger
+ * tags:
+ *  name: Salaries
+ *  description: API for managing salaries
+ */
+
+// All routes require authentication
+router.use(authHandler);
 
 router.route('/').get(getSalaries).post(createSalary);
 
