@@ -9,7 +9,7 @@ const {
   parseBankAccountSheet,
   exportToExcel
 } = require('../utils/excelParser');
-const Rental = require('../schemas/rental.schema');
+const Rental = require('../models/Rental.model');
 const Salary = require('../schemas/Salary.schema');
 const Expense = require('../schemas/Expense.schema');
 const Deposit = require('../schemas/Deposit.schema');

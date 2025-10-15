@@ -1,30 +1,28 @@
-import RentalModel from '@/models/rental.model';
-
-import RentalSchema from '../schemas/rental.schema';
+import RentalSchema, { IRentalModel } from '@/models/rental.model';
 
 export class RentalDomain {
   constructor() {
     // Initialization code if needed
   }
 
-  async getRentalById(id: string): Promise<RentalModel | null> {
+  async getRentalById(id: string): Promise<IRentalModel | null> {
     // Logic to retrieve a rental by its ID
-    const rental = await RentalSchema.findById(id).lean<RentalModel>().exec();
-    return rental as RentalModel | null;
+    const rental = await RentalSchema.findById(id).lean<IRentalModel>().exec();
+    return rental as IRentalModel | null;
   }
 
-  async createRental(data: Partial<RentalModel>): Promise<RentalModel> {
+  async createRental(data: Partial<IRentalModel>): Promise<IRentalModel> {
     // Logic to create a new rental
     const rental = new RentalSchema(data);
     await rental.save();
-    return rental.toObject() as unknown as RentalModel;
+    return rental.toObject() as unknown as IRentalModel;
   }
 
-  async updateRental(id: string, data: Partial<RentalModel>): Promise<RentalModel | null> {
+  async updateRental(id: string, data: Partial<IRentalModel>): Promise<IRentalModel | null> {
     // Logic to update an existing rental
-    const rental = await RentalSchema.findByIdAndUpdate(id, data, { new: true }).lean<RentalModel>().exec();
+    const rental = await RentalSchema.findByIdAndUpdate(id, data, { new: true }).lean<IRentalModel>().exec();
     if (rental) {
-      return rental as RentalModel;
+      return rental as IRentalModel;
     }
     return null;
   }
