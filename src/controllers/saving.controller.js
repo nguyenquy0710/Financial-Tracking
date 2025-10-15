@@ -1,7 +1,9 @@
-const Saving = require('../schemas/Saving.schema');
+
+const { default: Saving } = require("@/models/saving.model");
 
 // @desc    Get all savings
 // @route   GET /api/savings
+
 // @access  Private
 exports.getAllSavings = async (req, res, next) => {
   try {

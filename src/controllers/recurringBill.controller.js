@@ -1,7 +1,9 @@
-const RecurringBill = require('../schemas/RecurringBill.schema');
+
+const { default: RecurringBill } = require("@/models/recurringBill.model");
 
 // @desc    Get all recurring bills
 // @route   GET /api/recurring-bills
+
 // @access  Private
 exports.getAllRecurringBills = async (req, res, next) => {
   try {

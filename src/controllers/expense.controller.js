@@ -1,4 +1,4 @@
-const Expense = require('../schemas/Expense.schema');
+const { default: Expense } = require("@/models/expense.model");
 
 /**
  * @desc    Get all expenses for a user

@@ -1,7 +1,9 @@
-const BankAccount = require('../schemas/BankAccount.schema');
+
+const { default: BankAccount } = require("@/models/bankAccount.model");
 
 // @desc    Get all bank accounts
 // @route   GET /api/bank-accounts
+
 // @access  Private
 exports.getAllBankAccounts = async (req, res, next) => {
   try {

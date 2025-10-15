@@ -1,4 +1,4 @@
-const Category = require('../schemas/Category.schema');
+const { default: Category } = require("@/models/category.model");
 
 /**
  * Auto-categorize transaction based on keywords

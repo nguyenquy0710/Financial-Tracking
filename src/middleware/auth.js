@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
-const User = require('../schemas/User.schema');
+const { default: User } = require('@/models/user.model');
 
 const auth = async (req, res, next) => {
   const path = req.path ?? ''; // path hiện tại

@@ -1,4 +1,4 @@
-const Category = require('../schemas/Category.schema');
+const { default: Category } = require("@/models/category.model");
 
 // Default categories to be initialized
 const defaultCategories = {

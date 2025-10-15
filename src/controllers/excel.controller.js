@@ -10,10 +10,10 @@ const {
   exportToExcel
 } = require('../utils/excelParser');
 const Rental = require('../models/Rental.model');
-const Salary = require('../schemas/Salary.schema');
-const Expense = require('../schemas/Expense.schema');
-const Deposit = require('../schemas/Deposit.schema');
-const BankAccount = require('../schemas/BankAccount.schema');
+const { default: Salary } = require('@/models/salary.model');
+const { default: Expense } = require('@/models/expense.model');
+const { default: Deposit } = require('@/models/deposit.model');
+const { default: BankAccount } = require('@/models/bankAccount.model');
 
 // Configure multer for file upload
 const storage = multer.memoryStorage();

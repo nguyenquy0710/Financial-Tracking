@@ -1,8 +1,8 @@
+import Salary from '@/models/salary.model';
 import config from '../config/config';
-import Salary from '../schemas/Salary.schema';
-import Expense from '../schemas/Expense.schema';
 
 import { ImportResult, MisaLoginResponse, MisaResponse, MisaTransaction } from './misa.response.models';
+import Expense from '@/models/expense.model';
 
 const MISA_CONFIG = config.externalAPIs.misa;
 

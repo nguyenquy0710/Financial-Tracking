@@ -1,7 +1,10 @@
-const Goal = require('../schemas/Goal.schema');
+
+const { default: Goal } = require("@/models/goal.model");
 
 // @desc    Get all goals
 // @route   GET /api/goals
+
+
 // @access  Private
 exports.getGoals = async (req, res, next) => {
   try {

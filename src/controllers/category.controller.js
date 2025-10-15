@@ -1,7 +1,10 @@
-const Category = require('../schemas/Category.schema');
+
+const { default: Category } = require('@/models/category.model');
+const { default: Transaction } = require('@/models/transaction.model');
 
 // @desc    Get all categories
 // @route   GET /api/categories
+
 // @access  Private
 exports.getCategories = async (req, res, next) => {
   try {
@@ -140,7 +143,6 @@ exports.deleteCategory = async (req, res, next) => {
     }
 
     // Check if category is being used
-    const Transaction = require('../schemas/Transaction.schema');
     const transactionCount = await Transaction.countDocuments({
       userId: req.userId,
       categoryId: req.params.id

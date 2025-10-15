@@ -1,7 +1,9 @@
-const Deposit = require('../schemas/Deposit.schema');
+
+const { default: Deposit } = require("@/models/deposit.model");
 
 // @desc    Get all deposits
 // @route   GET /api/deposits
+
 // @access  Private
 exports.getAllDeposits = async (req, res, next) => {
   try {

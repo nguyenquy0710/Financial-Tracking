@@ -1,4 +1,4 @@
-const UserConfig = require('../schemas/UserConfig.schema');
+const { default: UserConfig } = require('@/models/userConfig.model');
 const config = require('../config/config');
 
 /**

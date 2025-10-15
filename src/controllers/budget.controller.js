@@ -1,5 +1,5 @@
-const Budget = require('../schemas/Budget.schema');
-const Transaction = require('../schemas/Transaction.schema');
+const { default: Budget } = require('@/models/budget.model');
+const { default: Transaction } = require('@/models/transaction.model');
 
 // @desc    Get all budgets
 // @route   GET /api/budgets

@@ -1,4 +1,4 @@
-const Salary = require('../schemas/Salary.schema');
+const { default: Salary } = require("@/models/salary.model");
 
 /**
  * @desc    Get all salaries for a user

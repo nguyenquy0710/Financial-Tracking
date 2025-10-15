@@ -29,6 +29,7 @@ reranker
 sapo
 swal
 vietqr
+virtuals
 vite
 vitepress
 vuepress
