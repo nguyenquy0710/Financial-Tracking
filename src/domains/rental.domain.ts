@@ -1,8 +1,7 @@
 import RentalSchema, { IRentalModel } from '@/models/rental.model';
 
-export class RentalDomain {
+export default class RentalDomain {
   constructor() {
-    // Initialization code if needed
   }
 
   async getRentalById(id: string): Promise<IRentalModel | null> {

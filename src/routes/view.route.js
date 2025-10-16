@@ -56,12 +56,6 @@ router.get('/dashboard', (req, res) => {
 
 // Financial management pages - examples below
 router.use('/rentals', rentalRoutes);
-// router.get('/rentals', (req, res) => {
-//   res.render('rentals', {
-//     title: 'Thuê phòng',
-//     currentPage: 'rentals'
-//   });
-// });
 
 router.get('/salaries', (req, res) => {
   res.render('salaries', {

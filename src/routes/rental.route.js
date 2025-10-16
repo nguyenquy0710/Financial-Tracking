@@ -1,6 +1,7 @@
-const { rentalDomain } = require('@/domains/rental.domain');
 const express = require('express');
 const router = express.Router();
+
+const { rentalDomain } = require('@/domains/rental.domain');
 
 const CURRENT_PAGE = 'rentals';
 

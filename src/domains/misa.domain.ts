@@ -77,7 +77,7 @@ async function makeMisaRequest<T>(
  * @see {@link https://nodejs.org/api/globals.html#fetch|Node.js Fetch Documentation}
  * @see {@link https://www.typescriptlang.org/docs/|TypeScript Documentation}
  */
-export class MisaDomain {
+export default class MisaDomain {
   baseURL: string;
   authURL: string;
   businessURL: string;
