@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const rentalRoutes = require('./rental.route');
+const totpRoutes = require('./totp.route');
 
 /**
  * Web UI Routes
@@ -56,6 +57,9 @@ router.get('/dashboard', (req, res) => {
 
 // Financial management pages - examples below
 router.use('/rentals', rentalRoutes);
+
+// TOTP 2FA page integration
+router.use('/totp', totpRoutes);
 
 router.get('/salaries', (req, res) => {
   res.render('salaries', {
