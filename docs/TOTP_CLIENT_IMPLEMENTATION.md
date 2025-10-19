@@ -164,7 +164,7 @@ Expected output:
 
 ### Dependencies
 - **@otplib/preset-browser**: UMD bundle for browser TOTP generation
-- **Buffer polyfill**: Included in otplib browser bundle
+- **Buffer polyfill**: Separate file (buffer.js) required by otplib in browser environment
 
 ## Performance
 
