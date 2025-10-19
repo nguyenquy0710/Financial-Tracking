@@ -267,6 +267,7 @@ const editAccount = (accountId) => {
   document.getElementById('username').value = account.accountName;
   document.getElementById('secret-key').value = '';
   document.getElementById('submit-btn').innerHTML = '<span class="icon">💾</span> Cập Nhật';
+  document.getElementById('cancel-btn').style.display = 'inline-block';
 };
 
 // Delete account
@@ -303,6 +304,7 @@ const resetForm = () => {
   document.getElementById('account-form').reset();
   document.getElementById('form-title').textContent = 'Thêm Tài Khoản Mới';
   document.getElementById('submit-btn').innerHTML = '<span class="icon">➕</span> Thêm Tài Khoản';
+  document.getElementById('cancel-btn').style.display = 'none';
   
   // Hide form section
   const formSection = document.getElementById('form-section');
