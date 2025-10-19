@@ -221,12 +221,13 @@ const handleFormSubmit = async () => {
     return;
   }
 
+  // Prepare data for API call
   const data = {
     serviceName,
     accountName,
     secret
   };
-  console.log("🚀 QuyNH: handleFormSubmit -> data", data);
+  // console.log("🚀 QuyNH: handleFormSubmit -> data", data);
 
   try {
     let response;
@@ -256,7 +257,7 @@ const editAccount = (accountId) => {
   if (!account) return;
 
   editingAccountId = accountId;
-  
+
   // Show form section
   const formSection = document.getElementById('form-section');
   formSection.style.display = 'block';
@@ -305,7 +306,7 @@ const resetForm = () => {
   document.getElementById('form-title').textContent = 'Thêm Tài Khoản Mới';
   document.getElementById('submit-btn').innerHTML = '<span class="icon">➕</span> Thêm Tài Khoản';
   document.getElementById('cancel-btn').style.display = 'none';
-  
+
   // Hide form section
   const formSection = document.getElementById('form-section');
   formSection.style.display = 'none';
