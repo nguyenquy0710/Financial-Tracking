@@ -11,11 +11,18 @@ This implementation moves TOTP (Time-based One-Time Password) code generation fr
   - This allows client-side code generation while maintaining server-side storage
 
 ### Frontend Changes
-- **Created**: `public/js/totp-lib.js`
+- **Modified**: `public/js/totp-lib.js`
+  - **UPDATED**: Now uses `otplib` library instead of custom jsSHA implementation
+  - Simplified from ~240 lines to ~50 lines
   - Client-side TOTP generator implementing RFC 6238
   - Supports SHA1, SHA256, and SHA512 algorithms
-  - Uses jsSHA library for HMAC calculations
+  - Uses otplib browser bundle for HMAC calculations
   - Generates 6, 7, or 8 digit codes
+
+- **Created**: `public/js/vendor/`
+  - `buffer.js` (44KB) - Buffer polyfill for otplib
+  - `otplib.js` (31KB) - otplib browser UMD bundle
+  - Replaces CDN dependency with local files
 
 - **Created**: `public/js/totp-indexeddb.js`
   - IndexedDB manager for persistent local storage
@@ -31,7 +38,8 @@ This implementation moves TOTP (Time-based One-Time Password) code generation fr
   - Updates IndexedDB when accounts change
 
 - **Modified**: `views/totp.ejs`
-  - Added jsSHA library from CDN for cryptographic operations
+  - **UPDATED**: Removed jsSHA CDN dependency
+  - Added local otplib bundle scripts (buffer.js and otplib.js)
   - Added totp-indexeddb.js and totp-lib.js scripts
 
 ## Features
@@ -41,6 +49,8 @@ This implementation moves TOTP (Time-based One-Time Password) code generation fr
 - **RFC 6238 Compliant**: Follows the standard TOTP algorithm
 - **Multiple Algorithms**: Supports SHA1 (default), SHA256, and SHA512
 - **Flexible Configuration**: 6/7/8 digits, customizable period (15-60s)
+- **Standard Library**: Uses otplib for consistent behavior with server
+- **No CDN Dependencies**: All libraries served locally for better security and offline support
 
 ### IndexedDB Storage
 - **Offline Support**: Works without internet connection
@@ -53,6 +63,8 @@ This implementation moves TOTP (Time-based One-Time Password) code generation fr
 - **Client-Side Decryption**: Secrets sent to client only for generation
 - **HTTPS Required**: Should always use HTTPS in production
 - **No Secret Storage**: Secrets stored in IndexedDB are in plaintext locally
+- **No CDN Dependencies**: All cryptographic libraries served locally, eliminating third-party CDN risks
+- **Well-Tested Library**: Uses otplib, a widely-adopted and audited TOTP library
 
 ## How It Works
 
@@ -141,7 +153,7 @@ Expected output:
 
 ### Required Features
 - IndexedDB API (supported in all modern browsers)
-- Web Crypto API or jsSHA library
+- otplib browser bundle (included in project)
 - ES6+ JavaScript support
 
 ### Tested Browsers
@@ -149,6 +161,10 @@ Expected output:
 - Firefox 88+
 - Safari 14+
 - Edge 90+
+
+### Dependencies
+- **@otplib/preset-browser**: UMD bundle for browser TOTP generation
+- **Buffer polyfill**: Included in otplib browser bundle
 
 ## Performance
 
@@ -179,9 +195,10 @@ Expected output:
 - Check for private/incognito mode (may restrict IndexedDB)
 
 ### Codes Not Generating
-- Verify jsSHA library is loaded (check browser console)
+- Verify otplib library is loaded (check browser console for `window.otplib`)
 - Check that secret is valid Base32 format (A-Z, 2-7)
 - Verify time synchronization on device
+- Check browser console for JavaScript errors
 
 ### Sync Issues
 - Check network connectivity
@@ -223,9 +240,9 @@ No action required. The change is transparent to users.
 
 ### For Developers
 1. Pull latest code
-2. Run `npm install` (no new dependencies)
+2. Run `npm install` (includes new @otplib/preset-browser dependency)
 3. Run `npm run build`
-4. Deploy to server
+4. Deploy to server (ensure public/js/vendor/ files are deployed)
 5. Clear browser cache on client devices
 
 ## License
