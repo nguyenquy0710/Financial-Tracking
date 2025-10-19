@@ -29,8 +29,20 @@
 }
 
 .form-section {
-  margin-bottom: 2rem;
+  margin-top: 2rem;
   padding: 1.5rem;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .form-section h2 {
@@ -81,6 +93,47 @@
 
 .accounts-section {
   padding: 1.5rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.section-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.btn-add-account {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: #317EFB;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.btn-add-account:hover {
+  background: #2668d4;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(49, 126, 251, 0.3);
+}
+
+.btn-add-account .icon {
+  font-size: 1.1rem;
 }
 
 .accounts-section h2 {
@@ -268,6 +321,7 @@
 /* Dark mode support */
 body.dark-mode .form-section h2,
 body.dark-mode .accounts-section h2,
+body.dark-mode .section-header h2,
 body.dark-mode .account-info h3 {
   color: #f0f0f0;
 }
@@ -318,5 +372,15 @@ body.dark-mode .btn-icon:hover {
 
   .form-actions button {
     width: 100%;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn-add-account {
+    width: 100%;
+    justify-content: center;
   }
 }
