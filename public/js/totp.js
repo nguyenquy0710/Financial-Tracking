@@ -21,6 +21,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 const setupFormHandlers = () => {
   const form = document.getElementById('account-form');
   const cancelBtn = document.getElementById('cancel-btn');
+  const showFormBtn = document.getElementById('show-add-form-btn');
+  const formSection = document.getElementById('form-section');
+
+  // Show form when "Add Account" button is clicked
+  showFormBtn.addEventListener('click', () => {
+    formSection.style.display = 'block';
+    formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -248,16 +256,17 @@ const editAccount = (accountId) => {
   if (!account) return;
 
   editingAccountId = accountId;
+  
+  // Show form section
+  const formSection = document.getElementById('form-section');
+  formSection.style.display = 'block';
+  formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
   document.getElementById('form-title').textContent = 'Chỉnh Sửa Tài Khoản';
   document.getElementById('service-name').value = account.serviceName;
   document.getElementById('username').value = account.accountName;
   document.getElementById('secret-key').value = '';
   document.getElementById('submit-btn').innerHTML = '<span class="icon">💾</span> Cập Nhật';
-  document.getElementById('cancel-btn').style.display = 'inline-block';
-
-  // Scroll to form
-  document.querySelector('.form-section').scrollIntoView({ behavior: 'smooth' });
 };
 
 // Delete account
@@ -294,7 +303,10 @@ const resetForm = () => {
   document.getElementById('account-form').reset();
   document.getElementById('form-title').textContent = 'Thêm Tài Khoản Mới';
   document.getElementById('submit-btn').innerHTML = '<span class="icon">➕</span> Thêm Tài Khoản';
-  document.getElementById('cancel-btn').style.display = 'none';
+  
+  // Hide form section
+  const formSection = document.getElementById('form-section');
+  formSection.style.display = 'none';
 };
 
 // Show notification

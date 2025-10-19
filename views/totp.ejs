@@ -18,8 +18,21 @@
         </header>
 
         <div class="content">
-          <!-- Add/Edit Account Form -->
-          <section class="form-section card">
+          <!-- Accounts List - Prioritized Section -->
+          <section class="accounts-section card">
+            <div class="section-header">
+              <h2>Danh Sách Tài Khoản</h2>
+              <button type="button" class="btn btn-primary btn-add-account" id="show-add-form-btn">
+                <span class="icon">➕</span> Thêm Tài Khoản
+              </button>
+            </div>
+            <div id="accounts-container">
+              <div class="loading">Đang tải...</div>
+            </div>
+          </section>
+
+          <!-- Add/Edit Account Form - Collapsible -->
+          <section class="form-section card" id="form-section" style="display: none;">
             <h2 id="form-title">Thêm Tài Khoản Mới</h2>
             <form id="account-form">
               <input type="hidden" id="account-id" value="">
@@ -45,19 +58,11 @@
                 <button type="submit" class="btn btn-primary" id="submit-btn">
                   <span class="icon">➕</span> Thêm Tài Khoản
                 </button>
-                <button type="button" class="btn btn-secondary" id="cancel-btn" style="display: none;">
+                <button type="button" class="btn btn-secondary" id="cancel-btn">
                   <span class="icon">❌</span> Hủy
                 </button>
               </div>
             </form>
-          </section>
-
-          <!-- Accounts List -->
-          <section class="accounts-section card">
-            <h2>Danh Sách Tài Khoản</h2>
-            <div id="accounts-container">
-              <div class="loading">Đang tải...</div>
-            </div>
           </section>
         </div>
       </main>
