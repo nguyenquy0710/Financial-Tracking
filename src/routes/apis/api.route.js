@@ -21,6 +21,7 @@ const bankAccountRoutes = require('./bankAccount.route');
 const externalRoutes = require('./external.route');
 const misaRoutes = require('./misa.route');
 const userConfigRoutes = require('./userConfig.route');
+const totpRoutes = require('./totp.route');
 
 // API Routes
 router.use('/auth', authRoutes);
@@ -39,5 +40,6 @@ router.use('/deposits', depositRoutes);
 router.use('/recurring-bills', recurringBillRoutes);
 router.use('/bank-accounts', bankAccountRoutes);
 router.use('/system-config', userConfigRoutes);
+router.use('/totp', totpRoutes);
 
 module.exports = router;

@@ -1,77 +1,69 @@
-<%- include('partials/header', { title: 'TOTP' , additionalCSS: ['/css/totp.css'] }) %>
+<%- include('partials/header', { title: 'TOTP Authenticator' , additionalCSS: ['/css/totp.css'] }) %>
   <div class="app-container">
     <%- include('partials/sidebar', { currentPage: 'totp' }) %>
 
       <!-- Main Content -->
       <main class="main-content">
-        <header class="top-bar">
-          <h1>Quản lý TOTP</h1>
-          <div class="user-info">
-            <span id="user-name">User</span>
-            <button class="btn-logout">Đăng xuất</button>
+        <header class="top-bar totp-header">
+          <h1>🔐 TOTP Authenticator</h1>
+          <div class="header-actions">
+            <button id="theme-toggle" class="btn btn-icon" title="Chuyển chế độ tối">
+              <span class="icon">🌙</span>
+            </button>
+            <div class="user-info">
+              <span id="user-name">User</span>
+              <button class="btn-logout">Đăng xuất</button>
+            </div>
           </div>
         </header>
 
         <div class="content">
-          <!-- Summary Cards -->
-          <div class="row g-3 mb-4">
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="summary-card">
-                <div class="card-icon">🏠</div>
-                <div class="card-content">
-                  <h3>Tổng tiền thuê</h3>
-                  <p class="amount" id="total-rent">0 VND</p>
-                  <span class="period">Tháng này</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="summary-card">
-                <div class="card-icon">⚡</div>
-                <div class="card-content">
-                  <h3>Tiền điện</h3>
-                  <p class="amount" id="total-electricity">0 VND</p>
-                  <span class="period">Tháng này</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="summary-card">
-                <div class="card-icon">💧</div>
-                <div class="card-content">
-                  <h3>Tiền nước</h3>
-                  <p class="amount" id="total-water">0 VND</p>
-                  <span class="period">Tháng này</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="summary-card">
-                <div class="card-icon">📡</div>
-                <div class="card-content">
-                  <h3>Dịch vụ khác</h3>
-                  <p class="amount" id="total-services">0 VND</p>
-                  <span class="period">Tháng này</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <!-- Add/Edit Account Form -->
+          <section class="form-section card">
+            <h2 id="form-title">Thêm Tài Khoản Mới</h2>
+            <form id="account-form">
+              <input type="hidden" id="account-id" value="">
 
-          <!-- Rentals List -->
-          <div class="card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-              <h2>Danh sách thuê phòng</h2>
-              <button class="btn btn-primary" onclick="showAddModal()">
-                <span class="icon">➕</span> Thêm mới
-              </button>
-            </div>
+              <div class="form-group">
+                <label for="service-name">Tên Dịch Vụ *</label>
+                <input type="text" id="service-name" class="form-control" placeholder="VD: Google, Facebook, GitHub..." required>
+              </div>
 
-            <div id="rentals-list" class="table-container">
-              <p class="loading">Đang tải dữ liệu...</p>
+              <div class="form-group">
+                <label for="username">Tên Người Dùng *</label>
+                <input type="text" id="username" class="form-control" placeholder="VD: user@example.com" required>
+              </div>
+
+              <div class="form-group">
+                <label for="secret-key">Secret Key (Khóa Bí Mật) *</label>
+                <input type="text" id="secret-key" class="form-control" placeholder="VD: JBSWY3DPEHPK3PXP" required pattern="[A-Z2-7]+"
+                  title="Secret key phải là ký tự A-Z và 2-7">
+                <small>Secret key thường có định dạng Base32 (chỉ chứa A-Z và 2-7)</small>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="submit-btn">
+                  <span class="icon">➕</span> Thêm Tài Khoản
+                </button>
+                <button type="button" class="btn btn-secondary" id="cancel-btn" style="display: none;">
+                  <span class="icon">❌</span> Hủy
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <!-- Accounts List -->
+          <section class="accounts-section card">
+            <h2>Danh Sách Tài Khoản</h2>
+            <div id="accounts-container">
+              <div class="loading">Đang tải...</div>
             </div>
-          </div>
+          </section>
         </div>
       </main>
   </div>
+
+  <!-- Notification Toast -->
+  <div id="notification" class="notification"></div>
 
   <%- include('partials/footer', { additionalJS: [ '/js/totp.js' ] }) %>
