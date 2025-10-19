@@ -17,7 +17,7 @@ const loadRentals = async () => {
   container.innerHTML = '<p class="loading">Đang tải...</p>';
 
   try {
-    const response = await apiCall('/rentals');
+    const response = await sdkAuth.callApiWithAuth('/rentals');
 
     if (response.success && response.data) {
       rentals = response.data;

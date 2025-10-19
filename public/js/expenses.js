@@ -9,7 +9,7 @@ const loadExpenses = async () => {
   container.innerHTML = '<p class="loading">Đang tải...</p>';
 
   try {
-    const response = await apiCall('/expenses');
+    const response = await sdkAuth.callApiWithAuth('/expenses');
 
     if (response.success && response.data) {
       if (response.data.length === 0) {

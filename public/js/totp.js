@@ -1,5 +1,3 @@
-// js/totp.js
-
 let accounts = [];
 let token = localStorage.getItem('authToken');
 let editingAccountId = null;
@@ -57,7 +55,7 @@ const loadAccounts = async () => {
   container.innerHTML = '<div class="loading">Đang tải...</div>';
 
   try {
-    const response = await apiCall('/totp');
+    const response = await sdkAuth.callApiWithAuth('/totp');
 
     if (response.success && response.data) {
       accounts = response.data;
@@ -121,7 +119,7 @@ const renderAccounts = () => {
 // Generate and update TOTP code
 const generateAndUpdateCode = async (accountId) => {
   try {
-    const response = await apiCall(`/totp/${accountId}/generate`);
+    const response = await sdkAuth.callApiWithAuth(`/totp/${accountId}/generate`);
 
     if (response.success && response.data) {
       const { token, timeRemaining, period } = response.data;
@@ -218,9 +216,9 @@ const handleFormSubmit = async () => {
   try {
     let response;
     if (editingAccountId) {
-      response = await apiCall(`/totp/${editingAccountId}`, 'PUT', data);
+      response = await sdkAuth.callApiWithAuth(`/totp/${editingAccountId}`, 'PUT', data);
     } else {
-      response = await apiCall('/totp', 'POST', data);
+      response = await sdkAuth.callApiWithAuth('/totp', 'POST', data);
     }
 
     if (response.success) {
@@ -261,11 +259,11 @@ const deleteAccount = async (accountId) => {
   }
 
   try {
-    const response = await apiCall(`/totp/${accountId}`, 'DELETE');
+    const response = await sdkAuth.callApiWithAuth(`/totp/${accountId}`, 'DELETE');
 
     if (response.success) {
       showNotification('Đã xóa tài khoản');
-      
+
       // Clear timer
       if (totpTimers[accountId]) {
         clearInterval(totpTimers[accountId]);
@@ -311,13 +309,14 @@ const escapeHtml = (text) => {
 };
 
 // API call helper
-const apiCall = async (endpoint, method = 'GET', data = null) => {
+async function apiCallTotp(endpoint, method = 'GET', data = null) {
+  console.log("🚀 QuyNH: apiCall -> endpoint", endpoint);
   const options = {
     method,
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`
-    }
+      Authorization: `Bearer ${token}`,
+    },
   };
 
   if (data) {
