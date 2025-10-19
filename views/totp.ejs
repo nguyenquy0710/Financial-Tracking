@@ -1,4 +1,8 @@
 <%- include('partials/header', { title: 'TOTP Authenticator' , additionalCSS: ['/css/totp.css'] }) %>
+  <!-- jsSHA library for TOTP generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/3.3.1/sha.js" 
+          integrity="sha512-P4oYfG8vxyUdRNeyaGvHvaLBLcKsf8ZxLHlR8n5bN/qPWKLlbXbGJkXhPKLWGO9vDBnh6m+RaWnIqKbGzQ+0Vg==" 
+          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <div class="app-container">
     <%- include('partials/sidebar', { currentPage: 'totp' }) %>
 
@@ -71,4 +75,4 @@
   <!-- Notification Toast -->
   <div id="notification" class="notification"></div>
 
-  <%- include('partials/footer', { additionalJS: [ '/js/totp.js' ] }) %>
+  <%- include('partials/footer', { additionalJS: [ '/js/totp-indexeddb.js', '/js/totp-lib.js', '/js/totp.js' ] }) %>

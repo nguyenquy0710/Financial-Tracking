@@ -10,10 +10,20 @@ exports.getTotpAccounts = async (req, res, next) => {
   try {
     const accounts = await Totp.find({ userId: req.userId }).sort({ createdAt: -1 });
 
+    // Include decrypted secrets for client-side TOTP generation
+    const accountsWithSecrets = accounts.map(account => {
+      const accountObj = account.toObject();
+      accountObj.secret = account.getDecryptedSecret();
+      accountObj.algorithm = account.algorithm;
+      accountObj.digits = account.digits;
+      accountObj.period = account.period;
+      return accountObj;
+    });
+
     res.json({
       success: true,
       message: 'TOTP accounts retrieved successfully',
-      data: accounts
+      data: accountsWithSecrets
     });
   } catch (error) {
     next(error);
