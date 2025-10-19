@@ -29,6 +29,7 @@ reranker
 sapo
 swal
 totp
+uuidv
 vietqr
 virtuals
 vite

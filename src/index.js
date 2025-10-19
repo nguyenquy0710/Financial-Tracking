@@ -3,8 +3,6 @@ const express = require('express');
 const cors = require('cors');
 // const helmet = require('helmet');
 const morgan = require('morgan');
-const rfs = require('rotating-file-stream');
-const fs = require('fs');
 const path = require('path');
 const compression = require('compression');
 const swaggerUi = require('swagger-ui-express');
@@ -13,6 +11,7 @@ const swaggerUi = require('swagger-ui-express');
 const config = require('./config/config');
 const swaggerSpec = require('./config/swagger');
 const connectDB = require('./config/database');
+const { morganAccessStream } = require('./utils/logger');
 
 // Import custom middleware
 const errorHandler = require('./middleware/errorHandler');
@@ -21,6 +20,7 @@ const errorHandler = require('./middleware/errorHandler');
 const viewRoutes = require('./routes/view.route');
 const viewAdminRoutes = require('./routes/admin/view.route');
 const apiRoutes = require('./routes/apis/api.route');
+const { default: customMiddleware } = require('./middleware');
 
 // Initialize app
 const app = express();
@@ -77,6 +77,7 @@ app.use(
 ); // Compress responses
 app.use(express.json()); // Parse JSON
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded
+app.use(customMiddleware); // <-- middleware ở đây
 
 // Serve static files
 app.use(express.static('public'));
@@ -84,25 +85,11 @@ app.use(express.static('public'));
 // ================ Logging ================ //
 // ⚙️ Kích hoạt Morgan với luồng ghi log xoay
 if (config.server.env === 'development') {
-  app.use(morgan('dev')); // In log ra console + ghi vào file access.log
+  // In log ra console + ghi vào file access.log
+  app.use(morgan('dev', { stream: morganAccessStream }));
 } else {
-  // Tạo đường dẫn đến file log
-  const logDirectory = path.join(__dirname, '..', 'logs');
-  if (!fs.existsSync(logDirectory)) {
-    fs.mkdirSync(logDirectory);
-  }
-
-  // 🔁 Tạo luồng ghi log xoay theo ngày + giới hạn dung lượng
-  const accessLogStream = rfs.createStream('access.log', {
-    interval: '1d', // Xoay log mỗi ngày (1d = one day)
-    size: '10M', // Giới hạn kích thước mỗi file: 10MB
-    compress: 'gzip', // Tự động nén log cũ để tiết kiệm dung lượng
-    path: logDirectory, // Thư mục chứa log
-    maxFiles: 30, // (Tuỳ chọn) Giữ tối đa 30 file log
-    teeToStdout: false // Không in ra console (nếu muốn in thêm thì bật morgan('dev'))
-  });
-
-  app.use(morgan('combined', { stream: accessLogStream })); // Ghi log vào file access.log
+  // Chỉ ghi log vào file access.log
+  app.use(morgan('combined', { stream: morganAccessStream }));
 }
 
 // ================ Swagger Documentation ================ //

@@ -31,6 +31,7 @@ dịch
 điều
 đính
 định
+đoạn
 đồng
 động
 dùng
@@ -38,6 +39,7 @@ dừng
 dụng
 đúng
 được
+dưới
 đường
 giãn
 giao
@@ -85,6 +87,7 @@ minh
 muốn
 năng
 ngân
+ngẫu
 ngay
 ngày
 nghe
@@ -96,10 +99,12 @@ nguyên
 nguyễn
 nhắn
 nhân
+nhãn
 nhận
 nhập
 nhất
 nhật
+nhiên
 nhiều
 nhưng
 nước
@@ -151,6 +156,7 @@ tiết
 tiêu
 tính
 toán
+toàn
 tổng
 trạng
 trên
