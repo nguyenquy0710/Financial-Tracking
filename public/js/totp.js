@@ -2,6 +2,7 @@ let accounts = [];
 let token = sdkAuth.getAuthToken();
 let editingAccountId = null;
 let totpTimers = {};
+let totpDB = null; // IndexedDB instance
 
 // Redirect to login if not authenticated
 if (!sdkAuth.isAuthenticated()) {
@@ -10,8 +11,15 @@ if (!sdkAuth.isAuthenticated()) {
 
 // Load accounts on page load
 document.addEventListener('DOMContentLoaded', async () => {
-  // Load accounts from server and render them
-  await loadAccounts();
+  // Initialize IndexedDB
+  totpDB = new TOTPIndexedDB();
+  await totpDB.init();
+
+  // Load accounts from IndexedDB first (for offline capability)
+  await loadAccountsFromIndexedDB();
+
+  // Then sync with server to get latest data
+  await syncWithServer();
 
   setupFormHandlers();
   setupThemeToggle();
@@ -60,33 +68,58 @@ const setupThemeToggle = () => {
   });
 };
 
-// Load all TOTP accounts
-const loadAccounts = async () => {
-  const container = document.getElementById('accounts-container');
-  container.innerHTML = '<div class="loading">Đang tải...</div>';
-
+// Load all TOTP accounts from server and sync with IndexedDB
+const syncWithServer = async () => {
   try {
     // Fetch accounts from server API with authentication
     const response = await sdkAuth.callApiWithAuth('/totp', 'GET', null, {
-      query: { page: 1, limit: 10, sortBy: 'createdAt', order: 'desc' }
+      query: { page: 1, limit: 100, sortBy: 'createdAt', order: 'desc' }
     });
 
     if (response.success && response.data) {
       accounts = response.data;
 
+      // Save to IndexedDB
+      await totpDB.syncWithServer(accounts);
+
       if (accounts.length === 0) {
+        const container = document.getElementById('accounts-container');
         container.innerHTML = '<div class="loading">Chưa có tài khoản nào. Hãy thêm tài khoản mới.</div>';
         return;
       }
 
       renderAccounts();
-    } else {
-      container.innerHTML = '<div class="loading">Không thể tải dữ liệu</div>';
     }
   } catch (error) {
-    console.error('Failed to load accounts:', error);
-    container.innerHTML = '<div class="loading">Lỗi: Không thể tải dữ liệu</div>';
+    console.error('Failed to sync with server:', error);
+    // If sync fails but we have local data, continue with local data
+    if (accounts.length > 0) {
+      showNotification('Không thể đồng bộ với server, sử dụng dữ liệu offline', 'warning');
+    }
   }
+};
+
+// Load accounts from IndexedDB (for offline support)
+const loadAccountsFromIndexedDB = async () => {
+  const container = document.getElementById('accounts-container');
+  container.innerHTML = '<div class="loading">Đang tải...</div>';
+
+  try {
+    const localAccounts = await totpDB.getAllAccounts();
+    
+    if (localAccounts && localAccounts.length > 0) {
+      accounts = localAccounts;
+      renderAccounts();
+      console.log('Loaded accounts from IndexedDB:', accounts.length);
+    }
+  } catch (error) {
+    console.error('Failed to load from IndexedDB:', error);
+  }
+};
+
+// Load all TOTP accounts (deprecated - replaced by syncWithServer)
+const loadAccounts = async () => {
+  await syncWithServer();
 };
 
 // Render accounts
@@ -130,25 +163,42 @@ const renderAccounts = () => {
   });
 };
 
-// Generate and update TOTP code
-const generateAndUpdateCode = async (accountId) => {
+// Generate and update TOTP code using client-side generation
+const generateAndUpdateCode = (accountId) => {
   try {
-    const response = await sdkAuth.callApiWithAuth(`/totp/${accountId}/generate`);
-
-    if (response.success && response.data) {
-      const { token, timeRemaining, period } = response.data;
-
-      // Update code display
-      const codeElement = document.getElementById(`code-${accountId}`);
-      if (codeElement) {
-        codeElement.textContent = formatTotpCode(token);
-      }
-
-      // Update timer
-      updateTimer(accountId, timeRemaining, period);
+    // Find account in local array
+    const account = accounts.find(acc => acc._id === accountId);
+    if (!account || !account.secret) {
+      console.error(`Account ${accountId} not found or missing secret`);
+      return;
     }
+
+    // Generate TOTP code using client-side library
+    const result = TOTPGenerator.generate(account.secret, {
+      algorithm: account.algorithm || 'SHA1',
+      digits: account.digits || 6,
+      period: account.period || 30
+    });
+
+    const { token, timeRemaining, period } = result;
+
+    // Update code display
+    const codeElement = document.getElementById(`code-${accountId}`);
+    if (codeElement) {
+      codeElement.textContent = formatTotpCode(token);
+    }
+
+    // Update timer
+    updateTimer(accountId, timeRemaining, period);
   } catch (error) {
     console.error(`Failed to generate code for ${accountId}:`, error);
+    
+    // Display error in code element
+    const codeElement = document.getElementById(`code-${accountId}`);
+    if (codeElement) {
+      codeElement.textContent = '------';
+      codeElement.style.color = '#ff4444';
+    }
   }
 };
 
@@ -241,7 +291,9 @@ const handleFormSubmit = async () => {
     if (response.success) {
       showNotification(response.message);
       resetForm();
-      await loadAccounts();
+      
+      // Sync with server to update IndexedDB
+      await syncWithServer();
     } else {
       showNotification(response.message || 'Có lỗi xảy ra', 'error');
     }
@@ -289,7 +341,11 @@ const deleteAccount = async (accountId) => {
         delete totpTimers[accountId];
       }
 
-      await loadAccounts();
+      // Delete from IndexedDB
+      await totpDB.deleteAccount(accountId);
+
+      // Reload accounts
+      await syncWithServer();
     } else {
       showNotification(response.message || 'Không thể xóa tài khoản', 'error');
     }
