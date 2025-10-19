@@ -14,7 +14,7 @@ export type WinstonLogger = winston.Logger;
 
 // ================== Cấu hình thư mục logs ==================
 const logDir = path.join(process.cwd(), "logs");
-console.log("🚀 QuyNH: logDir", logDir)
+console.log("🚀 QuyNH: logDir", logDir);
 if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir);
 }
