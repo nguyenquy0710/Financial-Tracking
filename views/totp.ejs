@@ -1,11 +1,11 @@
-<%- include('partials/header', { title: 'Quản lý thuê phòng' , additionalCSS: ['/css/rentals.css'] }) %>
+<%- include('partials/header', { title: 'TOTP' , additionalCSS: ['/css/totp.css'] }) %>
   <div class="app-container">
-    <%- include('partials/sidebar', { currentPage: 'rentals' }) %>
+    <%- include('partials/sidebar', { currentPage: 'totp' }) %>
 
       <!-- Main Content -->
       <main class="main-content">
         <header class="top-bar">
-          <h1>Quản lý thuê phòng</h1>
+          <h1>Quản lý TOTP</h1>
           <div class="user-info">
             <span id="user-name">User</span>
             <button class="btn-logout">Đăng xuất</button>
@@ -74,115 +74,4 @@
       </main>
   </div>
 
-  <!-- Add/Edit Rental Modal -->
-  <div id="rentalModal" class="modal" style="display: none;">
-    <div class="modal-content">
-      <span class="close" onclick="closeRentalModal()">&times;</span>
-      <h2 id="modalTitle">Thêm thuê phòng</h2>
-      <form id="rentalForm">
-        <input type="hidden" id="rentalId">
-
-        <div class="form-group">
-          <label for="propertyName">Tên phòng *</label>
-          <input type="text" id="propertyName" required>
-        </div>
-
-        <div class="form-group">
-          <label for="address">Địa chỉ</label>
-          <input type="text" id="address">
-        </div>
-
-        <div class="form-group">
-          <label for="month">Tháng *</label>
-          <input type="month" id="month" required>
-        </div>
-
-        <div class="form-group">
-          <label for="rentAmount">Tiền nhà *</label>
-          <input type="number" id="rentAmount" required min="0">
-        </div>
-
-        <div class="form-section">
-          <h3>Điện</h3>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="electricityStart">Chỉ số đầu</label>
-              <input type="number" id="electricityStart" min="0" step="0.01">
-            </div>
-            <div class="form-group">
-              <label for="electricityEnd">Chỉ số cuối</label>
-              <input type="number" id="electricityEnd" min="0" step="0.01">
-            </div>
-            <div class="form-group">
-              <label for="electricityRate">Đơn giá</label>
-              <input type="number" id="electricityRate" min="0">
-            </div>
-          </div>
-        </div>
-
-        <div class="form-section">
-          <h3>Nước</h3>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="waterStart">Chỉ số đầu</label>
-              <input type="number" id="waterStart" min="0" step="0.01">
-            </div>
-            <div class="form-group">
-              <label for="waterEnd">Chỉ số cuối</label>
-              <input type="number" id="waterEnd" min="0" step="0.01">
-            </div>
-            <div class="form-group">
-              <label for="waterRate">Đơn giá</label>
-              <input type="number" id="waterRate" min="0">
-            </div>
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="internet">Internet</label>
-            <input type="number" id="internet" min="0" value="0">
-          </div>
-          <div class="form-group">
-            <label for="parking">Gửi xe</label>
-            <input type="number" id="parking" min="0" value="0">
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="garbage">Rác</label>
-            <input type="number" id="garbage" min="0" value="0">
-          </div>
-          <div class="form-group">
-            <label for="bonus">Phụ thu/Giảm trừ</label>
-            <input type="number" id="bonus" value="0">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="notes">Ghi chú</label>
-          <textarea id="notes" rows="3"></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="isPaid">
-            <input type="checkbox" id="isPaid">
-            Đã thanh toán
-          </label>
-        </div>
-
-        <div class="form-group" id="paymentDateGroup" style="display: none;">
-          <label for="paymentDate">Ngày thanh toán</label>
-          <input type="date" id="paymentDate">
-        </div>
-
-        <div class="form-actions">
-          <button type="button" class="btn btn-secondary" onclick="closeRentalModal()">Hủy</button>
-          <button type="submit" class="btn btn-primary">Lưu</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <%- include('partials/footer', { additionalJS: [ '/js/rentals.js' ] }) %>
+  <%- include('partials/footer', { additionalJS: [ '/js/totp.js' ] }) %>
