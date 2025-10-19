@@ -1,3 +1,9 @@
+// src/utils/logger.ts
+// Winston Logger với rotating-file-stream để ghi log xoay theo ngày và giới hạn dung lượng file log
+// Tham khảo:
+// - https://github.com/winstonjs/winston-daily-rotate-file
+// - https://anonystick.com/blog-developer/logger-nodejs-la-gi-su-dung-winston-la-phai-chuyen-nghiep-nhu-the-nay-202010099590776
+
 import path from "path";
 import fs from "fs";
 import winston from "winston";
@@ -17,8 +23,8 @@ if (!fs.existsSync(logDir)) {
 const createRotateFileStream = (context: string = 'application', options?: any) =>
   // 🔁 Tạo luồng ghi log xoay theo ngày + giới hạn dung lượng
   new winston.transports.DailyRotateFile({
-    filename: `${context}-%DATE%.log`, // Tên file log với định dạng ngày thêm vào
     dirname: logDir, // Thư mục chứa log
+    filename: `${context}-%DATE%.log`, // Tên file log với định dạng ngày thêm vào
     datePattern: 'YYYY-MM-DD', // Định dạng ngày trong tên file log
     zippedArchive: true, // Tự động nén log cũ để tiết kiệm dung lượng (nén thành .gz)
     maxSize: '20m', // Giới hạn kích thước mỗi file: 20MB
