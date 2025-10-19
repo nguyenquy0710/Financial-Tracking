@@ -10,6 +10,7 @@ chăm
 chấp
 chạy
 chiếm
+chiếu
 chính
 chỉnh
 chối
@@ -88,6 +89,7 @@ ngay
 ngày
 nghe
 nghĩa
+ngoài
 Ngôn
 người
 nguyên
@@ -98,6 +100,7 @@ nhận
 nhập
 nhất
 nhật
+nhiều
 nhưng
 nước
 phải
@@ -106,6 +109,7 @@ phần
 phản
 pháp
 phát
+phép
 phòng
 phục
 phương
@@ -113,6 +117,7 @@ quản
 Quang
 quên
 rằng
+riêng
 sách
 sánh
 tảng

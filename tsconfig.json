@@ -2,11 +2,11 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es2019",
-    "lib": ["es2019"],
+    "lib": ["es2019", "ES2021", "DOM"], // Include DOM library for browser compatibility if needed
     "declaration": true,
-    "outDir": "./dist",
-    "rootDir": "./",
-    "baseUrl": "./",
+    "outDir": "./dist", // Output directory for compiled files
+    "rootDir": "./", // Root directory of source files
+    "baseUrl": "./", // Base URL for module resolution
     "strict": true,
     "noImplicitAny": true,
     "esModuleInterop": true,

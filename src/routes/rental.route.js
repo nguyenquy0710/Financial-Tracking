@@ -11,7 +11,7 @@ const CURRENT_PAGE = 'rentals';
  */
 
 // GET: /rentals
-// Render the rentals page
+// Render the rentals page listing all rentals.
 router.get('/', (req, res) => {
   res.render('rentals', {
     title: 'Thuê phòng',
@@ -19,8 +19,12 @@ router.get('/', (req, res) => {
   });
 });
 
-router.get('/:id', async (req, res) => {
-  const rentalId = req.params.id;
+// GET: /rentals/:id/detail
+// Render the rental detail page for a specific rentalId.
+router.get('/:id/detail', async (req, res) => {
+  const rentalId = req?.params?.id ?? '';
+  console.log("🚀 QuyNH: rentalId", rentalId);
+
   // In a real application, you might want to fetch rental details from the database here
   const rental = await rentalDomain.getRentalById(rentalId);
 
@@ -28,7 +32,7 @@ router.get('/:id', async (req, res) => {
     title: 'Chi tiết thuê phòng',
     currentPage: CURRENT_PAGE,
     rentalId: rentalId,
-    rental: rental
+    rental: rental || {}
   });
 });
 

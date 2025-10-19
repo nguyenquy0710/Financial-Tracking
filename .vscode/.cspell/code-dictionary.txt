@@ -28,6 +28,7 @@ quynh
 reranker
 sapo
 swal
+totp
 vietqr
 virtuals
 vite

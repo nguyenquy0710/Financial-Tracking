@@ -1,13 +1,27 @@
+import AbsBaseDomain from '@/abstracts/absBase.domain';
 import RentalSchema, { IRentalModel } from '@/models/rental.model';
 
-export default class RentalDomain {
+export default class RentalDomain extends AbsBaseDomain {
+
+  // Call the parent constructor
   constructor() {
+    super();
+  }
+
+  // Clean up resources when the domain is destroyed
+  protected onDestroy(): void {
+    this.logger.info(`${this.constructor.name} cleaned up resources`);
   }
 
   async getRentalById(id: string): Promise<IRentalModel | null> {
-    // Logic to retrieve a rental by its ID
-    const rental = await RentalSchema.findById(id).lean<IRentalModel>().exec();
-    return rental as IRentalModel | null;
+    try {
+      // Logic to retrieve a rental by its ID
+      const rental = await RentalSchema.findById(id).lean<IRentalModel>().exec();
+      return rental as IRentalModel | null;
+    } catch (error) {
+      console.error('Error retrieving rental by ID:', error);
+      return null;
+    }
   }
 
   async createRental(data: Partial<IRentalModel>): Promise<IRentalModel> {
