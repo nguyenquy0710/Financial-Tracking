@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+
 const {
   getTotpAccounts,
   getTotpAccount,
@@ -66,7 +67,9 @@ router.use(authHandler);
  *       201:
  *         description: TOTP account created successfully
  */
-router.route('/').get(getTotpAccounts).post(createTotpAccount);
+router.route('/')
+  .get(getTotpAccounts)
+  .post(createTotpAccount);
 
 /**
  * @swagger

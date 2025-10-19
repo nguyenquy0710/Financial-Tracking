@@ -69,7 +69,7 @@ exports.generateTotpCode = async (req, res, next) => {
     }
 
     const secret = account.getDecryptedSecret();
-    
+
     // Configure authenticator with account settings
     authenticator.options = {
       digits: account.digits,
@@ -102,6 +102,7 @@ exports.generateTotpCode = async (req, res, next) => {
 exports.createTotpAccount = async (req, res, next) => {
   try {
     const { serviceName, accountName, secret, issuer, algorithm, digits, period } = req.body;
+    console.log("🚀 QuyNH: exports.createTotpAccount -> req.body", req.body);
 
     // Validate secret format (Base32)
     if (!secret || !/^[A-Z2-7]+$/.test(secret)) {

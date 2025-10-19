@@ -46,30 +46,58 @@ class AppAuthSDK extends AppSDK {
   async callApiWithAuth(endpoint,
     method = 'GET',
     data = null,
-    options = {
-      method: 'GET',
-      headers: {},
-    }
+    {
+      headers = {},
+      params = {},
+      query = {},
+      ...selfOptions
+    } = {}
   ) {
     const token = this.getAuthToken();
+    // const { headers, params, query, ...selfOptions } = options || {};
 
+    // ===== 1️⃣ Thay param trong endpoint (vd: /users/:id => /users/123)
+    let url = `${AppSDK.API_BASE_URL}${endpoint}`;
+
+    // Thay các tham số trong URL nếu có params được cung cấp
+    if (params && typeof params === 'object') {
+      Object.entries(params).forEach(([key, value]) => {
+        url = url.replace(`:${key}`, encodeURIComponent(value));
+      });
+    }
+
+    // ===== 2️⃣ Gắn query string (vd: ?page=1&limit=10)
+    if (query && typeof query === 'object' && Object.keys(query).length > 0) {
+      const queryString = new URLSearchParams(query).toString();
+      url += (url.includes('?') ? '&' : '?') + queryString;
+    }
+
+    // ===== 3️⃣ Chuẩn bị config
     const config = {
       method: method || 'GET',
       headers: {
         'Content-Type': 'application/json',
-        ...options.headers
+        ...headers
       },
-      ...options
+      ...selfOptions
     };
 
-    // Thêm token vào header nếu có
+    // ===== 4️⃣ Thêm token vào header Authorization
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
 
+    // ===== 5️⃣ Thêm body nếu cần
+    if (data && ['POST', 'PUT', 'PATCH', 'DELETE'].includes(method.toUpperCase())) {
+      config.body = JSON.stringify(data);
+    }
+
+    // console.log("🚀 QuyNH: AppAuthSDK -> config", config)
+
+    // ===== 6️⃣ Gọi API
     try {
-      const response = await fetch(`${AppSDK.API_BASE_URL}${endpoint}`, config);
-      const data = await response.json();
+      const response = await fetch(url, config);
+      const responseData = await response.json().catch(() => ({}));
 
       if (!response.ok) {
         if (response.status === 401) {
@@ -77,12 +105,13 @@ class AppAuthSDK extends AppSDK {
           this.logout();
           return;
         }
-        throw new Error(data.message || 'API call failed');
+        throw new Error(responseData.message || 'API call failed');
       }
 
-      return data;
+      return responseData;
     } catch (error) {
       console.error('API Error:', error);
+      if (this.onError) this.onError(error);
       throw error;
     }
   };
@@ -105,11 +134,12 @@ if (typeof module !== 'undefined' && module.exports) {
 // =============================================
 const sdkAuth = new AppAuthSDK(baseURL = AppSDK.BASE_URL || window.location.origin);
 
-// Lắng nghe sự kiện thay đổi
+// Lắng nghe sự kiện thay đổi trạng thái API
 sdkAuth.onStatusChange = (status) => {
   console.log("✅ API Status:", status);
 };
 
+// Lắng nghe sự kiện lỗi API toàn cục
 sdkAuth.onError = (err) => {
   console.error("⚠️ API Error:", err);
   if (err) {

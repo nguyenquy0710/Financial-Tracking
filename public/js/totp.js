@@ -1,15 +1,18 @@
 let accounts = [];
-let token = localStorage.getItem('authToken');
+let token = sdkAuth.getAuthToken();
 let editingAccountId = null;
 let totpTimers = {};
 
-if (!token) {
+// Redirect to login if not authenticated
+if (!sdkAuth.isAuthenticated()) {
   window.location.href = `/login?redirectUrl=${encodeURIComponent(window.location.pathname)}`;
 }
 
 // Load accounts on page load
 document.addEventListener('DOMContentLoaded', async () => {
+  // Load accounts from server and render them
   await loadAccounts();
+
   setupFormHandlers();
   setupThemeToggle();
 });
@@ -55,7 +58,10 @@ const loadAccounts = async () => {
   container.innerHTML = '<div class="loading">Đang tải...</div>';
 
   try {
-    const response = await sdkAuth.callApiWithAuth('/totp');
+    // Fetch accounts from server API with authentication
+    const response = await sdkAuth.callApiWithAuth('/totp', 'GET', null, {
+      query: { page: 1, limit: 10, sortBy: 'createdAt', order: 'desc' }
+    });
 
     if (response.success && response.data) {
       accounts = response.data;
@@ -212,10 +218,12 @@ const handleFormSubmit = async () => {
     accountName,
     secret
   };
+  console.log("🚀 QuyNH: handleFormSubmit -> data", data);
 
   try {
     let response;
     if (editingAccountId) {
+      console.log("🚀 QuyNH: handleFormSubmit -> editingAccountId", editingAccountId)
       response = await sdkAuth.callApiWithAuth(`/totp/${editingAccountId}`, 'PUT', data);
     } else {
       response = await sdkAuth.callApiWithAuth('/totp', 'POST', data);
