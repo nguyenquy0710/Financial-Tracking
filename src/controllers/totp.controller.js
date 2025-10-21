@@ -12,13 +12,16 @@ exports.getTotpAccounts = async (req, res, next) => {
 
     // Include decrypted secrets for client-side TOTP generation
     const accountsWithSecrets = accounts.map(account => {
-      const accountObj = account.toObject();
-      accountObj.secret = account.getDecryptedSecret();
-      accountObj.algorithm = account.algorithm;
-      accountObj.digits = account.digits;
-      accountObj.period = account.period;
-      console.log("🚀 QuyNH: exports.getTotpAccounts -> accountObj", accountObj);
-      return accountObj;
+      // const accountObj = account.toObject();
+      // accountObj.secret = account.getDecryptedSecret();
+      // accountObj.algorithm = account.algorithm;
+      // accountObj.digits = account.digits;
+      // accountObj.period = account.period;
+      // return accountObj;
+
+      console.log("🚀 QuyNH: exports.getTotpAccounts -> account.toObjectWithSecrets()", account.toObjectWithSecrets());
+
+      return account.toObjectWithSecrets();
     });
 
     res.json({
@@ -44,6 +47,7 @@ exports.getTotpAccount = async (req, res, next) => {
       userId: req.userId
     });
 
+    // Handle account not found case
     if (!account) {
       return res.status(404).json({
         success: false,
@@ -52,11 +56,7 @@ exports.getTotpAccount = async (req, res, next) => {
     }
 
     // Include decrypted secret and other fields
-    const test = account.toObjectCustom();
-    console.log("🚀 QuyNH: exports.getTotpAccount -> toObjectCustom", test);
-
     const accountsWithSecrets = account.toObjectWithSecrets();
-    console.log("🚀 QuyNH: exports.getTotpAccount -> toObjectWithSecrets", accountsWithSecrets);
 
     res.json({
       success: true,

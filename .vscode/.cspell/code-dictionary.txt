@@ -9,6 +9,7 @@ dotenv
 esms
 esmsvn
 haravan
+HOTP
 initdb
 jscoverage
 jspm

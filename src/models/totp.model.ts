@@ -81,17 +81,6 @@ const TotpSchema = createBaseSchema<ITotpModel>(
         }
       }
     },
-    customToObject: (obj: any) => {
-      const accountsWithSecrets = obj;
-
-      return {
-        ...accountsWithSecrets,
-        secret: obj.getDecryptedSecret(),
-        algorithm: obj.algorithm,
-        digits: obj.digits,
-        period: obj.period
-      };
-    }
   }
 );
 
@@ -101,10 +90,20 @@ TotpSchema.methods.toObjectWithSecrets = function (): ITotpModel & Required<{
 }> & {
   __v: number;
 } {
-  const accountsWithSecrets = this.toObject();
+  const obj = this.toObject({ virtuals: true });
+
+  // Chuyển _id → id
+  obj.id = obj._id?.toString?.();
+  delete obj._id;
+
+  // Xóa các field mặc định
+  delete obj.__v;
+  delete obj.isDeleted;
+  delete obj.createdBy;
+  delete obj.updatedBy;
 
   return {
-    ...accountsWithSecrets,
+    ...obj,
     secret: this.getDecryptedSecret(),
     algorithm: this.algorithm,
     digits: this.digits,

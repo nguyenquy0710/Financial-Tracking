@@ -74,7 +74,7 @@
 
 .form-group input:focus {
   outline: none;
-  border-color: #317EFB;
+  border-color: #317efb;
   box-shadow: 0 0 0 3px rgba(49, 126, 251, 0.1);
 }
 
@@ -116,7 +116,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background: #317EFB;
+  background: #317efb;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -143,6 +143,9 @@
   color: #333;
 }
 
+/*
+  Accounts container and individual account cards.s
+ */
 #accounts-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -199,12 +202,12 @@
 
 .btn-edit {
   background: #fff;
-  color: #317EFB;
-  border: 1px solid #317EFB;
+  color: #317efb;
+  border: 1px solid #317efb;
 }
 
 .btn-edit:hover {
-  background: #317EFB;
+  background: #317efb;
   color: #fff;
 }
 
@@ -231,7 +234,7 @@
   font-size: 2rem;
   font-weight: 700;
   letter-spacing: 0.5rem;
-  color: #317EFB;
+  color: #317efb;
   font-family: 'Courier New', monospace;
   margin: 0.5rem 0;
 }
@@ -267,7 +270,7 @@
 
 .btn-copy {
   width: 100%;
-  background: #317EFB;
+  background: #317efb;
   color: #fff;
   border: none;
   padding: 0.75rem;
