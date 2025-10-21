@@ -24,7 +24,7 @@ const createRotateFileStream = (context: string = 'application', options?: any) 
   // 🔁 Tạo luồng ghi log xoay theo ngày + giới hạn dung lượng
   new winston.transports.DailyRotateFile({
     dirname: logDir, // Thư mục chứa log
-    filename: `${context}-%DATE%.log`, // Tên file log với định dạng ngày thêm vào
+    filename: `${context.toLocaleLowerCase().trim()}-%DATE%.log`, // Tên file log với định dạng ngày thêm vào
     datePattern: 'YYYY-MM-DD', // Định dạng ngày trong tên file log
     zippedArchive: true, // Tự động nén log cũ để tiết kiệm dung lượng (nén thành .gz)
     maxSize: '20m', // Giới hạn kích thước mỗi file: 20MB

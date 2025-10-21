@@ -11,7 +11,7 @@ export const requestLogger = (req: Request, res: Response, next: NextFunction) =
     console.log("🚀 QuyNH: requestLogger -> context", context)
 
     // Tạo logger riêng có requestId
-    const logger = createLogger("HTTP", {});
+    const logger = createLogger("http");
     // const logger = accessLogStream;
     const childLogger = logger.child({ requestId });
 
