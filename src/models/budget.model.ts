@@ -1,12 +1,6 @@
 import mongoose, { Document, Schema, Model, Types } from 'mongoose';
 
-// 1. Define enum for period
-export enum BudgetPeriod {
-  DAILY = 'daily',
-  WEEKLY = 'weekly',
-  MONTHLY = 'monthly',
-  YEARLY = 'yearly'
-}
+import { BudgetPeriod } from '@/config/enums';
 
 // 2. Define the Budget document interface
 export interface IBudgetModel extends Document {

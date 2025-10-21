@@ -1,25 +1,5 @@
+import { DepositStatus } from '@/config/enums';
 import mongoose, { Document, Schema, Model, Types } from 'mongoose';
-
-// 1. Define enums for status and common values
-export enum DepositStatus {
-  ACTIVE = 'active',
-  CLOSED = 'closed',
-  MATURED = 'matured'
-}
-
-export enum AccountType {
-  SAVINGS = 'savings',
-  FIXED = 'fixed',
-  CURRENT = 'current',
-  RECURRING = 'recurring'
-}
-
-export enum FundType {
-  PERSONAL = 'personal',
-  BUSINESS = 'business',
-  RETIREMENT = 'retirement',
-  EDUCATION = 'education'
-}
 
 // 2. Define the Deposit document interface
 export interface IDepositModel extends Document {

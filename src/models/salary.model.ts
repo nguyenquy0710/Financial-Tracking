@@ -1,17 +1,5 @@
+import { Company } from '@/config/enums';
 import mongoose, { Document, Schema, Model, Types } from 'mongoose';
-
-// 1. Define enums for company and growth types
-export enum Company {
-  VIHAT = 'VIHAT',
-  DAKIATECH = 'DAKIATECH',
-  OTHER = 'OTHER'
-}
-
-export enum GrowthType {
-  BASIC_SALARY = 'basicSalary',
-  FREELANCE = 'freelance',
-  TOTAL_INCOME = 'totalIncome'
-}
 
 // 2. Define interfaces for nested objects
 export interface IFreelanceIncome {

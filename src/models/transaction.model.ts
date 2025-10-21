@@ -1,25 +1,5 @@
+import { PaymentMethod, RecurringFrequency, TransactionType } from '@/config/enums';
 import mongoose, { Document, Schema, Model, Types } from 'mongoose';
-
-// 1. Define enums for transaction types, payment methods, and frequencies
-export enum TransactionType {
-  INCOME = 'income',
-  EXPENSE = 'expense'
-}
-
-export enum PaymentMethod {
-  CASH = 'cash',
-  CARD = 'card',
-  BANK_TRANSFER = 'bank_transfer',
-  E_WALLET = 'e_wallet',
-  OTHER = 'other'
-}
-
-export enum RecurringFrequency {
-  DAILY = 'daily',
-  WEEKLY = 'weekly',
-  MONTHLY = 'monthly',
-  YEARLY = 'yearly'
-}
 
 // 2. Define interfaces for nested objects
 export interface IRecurringPattern {

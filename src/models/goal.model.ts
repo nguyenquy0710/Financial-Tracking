@@ -1,24 +1,5 @@
+import { GoalPriority, GoalStatus, ReminderFrequency } from '@/config/enums';
 import mongoose, { Document, Schema, Model, Types } from 'mongoose';
-
-// 1. Define enums for priority, status, and reminder frequency
-export enum GoalPriority {
-  LOW = 'low',
-  MEDIUM = 'medium',
-  HIGH = 'high'
-}
-
-export enum GoalStatus {
-  ACTIVE = 'active',
-  COMPLETED = 'completed',
-  PAUSED = 'paused',
-  CANCELLED = 'cancelled'
-}
-
-export enum ReminderFrequency {
-  DAILY = 'daily',
-  WEEKLY = 'weekly',
-  MONTHLY = 'monthly'
-}
 
 // 2. Define interfaces for nested objects
 export interface IReminder {

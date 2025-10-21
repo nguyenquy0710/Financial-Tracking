@@ -1,10 +1,5 @@
+import { CategoryType } from '@/config/enums';
 import mongoose, { Document, Schema, Model, Types } from 'mongoose';
-
-// 1. Define enum for category type
-export enum CategoryType {
-  INCOME = 'income',
-  EXPENSE = 'expense'
-}
 
 // 2. Define interface for keyword
 export interface IKeyword {

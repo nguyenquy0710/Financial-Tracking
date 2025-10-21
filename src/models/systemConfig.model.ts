@@ -3,8 +3,6 @@ import mongoose, { Document, Schema, Model, Types } from 'mongoose';
 import { SystemConfigName } from '@/config/enums';
 import IAbsBaseModel, { createBaseSchema } from '@/abstracts/absBase.model';
 
-// 1. Define enum for common configuration names
-
 // 2. Define interface for configuration value types
 export type ConfigValue = string | number | boolean | object | null;
 

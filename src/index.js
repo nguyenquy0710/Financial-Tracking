@@ -8,7 +8,7 @@ const compression = require('compression');
 const swaggerUi = require('swagger-ui-express');
 
 // Import configuration and utilities
-const config = require('./config/config');
+const { default: config } = require('./config/config');
 const swaggerSpec = require('./config/swagger');
 const connectDB = require('./config/database');
 const { morganAccessStream } = require('./utils/logger');

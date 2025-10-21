@@ -1,23 +1,5 @@
+import { BillFrequency, BillType } from '@/config/enums';
 import mongoose, { Document, Schema, Model, Types } from 'mongoose';
-
-// 1. Define enums for bill type and frequency
-export enum BillType {
-  RENT = 'rent',
-  ELECTRICITY = 'electricity',
-  WATER = 'water',
-  INTERNET = 'internet',
-  PARKING = 'parking',
-  GARBAGE = 'garbage',
-  OTHER = 'other'
-}
-
-export enum BillFrequency {
-  DAILY = 'daily',
-  WEEKLY = 'weekly',
-  MONTHLY = 'monthly',
-  QUARTERLY = 'quarterly',
-  YEARLY = 'yearly'
-}
 
 // 2. Define the RecurringBill document interface
 export interface IRecurringBillModel extends Document {

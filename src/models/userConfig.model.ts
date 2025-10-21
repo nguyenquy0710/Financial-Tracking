@@ -1,18 +1,6 @@
 import mongoose, { Document, Schema, Model, Types } from 'mongoose';
 import bcrypt from 'bcryptjs';
-
-// 1. Define enums for configuration types and status
-export enum ConfigStatus {
-  ACTIVE = 'active',
-  INACTIVE = 'inactive',
-  PENDING = 'pending'
-}
-
-export enum ConfigType {
-  MISA = 'misa',
-  EXCEL = 'excel',
-  API = 'api'
-}
+import { ConfigStatus } from '@/config/enums';
 
 // 2. Define interfaces for nested objects
 export interface IMisaConfig extends Document {

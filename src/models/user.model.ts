@@ -1,17 +1,6 @@
 import mongoose, { Document, Schema, Model, Types } from 'mongoose';
 import bcrypt from 'bcryptjs';
-
-// 1. Define enums for currency and language
-export enum Currency {
-  VND = 'VND',
-  USD = 'USD',
-  EUR = 'EUR'
-}
-
-export enum Language {
-  VIETNAMESE = 'vi',
-  ENGLISH = 'en'
-}
+import { Currency, Language } from '@/config/enums';
 
 // 2. Define the User document interface
 export interface IUserModel extends Document {

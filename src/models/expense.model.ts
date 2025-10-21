@@ -1,22 +1,5 @@
+import { ExpenseSource } from '@/config/enums';
 import mongoose, { Document, Schema, Model, Types } from 'mongoose';
-
-// 1. Define enums for source and allocation types
-export enum ExpenseSource {
-  MANUAL = 'Manual',
-  MISA = 'MISA',
-  EXCEL = 'Excel',
-  API = 'API'
-}
-
-export enum AllocationType {
-  MOTHER_GIFT = 'motherGift',
-  NEC = 'nec',
-  FFA = 'ffa',
-  EDUC = 'educ',
-  PLAY = 'play',
-  GIVE = 'give',
-  LTS = 'lts'
-}
 
 // 2. Define interface for allocation
 export interface IAllocation {

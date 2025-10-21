@@ -1,5 +1,5 @@
 const { VietQR } = require('vietqr');
-const config = require('../config/config');
+const { default: config } = require('../config/config');
 
 // @desc    API danh sách ngân hàng
 // @route   GET /api/externals/vietqr/banks

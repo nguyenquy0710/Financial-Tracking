@@ -1,5 +1,5 @@
 const swaggerJsdoc = require('swagger-jsdoc');
-const config = require('./config');
+const { default: config } = require('./config');
 
 // Swagger definition and options for swagger-jsdoc setup
 const swaggerDefinition = {

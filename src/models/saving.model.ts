@@ -1,19 +1,5 @@
+import { FundType, SavingType } from '@/config/enums';
 import mongoose, { Document, Schema, Model, Types } from 'mongoose';
-
-// 1. Define enums for saving type and common values
-export enum SavingType {
-  MOTHER = 'mother',
-  FUND = 'fund'
-}
-
-export enum FundType {
-  EMERGENCY = 'emergency',
-  INVESTMENT = 'investment',
-  RETIREMENT = 'retirement',
-  EDUCATION = 'education',
-  TRAVEL = 'travel',
-  OTHER = 'other'
-}
 
 // 2. Define the Saving document interface
 export interface ISavingModel extends Document {

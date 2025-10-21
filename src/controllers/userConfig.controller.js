@@ -1,5 +1,5 @@
 const { default: UserConfig } = require('@/models/userConfig.model');
-const config = require('../config/config');
+const { default: config } = require('../config/config');
 
 /**
  * Helper function to make HTTP requests to MISA API

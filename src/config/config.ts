@@ -1,4 +1,6 @@
-module.exports = {
+// src/config/config.ts
+
+export const config = {
   // Application Settings
   app: {
     name: process.env.APP_NAME || 'FinTrack',
@@ -73,3 +75,6 @@ module.exports = {
     }
   }
 };
+
+// Export the configuration object
+export default config;
