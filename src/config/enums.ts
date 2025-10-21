@@ -1,0 +1,20 @@
+// =============================================================================
+// Enums for System Configuration Names
+// =============================================================================
+export enum SystemConfigName {
+  APP_VERSION = 'APP_VERSION',
+  MAINTENANCE_MODE = 'MAINTENANCE_MODE',
+  CURRENCY = 'CURRENCY',
+  DATE_FORMAT = 'DATE_FORMAT',
+  TIMEZONE = 'TIMEZONE',
+  BACKUP_SCHEDULE = 'BACKUP_SCHEDULE',
+  EMAIL_NOTIFICATIONS = 'EMAIL_NOTIFICATIONS',
+  MAX_FILE_UPLOAD_SIZE = 'MAX_FILE_UPLOAD_SIZE',
+  SESSION_TIMEOUT = 'SESSION_TIMEOUT',
+  DEFAULT_LANGUAGE = 'DEFAULT_LANGUAGE',
+  TAX_RATE = 'TAX_RATE',
+  INTEREST_RATE = 'INTEREST_RATE',
+  EXCHANGE_RATES = 'EXCHANGE_RATES',
+  BUDGET_ALERT_THRESHOLD = 'BUDGET_ALERT_THRESHOLD',
+  AUTO_BACKUP_ENABLED = 'AUTO_BACKUP_ENABLED'
+}

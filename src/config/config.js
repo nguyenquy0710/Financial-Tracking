@@ -15,6 +15,12 @@ module.exports = {
     expiresIn: process.env.JWT_EXPIRES_IN || '7d'
   },
 
+  // TOTP Encryption Key
+  totp: {
+    aesAlgorithm: 'aes-256-cbc',
+    encryptionKey: process.env.TOTP_ENCRYPTION_KEY || '9f7c1b0d6f2e7c41c6d7c962ff3c9a1bcd3c32f14f6e8e3b5a8e1a4b6d12e9f1',
+  },
+
   // Server Configuration
   server: {
     port: process.env.PORT || 3000,

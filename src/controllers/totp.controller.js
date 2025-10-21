@@ -17,6 +17,7 @@ exports.getTotpAccounts = async (req, res, next) => {
       accountObj.algorithm = account.algorithm;
       accountObj.digits = account.digits;
       accountObj.period = account.period;
+      console.log("🚀 QuyNH: exports.getTotpAccounts -> accountObj", accountObj);
       return accountObj;
     });
 
@@ -37,6 +38,7 @@ exports.getTotpAccounts = async (req, res, next) => {
  */
 exports.getTotpAccount = async (req, res, next) => {
   try {
+    // Find account by ID and userId to ensure ownership
     const account = await Totp.findOne({
       _id: req.params.id,
       userId: req.userId
@@ -49,10 +51,17 @@ exports.getTotpAccount = async (req, res, next) => {
       });
     }
 
+    // Include decrypted secret and other fields
+    const test = account.toObjectCustom();
+    console.log("🚀 QuyNH: exports.getTotpAccount -> toObjectCustom", test);
+
+    const accountsWithSecrets = account.toObjectWithSecrets();
+    console.log("🚀 QuyNH: exports.getTotpAccount -> toObjectWithSecrets", accountsWithSecrets);
+
     res.json({
       success: true,
       message: 'TOTP account retrieved successfully',
-      data: account
+      data: accountsWithSecrets
     });
   } catch (error) {
     next(error);

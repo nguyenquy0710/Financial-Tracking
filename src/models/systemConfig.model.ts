@@ -1,34 +1,20 @@
 import mongoose, { Document, Schema, Model, Types } from 'mongoose';
 
+import { SystemConfigName } from '@/config/enums';
+import IAbsBaseModel, { createBaseSchema } from '@/abstracts/absBase.model';
+
 // 1. Define enum for common configuration names
-export enum ConfigName {
-  APP_VERSION = 'APP_VERSION',
-  MAINTENANCE_MODE = 'MAINTENANCE_MODE',
-  CURRENCY = 'CURRENCY',
-  DATE_FORMAT = 'DATE_FORMAT',
-  TIMEZONE = 'TIMEZONE',
-  BACKUP_SCHEDULE = 'BACKUP_SCHEDULE',
-  EMAIL_NOTIFICATIONS = 'EMAIL_NOTIFICATIONS',
-  MAX_FILE_UPLOAD_SIZE = 'MAX_FILE_UPLOAD_SIZE',
-  SESSION_TIMEOUT = 'SESSION_TIMEOUT',
-  DEFAULT_LANGUAGE = 'DEFAULT_LANGUAGE',
-  TAX_RATE = 'TAX_RATE',
-  INTEREST_RATE = 'INTEREST_RATE',
-  EXCHANGE_RATES = 'EXCHANGE_RATES',
-  BUDGET_ALERT_THRESHOLD = 'BUDGET_ALERT_THRESHOLD',
-  AUTO_BACKUP_ENABLED = 'AUTO_BACKUP_ENABLED'
-}
 
 // 2. Define interface for configuration value types
 export type ConfigValue = string | number | boolean | object | null;
 
 // 3. Define the SystemConfig document interface
-export interface ISystemConfigModel extends Document {
+export interface ISystemConfigModel extends IAbsBaseModel {
   configName: string;
   configValue: string;
   isActive: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
+  // createdAt?: Date;
+  // updatedAt?: Date;
 
   // Virtual fields
   parsedValue: ConfigValue;
@@ -36,7 +22,7 @@ export interface ISystemConfigModel extends Document {
 }
 
 // 4. Define the schema
-const systemConfigSchema = new Schema<ISystemConfigModel>(
+const systemConfigSchema = createBaseSchema<ISystemConfigModel>(
   {
     configName: {
       type: String,
@@ -62,17 +48,20 @@ const systemConfigSchema = new Schema<ISystemConfigModel>(
     }
   },
   {
-    timestamps: true,
-    toJSON: {
-      virtuals: true,
-      transform: function (doc, ret: any) {
-        ret.id = ret._id;
-        delete ret._id;
-        delete ret.__v;
-        return ret;
-      }
+    softDelete: true,
+    auditFields: false,
+    schemaOptions: {
+      toJSON: {
+        virtuals: true,
+        transform: function (doc: any, ret: any) {
+          ret.id = ret._id;
+          delete ret._id;
+          delete ret.__v;
+          return ret;
+        }
+      },
+      toObject: { virtuals: true }
     },
-    toObject: { virtuals: true }
   }
 );
 
@@ -138,21 +127,21 @@ systemConfigSchema.pre('validate', function (next) {
 
   // Validate specific config values based on name
   switch (config.configName) {
-    case ConfigName.APP_VERSION:
+    case SystemConfigName.APP_VERSION:
       if (config.configValue && !/^\d+\.\d+\.\d+$/.test(config.configValue)) {
         return next(new Error('APP_VERSION must be in semantic version format (x.y.z)'));
       }
       break;
 
-    case ConfigName.TAX_RATE:
-    case ConfigName.INTEREST_RATE:
+    case SystemConfigName.TAX_RATE:
+    case SystemConfigName.INTEREST_RATE:
       const numValue = parseFloat(config.configValue);
       if (config.configValue && (isNaN(numValue) || numValue < 0 || numValue > 100)) {
         return next(new Error(`${config.configName} must be a number between 0 and 100`));
       }
       break;
 
-    case ConfigName.MAX_FILE_UPLOAD_SIZE:
+    case SystemConfigName.MAX_FILE_UPLOAD_SIZE:
       const sizeValue = parseFloat(config.configValue);
       if (config.configValue && (isNaN(sizeValue) || sizeValue <= 0)) {
         return next(new Error('MAX_FILE_UPLOAD_SIZE must be a positive number'));
@@ -247,18 +236,18 @@ systemConfigSchema.statics.deactivateConfig = function (configName: string) {
 
 systemConfigSchema.statics.initializeDefaultConfigs = async function () {
   const defaultConfigs: Array<{ configName: string; configValue: string }> = [
-    { configName: ConfigName.APP_VERSION, configValue: '1.0.0' },
-    { configName: ConfigName.MAINTENANCE_MODE, configValue: 'false' },
-    { configName: ConfigName.CURRENCY, configValue: 'VND' },
-    { configName: ConfigName.DATE_FORMAT, configValue: 'DD/MM/YYYY' },
-    { configName: ConfigName.TIMEZONE, configValue: 'Asia/Ho_Chi_Minh' },
-    { configName: ConfigName.DEFAULT_LANGUAGE, configValue: 'vi' },
-    { configName: ConfigName.TAX_RATE, configValue: '10' },
-    { configName: ConfigName.INTEREST_RATE, configValue: '6.5' },
-    { configName: ConfigName.BUDGET_ALERT_THRESHOLD, configValue: '80' },
-    { configName: ConfigName.MAX_FILE_UPLOAD_SIZE, configValue: '10485760' }, // 10MB
-    { configName: ConfigName.SESSION_TIMEOUT, configValue: '3600' }, // 1 hour
-    { configName: ConfigName.AUTO_BACKUP_ENABLED, configValue: 'true' }
+    { configName: SystemConfigName.APP_VERSION, configValue: '1.0.0' },
+    { configName: SystemConfigName.MAINTENANCE_MODE, configValue: 'false' },
+    { configName: SystemConfigName.CURRENCY, configValue: 'VND' },
+    { configName: SystemConfigName.DATE_FORMAT, configValue: 'DD/MM/YYYY' },
+    { configName: SystemConfigName.TIMEZONE, configValue: 'Asia/Ho_Chi_Minh' },
+    { configName: SystemConfigName.DEFAULT_LANGUAGE, configValue: 'vi' },
+    { configName: SystemConfigName.TAX_RATE, configValue: '10' },
+    { configName: SystemConfigName.INTEREST_RATE, configValue: '6.5' },
+    { configName: SystemConfigName.BUDGET_ALERT_THRESHOLD, configValue: '80' },
+    { configName: SystemConfigName.MAX_FILE_UPLOAD_SIZE, configValue: '10485760' }, // 10MB
+    { configName: SystemConfigName.SESSION_TIMEOUT, configValue: '3600' }, // 1 hour
+    { configName: SystemConfigName.AUTO_BACKUP_ENABLED, configValue: 'true' }
   ];
 
   for (const config of defaultConfigs) {
@@ -305,21 +294,21 @@ systemConfigSchema.methods.isString = function (): boolean {
 
 systemConfigSchema.methods.getDescription = function (): string {
   const descriptions: Record<string, string> = {
-    [ConfigName.APP_VERSION]: 'Current application version',
-    [ConfigName.MAINTENANCE_MODE]: 'Whether the system is in maintenance mode',
-    [ConfigName.CURRENCY]: 'Default currency for the application',
-    [ConfigName.DATE_FORMAT]: 'Default date format display',
-    [ConfigName.TIMEZONE]: 'System timezone',
-    [ConfigName.BACKUP_SCHEDULE]: 'Automatic backup schedule',
-    [ConfigName.EMAIL_NOTIFICATIONS]: 'Enable email notifications',
-    [ConfigName.MAX_FILE_UPLOAD_SIZE]: 'Maximum file upload size in bytes',
-    [ConfigName.SESSION_TIMEOUT]: 'User session timeout in seconds',
-    [ConfigName.DEFAULT_LANGUAGE]: 'Default application language',
-    [ConfigName.TAX_RATE]: 'Default tax rate percentage',
-    [ConfigName.INTEREST_RATE]: 'Default interest rate percentage',
-    [ConfigName.EXCHANGE_RATES]: 'Currency exchange rates',
-    [ConfigName.BUDGET_ALERT_THRESHOLD]: 'Budget alert threshold percentage',
-    [ConfigName.AUTO_BACKUP_ENABLED]: 'Enable automatic backups'
+    [SystemConfigName.APP_VERSION]: 'Current application version',
+    [SystemConfigName.MAINTENANCE_MODE]: 'Whether the system is in maintenance mode',
+    [SystemConfigName.CURRENCY]: 'Default currency for the application',
+    [SystemConfigName.DATE_FORMAT]: 'Default date format display',
+    [SystemConfigName.TIMEZONE]: 'System timezone',
+    [SystemConfigName.BACKUP_SCHEDULE]: 'Automatic backup schedule',
+    [SystemConfigName.EMAIL_NOTIFICATIONS]: 'Enable email notifications',
+    [SystemConfigName.MAX_FILE_UPLOAD_SIZE]: 'Maximum file upload size in bytes',
+    [SystemConfigName.SESSION_TIMEOUT]: 'User session timeout in seconds',
+    [SystemConfigName.DEFAULT_LANGUAGE]: 'Default application language',
+    [SystemConfigName.TAX_RATE]: 'Default tax rate percentage',
+    [SystemConfigName.INTEREST_RATE]: 'Default interest rate percentage',
+    [SystemConfigName.EXCHANGE_RATES]: 'Currency exchange rates',
+    [SystemConfigName.BUDGET_ALERT_THRESHOLD]: 'Budget alert threshold percentage',
+    [SystemConfigName.AUTO_BACKUP_ENABLED]: 'Enable automatic backups'
   };
 
   return descriptions[this.configName] || 'System configuration';
@@ -335,8 +324,9 @@ export interface ISystemConfigModelStatic extends Model<ISystemConfigModel> {
   initializeDefaultConfigs(): Promise<number>;
 }
 
+// =============================================================================
 // 13. Export the model
-const SystemConfig: ISystemConfigModelStatic =
+export const SystemConfig: ISystemConfigModelStatic =
   mongoose.models.SystemConfig as ISystemConfigModelStatic ||
   mongoose.model<ISystemConfigModel, ISystemConfigModelStatic>('SystemConfig', systemConfigSchema);
 

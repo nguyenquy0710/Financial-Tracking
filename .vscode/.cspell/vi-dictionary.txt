@@ -80,6 +80,7 @@ liệu
 linh
 loại
 lòng
+Luôn
 luồng
 lương
 lượng

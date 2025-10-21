@@ -1,44 +1,20 @@
-import mongoose, { Document, Schema, Model } from 'mongoose';
-import crypto from 'crypto';
-
-// Encryption configuration
-const ALGORITHM = 'aes-256-cbc';
-const ENCRYPTION_KEY = process.env.TOTP_ENCRYPTION_KEY || crypto.randomBytes(32).toString('hex');
-const IV_LENGTH = 16;
-
-// Helper functions for encryption/decryption
-function encrypt(text: string): string {
-  const iv = crypto.randomBytes(IV_LENGTH);
-  const key = Buffer.from(ENCRYPTION_KEY.substring(0, 64), 'hex');
-  const cipher = crypto.createCipheriv(ALGORITHM, key, iv);
-  let encrypted = cipher.update(text, 'utf8', 'hex');
-  encrypted += cipher.final('hex');
-  return iv.toString('hex') + ':' + encrypted;
-}
-
-function decrypt(text: string): string {
-  const parts = text.split(':');
-  const iv = Buffer.from(parts.shift()!, 'hex');
-  const encryptedText = parts.join(':');
-  const key = Buffer.from(ENCRYPTION_KEY.substring(0, 64), 'hex');
-  const decipher = crypto.createDecipheriv(ALGORITHM, key, iv);
-  let decrypted = decipher.update(encryptedText, 'hex', 'utf8');
-  decrypted += decipher.final('utf8');
-  return decrypted;
-}
+import mongoose, { Document, Schema, Model, Types } from 'mongoose';
+import { decrypt, encrypt } from '@/utils/encrypt.util';
+import IAbsBaseModel, { createBaseSchema } from '@/abstracts/absBase.model';
 
 // 1. Define the TOTP document interface
-export interface ITotpModel extends Document {
+export interface ITotpModel extends IAbsBaseModel {
   userId: mongoose.Types.ObjectId;
   serviceName: string;
   accountName: string;
+  secret: string; // Decrypted secret (not stored in DB)
   encryptedSecret: string;
   issuer?: string;
   algorithm: 'SHA1' | 'SHA256' | 'SHA512';
   digits: number;
   period: number;
-  createdAt?: Date;
-  updatedAt?: Date;
+  // createdAt?: Date;
+  // updatedAt?: Date;
 
   // Instance methods
   getDecryptedSecret(): string;
@@ -46,7 +22,7 @@ export interface ITotpModel extends Document {
 }
 
 // 2. Define the schema
-const TotpSchema = new Schema<ITotpModel>(
+const TotpSchema = createBaseSchema<ITotpModel>(
   {
     userId: {
       type: Schema.Types.ObjectId,
@@ -94,19 +70,51 @@ const TotpSchema = new Schema<ITotpModel>(
     }
   },
   {
-    timestamps: true,
-    toJSON: {
-      transform: function (doc, ret) {
-        // Don't expose encrypted secret in JSON
-        const { encryptedSecret, ...rest } = ret;
-        return rest;
+    softDelete: true,
+    auditFields: true,
+    schemaOptions: {
+      toJSON: {
+        transform: function (doc: any, ret: any) {
+          // Don't expose encrypted secret in JSON
+          const { encryptedSecret, ...rest } = ret;
+          return rest;
+        }
       }
+    },
+    customToObject: (obj: any) => {
+      const accountsWithSecrets = obj;
+
+      return {
+        ...accountsWithSecrets,
+        secret: obj.getDecryptedSecret(),
+        algorithm: obj.algorithm,
+        digits: obj.digits,
+        period: obj.period
+      };
     }
   }
 );
 
+// Instance method to get object including decrypted secret and other fields
+TotpSchema.methods.toObjectWithSecrets = function (): ITotpModel & Required<{
+  _id: unknown;
+}> & {
+  __v: number;
+} {
+  const accountsWithSecrets = this.toObject();
+
+  return {
+    ...accountsWithSecrets,
+    secret: this.getDecryptedSecret(),
+    algorithm: this.algorithm,
+    digits: this.digits,
+    period: this.period
+  };
+}
+
 // Instance method to get decrypted secret
 TotpSchema.methods.getDecryptedSecret = function (): string {
+  console.log("🚀 QuyNH: this.encryptedSecret", this.encryptedSecret);
   return decrypt(this.encryptedSecret);
 };
 
@@ -115,6 +123,9 @@ TotpSchema.methods.setSecret = function (secret: string): void {
   this.encryptedSecret = encrypt(secret);
 };
 
+// =============================================================================
+// Middleware and Hooks
+// =============================================================================
 // Pre-save hook to validate secret format
 TotpSchema.pre('save', function (next) {
   if (this.isModified('encryptedSecret') && !this.encryptedSecret.includes(':')) {
@@ -125,6 +136,7 @@ TotpSchema.pre('save', function (next) {
   next();
 });
 
+// =============================================================================
 // 3. Create and export the model
 const Totp: Model<ITotpModel> = mongoose.model<ITotpModel>('Totp', TotpSchema);
 
