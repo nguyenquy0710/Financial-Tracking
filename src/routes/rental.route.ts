@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 const rentalRoute = express.Router();
 
-import authHandler from '../middleware/authHandler';
+import { webAuthHandler } from '../middleware/authHandler';
 import { rentalDomain } from '@/domains/rental.domain';
 import { ROUTE_PREFIX } from '@/constants/route_prefix.constant';
 
@@ -14,7 +14,7 @@ const CURRENT_PAGE = RENTAL_PREFIX.MENU_NAME; // 'Rentals'
  */
 
 // All routes require authentication
-rentalRoute.use(authHandler);
+rentalRoute.use(webAuthHandler);
 
 // GET: /rentals
 // Render the rentals page listing all rentals.

@@ -8,7 +8,7 @@ const {
   deleteRental,
   getRentalStats
 } = require('../../controllers/rental.controller');
-const authHandler = require('../../middleware/authHandler');
+const { apiAuthHandler } = require('../../middleware/authHandler');
 
 /**
  * @swagger
@@ -18,7 +18,7 @@ const authHandler = require('../../middleware/authHandler');
  */
 
 // All routes require authentication
-router.use(authHandler);
+router.use(apiAuthHandler);
 
 router.route('/').get(getRentals).post(createRental);
 

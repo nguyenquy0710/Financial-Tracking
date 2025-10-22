@@ -9,7 +9,7 @@ const {
   updateTotpAccount,
   deleteTotpAccount
 } = require('../../controllers/totp.controller');
-const authHandler = require('../../middleware/authHandler');
+const { apiAuthHandler } = require('../../middleware/authHandler');
 
 /**
  * @swagger
@@ -19,7 +19,7 @@ const authHandler = require('../../middleware/authHandler');
  */
 
 // All routes require authentication
-router.use(authHandler);
+router.use(apiAuthHandler);
 
 /**
  * @swagger

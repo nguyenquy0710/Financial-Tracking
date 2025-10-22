@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const authHandler = require('../../middleware/authHandler');
+const { apiAuthHandler } = require('../../middleware/authHandler');
 const recurringBillController = require('../../controllers/recurringBill.controller');
 
 /**
@@ -11,7 +11,7 @@ const recurringBillController = require('../../controllers/recurringBill.control
  */
 
 // All routes require authentication
-router.use(authHandler);
+router.use(apiAuthHandler);
 
 // Get upcoming bills
 router.get('/upcoming', recurringBillController.getUpcomingBills);

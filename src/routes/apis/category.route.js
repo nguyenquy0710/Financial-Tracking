@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const categoryController = require('../../controllers/category.controller');
-const authHandler = require('../../middleware/authHandler');
+const { apiAuthHandler } = require('../../middleware/authHandler');
 const { categoryValidation } = require('../../middleware/validator');
 
 /**
@@ -12,7 +12,7 @@ const { categoryValidation } = require('../../middleware/validator');
  */
 
 // All routes require authentication
-router.use(authHandler);
+router.use(apiAuthHandler);
 
 /**
  * @swagger

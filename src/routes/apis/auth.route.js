@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../../controllers/auth.controller');
-const authHandler = require('../../middleware/authHandler');
+const { apiAuthHandler } = require('../../middleware/authHandler');
 const { userValidation } = require('../../middleware/validator');
 
 /**
@@ -142,7 +142,7 @@ router.post('/login', userValidation.login, authController.login);
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.get('/me', authHandler, authController.getMe);
+router.get('/me', apiAuthHandler, authController.getMe);
 
 /**
  * @swagger
@@ -186,7 +186,7 @@ router.get('/me', authHandler, authController.getMe);
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.put('/profile', authHandler, authController.updateProfile);
+router.put('/profile', apiAuthHandler, authController.updateProfile);
 
 /**
  * @swagger
@@ -242,6 +242,6 @@ router.put('/profile', authHandler, authController.updateProfile);
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.put('/change-password', authHandler, authController.changePassword);
+router.put('/change-password', apiAuthHandler, authController.changePassword);
 
 module.exports = router;

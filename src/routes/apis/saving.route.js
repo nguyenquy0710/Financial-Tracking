@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const authHandler = require('../../middleware/authHandler');
+const { apiAuthHandler } = require('../../middleware/authHandler');
 const savingController = require('../../controllers/saving.controller');
 
 /**
@@ -11,7 +11,7 @@ const savingController = require('../../controllers/saving.controller');
  */
 
 // All routes require authentication
-router.use(authHandler);
+router.use(apiAuthHandler);
 
 // Get savings statistics
 router.get('/stats/summary', savingController.getSavingsStats);

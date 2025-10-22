@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const transactionController = require('../../controllers/transaction.controller');
-const authHandler = require('../../middleware/authHandler');
+const { apiAuthHandler } = require('../../middleware/authHandler');
 const { transactionValidation } = require('../../middleware/validator');
 
 /**
@@ -12,7 +12,7 @@ const { transactionValidation } = require('../../middleware/validator');
  */
 
 // All routes require authentication
-router.use(authHandler);
+router.use(apiAuthHandler);
 
 /**
  * @swagger

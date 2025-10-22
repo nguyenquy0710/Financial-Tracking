@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userConfigController = require('../../controllers/userConfig.controller');
-const authHandler = require('../../middleware/authHandler');
+const { apiAuthHandler } = require('../../middleware/authHandler');
 
 /**
  * @swagger
@@ -9,7 +9,7 @@ const authHandler = require('../../middleware/authHandler');
  *   name: UserConfig
  *   description: User configuration management
  */
-router.use(authHandler);
+router.use(apiAuthHandler);
 
 /**
  * @swagger
@@ -49,7 +49,7 @@ router.use(authHandler);
  *       401:
  *         description: Unauthorized
  */
-router.get('/', authHandler, userConfigController.getUserConfig);
+router.get('/', apiAuthHandler, userConfigController.getUserConfig);
 
 /**
  * @swagger
@@ -99,7 +99,7 @@ router.get('/', authHandler, userConfigController.getUserConfig);
  *       401:
  *         description: Unauthorized
  */
-router.post('/misa', authHandler, userConfigController.saveMisaConfig);
+router.post('/misa', apiAuthHandler, userConfigController.saveMisaConfig);
 
 /**
  * @swagger
@@ -150,7 +150,7 @@ router.post('/misa', authHandler, userConfigController.saveMisaConfig);
  *       401:
  *         description: Unauthorized
  */
-router.post('/misa/test', authHandler, userConfigController.testMisaConfig);
+router.post('/misa/test', apiAuthHandler, userConfigController.testMisaConfig);
 
 /**
  * @swagger
@@ -180,6 +180,6 @@ router.post('/misa/test', authHandler, userConfigController.testMisaConfig);
  *       401:
  *         description: Unauthorized
  */
-router.delete('/misa', authHandler, userConfigController.deleteMisaConfig);
+router.delete('/misa', apiAuthHandler, userConfigController.deleteMisaConfig);
 
 module.exports = router;

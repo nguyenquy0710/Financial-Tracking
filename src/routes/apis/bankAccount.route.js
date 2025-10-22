@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const authHandler = require('../../middleware/authHandler');
+const { apiAuthHandler } = require('../../middleware/authHandler');
 const bankAccountController = require('../../controllers/bankAccount.controller');
 
 /**
@@ -12,7 +12,7 @@ const bankAccountController = require('../../controllers/bankAccount.controller'
  */
 
 // All routes require authentication
-router.use(authHandler);
+router.use(apiAuthHandler);
 
 // Get default bank account
 router.get('/default', bankAccountController.getDefaultBankAccount);

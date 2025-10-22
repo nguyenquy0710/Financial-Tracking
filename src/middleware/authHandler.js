@@ -3,7 +3,8 @@ const jwt = require('jsonwebtoken');
 const { default: config } = require('../config/config');
 const { default: User } = require('@/models/user.model');
 
-const authHandler = async (req, res, next) => {
+// Middleware cho các route API (JSON)
+const apiAuthHandler = async (req, res, next) => {
   const path = req.path ?? ''; // path hiện tại
   try {
     // Get token from header
@@ -66,4 +67,40 @@ const authHandler = async (req, res, next) => {
   }
 };
 
-module.exports = authHandler;
+// Middleware cho các route web (HTML)
+const webAuthHandler = async (req, res, next) => {
+  const path = req.path ?? ''; // path hiện tại
+  try {
+    next();
+  } catch (error) {
+    if (error.name === 'JsonWebTokenError') {
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid token',
+        originUrl: path,
+        redirectUrl: path.startsWith('/api') ? null : '/login'
+      });
+    }
+
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({
+        success: false,
+        message: 'Token expired',
+        originUrl: path,
+        redirectUrl: path.startsWith('/api') ? null : '/login'
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      message: 'Server error during authentication',
+      originUrl: path,
+      redirectUrl: path.startsWith('/api') ? null : '/login'
+    });
+  }
+};
+
+module.exports = {
+  apiAuthHandler,
+  webAuthHandler,
+};

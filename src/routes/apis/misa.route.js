@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const misaController = require('../../controllers/misa.controller');
-const authHandler = require('../../middleware/authHandler');
+const { apiAuthHandler } = require('../../middleware/authHandler');
 
 /**
  * @swagger
@@ -11,7 +11,7 @@ const authHandler = require('../../middleware/authHandler');
  */
 
 // All routes require authentication
-router.use(authHandler);
+router.use(apiAuthHandler);
 
 /**
  * @swagger
@@ -62,7 +62,7 @@ router.use(authHandler);
  *       401:
  *         description: Thông tin đăng nhập không hợp lệ
  */
-router.post('/login', authHandler, misaController.loginForWeb);
+router.post('/login', misaController.loginForWeb);
 
 /**
  * @swagger
@@ -107,7 +107,7 @@ router.post('/login', authHandler, misaController.loginForWeb);
  *       401:
  *         description: Token không hợp lệ hoặc hết hạn
  */
-router.get('/users', authHandler, misaController.getUsers);
+router.get('/users', misaController.getUsers);
 
 /**
  * @swagger
@@ -175,7 +175,7 @@ router.get('/users', authHandler, misaController.getUsers);
  *       401:
  *         description: Token không hợp lệ
  */
-router.post('/wallets/accounts', authHandler, misaController.getWalletAccounts);
+router.post('/wallets/accounts', misaController.getWalletAccounts);
 
 /**
  * @swagger
@@ -235,7 +235,7 @@ router.post('/wallets/accounts', authHandler, misaController.getWalletAccounts);
  *       401:
  *         description: Token không hợp lệ
  */
-router.post('/wallets/summary', authHandler, misaController.getWalletAccountSummary);
+router.post('/wallets/summary', misaController.getWalletAccountSummary);
 
 /**
  * @swagger
@@ -280,7 +280,7 @@ router.post('/wallets/summary', authHandler, misaController.getWalletAccountSumm
  *       401:
  *         description: Token không hợp lệ
  */
-router.get('/transactions/addresses', authHandler, misaController.getTransactionAddresses);
+router.get('/transactions/addresses', misaController.getTransactionAddresses);
 
 /**
  * @swagger
@@ -363,7 +363,7 @@ router.get('/transactions/addresses', authHandler, misaController.getTransaction
  *       401:
  *         description: Token không hợp lệ
  */
-router.post('/transactions/search', authHandler, misaController.searchTransactions);
+router.post('/transactions/search', misaController.searchTransactions);
 
 /**
  * @swagger
@@ -436,7 +436,7 @@ router.post('/transactions/search', authHandler, misaController.searchTransactio
  *       401:
  *         description: Token không hợp lệ
  */
-router.post('/transactions/import/income', authHandler, misaController.importIncomeTransactions);
+router.post('/transactions/import/income', misaController.importIncomeTransactions);
 
 /**
  * @swagger
@@ -515,6 +515,6 @@ router.post('/transactions/import/income', authHandler, misaController.importInc
  *       401:
  *         description: Token không hợp lệ
  */
-router.post('/transactions/import/expense', authHandler, misaController.importExpenseTransactions);
+router.post('/transactions/import/expense', misaController.importExpenseTransactions);
 
 module.exports = router;

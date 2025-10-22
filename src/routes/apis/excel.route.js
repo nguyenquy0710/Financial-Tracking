@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { uploadExcel, importExcel, exportExcel } = require('../../controllers/excel.controller');
-const authHandler = require('../../middleware/authHandler');
+const { apiAuthHandler } = require('../../middleware/authHandler');
 
 /**
  * @swagger
@@ -11,7 +11,7 @@ const authHandler = require('../../middleware/authHandler');
  */
 
 // All routes require authentication
-router.use(authHandler);
+router.use(apiAuthHandler);
 
 // Excel import/export routes
 router.post('/import', uploadExcel, importExcel);
