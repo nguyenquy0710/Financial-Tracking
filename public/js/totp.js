@@ -137,27 +137,27 @@ const renderAccounts = () => {
   container.innerHTML = accounts
     .map(
       (account) => `
-    <div class="account-card" data-id="${account._id}">
+    <div class="account-card" data-id="${account.id}">
       <div class="account-header">
         <div class="account-info">
           <h3>${escapeHtml(account.serviceName)}</h3>
           <p>${escapeHtml(account.accountName)}</p>
         </div>
         <div class="account-actions">
-          <button class="btn-sm btn-edit" onclick="editAccount('${account._id}')">✏️</button>
-          <button class="btn-sm btn-delete" onclick="deleteAccount('${account._id}')">🗑️</button>
+          <button class="btn-sm btn-edit" onclick="editAccount('${account.id}')">✏️</button>
+          <button class="btn-sm btn-delete" onclick="deleteAccount('${account.id}')">🗑️</button>
         </div>
       </div>
       <div class="totp-display">
-        <div class="totp-code" id="code-${account._id}">------</div>
+        <div class="totp-code" id="code-${account.id}">------</div>
         <div class="totp-timer">
           <div class="timer-bar-container">
-            <div class="timer-bar" id="timer-bar-${account._id}"></div>
+            <div class="timer-bar" id="timer-bar-${account.id}"></div>
           </div>
-          <span class="timer-text" id="timer-${account._id}">--</span>
+          <span class="timer-text" id="timer-${account.id}">--</span>
         </div>
       </div>
-      <button class="btn-copy" onclick="copyCode('${account._id}')">
+      <button class="btn-copy" onclick="copyCode('${account.id}')">
         📋 Sao chép mã
       </button>
     </div>
@@ -167,7 +167,7 @@ const renderAccounts = () => {
 
   // Start generating TOTP codes
   accounts.forEach((account) => {
-    generateAndUpdateCode(account._id);
+    generateAndUpdateCode(account.id);
   });
 };
 
@@ -175,7 +175,7 @@ const renderAccounts = () => {
 const generateAndUpdateCode = (accountId) => {
   try {
     // Find account in local array
-    const account = accounts.find(acc => acc._id === accountId);
+    const account = accounts.find(acc => acc.id === accountId);
     if (!account || !account.secret) {
       console.error(`Account ${accountId} not found or missing secret`);
       return;
@@ -267,6 +267,10 @@ const handleFormSubmit = async () => {
   const serviceName = document.getElementById('service-name').value.trim();
   const accountName = document.getElementById('username').value.trim();
   const secret = document.getElementById('secret-key').value.trim().toUpperCase();
+  const otpType = document.getElementById('otp-type').value.trim().toUpperCase();
+  const digits = parseInt(document.getElementById('digits').value, 6);
+  const interval = parseInt(document.getElementById('interval').value, 30);
+  const counter = parseInt(document.getElementById('counter').value, 0);
 
   if (!serviceName || !accountName || !secret) {
     showNotification('Vui lòng điền đầy đủ thông tin', 'error');
@@ -283,9 +287,13 @@ const handleFormSubmit = async () => {
   const data = {
     serviceName,
     accountName,
-    secret
+    secret,
+    otpType,
+    digits,
+    period: interval,
+    counter: otpType === 'HOTP' ? counter : undefined
   };
-  // console.log("🚀 QuyNH: handleFormSubmit -> data", data);
+  // const { serviceName, accountName, secret, issuer, algorithm, digits, period } = req.body;
 
   try {
     let response;
@@ -313,7 +321,7 @@ const handleFormSubmit = async () => {
 
 // Edit account
 const editAccount = (accountId) => {
-  const account = accounts.find((a) => a._id === accountId);
+  const account = accounts.find((a) => a.id === accountId);
   if (!account) return;
 
   editingAccountId = accountId;
@@ -327,6 +335,9 @@ const editAccount = (accountId) => {
   document.getElementById('service-name').value = account.serviceName;
   document.getElementById('username').value = account.accountName;
   document.getElementById('secret-key').value = '';
+  document.getElementById('digits').value = account.digits;
+  document.getElementById('interval').value = account.period;
+
   document.getElementById('submit-btn').innerHTML = '<span class="icon">💾</span> Cập Nhật';
   document.getElementById('cancel-btn').style.display = 'inline-block';
 };

@@ -23,6 +23,7 @@ nssm
 nuxt
 oaid
 orcid
+otplib
 pids
 pycache
 quynh

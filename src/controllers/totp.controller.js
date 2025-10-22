@@ -120,8 +120,8 @@ exports.generateTotpCode = async (req, res, next) => {
  */
 exports.createTotpAccount = async (req, res, next) => {
   try {
-    const { serviceName, accountName, secret, issuer, algorithm, digits, period } = req.body;
-    console.log("🚀 QuyNH: exports.createTotpAccount -> req.body", req.body);
+    const { serviceName, accountName, secret, issuer, algorithm, digits, period, otpType, counter } = req.body;
+    console.log("🚀 QuyNH: exports.createTotpAccount -> { serviceName, accountName, secret, issuer, algorithm, digits, period, otpType, counter }", { serviceName, accountName, secret, issuer, algorithm, digits, period, otpType, counter });
 
     // Validate secret format (Base32)
     if (!secret || !/^[A-Z2-7]+$/.test(secret)) {
@@ -139,7 +139,9 @@ exports.createTotpAccount = async (req, res, next) => {
       issuer: issuer || serviceName,
       algorithm: algorithm || 'SHA1',
       digits: digits || 6,
-      period: period || 30
+      period: period || 30,
+      otpType: otpType || 'TOTP',
+      counter: otpType === 'HOTP' ? (counter || 0) : undefined
     });
 
     // Set encrypted secret

@@ -64,6 +64,7 @@ khảo
 khẩu
 khóa
 khoản
+Khoảng
 khôi
 khởi
 không
@@ -140,6 +141,7 @@ theo
 thiết
 thiểu
 thoại
+thời
 thông
 thống
 thuần
