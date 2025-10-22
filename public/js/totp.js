@@ -80,7 +80,15 @@ const syncWithServer = async () => {
       accounts = response.data;
 
       // Save to IndexedDB
-      await totpDB.syncWithServer(accounts);
+      if (Array.isArray(accounts)) {
+        accounts.map(async (acc) => {
+          // Sync each account object individually
+          await totpDB.syncWithServer(acc);
+        });
+      } else {
+        // Sync single account object
+        await totpDB.syncWithServer(accounts);
+      }
 
       if (accounts.length === 0) {
         const container = document.getElementById('accounts-container');
@@ -106,7 +114,7 @@ const loadAccountsFromIndexedDB = async () => {
 
   try {
     const localAccounts = await totpDB.getAllAccounts();
-    
+
     if (localAccounts && localAccounts.length > 0) {
       accounts = localAccounts;
       renderAccounts();
@@ -192,7 +200,7 @@ const generateAndUpdateCode = (accountId) => {
     updateTimer(accountId, timeRemaining, period);
   } catch (error) {
     console.error(`Failed to generate code for ${accountId}:`, error);
-    
+
     // Display error in code element
     const codeElement = document.getElementById(`code-${accountId}`);
     if (codeElement) {
@@ -291,7 +299,7 @@ const handleFormSubmit = async () => {
     if (response.success) {
       showNotification(response.message);
       resetForm();
-      
+
       // Sync with server to update IndexedDB
       await syncWithServer();
     } else {

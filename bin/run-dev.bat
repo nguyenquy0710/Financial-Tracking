@@ -46,6 +46,7 @@ sc query "nqdev-mongodb-service" | findstr /i "RUNNING" > nul
 if errorlevel 1 (
     echo MongoDB service is NOT running. Starting service...
     nssm start nqdev-mongodb-service
+    :: net start nqdev-mongodb-service
     timeout /t 5 /nobreak > nul
 ) else (
     echo MongoDB service is already running.
