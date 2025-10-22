@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const rentalRoutes = require('./rental.route');
-const totpRoutes = require('./totp.route');
+const { ROUTE_PREFIX } = require('@/constants/route_prefix.constant');
+const { default: totpRoute } = require('./totp.route');
+const { default: rentalRoute } = require('./rental.route');
 
 /**
  * Web UI Routes
@@ -55,11 +56,11 @@ router.get('/dashboard', (req, res) => {
   });
 });
 
-// Financial management pages - examples below
-router.use('/rentals', rentalRoutes);
+// Rental module integration
+router.use(ROUTE_PREFIX.RENTAL.BASE, rentalRoute); // e.g., /rentals/*
 
 // TOTP 2FA page integration
-router.use('/totp', totpRoutes);
+router.use(ROUTE_PREFIX.TOTP.BASE, totpRoute); // e.g., /totp/*
 
 router.get('/salaries', (req, res) => {
   res.render('salaries', {

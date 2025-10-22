@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const authHandler = require('../../middleware/auth');
+const authHandler = require('../../middleware/authHandler');
 const recurringBillController = require('../../controllers/recurringBill.controller');
 
 /**

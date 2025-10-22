@@ -8,7 +8,7 @@ const {
   deleteRental,
   getRentalStats
 } = require('../../controllers/rental.controller');
-const authHandler = require('../../middleware/auth');
+const authHandler = require('../../middleware/authHandler');
 
 /**
  * @swagger

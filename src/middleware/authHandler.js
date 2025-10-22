@@ -1,8 +1,9 @@
 const jwt = require('jsonwebtoken');
+
 const { default: config } = require('../config/config');
 const { default: User } = require('@/models/user.model');
 
-const auth = async (req, res, next) => {
+const authHandler = async (req, res, next) => {
   const path = req.path ?? ''; // path hiện tại
   try {
     // Get token from header
@@ -65,4 +66,4 @@ const auth = async (req, res, next) => {
   }
 };
 
-module.exports = auth;
+module.exports = authHandler;
