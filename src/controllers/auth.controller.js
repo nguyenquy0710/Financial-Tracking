@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { default: config } = require('../config/config');
 const { default: User } = require('@/models/user.model');
+const { verifyTurnstileToken } = require('../utils/turnstile');
 
 // Generate JWT token
 const generateToken = userId => {
@@ -14,7 +15,23 @@ const generateToken = userId => {
 // @access  Public
 exports.register = async (req, res, next) => {
   try {
-    const { email, password, name, phone, language, currency } = req.body;
+    const { email, password, name, phone, language, currency, turnstileToken } = req.body;
+
+    // Verify Turnstile token
+    if (!turnstileToken) {
+      return res.status(400).json({
+        success: false,
+        message: 'Turnstile verification is required'
+      });
+    }
+
+    const isValidTurnstile = await verifyTurnstileToken(turnstileToken, req.ip);
+    if (!isValidTurnstile) {
+      return res.status(400).json({
+        success: false,
+        message: 'Turnstile verification failed. Please try again.'
+      });
+    }
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
@@ -56,7 +73,23 @@ exports.register = async (req, res, next) => {
 // @access  Public
 exports.login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, turnstileToken } = req.body;
+
+    // Verify Turnstile token
+    if (!turnstileToken) {
+      return res.status(400).json({
+        success: false,
+        message: 'Turnstile verification is required'
+      });
+    }
+
+    const isValidTurnstile = await verifyTurnstileToken(turnstileToken, req.ip);
+    if (!isValidTurnstile) {
+      return res.status(400).json({
+        success: false,
+        message: 'Turnstile verification failed. Please try again.'
+      });
+    }
 
     // Check if user exists
     const user = await User.findOne({ email }).select('+password');

@@ -1,5 +1,10 @@
 // Register page JavaScript with jQuery
 
+// Turnstile callback
+window.onTurnstileSuccess = function(token) {
+  console.log('Turnstile verification successful');
+};
+
 $(document).ready(function () {
   // Check if already logged in
   if (localStorage.getItem('authToken')) {
@@ -127,6 +132,17 @@ $(document).ready(function () {
       return;
     }
 
+    // Get Turnstile token
+    const turnstileToken = window.turnstile?.getResponse();
+    if (!turnstileToken) {
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.ERROR,
+        title: "Lỗi",
+        text: 'Vui lòng xác thực bạn không phải là robot!',
+      });
+      return;
+    }
+
     // Show loading state
     const $registerBtn = $('#register-btn');
     const $btnText = $registerBtn.find('.btn-text');
@@ -147,7 +163,8 @@ $(document).ready(function () {
           email,
           password,
           language: 'vi',
-          currency: 'VND'
+          currency: 'VND',
+          turnstileToken
         })
       });
 
@@ -194,6 +211,11 @@ $(document).ready(function () {
       }
 
       showAlert(errorMessage, 'danger');
+
+      // Reset Turnstile
+      if (window.turnstile) {
+        window.turnstile.reset();
+      }
 
       // Shake animation for error
       $('.card').addClass('shake');

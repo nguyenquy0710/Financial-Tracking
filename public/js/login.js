@@ -1,5 +1,10 @@
 // Login page JavaScript with jQuery
 
+// Turnstile callback
+window.onTurnstileSuccess = function(token) {
+  console.log('Turnstile verification successful');
+};
+
 $(document).ready(function () {
   const redirectUrl = getQueryParam("redirectUrl");
   console.log("🚀 QuyNH: redirectUrl", redirectUrl)
@@ -89,6 +94,17 @@ $(document).ready(function () {
       return;
     }
 
+    // Get Turnstile token
+    const turnstileToken = window.turnstile?.getResponse();
+    if (!turnstileToken) {
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.ERROR,
+        title: "Lỗi",
+        text: 'Vui lòng xác thực bạn không phải là robot!',
+      });
+      return;
+    }
+
     // Show loading state
     const $loginBtn = $('#login-btn');
     const $btnText = $loginBtn.find('.btn-text');
@@ -104,7 +120,7 @@ $(document).ready(function () {
         url: '/api/auth/login',
         method: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify({ email, password })
+        data: JSON.stringify({ email, password, turnstileToken })
       });
 
       if (response.success) {
@@ -150,6 +166,11 @@ $(document).ready(function () {
       }
 
       showAlert(errorMessage, 'danger');
+
+      // Reset Turnstile
+      if (window.turnstile) {
+        window.turnstile.reset();
+      }
 
       // Shake animation for error
       $('.card').addClass('shake');

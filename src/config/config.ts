@@ -73,6 +73,13 @@ export const config = {
       businessURL:
         process.env.MISA_BUSINESS_URL || 'https://moneykeeperapp.misa.vn/g1/api/business/api/v1'
     }
+  },
+
+  // Cloudflare Turnstile Configuration
+  turnstile: {
+    siteKey: process.env.TURNSTILE_SITE_KEY || '0x4AAAAAAAhLdSdj0baO9odL',
+    secretKey: process.env.TURNSTILE_SECRET_KEY || '',
+    verifyURL: 'https://challenges.cloudflare.com/turnstile/v0/siteverify'
   }
 };
 
