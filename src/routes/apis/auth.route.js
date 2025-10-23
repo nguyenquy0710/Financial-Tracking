@@ -28,6 +28,7 @@ const { userValidation } = require('../../middleware/validator');
  *               - name
  *               - email
  *               - password
+ *               - turnstileToken
  *             properties:
  *               name:
  *                 type: string
@@ -85,6 +86,7 @@ router.post('/register', userValidation.register, authController.register);
  *             required:
  *               - email
  *               - password
+ *               - turnstileToken
  *             properties:
  *               email:
  *                 type: string
