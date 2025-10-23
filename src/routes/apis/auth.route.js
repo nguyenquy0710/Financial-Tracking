@@ -28,6 +28,7 @@ const { userValidation } = require('../../middleware/validator');
  *               - name
  *               - email
  *               - password
+ *               - turnstileToken
  *             properties:
  *               name:
  *                 type: string
@@ -41,6 +42,10 @@ const { userValidation } = require('../../middleware/validator');
  *                 format: password
  *                 minLength: 6
  *                 example: password123
+ *               turnstileToken:
+ *                 type: string
+ *                 description: Cloudflare Turnstile token for bot verification
+ *                 example: 0.XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
  *     responses:
  *       201:
  *         description: User registered successfully
@@ -81,6 +86,7 @@ router.post('/register', userValidation.register, authController.register);
  *             required:
  *               - email
  *               - password
+ *               - turnstileToken
  *             properties:
  *               email:
  *                 type: string
@@ -90,6 +96,10 @@ router.post('/register', userValidation.register, authController.register);
  *                 type: string
  *                 format: password
  *                 example: password123
+ *               turnstileToken:
+ *                 type: string
+ *                 description: Cloudflare Turnstile token for bot verification
+ *                 example: 0.XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
  *     responses:
  *       200:
  *         description: Login successful
