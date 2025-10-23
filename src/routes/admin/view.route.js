@@ -1,29 +1,34 @@
 const express = require('express');
-const router = express.Router();
+const viewAdminRoutes = express.Router();
+
+const { ADMIN_ROUTE_PREFIX } = require('@/constants/route_prefix.constant');
 
 /**
  * Web UI Routes
  * These routes render EJS templates for the web interface
  */
 
-// Home page
-router.get('/', (req, res) => {
-  res.redirect('/admin/dashboard');
+// GET: /admin -> redirect to /admin/dashboard
+viewAdminRoutes.get('/', (req, res) => {
+  res.redirect(`${ADMIN_ROUTE_PREFIX.BASE}/${ADMIN_ROUTE_PREFIX.DASHBOARD.BASE}`);
 });
 
-// Dashboard and main app pages
-router.get('/dashboard', (req, res) => {
+// GET: /admin/dashboard
+// Admin dashboard page
+viewAdminRoutes.get(ADMIN_ROUTE_PREFIX.DASHBOARD.BASE, (req, res) => {
   res.render('admin/dashboard', {
     title: 'Dashboard',
-    currentPage: 'dashboard'
+    currentPage: ADMIN_ROUTE_PREFIX.DASHBOARD.MENU_NAME
   });
 });
 
-router.get('/settings', (req, res) => {
+// GET: /admin/settings
+// Admin settings page
+viewAdminRoutes.get(ADMIN_ROUTE_PREFIX.SETTINGS.BASE, (req, res) => {
   res.render('admin/settings', {
     title: 'Cài đặt',
-    currentPage: 'settings'
+    currentPage: ADMIN_ROUTE_PREFIX.SETTINGS.MENU_NAME
   });
 });
 
-module.exports = router;
+module.exports = viewAdminRoutes;

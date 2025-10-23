@@ -1,13 +1,14 @@
 // js/rentals.js
 
 let rentals = [];
-let token = localStorage.getItem('authToken');
+let token = sdkAuth.getAuthToken();
 
-if (!token) {
+// Redirect to login if not authenticated
+if (!sdkAuth.isAuthenticated()) {
   window.location.href = `/login?redirectUrl=${encodeURIComponent(window.location.pathname)}`;
 }
 
-// Load rentals data
+// Load rentals on page load
 document.addEventListener('DOMContentLoaded', async () => {
   await loadRentals();
 });
@@ -91,6 +92,7 @@ const loadRentals = async () => {
   }
 };
 
+// Show add rental modal
 const showAddModal = () => {
   document.getElementById('modalTitle').textContent = 'Thêm thuê phòng';
   document.getElementById('rentalForm').reset();
@@ -100,7 +102,7 @@ const showAddModal = () => {
   // Set default month to current month
   const now = new Date();
   const monthStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-  document.getElementById('month').value = monthStr;
+  document.getElementById('monthStart').value = monthStr;
 
   document.getElementById('rentalModal').style.display = 'block';
 };

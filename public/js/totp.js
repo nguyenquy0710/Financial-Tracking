@@ -1,3 +1,5 @@
+// js/totp.js
+
 let accounts = [];
 let token = sdkAuth.getAuthToken();
 let editingAccountId = null;

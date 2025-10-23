@@ -1,5 +1,7 @@
 const express = require('express');
-const router = express.Router();
+const apiRoutes = express.Router();
+
+const { API_ROUTE_PREFIX } = require('@/constants/route_prefix.constant');
 
 // Import custom middleware
 // const authHandler = require('./../../middleware/auth');
@@ -24,22 +26,22 @@ const userConfigRoutes = require('./userConfig.route');
 const totpRoutes = require('./totp.route');
 
 // API Routes
-router.use('/auth', authRoutes);
-router.use('/transactions', transactionRoutes);
-router.use('/categories', categoryRoutes);
-router.use('/externals', externalRoutes);
-router.use('/misa', misaRoutes);
-router.use('/budgets', budgetRoutes);
-router.use('/goals', goalRoutes);
-router.use('/rentals', rentalRoutes);
-router.use('/salaries', salaryRoutes);
-router.use('/expenses', expenseRoutes);
-router.use('/excel', excelRoutes);
-router.use('/savings', savingRoutes);
-router.use('/deposits', depositRoutes);
-router.use('/recurring-bills', recurringBillRoutes);
-router.use('/bank-accounts', bankAccountRoutes);
-router.use('/system-config', userConfigRoutes);
-router.use('/totp', totpRoutes);
+apiRoutes.use(API_ROUTE_PREFIX.AUTH.BASE, authRoutes);
+apiRoutes.use(API_ROUTE_PREFIX.TRANSACTIONS.BASE, transactionRoutes);
+apiRoutes.use(API_ROUTE_PREFIX.CATEGORIES.BASE, categoryRoutes);
+apiRoutes.use('/externals', externalRoutes);
+apiRoutes.use('/misa', misaRoutes);
+apiRoutes.use('/budgets', budgetRoutes);
+apiRoutes.use('/goals', goalRoutes);
+apiRoutes.use('/rentals', rentalRoutes);
+apiRoutes.use('/salaries', salaryRoutes);
+apiRoutes.use('/expenses', expenseRoutes);
+apiRoutes.use('/excel', excelRoutes);
+apiRoutes.use('/savings', savingRoutes);
+apiRoutes.use('/deposits', depositRoutes);
+apiRoutes.use('/recurring-bills', recurringBillRoutes);
+apiRoutes.use('/bank-accounts', bankAccountRoutes);
+apiRoutes.use('/system-config', userConfigRoutes);
+apiRoutes.use('/totp', totpRoutes);
 
-module.exports = router;
+module.exports = apiRoutes;

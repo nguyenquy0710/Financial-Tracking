@@ -83,23 +83,23 @@
         <input type="hidden" id="rentalId">
 
         <div class="form-group">
-          <label for="propertyName">Tên phòng *</label>
-          <input type="text" id="propertyName" required>
+          <label for="propertyName" class="form-label">Tên phòng *</label>
+          <input type="text" class="form-control" id="propertyName" required placeholder="Ví dụ: Phòng A101">
         </div>
 
         <div class="form-group">
-          <label for="address">Địa chỉ</label>
-          <input type="text" id="address">
+          <label for="address" class="form-label">Địa chỉ</label>
+          <input type="text" class="form-control" id="address" placeholder="Ví dụ: 123 Đường ABC">
         </div>
 
         <div class="form-group">
-          <label for="month">Tháng *</label>
-          <input type="month" id="month" required>
+          <label for="monthStart" class="form-label">Tháng bắt đầu *</label>
+          <input type="date" class="form-control" id="monthStart" required>
         </div>
 
         <div class="form-group">
-          <label for="rentAmount">Tiền nhà *</label>
-          <input type="number" id="rentAmount" required min="0">
+          <label for="rentAmount" class="form-label">Tiền nhà *</label>
+          <input type="number" class="form-control" id="rentAmount" required min="0" step="100000">
         </div>
 
         <div class="form-section">
@@ -109,13 +109,13 @@
               <label for="electricityStart">Chỉ số đầu</label>
               <input type="number" id="electricityStart" min="0" step="0.01">
             </div>
-            <div class="form-group">
+            <div class="form-group" style="display: none">
               <label for="electricityEnd">Chỉ số cuối</label>
               <input type="number" id="electricityEnd" min="0" step="0.01">
             </div>
             <div class="form-group">
-              <label for="electricityRate">Đơn giá</label>
-              <input type="number" id="electricityRate" min="0">
+              <label for="electricityRate">Đơn giá *</label>
+              <input type="number" id="electricityRate" min="0" step="1000" required>
             </div>
           </div>
         </div>
@@ -127,7 +127,7 @@
               <label for="waterStart">Chỉ số đầu</label>
               <input type="number" id="waterStart" min="0" step="0.01">
             </div>
-            <div class="form-group">
+            <div class="form-group" style="display: none">
               <label for="waterEnd">Chỉ số cuối</label>
               <input type="number" id="waterEnd" min="0" step="0.01">
             </div>

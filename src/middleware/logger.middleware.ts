@@ -8,7 +8,7 @@ export const requestLogger = (req: Request, res: Response, next: NextFunction) =
     // Tạo ID ngẫu nhiên cho request này
     const requestId = uuidv4().split("-")[0]; // gọn hơn, chỉ lấy 1 đoạn UUID
     const context = req.path.split("/")[1] || "App";
-    console.log("🚀 QuyNH: requestLogger -> context", context)
+    // console.log("🚀 QuyNH: requestLogger -> context", context)
 
     // Tạo logger riêng có requestId
     const logger = createLogger("http");

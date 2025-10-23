@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router();
+const viewRoutes = express.Router();
 
 const { ROUTE_PREFIX } = require('@/constants/route_prefix.constant');
 const { default: totpRoute } = require('./totp.route');
@@ -11,7 +11,7 @@ const { default: rentalRoute } = require('./rental.route');
  */
 
 // Home page
-router.get('/', (req, res) => {
+viewRoutes.get('/', (req, res) => {
   res.render('index', {
     title: 'Người bạn đồng hành tài chính thông minh',
     currentPage: 'home'
@@ -19,7 +19,7 @@ router.get('/', (req, res) => {
 });
 
 // Changelog page - renders CHANGELOG.md content in a styled format
-router.get('/changelog', (req, res) => {
+viewRoutes.get('/changelog', (req, res) => {
   res.render('changelog', {
     title: 'Nhật ký phát triển',
     currentPage: 'changelog'
@@ -27,7 +27,7 @@ router.get('/changelog', (req, res) => {
 });
 
 // Authentication pages
-router.get('/login', (req, res) => {
+viewRoutes.get('/login', (req, res) => {
   const defaultDataUserQuyNH = require('../scripts/data.quynh.initialize').defaultDataUserQuyNH ?? {};
   const { email, password } = defaultDataUserQuyNH.user || {};
 
@@ -41,7 +41,7 @@ router.get('/login', (req, res) => {
 });
 
 // Registration page - simplified, no invite code required for now
-router.get('/register', (req, res) => {
+viewRoutes.get('/register', (req, res) => {
   res.render('register', {
     title: 'Đăng ký',
     currentPage: 'register',
@@ -49,7 +49,7 @@ router.get('/register', (req, res) => {
 });
 
 // Dashboard and main app pages
-router.get('/dashboard', (req, res) => {
+viewRoutes.get('/dashboard', (req, res) => {
   res.render('dashboard', {
     title: 'Dashboard',
     currentPage: 'dashboard'
@@ -57,58 +57,58 @@ router.get('/dashboard', (req, res) => {
 });
 
 // Rental module integration
-router.use(ROUTE_PREFIX.RENTAL.BASE, rentalRoute); // e.g., /rentals/*
+viewRoutes.use(ROUTE_PREFIX.RENTAL.BASE, rentalRoute); // e.g., /rentals/*
 
 // TOTP 2FA page integration
-router.use(ROUTE_PREFIX.TOTP.BASE, totpRoute); // e.g., /totp/*
+viewRoutes.use(ROUTE_PREFIX.TOTP.BASE, totpRoute); // e.g., /totp/*
 
-router.get('/salaries', (req, res) => {
+viewRoutes.get('/salaries', (req, res) => {
   res.render('salaries', {
     title: 'Lương',
     currentPage: 'salaries'
   });
 });
 
-router.get('/expenses', (req, res) => {
+viewRoutes.get('/expenses', (req, res) => {
   res.render('expenses', {
     title: 'Chi tiêu',
     currentPage: 'expenses'
   });
 });
 
-router.get('/savings', (req, res) => {
+viewRoutes.get('/savings', (req, res) => {
   res.render('savings', {
     title: 'Tiết kiệm',
     currentPage: 'savings'
   });
 });
 
-router.get('/deposits', (req, res) => {
+viewRoutes.get('/deposits', (req, res) => {
   res.render('deposits', {
     title: 'Tiền gửi',
     currentPage: 'deposits'
   });
 });
 
-router.get('/recurring-bills', (req, res) => {
+viewRoutes.get('/recurring-bills', (req, res) => {
   res.render('recurring-bills', {
     title: 'Hóa đơn định kỳ',
     currentPage: 'recurring-bills'
   });
 });
 
-router.get('/excel', (req, res) => {
+viewRoutes.get('/excel', (req, res) => {
   res.render('excel', {
     title: 'Excel Import/Export',
     currentPage: 'excel'
   });
 });
 
-router.get('/settings', (req, res) => {
+viewRoutes.get('/settings', (req, res) => {
   res.render('settings', {
     title: 'Cài đặt',
     currentPage: 'settings'
   });
 });
 
-module.exports = router;
+module.exports = viewRoutes;

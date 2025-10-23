@@ -15,12 +15,13 @@ const { morganAccessStream } = require('./utils/logger');
 
 // Import custom middleware
 const errorHandler = require('./middleware/errorHandler');
+const { default: customMiddleware } = require('./middleware');
 
 // Import routes modules
+const { ADMIN_ROUTE_PREFIX, ROUTE_PREFIX, API_ROUTE_PREFIX } = require('./constants/route_prefix.constant');
+const apiRoutes = require('./routes/apis/api.route');
 const viewRoutes = require('./routes/view.route');
 const viewAdminRoutes = require('./routes/admin/view.route');
-const apiRoutes = require('./routes/apis/api.route');
-const { default: customMiddleware } = require('./middleware');
 
 // Initialize app
 const app = express();
@@ -92,9 +93,16 @@ if (config.server.env === 'development') {
   app.use(morgan('combined', { stream: morganAccessStream }));
 }
 
+// ================ Web App Routes ================ //
+app.use(ROUTE_PREFIX.BASE, viewRoutes); // Main web app routes (removed welcome route)
+app.use(ADMIN_ROUTE_PREFIX.BASE, viewAdminRoutes); // Admin web app routes
+
+// ================ API Routes ================ //
+app.use(API_ROUTE_PREFIX.BASE, apiRoutes); // General API routes like auth, users, profile etc.
+
 // ================ Swagger Documentation ================ //
 app.use(
-  '/api-docs',
+  API_ROUTE_PREFIX.SWAGGER,
   swaggerUi.serve,
   swaggerUi.setup(swaggerSpec, {
     customCss: '.swagger-ui .topbar { display: none }',
@@ -103,16 +111,12 @@ app.use(
 );
 
 // Swagger JSON
-app.get('/api-docs.json', (req, res) => {
+app.get(API_ROUTE_PREFIX.SWAGGER_JSON, (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   res.send(swaggerSpec);
 });
 
-// Web UI Routes - Must come before API routes
-app.use('/', viewRoutes); // Main web app routes (removed welcome route)
-app.use('/admin', viewAdminRoutes); // Admin routes
-app.use('/api', apiRoutes); // General API routes like auth, users, profile etc.
-
+// ================ Additional Routes ================ //
 // Serve CHANGELOG.md file
 app.get('/CHANGELOG.md', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'CHANGELOG.md'));
@@ -130,6 +134,7 @@ app.get('/health', (req, res) => {
 
 // Welcome route - Now removed as root is handled by viewRoutes
 
+// ================ Error Handling ================ //
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({
@@ -141,6 +146,7 @@ app.use((req, res) => {
 // Error handler
 app.use(errorHandler);
 
+// ================ Start Server ================ //
 // Start server
 const PORT = config.server.port;
 app.listen(PORT, () => {
