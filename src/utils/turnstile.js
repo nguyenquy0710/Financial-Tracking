@@ -4,10 +4,10 @@ const { default: config } = require('../config/config');
 /**
  * Verify Cloudflare Turnstile token
  * @param {string} token - The Turnstile token to verify
- * @param {string} remoteip - Optional: The user's IP address
+ * @param {string} remoteIp - Optional: The user's IP address
  * @returns {Promise<boolean>} - Returns true if verification is successful
  */
-async function verifyTurnstileToken(token, remoteip = null) {
+async function verifyTurnstileToken(token, remoteIp = null) {
   // Skip verification in test environment
   if (process.env.NODE_ENV === 'test') {
     return true;
@@ -26,8 +26,8 @@ async function verifyTurnstileToken(token, remoteip = null) {
     const formData = new URLSearchParams();
     formData.append('secret', secretKey);
     formData.append('response', token);
-    if (remoteip) {
-      formData.append('remoteip', remoteip);
+    if (remoteIp) {
+      formData.append('remoteip', remoteIp);
     }
 
     const response = await axios.post(config.turnstile.verifyURL, formData, {

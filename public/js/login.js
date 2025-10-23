@@ -1,7 +1,7 @@
 // Login page JavaScript with jQuery
 
 // Turnstile callback
-window.onTurnstileSuccess = function(token) {
+window.onTurnstileSuccess = function (token) {
   console.log('Turnstile verification successful');
 };
 

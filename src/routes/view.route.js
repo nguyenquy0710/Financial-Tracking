@@ -2,6 +2,7 @@ const express = require('express');
 const viewRoutes = express.Router();
 
 const { ROUTE_PREFIX } = require('@/constants/route_prefix.constant');
+const { default: config } = require('@/config/config');
 const { default: totpRoute } = require('./totp.route');
 const { default: rentalRoute } = require('./rental.route');
 
@@ -22,7 +23,10 @@ viewRoutes.get('/', (req, res) => {
 viewRoutes.get('/changelog', (req, res) => {
   res.render('changelog', {
     title: 'Nhật ký phát triển',
-    currentPage: 'changelog'
+    currentPage: 'changelog',
+    turnstile: {
+      siteKey: config.turnstile.siteKey || ''
+    }
   });
 });
 
@@ -36,7 +40,10 @@ viewRoutes.get('/login', (req, res) => {
     currentPage: 'login',
     defaultData: {
       user: { email, password }
-    }
+    },
+    turnstile: {
+      siteKey: config.turnstile.siteKey || ''
+    },
   });
 });
 
@@ -45,6 +52,9 @@ viewRoutes.get('/register', (req, res) => {
   res.render('register', {
     title: 'Đăng ký',
     currentPage: 'register',
+    turnstile: {
+      siteKey: config.turnstile.siteKey || ''
+    },
   });
 });
 
