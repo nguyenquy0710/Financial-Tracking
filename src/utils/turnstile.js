@@ -8,6 +8,11 @@ const { default: config } = require('../config/config');
  * @returns {Promise<boolean>} - Returns true if verification is successful
  */
 async function verifyTurnstileToken(token, remoteip = null) {
+  // Skip verification in test environment
+  if (process.env.NODE_ENV === 'test') {
+    return true;
+  }
+
   if (!token) {
     throw new Error('Turnstile token is required');
   }
