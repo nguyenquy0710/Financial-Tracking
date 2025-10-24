@@ -1,6 +1,7 @@
 # FinTrack API Documentation
 
 ## Base URL
+
 ```
 http://localhost:3000/api
 ```
@@ -8,6 +9,7 @@ http://localhost:3000/api
 ## Authentication
 
 All protected endpoints require a JWT token in the Authorization header:
+
 ```
 Authorization: Bearer {your_jwt_token}
 ```
@@ -15,6 +17,7 @@ Authorization: Bearer {your_jwt_token}
 ## Response Format
 
 ### Success Response
+
 ```json
 {
   "success": true,
@@ -26,6 +29,7 @@ Authorization: Bearer {your_jwt_token}
 ```
 
 ### Error Response
+
 ```json
 {
   "success": false,
@@ -43,9 +47,11 @@ Authorization: Bearer {your_jwt_token}
 ### Authentication
 
 #### Register User
+
 - **POST** `/auth/register`
 - **Access:** Public
 - **Body:**
+
 ```json
 {
   "email": "user@example.com",
@@ -58,9 +64,11 @@ Authorization: Bearer {your_jwt_token}
 ```
 
 #### Login
+
 - **POST** `/auth/login`
 - **Access:** Public
 - **Body:**
+
 ```json
 {
   "email": "user@example.com",
@@ -69,13 +77,16 @@ Authorization: Bearer {your_jwt_token}
 ```
 
 #### Get Current User
+
 - **GET** `/auth/me`
 - **Access:** Private
 
 #### Update Profile
+
 - **PUT** `/auth/profile`
 - **Access:** Private
 - **Body:**
+
 ```json
 {
   "name": "Updated Name",
@@ -88,6 +99,7 @@ Authorization: Bearer {your_jwt_token}
 ### Transactions
 
 #### Get All Transactions
+
 - **GET** `/transactions`
 - **Access:** Private
 - **Query Parameters:**
@@ -101,13 +113,16 @@ Authorization: Bearer {your_jwt_token}
   - `sortOrder`: asc | desc (default: desc)
 
 #### Get Transaction by ID
+
 - **GET** `/transactions/:id`
 - **Access:** Private
 
 #### Create Transaction
+
 - **POST** `/transactions`
 - **Access:** Private
 - **Body:**
+
 ```json
 {
   "type": "expense",
@@ -122,15 +137,18 @@ Authorization: Bearer {your_jwt_token}
 ```
 
 #### Update Transaction
+
 - **PUT** `/transactions/:id`
 - **Access:** Private
 - **Body:** Same as create (all fields optional)
 
 #### Delete Transaction
+
 - **DELETE** `/transactions/:id`
 - **Access:** Private
 
 #### Get Transaction Statistics
+
 - **GET** `/transactions/stats/summary`
 - **Access:** Private
 - **Query Parameters:**
@@ -140,19 +158,23 @@ Authorization: Bearer {your_jwt_token}
 ### Categories
 
 #### Get All Categories
+
 - **GET** `/categories`
 - **Access:** Private
 - **Query Parameters:**
   - `type`: income | expense
 
 #### Get Category by ID
+
 - **GET** `/categories/:id`
 - **Access:** Private
 
 #### Create Category
+
 - **POST** `/categories`
 - **Access:** Private
 - **Body:**
+
 ```json
 {
   "name": "Custom Category",
@@ -165,16 +187,19 @@ Authorization: Bearer {your_jwt_token}
 ```
 
 #### Update Category
+
 - **PUT** `/categories/:id`
 - **Access:** Private
 
 #### Delete Category
+
 - **DELETE** `/categories/:id`
 - **Access:** Private
 
 ### Budgets
 
 #### Get All Budgets
+
 - **GET** `/budgets`
 - **Access:** Private
 - **Query Parameters:**
@@ -182,13 +207,16 @@ Authorization: Bearer {your_jwt_token}
   - `isActive`: true | false
 
 #### Get Budget by ID
+
 - **GET** `/budgets/:id`
 - **Access:** Private
 
 #### Create Budget
+
 - **POST** `/budgets`
 - **Access:** Private
 - **Body:**
+
 ```json
 {
   "name": "Monthly Food Budget",
@@ -202,20 +230,24 @@ Authorization: Bearer {your_jwt_token}
 ```
 
 #### Update Budget
+
 - **PUT** `/budgets/:id`
 - **Access:** Private
 
 #### Delete Budget
+
 - **DELETE** `/budgets/:id`
 - **Access:** Private
 
 #### Get Budget Alerts
+
 - **GET** `/budgets/alerts`
 - **Access:** Private
 
 ### Goals
 
 #### Get All Goals
+
 - **GET** `/goals`
 - **Access:** Private
 - **Query Parameters:**
@@ -223,13 +255,16 @@ Authorization: Bearer {your_jwt_token}
   - `priority`: low | medium | high
 
 #### Get Goal by ID
+
 - **GET** `/goals/:id`
 - **Access:** Private
 
 #### Create Goal
+
 - **POST** `/goals`
 - **Access:** Private
 - **Body:**
+
 ```json
 {
   "name": "Emergency Fund",
@@ -244,17 +279,21 @@ Authorization: Bearer {your_jwt_token}
 ```
 
 #### Update Goal
+
 - **PUT** `/goals/:id`
 - **Access:** Private
 
 #### Delete Goal
+
 - **DELETE** `/goals/:id`
 - **Access:** Private
 
 #### Add Contribution
+
 - **POST** `/goals/:id/contribute`
 - **Access:** Private
 - **Body:**
+
 ```json
 {
   "amount": 1000000
@@ -262,12 +301,14 @@ Authorization: Bearer {your_jwt_token}
 ```
 
 #### Get Goals Summary
+
 - **GET** `/goals/summary`
 - **Access:** Private
 
 ### Savings
 
 #### Get All Savings
+
 - **GET** `/savings`
 - **Access:** Private
 - **Query Parameters:**
@@ -278,13 +319,16 @@ Authorization: Bearer {your_jwt_token}
   - `limit` (number, optional): Items per page (default: 20)
 
 #### Get Saving by ID
+
 - **GET** `/savings/:id`
 - **Access:** Private
 
 #### Create Saving
+
 - **POST** `/savings`
 - **Access:** Private
 - **Body:**
+
 ```json
 {
   "month": "2024-01-01",
@@ -298,20 +342,24 @@ Authorization: Bearer {your_jwt_token}
 ```
 
 #### Update Saving
+
 - **PUT** `/savings/:id`
 - **Access:** Private
 
 #### Delete Saving
+
 - **DELETE** `/savings/:id`
 - **Access:** Private
 
 #### Get Savings Statistics
+
 - **GET** `/savings/stats/summary`
 - **Access:** Private
 
 ### Deposits
 
 #### Get All Deposits
+
 - **GET** `/deposits`
 - **Access:** Private
 - **Query Parameters:**
@@ -321,13 +369,16 @@ Authorization: Bearer {your_jwt_token}
   - `limit` (number, optional): Items per page (default: 20)
 
 #### Get Deposit by ID
+
 - **GET** `/deposits/:id`
 - **Access:** Private
 
 #### Create Deposit
+
 - **POST** `/deposits`
 - **Access:** Private
 - **Body:**
+
 ```json
 {
   "bank": "Vietcombank",
@@ -344,26 +395,31 @@ Authorization: Bearer {your_jwt_token}
 ```
 
 #### Update Deposit
+
 - **PUT** `/deposits/:id`
 - **Access:** Private
 
 #### Delete Deposit
+
 - **DELETE** `/deposits/:id`
 - **Access:** Private
 
 #### Get Upcoming Maturity Deposits
+
 - **GET** `/deposits/upcoming`
 - **Access:** Private
 - **Query Parameters:**
   - `days` (number, optional): Look ahead days (default: 30)
 
 #### Get Deposits Statistics
+
 - **GET** `/deposits/stats/summary`
 - **Access:** Private
 
 ### Recurring Bills
 
 #### Get All Recurring Bills
+
 - **GET** `/recurring-bills`
 - **Access:** Private
 - **Query Parameters:**
@@ -373,13 +429,16 @@ Authorization: Bearer {your_jwt_token}
   - `limit` (number, optional): Items per page (default: 20)
 
 #### Get Recurring Bill by ID
+
 - **GET** `/recurring-bills/:id`
 - **Access:** Private
 
 #### Create Recurring Bill
+
 - **POST** `/recurring-bills`
 - **Access:** Private
 - **Body:**
+
 ```json
 {
   "name": "Electric Bill",
@@ -395,17 +454,21 @@ Authorization: Bearer {your_jwt_token}
 ```
 
 #### Update Recurring Bill
+
 - **PUT** `/recurring-bills/:id`
 - **Access:** Private
 
 #### Delete Recurring Bill
+
 - **DELETE** `/recurring-bills/:id`
 - **Access:** Private
 
 #### Mark Bill as Paid
+
 - **POST** `/recurring-bills/:id/pay`
 - **Access:** Private
 - **Body:**
+
 ```json
 {
   "amount": 520000,
@@ -414,22 +477,26 @@ Authorization: Bearer {your_jwt_token}
 ```
 
 #### Get Upcoming Bills
+
 - **GET** `/recurring-bills/upcoming`
 - **Access:** Private
 - **Query Parameters:**
   - `days` (number, optional): Look ahead days (default: 7)
 
 #### Get Overdue Bills
+
 - **GET** `/recurring-bills/overdue`
 - **Access:** Private
 
 #### Get Recurring Bills Statistics
+
 - **GET** `/recurring-bills/stats/summary`
 - **Access:** Private
 
 ### Bank Accounts
 
 #### Get All Bank Accounts
+
 - **GET** `/bank-accounts`
 - **Access:** Private
 - **Query Parameters:**
@@ -439,13 +506,16 @@ Authorization: Bearer {your_jwt_token}
   - `limit` (number, optional): Items per page (default: 20)
 
 #### Get Bank Account by ID
+
 - **GET** `/bank-accounts/:id`
 - **Access:** Private
 
 #### Create Bank Account
+
 - **POST** `/bank-accounts`
 - **Access:** Private
 - **Body:**
+
 ```json
 {
   "bank": "Vietcombank",
@@ -460,18 +530,22 @@ Authorization: Bearer {your_jwt_token}
 ```
 
 #### Update Bank Account
+
 - **PUT** `/bank-accounts/:id`
 - **Access:** Private
 
 #### Delete Bank Account
+
 - **DELETE** `/bank-accounts/:id`
 - **Access:** Private
 
 #### Set Bank Account as Default
+
 - **PUT** `/bank-accounts/:id/set-default`
 - **Access:** Private
 
 #### Get Default Bank Account
+
 - **GET** `/bank-accounts/default`
 - **Access:** Private
 

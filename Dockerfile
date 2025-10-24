@@ -49,13 +49,13 @@ FROM node:${NODE_VERSION} AS runtime
 
 LABEL maintainer="Nguyen Quy <quy.nh@nhquydev.net>"
 LABEL org.opencontainers.image.source="https://github.com/nguyenquy0710/Financial-Tracking"
+LABEL org.opencontainers.image.title="FinTrack"
 LABEL org.opencontainers.image.description="FinTrack - Personal Finance Management Application"
-LABEL org.opencontainers.image.licenses="MIT"
 LABEL org.opencontainers.image.version="1.0.0"
+LABEL org.opencontainers.image.licenses="MIT"
+LABEL org.opencontainers.image.authors="Nguyen Quy <quy.nh@nhquydev.net>"
 LABEL org.opencontainers.image.url="https://fintrackapp.com"
 LABEL org.opencontainers.image.documentation="https://fintrackapp.com/docs"
-LABEL org.opencontainers.image.authors="Nguyen Quy <quy.nh@nhquydev.net>"
-LABEL org.opencontainers.image.title="FinTrack"
 
 WORKDIR /app
 
