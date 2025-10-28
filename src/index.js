@@ -163,6 +163,9 @@ app.listen(PORT, () => {
 ║                                                           ║
 ╚═══════════════════════════════════════════════════════════╝
   `);
+
+  // Log Turnstile keys for verification
+  console.log("🚀 QuyNH: config.turnstile.siteKey:", config.turnstile.siteKey);
 });
 
 // Handle unhandled promise rejections
