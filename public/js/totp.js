@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   await syncWithServer();
 
   setupFormHandlers();
+  setupQRScanner();
   setupThemeToggle();
 });
 
@@ -68,6 +69,198 @@ const setupThemeToggle = () => {
     icon.textContent = isDark ? '☀️' : '🌙';
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
   });
+};
+
+// Setup QR Scanner
+let html5QrCode = null;
+const setupQRScanner = () => {
+  const scanBtn = document.getElementById('scan-qr-btn');
+  const modal = document.getElementById('qr-scanner-modal');
+  const closeBtn = document.getElementById('close-qr-scanner');
+  const resultsDiv = document.getElementById('qr-reader-results');
+
+  // Show QR scanner modal
+  scanBtn.addEventListener('click', async () => {
+    modal.style.display = 'block';
+    await startQRScanner();
+  });
+
+  // Close modal
+  closeBtn.addEventListener('click', async () => {
+    await stopQRScanner();
+    modal.style.display = 'none';
+    resultsDiv.innerHTML = '';
+    resultsDiv.classList.remove('show');
+  });
+
+  // Close modal on outside click
+  modal.addEventListener('click', async (e) => {
+    if (e.target === modal) {
+      await stopQRScanner();
+      modal.style.display = 'none';
+      resultsDiv.innerHTML = '';
+      resultsDiv.classList.remove('show');
+    }
+  });
+};
+
+// Start QR Scanner
+const startQRScanner = async () => {
+  const qrReaderDiv = document.getElementById('qr-reader');
+  
+  try {
+    if (!html5QrCode) {
+      html5QrCode = new Html5Qrcode('qr-reader');
+    }
+
+    const config = {
+      fps: 10,
+      qrbox: { width: 250, height: 250 },
+      aspectRatio: 1.0
+    };
+
+    await html5QrCode.start(
+      { facingMode: "environment" }, // Use back camera
+      config,
+      onQRCodeScanned,
+      onQRCodeError
+    );
+  } catch (err) {
+    console.error('Failed to start QR scanner:', err);
+    showNotification('Không thể khởi động camera. Vui lòng kiểm tra quyền truy cập.', 'error');
+  }
+};
+
+// Stop QR Scanner
+const stopQRScanner = async () => {
+  if (html5QrCode && html5QrCode.isScanning) {
+    try {
+      await html5QrCode.stop();
+      html5QrCode.clear();
+    } catch (err) {
+      console.error('Failed to stop QR scanner:', err);
+    }
+  }
+};
+
+// Handle QR Code scan success
+const onQRCodeScanned = async (decodedText, decodedResult) => {
+  console.log('QR Code scanned:', decodedText);
+  
+  const resultsDiv = document.getElementById('qr-reader-results');
+  
+  try {
+    // Parse otpauth URL
+    const otpData = parseOtpAuthUrl(decodedText);
+    
+    if (otpData) {
+      resultsDiv.innerHTML = `<p class="success">✅ Quét thành công! Đang điền thông tin...</p>`;
+      resultsDiv.classList.add('show');
+      
+      // Fill form with parsed data
+      fillFormFromQRData(otpData);
+      
+      // Stop scanner and close modal
+      await stopQRScanner();
+      setTimeout(() => {
+        document.getElementById('qr-scanner-modal').style.display = 'none';
+        resultsDiv.innerHTML = '';
+        resultsDiv.classList.remove('show');
+      }, 1500);
+      
+      showNotification('Đã quét QR code thành công!');
+    } else {
+      resultsDiv.innerHTML = `<p class="error">❌ QR code không hợp lệ. Vui lòng quét QR code TOTP.</p>`;
+      resultsDiv.classList.add('show');
+    }
+  } catch (error) {
+    console.error('Failed to parse QR code:', error);
+    resultsDiv.innerHTML = `<p class="error">❌ Lỗi khi xử lý QR code: ${error.message}</p>`;
+    resultsDiv.classList.add('show');
+  }
+};
+
+// Handle QR Code scan error
+const onQRCodeError = (errorMessage) => {
+  // Ignore frequent scanning errors
+  // console.debug('QR scan error:', errorMessage);
+};
+
+// Parse otpauth:// URL
+const parseOtpAuthUrl = (url) => {
+  try {
+    // Check if it's a valid otpauth URL
+    if (!url.startsWith('otpauth://')) {
+      return null;
+    }
+
+    const urlObj = new URL(url);
+    
+    // Extract type (totp or hotp)
+    const pathParts = urlObj.href.split('://')[1].split('/');
+    const type = pathParts[0].toUpperCase();
+    
+    // Extract label (issuer:accountName or just accountName)
+    const path = decodeURIComponent(urlObj.pathname.substring(1));
+    let issuer = '';
+    let accountName = '';
+    
+    if (path.includes(':')) {
+      const parts = path.split(':');
+      issuer = parts[0];
+      accountName = parts.slice(1).join(':');
+    } else {
+      accountName = path;
+    }
+    
+    // Extract query parameters
+    const params = new URLSearchParams(urlObj.search);
+    const secret = params.get('secret');
+    const algorithm = params.get('algorithm') || 'SHA1';
+    const digits = parseInt(params.get('digits') || '6', 10);
+    const period = parseInt(params.get('period') || '30', 10);
+    const counter = parseInt(params.get('counter') || '0', 10);
+    
+    // Override issuer if provided in params
+    if (params.get('issuer')) {
+      issuer = params.get('issuer');
+    }
+    
+    if (!secret) {
+      throw new Error('Secret key không tìm thấy trong QR code');
+    }
+    
+    return {
+      type: type,
+      issuer: issuer || accountName.split('@')[0],
+      accountName,
+      secret,
+      algorithm,
+      digits,
+      period,
+      counter
+    };
+  } catch (error) {
+    console.error('Failed to parse otpauth URL:', error);
+    return null;
+  }
+};
+
+// Fill form with QR data
+const fillFormFromQRData = (data) => {
+  document.getElementById('service-name').value = data.issuer || data.accountName;
+  document.getElementById('username').value = data.accountName;
+  document.getElementById('secret-key').value = data.secret;
+  document.getElementById('otp-type').value = data.type.toLowerCase();
+  document.getElementById('digits').value = data.digits.toString();
+  document.getElementById('interval').value = data.period.toString();
+  
+  if (data.type === 'HOTP') {
+    document.getElementById('counter').value = data.counter.toString();
+  }
+  
+  // Scroll to form to show filled data
+  document.getElementById('form-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
 };
 
 // Load all TOTP accounts from server and sync with IndexedDB
