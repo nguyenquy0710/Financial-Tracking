@@ -13,7 +13,7 @@ describe('Rental Property API', () => {
     const testUser = {
       username: 'testuser_rental',
       email: 'testrental@example.com',
-      password: 'Test123!@#',
+      password: 'password...',
       fullName: 'Test User Rental'
     };
 
