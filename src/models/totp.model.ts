@@ -13,6 +13,8 @@ export interface ITotpModel extends IAbsBaseModel {
   algorithm: 'SHA1' | 'SHA256' | 'SHA512';
   digits: number;
   period: number;
+  otpType: 'TOTP' | 'HOTP';
+  counter?: number;
   // createdAt?: Date;
   // updatedAt?: Date;
 
@@ -67,6 +69,16 @@ const TotpSchema = createBaseSchema<ITotpModel>(
       default: 30,
       min: 15,
       max: 60
+    },
+    otpType: {
+      type: String,
+      enum: ['TOTP', 'HOTP'],
+      default: 'TOTP'
+    },
+    counter: {
+      type: Number,
+      default: 0,
+      min: 0
     }
   },
   {
@@ -107,7 +119,9 @@ TotpSchema.methods.toObjectWithSecrets = function (): ITotpModel & Required<{
     secret: this.getDecryptedSecret(),
     algorithm: this.algorithm,
     digits: this.digits,
-    period: this.period
+    period: this.period,
+    otpType: this.otpType,
+    counter: this.counter
   };
 }
 

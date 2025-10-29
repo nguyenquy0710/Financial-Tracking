@@ -259,7 +259,9 @@ const fillFormFromQRData = (data) => {
   document.getElementById('service-name').value = data.issuer || data.accountName;
   document.getElementById('username').value = data.accountName;
   document.getElementById('secret-key').value = data.secret;
-  document.getElementById('otp-type').value = data.type.toLowerCase();
+  document.getElementById('issuer').value = data.issuer || '';
+  document.getElementById('algorithm').value = data.algorithm || 'SHA1';
+  document.getElementById('otp-type').value = data.type; // Keep original case (TOTP/HOTP)
   document.getElementById('digits').value = data.digits.toString();
   document.getElementById('interval').value = data.period.toString();
   
@@ -470,10 +472,12 @@ const handleFormSubmit = async () => {
   const serviceName = document.getElementById('service-name').value.trim();
   const accountName = document.getElementById('username').value.trim();
   const secret = document.getElementById('secret-key').value.trim().toUpperCase();
+  const issuer = document.getElementById('issuer').value.trim();
+  const algorithm = document.getElementById('algorithm').value.trim();
   const otpType = document.getElementById('otp-type').value.trim().toUpperCase();
-  const digits = parseInt(document.getElementById('digits').value, 6);
-  const interval = parseInt(document.getElementById('interval').value, 30);
-  const counter = parseInt(document.getElementById('counter').value, 0);
+  const digits = parseInt(document.getElementById('digits').value, 10) || 6;
+  const interval = parseInt(document.getElementById('interval').value, 10) || 30;
+  const counter = parseInt(document.getElementById('counter').value, 10) || 0;
 
   if (!serviceName || !accountName || !secret) {
     showNotification('Vui lòng điền đầy đủ thông tin', 'error');
@@ -491,12 +495,13 @@ const handleFormSubmit = async () => {
     serviceName,
     accountName,
     secret,
+    issuer: issuer || serviceName,
+    algorithm: algorithm || 'SHA1',
     otpType,
     digits,
     period: interval,
     counter: otpType === 'HOTP' ? counter : undefined
   };
-  // const { serviceName, accountName, secret, issuer, algorithm, digits, period } = req.body;
 
   try {
     let response;
@@ -523,26 +528,42 @@ const handleFormSubmit = async () => {
 };
 
 // Edit account
-const editAccount = (accountId) => {
-  const account = accounts.find((a) => a.id === accountId);
-  if (!account) return;
+const editAccount = async (accountId) => {
+  try {
+    // Fetch account details from server to get all fields including secret
+    const response = await sdkAuth.callApiWithAuth(`/totp/${accountId}`, 'GET');
+    
+    if (!response.success || !response.data) {
+      showNotification('Không thể tải thông tin tài khoản', 'error');
+      return;
+    }
 
-  editingAccountId = accountId;
+    const account = response.data;
+    editingAccountId = accountId;
 
-  // Show form section
-  const formSection = document.getElementById('form-section');
-  formSection.style.display = 'block';
-  formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Show form section
+    const formSection = document.getElementById('form-section');
+    formSection.style.display = 'block';
+    formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-  document.getElementById('form-title').textContent = 'Chỉnh Sửa Tài Khoản';
-  document.getElementById('service-name').value = account.serviceName;
-  document.getElementById('username').value = account.accountName;
-  document.getElementById('secret-key').value = '';
-  document.getElementById('digits').value = account.digits;
-  document.getElementById('interval').value = account.period;
+    // Fill form with account data
+    document.getElementById('form-title').textContent = 'Chỉnh Sửa Tài Khoản';
+    document.getElementById('service-name').value = account.serviceName || '';
+    document.getElementById('username').value = account.accountName || '';
+    document.getElementById('secret-key').value = account.secret || '';
+    document.getElementById('issuer').value = account.issuer || '';
+    document.getElementById('algorithm').value = account.algorithm || 'SHA1';
+    document.getElementById('otp-type').value = account.otpType || 'TOTP';
+    document.getElementById('digits').value = account.digits || 6;
+    document.getElementById('interval').value = account.period || 30;
+    document.getElementById('counter').value = account.counter || 0;
 
-  document.getElementById('submit-btn').innerHTML = '<span class="icon">💾</span> Cập Nhật';
-  document.getElementById('cancel-btn').style.display = 'inline-block';
+    document.getElementById('submit-btn').innerHTML = '<span class="icon">💾</span> Cập Nhật';
+    document.getElementById('cancel-btn').style.display = 'inline-block';
+  } catch (error) {
+    console.error('Failed to load account for editing:', error);
+    showNotification('Không thể tải thông tin tài khoản', 'error');
+  }
 };
 
 // Delete account
