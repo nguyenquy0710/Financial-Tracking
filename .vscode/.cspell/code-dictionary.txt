@@ -23,6 +23,7 @@ nssm
 nuxt
 oaid
 orcid
+otpauth
 otplib
 pids
 pycache
