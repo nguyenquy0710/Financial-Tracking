@@ -141,10 +141,27 @@ exports.getRentalPropertyDetails = async (req, res, next) => {
  */
 exports.createRentalProperty = async (req, res, next) => {
   try {
-    req.body.userId = req.user.id;
-    req.body.createdBy = req.user._id;
+    // Only allow specific fields for creation
+    const allowedFields = [
+      'roomCode', 'propertyName', 'address', 'rentAmount',
+      'initialElectricityReading', 'electricityRate',
+      'initialWaterReading', 'waterRate',
+      'internetFee', 'parkingFee', 'garbageFee',
+      'startDate', 'notes'
+    ];
+
+    const propertyData = { 
+      userId: req.user.id,
+      createdBy: req.user._id 
+    };
+
+    allowedFields.forEach(field => {
+      if (req.body[field] !== undefined) {
+        propertyData[field] = req.body[field];
+      }
+    });
     
-    const property = await RentalProperty.create(req.body);
+    const property = await RentalProperty.create(propertyData);
 
     res.status(201).json({
       success: true,
@@ -179,9 +196,24 @@ exports.updateRentalProperty = async (req, res, next) => {
       });
     }
 
-    req.body.updatedBy = req.user._id;
+    // Only update allowed fields
+    const allowedUpdates = [
+      'roomCode', 'propertyName', 'address', 'rentAmount',
+      'initialElectricityReading', 'electricityRate',
+      'initialWaterReading', 'waterRate',
+      'internetFee', 'parkingFee', 'garbageFee',
+      'startDate', 'endDate', 'isActive', 'notes'
+    ];
+
+    const updates = {};
+    allowedUpdates.forEach(field => {
+      if (req.body[field] !== undefined) {
+        updates[field] = req.body[field];
+      }
+    });
+    updates.updatedBy = req.user._id;
     
-    property = await RentalProperty.findByIdAndUpdate(req.params.id, req.body, {
+    property = await RentalProperty.findByIdAndUpdate(req.params.id, updates, {
       new: true,
       runValidators: true
     });
