@@ -14,9 +14,8 @@ describe('TOTP QR Code Parsing', () => {
 
       const urlObj = new URL(url);
       
-      // Extract type (totp or hotp)
-      const pathParts = urlObj.href.split('://')[1].split('/');
-      const type = pathParts[0].toUpperCase();
+      // Extract type (totp or hotp) from hostname
+      const type = urlObj.hostname.toUpperCase();
       
       // Extract label (issuer:accountName or just accountName)
       const path = decodeURIComponent(urlObj.pathname.substring(1));
@@ -48,9 +47,14 @@ describe('TOTP QR Code Parsing', () => {
         throw new Error('Secret key không tìm thấy trong QR code');
       }
       
+      // Fallback for issuer - use part before @ or the whole accountName
+      if (!issuer) {
+        issuer = accountName.includes('@') ? accountName.split('@')[0] : accountName;
+      }
+      
       return {
         type: type,
-        issuer: issuer || accountName.split('@')[0],
+        issuer: issuer,
         accountName,
         secret,
         algorithm,
@@ -161,6 +165,15 @@ describe('TOTP QR Code Parsing', () => {
       expect(result).not.toBeNull();
       expect(result.issuer).toBe('My Service');
       expect(result.accountName).toBe('user@example.com');
+    });
+
+    it('should handle accountName without @ symbol', () => {
+      const url = 'otpauth://totp/username123?secret=JBSWY3DPEHPK3PXP';
+      const result = parseOtpAuthUrl(url);
+
+      expect(result).not.toBeNull();
+      expect(result.issuer).toBe('username123');
+      expect(result.accountName).toBe('username123');
     });
   });
 });
