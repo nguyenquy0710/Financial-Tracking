@@ -63,86 +63,76 @@ const displayPropertyInfo = () => {
   const container = document.getElementById('property-info');
   
   container.innerHTML = `
-    <div class="row g-3">
-      <div class="col-md-6 col-lg-4">
-        <div class="detail-row">
-          <strong>Mã phòng:</strong><br/>${property.roomCode}
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-4">
-        <div class="detail-row">
-          <strong>Tên phòng:</strong><br/>${property.propertyName}
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-4">
-        <div class="detail-row">
-          <strong>Địa chỉ:</strong><br/>${property.address || 'N/A'}
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-4">
-        <div class="detail-row">
-          <strong>Ngày bắt đầu:</strong><br/>${new Date(property.startDate).toLocaleDateString('vi-VN')}
-        </div>
-      </div>
-      ${property.endDate ? `
-      <div class="col-md-6 col-lg-4">
-        <div class="detail-row">
-          <strong>Ngày kết thúc:</strong><br/>${new Date(property.endDate).toLocaleDateString('vi-VN')}
-        </div>
-      </div>
-      ` : ''}
-      <div class="col-md-6 col-lg-4">
-        <div class="detail-row">
-          <strong>Trạng thái:</strong><br/>
-          <span class="badge ${property.isActive ? 'badge-success' : 'badge-secondary'}">
-            ${property.isActive ? 'Đang thuê' : 'Đã trả phòng'}
-          </span>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-4">
-        <div class="detail-row">
-          <strong>Tiền nhà:</strong><br/>${AppSDK.Utility.formatCurrency(property.rentAmount)}/tháng
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-4">
-        <div class="detail-row">
-          <strong>Chỉ số điện ban đầu:</strong><br/>${property.initialElectricityReading} kWh (${AppSDK.Utility.formatCurrency(property.electricityRate)}/kWh)
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-4">
-        <div class="detail-row">
-          <strong>Chỉ số nước ban đầu:</strong><br/>${property.initialWaterReading} m³ (${AppSDK.Utility.formatCurrency(property.waterRate)}/m³)
-        </div>
-      </div>
-      ${property.internetFee ? `
-      <div class="col-md-6 col-lg-4">
-        <div class="detail-row">
-          <strong>Phí internet:</strong><br/>${AppSDK.Utility.formatCurrency(property.internetFee)}/tháng
-        </div>
-      </div>
-      ` : ''}
-      ${property.parkingFee ? `
-      <div class="col-md-6 col-lg-4">
-        <div class="detail-row">
-          <strong>Phí gửi xe:</strong><br/>${AppSDK.Utility.formatCurrency(property.parkingFee)}/tháng
-        </div>
-      </div>
-      ` : ''}
-      ${property.garbageFee ? `
-      <div class="col-md-6 col-lg-4">
-        <div class="detail-row">
-          <strong>Phí rác:</strong><br/>${AppSDK.Utility.formatCurrency(property.garbageFee)}/tháng
-        </div>
-      </div>
-      ` : ''}
-      ${property.notes ? `
-      <div class="col-12">
-        <div class="detail-row">
-          <strong>Ghi chú:</strong><br/>${property.notes}
-        </div>
-      </div>
-      ` : ''}
-    </div>
+    <table class="table table-bordered table-hover">
+      <tbody>
+        <tr>
+          <th width="30%">Mã phòng</th>
+          <td>${property.roomCode}</td>
+        </tr>
+        <tr>
+          <th>Tên phòng</th>
+          <td>${property.propertyName}</td>
+        </tr>
+        <tr>
+          <th>Địa chỉ</th>
+          <td>${property.address || 'N/A'}</td>
+        </tr>
+        <tr>
+          <th>Ngày bắt đầu</th>
+          <td>${new Date(property.startDate).toLocaleDateString('vi-VN')}</td>
+        </tr>
+        ${property.endDate ? `
+        <tr>
+          <th>Ngày kết thúc</th>
+          <td>${new Date(property.endDate).toLocaleDateString('vi-VN')}</td>
+        </tr>
+        ` : ''}
+        <tr>
+          <th>Trạng thái</th>
+          <td>
+            <span class="badge ${property.isActive ? 'badge-success' : 'badge-secondary'}">
+              ${property.isActive ? 'Đang thuê' : 'Đã trả phòng'}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <th>Tiền nhà</th>
+          <td>${AppSDK.Utility.formatCurrency(property.rentAmount)}/tháng</td>
+        </tr>
+        <tr>
+          <th>Chỉ số điện ban đầu</th>
+          <td>${property.initialElectricityReading} kWh (${AppSDK.Utility.formatCurrency(property.electricityRate)}/kWh)</td>
+        </tr>
+        <tr>
+          <th>Chỉ số nước ban đầu</th>
+          <td>${property.initialWaterReading} m³ (${AppSDK.Utility.formatCurrency(property.waterRate)}/m³)</td>
+        </tr>
+        ${property.internetFee ? `
+        <tr>
+          <th>Phí internet</th>
+          <td>${AppSDK.Utility.formatCurrency(property.internetFee)}/tháng</td>
+        </tr>
+        ` : ''}
+        ${property.parkingFee ? `
+        <tr>
+          <th>Phí gửi xe</th>
+          <td>${AppSDK.Utility.formatCurrency(property.parkingFee)}/tháng</td>
+        </tr>
+        ` : ''}
+        ${property.garbageFee ? `
+        <tr>
+          <th>Phí rác</th>
+          <td>${AppSDK.Utility.formatCurrency(property.garbageFee)}/tháng</td>
+        </tr>
+        ` : ''}
+        ${property.notes ? `
+        <tr>
+          <th>Ghi chú</th>
+          <td>${property.notes}</td>
+        </tr>
+        ` : ''}
+      </tbody>
+    </table>
   `;
 };
 
