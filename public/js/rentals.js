@@ -144,7 +144,18 @@ const editProperty = async (id) => {
 };
 
 const deleteProperty = async (id) => {
-  if (!confirm('Bạn có chắc chắn muốn xóa phòng thuê này? Tất cả dữ liệu liên quan sẽ bị mất.')) return;
+  const result = await Swal.fire({
+    title: 'Xác nhận xóa',
+    text: 'Bạn có chắc chắn muốn xóa phòng thuê này? Tất cả dữ liệu liên quan sẽ bị mất.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Xóa',
+    cancelButtonText: 'Hủy'
+  });
+
+  if (!result.isConfirmed) return;
 
   try {
     const response = await fetch(`/api/rental-properties/${id}`, {
@@ -181,7 +192,18 @@ const deleteProperty = async (id) => {
 };
 
 const deactivateProperty = async (id) => {
-  if (!confirm('Bạn có chắc chắn đã trả phòng này?')) return;
+  const result = await Swal.fire({
+    title: 'Xác nhận trả phòng',
+    text: 'Bạn có chắc chắn đã trả phòng này?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#6c757d',
+    confirmButtonText: 'Xác nhận',
+    cancelButtonText: 'Hủy'
+  });
+
+  if (!result.isConfirmed) return;
 
   try {
     const response = await fetch(`/api/rental-properties/${id}/deactivate`, {

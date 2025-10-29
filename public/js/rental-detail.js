@@ -261,7 +261,18 @@ const editMonthlyRecord = (id) => {
 };
 
 const deleteMonthlyRecord = async (id) => {
-  if (!confirm('Bạn có chắc chắn muốn xóa bản ghi tháng này?')) return;
+  const result = await Swal.fire({
+    title: 'Xác nhận xóa',
+    text: 'Bạn có chắc chắn muốn xóa bản ghi tháng này?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Xóa',
+    cancelButtonText: 'Hủy'
+  });
+
+  if (!result.isConfirmed) return;
 
   try {
     const response = await fetch(`/api/rentals/${id}`, {
