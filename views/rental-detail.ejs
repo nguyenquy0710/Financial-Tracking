@@ -5,7 +5,10 @@
       <!-- Main Content -->
       <main class="main-content">
         <header class="top-bar">
-          <h1>Chi tiết thuê phòng</h1>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <a href="/rentals" class="btn btn-secondary" style="text-decoration: none;">← Quay lại</a>
+            <h1>Chi tiết thuê phòng</h1>
+          </div>
           <div class="user-info">
             <span id="user-name">User</span>
             <button class="btn-logout">Đăng xuất</button>
@@ -13,15 +16,21 @@
         </header>
 
         <div class="content">
+          <!-- Property Info Card -->
+          <div class="card mb-4">
+            <h2>Thông tin phòng</h2>
+            <div id="property-info" class="loading">Đang tải thông tin...</div>
+          </div>
+
           <!-- Summary Cards -->
           <div class="row g-3 mb-4">
             <div class="col-lg-3 col-md-6 col-sm-6">
               <div class="summary-card">
-                <div class="card-icon">🏠</div>
+                <div class="card-icon">💰</div>
                 <div class="card-content">
-                  <h3>Tổng tiền thuê</h3>
-                  <p class="amount" id="total-rent">0 VND</p>
-                  <span class="period">Tháng này</span>
+                  <h3>Tổng chi phí</h3>
+                  <p class="amount" id="stat-total">0 VND</p>
+                  <span class="period" id="stat-months">0 tháng</span>
                 </div>
               </div>
             </div>
@@ -29,9 +38,9 @@
               <div class="summary-card">
                 <div class="card-icon">⚡</div>
                 <div class="card-content">
-                  <h3>Tiền điện</h3>
-                  <p class="amount" id="total-electricity">0 VND</p>
-                  <span class="period">Tháng này</span>
+                  <h3>Tổng tiền điện</h3>
+                  <p class="amount" id="stat-electricity">0 VND</p>
+                  <span class="period">Tất cả các tháng</span>
                 </div>
               </div>
             </div>
@@ -39,34 +48,34 @@
               <div class="summary-card">
                 <div class="card-icon">💧</div>
                 <div class="card-content">
-                  <h3>Tiền nước</h3>
-                  <p class="amount" id="total-water">0 VND</p>
-                  <span class="period">Tháng này</span>
+                  <h3>Tổng tiền nước</h3>
+                  <p class="amount" id="stat-water">0 VND</p>
+                  <span class="period">Tất cả các tháng</span>
                 </div>
               </div>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-6">
               <div class="summary-card">
-                <div class="card-icon">📡</div>
+                <div class="card-icon">📊</div>
                 <div class="card-content">
-                  <h3>Dịch vụ khác</h3>
-                  <p class="amount" id="total-services">0 VND</p>
-                  <span class="period">Tháng này</span>
+                  <h3>Trung bình/tháng</h3>
+                  <p class="amount" id="stat-avg">0 VND</p>
+                  <span class="period">Chi phí</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Rentals List -->
+          <!-- Monthly Records -->
           <div class="card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-              <h2>Danh sách thuê phòng</h2>
-              <button class="btn btn-primary" onclick="showAddModal()">
-                <span class="icon">➕</span> Thêm mới
+              <h2>Lịch sử thanh toán theo tháng</h2>
+              <button class="btn btn-primary" onclick="showAddMonthlyRecordModal()">
+                <span class="icon">➕</span> Thêm dữ liệu tháng
               </button>
             </div>
 
-            <div id="rentals-list" class="table-container">
+            <div id="monthly-records" class="table-container">
               <p class="loading">Đang tải dữ liệu...</p>
             </div>
           </div>
@@ -74,48 +83,39 @@
       </main>
   </div>
 
-  <!-- Add/Edit Rental Modal -->
-  <div id="rentalModal" class="modal" style="display: none;">
+  <!-- Add/Edit Monthly Record Modal -->
+  <div id="monthlyRecordModal" class="modal" style="display: none;">
     <div class="modal-content">
-      <span class="close" onclick="closeRentalModal()">&times;</span>
-      <h2 id="modalTitle">Thêm thuê phòng</h2>
-      <form id="rentalForm">
-        <input type="hidden" id="rentalId">
+      <span class="close" onclick="closeMonthlyRecordModal()">&times;</span>
+      <h2 id="monthlyRecordModalTitle">Thêm dữ liệu tháng</h2>
+      <form id="monthlyRecordForm">
+        <input type="hidden" id="recordId">
+        <input type="hidden" id="propertyId">
 
         <div class="form-group">
-          <label for="propertyName">Tên phòng *</label>
-          <input type="text" id="propertyName" required>
+          <label for="month" class="form-label">Tháng *</label>
+          <input type="month" class="form-control" id="month" required>
         </div>
 
         <div class="form-group">
-          <label for="address">Địa chỉ</label>
-          <input type="text" id="address">
-        </div>
-
-        <div class="form-group">
-          <label for="month">Tháng *</label>
-          <input type="month" id="month" required>
-        </div>
-
-        <div class="form-group">
-          <label for="rentAmount">Tiền nhà *</label>
-          <input type="number" id="rentAmount" required min="0">
+          <label for="rentAmount" class="form-label">Tiền nhà (VND)</label>
+          <input type="number" class="form-control" id="rentAmount" min="0" step="100000">
         </div>
 
         <div class="form-section">
           <h3>Điện</h3>
           <div class="form-row">
             <div class="form-group">
-              <label for="electricityStart">Chỉ số đầu</label>
-              <input type="number" id="electricityStart" min="0" step="0.01">
+              <label for="electricityStart">Chỉ số đầu (kWh)</label>
+              <input type="number" class="form-control" id="electricityStart" min="0" step="0.01">
             </div>
             <div class="form-group">
-              <label for="electricityEnd">Chỉ số cuối</label>
-              <input type="number" id="electricityEnd" min="0" step="0.01">
+              <label for="electricityEnd">Chỉ số cuối (kWh) *</label>
+              <input type="number" class="form-control" id="electricityEnd" min="0" step="0.01" required>
             </div>
             <div class="form-group">
-              <label for="electricityRate">Đơn giá</label>
-              <input type="number" id="electricityRate" min="0">
+              <label for="electricityRate">Đơn giá (VND/kWh)</label>
+              <input type="number" class="form-control" id="electricityRate" min="0" step="100">
             </div>
           </div>
         </div>
@@ -124,45 +124,45 @@
           <h3>Nước</h3>
           <div class="form-row">
             <div class="form-group">
-              <label for="waterStart">Chỉ số đầu</label>
-              <input type="number" id="waterStart" min="0" step="0.01">
+              <label for="waterStart">Chỉ số đầu (m³)</label>
+              <input type="number" class="form-control" id="waterStart" min="0" step="0.01">
             </div>
             <div class="form-group">
-              <label for="waterEnd">Chỉ số cuối</label>
-              <input type="number" id="waterEnd" min="0" step="0.01">
+              <label for="waterEnd">Chỉ số cuối (m³) *</label>
+              <input type="number" class="form-control" id="waterEnd" min="0" step="0.01" required>
             </div>
             <div class="form-group">
-              <label for="waterRate">Đơn giá</label>
-              <input type="number" id="waterRate" min="0">
+              <label for="waterRate">Đơn giá (VND/m³)</label>
+              <input type="number" class="form-control" id="waterRate" min="0" step="100">
             </div>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label for="internet">Internet</label>
-            <input type="number" id="internet" min="0" value="0">
+            <label for="internet">Internet (VND)</label>
+            <input type="number" class="form-control" id="internet" min="0" value="0">
           </div>
           <div class="form-group">
-            <label for="parking">Gửi xe</label>
-            <input type="number" id="parking" min="0" value="0">
+            <label for="parking">Gửi xe (VND)</label>
+            <input type="number" class="form-control" id="parking" min="0" value="0">
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label for="garbage">Rác</label>
-            <input type="number" id="garbage" min="0" value="0">
+            <label for="garbage">Rác (VND)</label>
+            <input type="number" class="form-control" id="garbage" min="0" value="0">
           </div>
           <div class="form-group">
-            <label for="bonus">Phụ thu/Giảm trừ</label>
-            <input type="number" id="bonus" value="0">
+            <label for="bonus">Phụ thu/Giảm trừ (VND)</label>
+            <input type="number" class="form-control" id="bonus" value="0">
           </div>
         </div>
 
         <div class="form-group">
           <label for="notes">Ghi chú</label>
-          <textarea id="notes" rows="3"></textarea>
+          <textarea class="form-control" id="notes" rows="3"></textarea>
         </div>
 
         <div class="form-group">
@@ -174,15 +174,19 @@
 
         <div class="form-group" id="paymentDateGroup" style="display: none;">
           <label for="paymentDate">Ngày thanh toán</label>
-          <input type="date" id="paymentDate">
+          <input type="date" class="form-control" id="paymentDate">
         </div>
 
         <div class="form-actions">
-          <button type="button" class="btn btn-secondary" onclick="closeRentalModal()">Hủy</button>
+          <button type="button" class="btn btn-secondary" onclick="closeMonthlyRecordModal()">Hủy</button>
           <button type="submit" class="btn btn-primary">Lưu</button>
         </div>
       </form>
     </div>
   </div>
 
-  <%- include('partials/footer', { additionalJS: [ '/js/rentals.js' ] }) %>
+  <script>
+    // Pass property ID to JavaScript
+    const PROPERTY_ID = '<%= rentalId %>';
+  </script>
+  <%- include('partials/footer', { additionalJS: [ '/js/rental-detail.js' ] }) %>

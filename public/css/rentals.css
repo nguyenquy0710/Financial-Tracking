@@ -181,3 +181,52 @@
 .btn-secondary:hover {
   background: #5a6268;
 }
+
+/* Property detail page styles */
+.property-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 15px;
+}
+
+.detail-row {
+  padding: 10px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.detail-row strong {
+  display: inline-block;
+  min-width: 180px;
+  color: #2c3e50;
+}
+
+.btn-info {
+  background: #17a2b8;
+  color: white;
+}
+
+.btn-info:hover {
+  background: #138496;
+}
+
+.btn-warning {
+  background: #ffc107;
+  color: #212529;
+}
+
+.btn-warning:hover {
+  background: #e0a800;
+}
+
+.badge-secondary {
+  background: #6c757d;
+  color: white;
+}
+
+.mb-4 {
+  margin-bottom: 1.5rem;
+}

@@ -1,6 +1,6 @@
 // js/rentals.js
 
-let rentals = [];
+let properties = [];
 let token = sdkAuth.getAuthToken();
 
 // Redirect to login if not authenticated
@@ -8,75 +8,80 @@ if (!sdkAuth.isAuthenticated()) {
   window.location.href = `/login?redirectUrl=${encodeURIComponent(window.location.pathname)}`;
 }
 
-// Load rentals on page load
+// Load properties on page load
 document.addEventListener('DOMContentLoaded', async () => {
-  await loadRentals();
+  await loadProperties();
 });
 
-const loadRentals = async () => {
-  const container = document.getElementById('rentals-list');
+const loadProperties = async () => {
+  const container = document.getElementById('properties-list');
   container.innerHTML = '<p class="loading">Đang tải...</p>';
 
   try {
-    const response = await sdkAuth.callApiWithAuth('/rentals');
+    const response = await sdkAuth.callApiWithAuth('/rental-properties');
 
     if (response.success && response.data) {
-      rentals = response.data;
+      properties = response.data;
 
-      if (rentals.length === 0) {
-        container.innerHTML = '<p class="loading">Chưa có dữ liệu. Vui lòng import từ Excel hoặc thêm mới.</p>';
+      if (properties.length === 0) {
+        container.innerHTML = '<p class="loading">Chưa có phòng thuê. Vui lòng thêm phòng mới.</p>';
+        // Reset summary cards
+        document.getElementById('total-rent').textContent = '0 VND';
+        document.getElementById('total-electricity').textContent = '0 VND';
+        document.getElementById('total-water').textContent = '0 VND';
+        document.getElementById('total-services').textContent = '0 VND';
         return;
       }
 
-      // Calculate totals
+      // Calculate totals for active properties
       let totalRent = 0, totalElectricity = 0, totalWater = 0, totalServices = 0;
 
-      rentals.forEach(rental => {
-        totalRent += rental.rentAmount || 0;
-        totalElectricity += rental.electricity?.amount || 0;
-        totalWater += rental.water?.amount || 0;
-        totalServices += (rental.internet || 0) + (rental.parking || 0) + (rental.garbage || 0);
+      properties.forEach(property => {
+        if (property.isActive) {
+          totalRent += property.rentAmount || 0;
+          totalServices += (property.internetFee || 0) + (property.parkingFee || 0) + (property.garbageFee || 0);
+        }
       });
 
       document.getElementById('total-rent').textContent = AppSDK.Utility.formatCurrency(totalRent);
-      document.getElementById('total-electricity').textContent = AppSDK.Utility.formatCurrency(totalElectricity);
-      document.getElementById('total-water').textContent = AppSDK.Utility.formatCurrency(totalWater);
+      document.getElementById('total-electricity').textContent = '---';
+      document.getElementById('total-water').textContent = '---';
       document.getElementById('total-services').textContent = AppSDK.Utility.formatCurrency(totalServices);
 
-      // Display rentals
+      // Display properties
       container.innerHTML = `
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <th>Phòng</th>
-                                    <th>Tháng</th>
+                                    <th>Mã phòng</th>
+                                    <th>Tên phòng</th>
+                                    <th>Địa chỉ</th>
                                     <th>Tiền nhà</th>
-                                    <th>Điện</th>
-                                    <th>Nước</th>
-                                    <th>Internet</th>
-                                    <th>Tổng</th>
+                                    <th>Ngày bắt đầu</th>
                                     <th>Trạng thái</th>
                                     <th>Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                ${rentals.map(rental => `
+                                ${properties.map(property => `
                                     <tr>
-                                        <td><strong>${rental.propertyName}</strong></td>
-                                        <td>${new Date(rental.month).toLocaleDateString('vi-VN', { month: '2-digit', year: 'numeric' })}</td>
-                                        <td>${AppSDK.Utility.formatCurrency(rental.rentAmount)}</td>
-                                        <td>${AppSDK.Utility.formatCurrency(rental.electricity?.amount || 0)}</td>
-                                        <td>${AppSDK.Utility.formatCurrency(rental.water?.amount || 0)}</td>
-                                        <td>${AppSDK.Utility.formatCurrency(rental.internet || 0)}</td>
-                                        <td><strong>${AppSDK.Utility.formatCurrency(rental.total)}</strong></td>
+                                        <td><strong>${property.roomCode}</strong></td>
+                                        <td>${property.propertyName}</td>
+                                        <td>${property.address || 'N/A'}</td>
+                                        <td>${AppSDK.Utility.formatCurrency(property.rentAmount)}</td>
+                                        <td>${new Date(property.startDate).toLocaleDateString('vi-VN')}</td>
                                         <td>
-                                            <span class="badge ${rental.isPaid ? 'badge-success' : 'badge-warning'}">
-                                                ${rental.isPaid ? 'Đã thanh toán' : 'Chưa thanh toán'}
+                                            <span class="badge ${property.isActive ? 'badge-success' : 'badge-secondary'}">
+                                                ${property.isActive ? 'Đang thuê' : 'Đã trả phòng'}
                                             </span>
                                         </td>
                                         <td>
-                                            <button class="btn btn-sm" onclick="editRental('${rental._id}')">✏️</button>
-                                            <button class="btn btn-sm btn-danger" onclick="deleteRental('${rental._id}')">🗑️</button>
+                                            <button class="btn btn-sm btn-info" onclick="viewPropertyDetails('${property._id}')" title="Xem chi tiết">👁️</button>
+                                            <button class="btn btn-sm" onclick="editProperty('${property._id}')" title="Chỉnh sửa">✏️</button>
+                                            ${property.isActive ? 
+                                              `<button class="btn btn-sm btn-warning" onclick="deactivateProperty('${property._id}')" title="Trả phòng">🔒</button>` : 
+                                              ''}
+                                            <button class="btn btn-sm btn-danger" onclick="deleteProperty('${property._id}')" title="Xóa">🗑️</button>
                                         </td>
                                     </tr>
                                 `).join('')}
@@ -87,80 +92,62 @@ const loadRentals = async () => {
       container.innerHTML = '<p class="loading">Không thể tải dữ liệu</p>';
     }
   } catch (error) {
-    console.error('Failed to load rentals:', error);
-    container.innerHTML = '<p class="loading">Lỗi: Không thể tải dữ liệu. Hãy import dữ liệu từ Excel.</p>';
+    console.error('Failed to load rental properties:', error);
+    container.innerHTML = '<p class="loading">Lỗi: Không thể tải dữ liệu.</p>';
   }
 };
 
-// Show add rental modal
-const showAddModal = () => {
-  document.getElementById('modalTitle').textContent = 'Thêm thuê phòng';
-  document.getElementById('rentalForm').reset();
-  document.getElementById('rentalId').value = '';
-  document.getElementById('paymentDateGroup').style.display = 'none';
-
-  // Set default month to current month
-  const now = new Date();
-  const monthStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-  document.getElementById('monthStart').value = monthStr;
-
-  document.getElementById('rentalModal').style.display = 'block';
+// View property details
+const viewPropertyDetails = (propertyId) => {
+  window.location.href = `/rentals/${propertyId}/detail`;
 };
 
-const closeRentalModal = () => {
-  document.getElementById('rentalModal').style.display = 'none';
+// Show add property modal
+const showAddPropertyModal = () => {
+  document.getElementById('propertyModalTitle').textContent = 'Thêm phòng thuê';
+  document.getElementById('propertyForm').reset();
+  document.getElementById('propertyId').value = '';
+
+  // Set default start date to today
+  document.getElementById('startDate').value = new Date().toISOString().split('T')[0];
+
+  document.getElementById('propertyModal').style.display = 'block';
 };
 
-const editRental = (id) => {
-  const rental = rentals.find(r => r._id === id);
-  if (!rental) return;
-
-  document.getElementById('modalTitle').textContent = 'Chỉnh sửa thuê phòng';
-  document.getElementById('rentalId').value = rental._id;
-  document.getElementById('propertyName').value = rental.propertyName;
-  document.getElementById('address').value = rental.address || '';
-
-  // Format month for input type="month"
-  const monthDate = new Date(rental.month);
-  const monthStr = `${monthDate.getFullYear()}-${String(monthDate.getMonth() + 1).padStart(2, '0')}`;
-  document.getElementById('month').value = monthStr;
-
-  document.getElementById('rentAmount').value = rental.rentAmount || 0;
-
-  // Electricity
-  document.getElementById('electricityStart').value = rental.electricity?.startReading || 0;
-  document.getElementById('electricityEnd').value = rental.electricity?.endReading || 0;
-  document.getElementById('electricityRate').value = rental.electricity?.rate || 0;
-
-  // Water
-  document.getElementById('waterStart').value = rental.water?.startReading || 0;
-  document.getElementById('waterEnd').value = rental.water?.endReading || 0;
-  document.getElementById('waterRate').value = rental.water?.rate || 0;
-
-  // Services
-  document.getElementById('internet').value = rental.internet || 0;
-  document.getElementById('parking').value = rental.parking || 0;
-  document.getElementById('garbage').value = rental.garbage || 0;
-  document.getElementById('bonus').value = rental.bonus || 0;
-
-  document.getElementById('notes').value = rental.notes || '';
-  document.getElementById('isPaid').checked = rental.isPaid || false;
-
-  if (rental.paymentDate) {
-    document.getElementById('paymentDate').value = rental.paymentDate.split('T')[0];
-    document.getElementById('paymentDateGroup').style.display = 'block';
-  } else {
-    document.getElementById('paymentDateGroup').style.display = 'none';
-  }
-
-  document.getElementById('rentalModal').style.display = 'block';
+const closePropertyModal = () => {
+  document.getElementById('propertyModal').style.display = 'none';
 };
 
-const deleteRental = async (id) => {
-  if (!confirm('Bạn có chắc chắn muốn xóa bản ghi thuê phòng này?')) return;
+const editProperty = async (id) => {
+  const property = properties.find(p => p._id === id);
+  if (!property) return;
+
+  document.getElementById('propertyModalTitle').textContent = 'Chỉnh sửa phòng thuê';
+  document.getElementById('propertyId').value = property._id;
+  document.getElementById('roomCode').value = property.roomCode;
+  document.getElementById('propertyName').value = property.propertyName;
+  document.getElementById('address').value = property.address || '';
+  document.getElementById('startDate').value = property.startDate ? property.startDate.split('T')[0] : '';
+  document.getElementById('rentAmount').value = property.rentAmount || 0;
+  
+  document.getElementById('initialElectricityReading').value = property.initialElectricityReading || 0;
+  document.getElementById('electricityRate').value = property.electricityRate || 0;
+  document.getElementById('initialWaterReading').value = property.initialWaterReading || 0;
+  document.getElementById('waterRate').value = property.waterRate || 0;
+  
+  document.getElementById('internetFee').value = property.internetFee || 0;
+  document.getElementById('parkingFee').value = property.parkingFee || 0;
+  document.getElementById('garbageFee').value = property.garbageFee || 0;
+  document.getElementById('notes').value = property.notes || '';
+
+  document.getElementById('propertyModal').style.display = 'block';
+};
+
+const deleteProperty = async (id) => {
+  if (!confirm('Bạn có chắc chắn muốn xóa phòng thuê này? Tất cả dữ liệu liên quan sẽ bị mất.')) return;
 
   try {
-    const response = await fetch(`/api/rentals/${id}`, {
+    const response = await fetch(`/api/rental-properties/${id}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -173,9 +160,9 @@ const deleteRental = async (id) => {
       AppSDK.Alert.show({
         icon: AppSDK.Enums.AlertIcon.SUCCESS,
         title: "Thành công",
-        text: 'Xóa bản ghi thành công!'
+        text: 'Xóa phòng thuê thành công!'
       });
-      loadRentals();
+      loadProperties();
     } else {
       AppSDK.Alert.show({
         icon: AppSDK.Enums.AlertIcon.ERROR,
@@ -184,7 +171,7 @@ const deleteRental = async (id) => {
       });
     }
   } catch (error) {
-    console.error('Error deleting rental:', error);
+    console.error('Error deleting property:', error);
     AppSDK.Alert.show({
       icon: AppSDK.Enums.AlertIcon.ERROR,
       title: "Lỗi",
@@ -193,93 +180,17 @@ const deleteRental = async (id) => {
   }
 };
 
-// Toggle payment date field based on isPaid checkbox
-document.addEventListener('DOMContentLoaded', () => {
-  const isPaidCheckbox = document.getElementById('isPaid');
-  const paymentDateGroup = document.getElementById('paymentDateGroup');
-
-  if (isPaidCheckbox) {
-    isPaidCheckbox.addEventListener('change', (e) => {
-      if (e.target.checked) {
-        paymentDateGroup.style.display = 'block';
-        if (!document.getElementById('paymentDate').value) {
-          document.getElementById('paymentDate').value = new Date().toISOString().split('T')[0];
-        }
-      } else {
-        paymentDateGroup.style.display = 'none';
-      }
-    });
-  }
-});
-
-document.getElementById('rentalForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const rentalId = document.getElementById('rentalId').value;
-
-  // Calculate electricity
-  const elecStart = parseFloat(document.getElementById('electricityStart').value) || 0;
-  const elecEnd = parseFloat(document.getElementById('electricityEnd').value) || 0;
-  const elecRate = parseFloat(document.getElementById('electricityRate').value) || 0;
-  const elecConsumption = Math.max(0, elecEnd - elecStart);
-  const elecAmount = elecConsumption * elecRate;
-
-  // Calculate water
-  const waterStart = parseFloat(document.getElementById('waterStart').value) || 0;
-  const waterEnd = parseFloat(document.getElementById('waterEnd').value) || 0;
-  const waterRate = parseFloat(document.getElementById('waterRate').value) || 0;
-  const waterConsumption = Math.max(0, waterEnd - waterStart);
-  const waterAmount = waterConsumption * waterRate;
-
-  const rentAmount = parseFloat(document.getElementById('rentAmount').value) || 0;
-  const internet = parseFloat(document.getElementById('internet').value) || 0;
-  const parking = parseFloat(document.getElementById('parking').value) || 0;
-  const garbage = parseFloat(document.getElementById('garbage').value) || 0;
-  const bonus = parseFloat(document.getElementById('bonus').value) || 0;
-
-  // Calculate total
-  const total = rentAmount + elecAmount + waterAmount + internet + parking + garbage + bonus;
-
-  const rentalData = {
-    propertyName: document.getElementById('propertyName').value,
-    address: document.getElementById('address').value,
-    month: new Date(document.getElementById('month').value + '-01'),
-    rentAmount: rentAmount,
-    electricity: {
-      startReading: elecStart,
-      endReading: elecEnd,
-      consumption: elecConsumption,
-      rate: elecRate,
-      amount: elecAmount
-    },
-    water: {
-      startReading: waterStart,
-      endReading: waterEnd,
-      consumption: waterConsumption,
-      rate: waterRate,
-      amount: waterAmount
-    },
-    internet: internet,
-    parking: parking,
-    garbage: garbage,
-    bonus: bonus,
-    total: total,
-    notes: document.getElementById('notes').value,
-    isPaid: document.getElementById('isPaid').checked,
-    paymentDate: document.getElementById('isPaid').checked ? document.getElementById('paymentDate').value : undefined
-  };
+const deactivateProperty = async (id) => {
+  if (!confirm('Bạn có chắc chắn đã trả phòng này?')) return;
 
   try {
-    const url = rentalId ? `/api/rentals/${rentalId}` : '/api/rentals';
-    const method = rentalId ? 'PUT' : 'POST';
-
-    const response = await fetch(url, {
-      method,
+    const response = await fetch(`/api/rental-properties/${id}/deactivate`, {
+      method: 'PUT',
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(rentalData)
+      body: JSON.stringify({ endDate: new Date().toISOString() })
     });
 
     const data = await response.json();
@@ -287,10 +198,70 @@ document.getElementById('rentalForm').addEventListener('submit', async (e) => {
       AppSDK.Alert.show({
         icon: AppSDK.Enums.AlertIcon.SUCCESS,
         title: "Thành công",
-        text: rentalId ? 'Cập nhật thành công!' : 'Thêm thuê phòng thành công!'
+        text: 'Đã cập nhật trạng thái phòng!'
       });
-      closeRentalModal();
-      loadRentals();
+      loadProperties();
+    } else {
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.ERROR,
+        title: "Lỗi",
+        text: 'Lỗi: ' + (data.message || 'Không thể cập nhật')
+      });
+    }
+  } catch (error) {
+    console.error('Error deactivating property:', error);
+    AppSDK.Alert.show({
+      icon: AppSDK.Enums.AlertIcon.ERROR,
+      title: "Lỗi",
+      text: 'Có lỗi xảy ra!'
+    });
+  }
+};
+
+// Handle property form submission
+document.getElementById('propertyForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const propertyId = document.getElementById('propertyId').value;
+
+  const propertyData = {
+    roomCode: document.getElementById('roomCode').value,
+    propertyName: document.getElementById('propertyName').value,
+    address: document.getElementById('address').value,
+    startDate: new Date(document.getElementById('startDate').value),
+    rentAmount: parseFloat(document.getElementById('rentAmount').value) || 0,
+    initialElectricityReading: parseFloat(document.getElementById('initialElectricityReading').value) || 0,
+    electricityRate: parseFloat(document.getElementById('electricityRate').value) || 0,
+    initialWaterReading: parseFloat(document.getElementById('initialWaterReading').value) || 0,
+    waterRate: parseFloat(document.getElementById('waterRate').value) || 0,
+    internetFee: parseFloat(document.getElementById('internetFee').value) || 0,
+    parkingFee: parseFloat(document.getElementById('parkingFee').value) || 0,
+    garbageFee: parseFloat(document.getElementById('garbageFee').value) || 0,
+    notes: document.getElementById('notes').value
+  };
+
+  try {
+    const url = propertyId ? `/api/rental-properties/${propertyId}` : '/api/rental-properties';
+    const method = propertyId ? 'PUT' : 'POST';
+
+    const response = await fetch(url, {
+      method,
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(propertyData)
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      AppSDK.Alert.show({
+        icon: AppSDK.Enums.AlertIcon.SUCCESS,
+        title: "Thành công",
+        text: propertyId ? 'Cập nhật phòng thuê thành công!' : 'Thêm phòng thuê thành công!'
+      });
+      closePropertyModal();
+      loadProperties();
     } else {
       AppSDK.Alert.show({
         icon: AppSDK.Enums.AlertIcon.ERROR,
@@ -299,7 +270,7 @@ document.getElementById('rentalForm').addEventListener('submit', async (e) => {
       });
     }
   } catch (error) {
-    console.error('Error saving rental:', error);
+    console.error('Error saving property:', error);
     AppSDK.Alert.show({
       icon: AppSDK.Enums.AlertIcon.ERROR,
       title: "Lỗi",
