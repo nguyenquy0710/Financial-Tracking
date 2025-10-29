@@ -28,7 +28,7 @@ const createRotateFileStream = (context: string = 'application', options?: any) 
     datePattern: 'YYYY-MM-DD', // Định dạng ngày trong tên file log
     zippedArchive: true, // Tự động nén log cũ để tiết kiệm dung lượng (nén thành .gz)
     maxSize: '20m', // Giới hạn kích thước mỗi file: 20MB
-    maxFiles: '14d', // Giữ tối đa 14 ngày log
+    maxFiles: '7d', // Giữ tối đa 7 ngày log
     ...options,
   });
 

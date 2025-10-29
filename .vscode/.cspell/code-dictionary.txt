@@ -23,7 +23,9 @@ nssm
 nuxt
 oaid
 orcid
+otpauth
 otplib
+PDPA
 pids
 pycache
 quynh

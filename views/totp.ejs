@@ -34,7 +34,12 @@
 
           <!-- Add/Edit Account Form - Collapsible -->
           <section class="form-section card" id="form-section" style="display: none;">
-            <h2 id="form-title">Thêm Tài Khoản Mới</h2>
+            <div class="form-header">
+              <h2 id="form-title">Thêm Tài Khoản Mới</h2>
+              <button type="button" class="btn btn-secondary btn-scan-qr" id="scan-qr-btn">
+                <span class="icon">📷</span> Quét QR Code
+              </button>
+            </div>
             <form id="account-form">
               <input type="hidden" id="account-id" value="">
 
@@ -59,10 +64,26 @@
               </div>
 
               <div class="form-group">
+                <label for="issuer">Nhà phát hành (Issuer)</label>
+                <input type="text" id="issuer" class="form-control" placeholder="VD: Google, GitHub, Facebook...">
+                <small>Nhà phát hành dịch vụ (mặc định sẽ dùng tên dịch vụ nếu không điền)</small>
+              </div>
+
+              <div class="form-group">
+                <label for="algorithm">Thuật toán</label>
+                <select id="algorithm" class="form-control form-select">
+                  <option value="SHA1" selected>SHA1</option>
+                  <option value="SHA256">SHA256</option>
+                  <option value="SHA512">SHA512</option>
+                </select>
+                <small>Thuật toán băm dùng để tạo mã OTP (mặc định là SHA1)</small>
+              </div>
+
+              <div class="form-group">
                 <label for="otp-type">Loại khóa *</label>
                 <select id="otp-type" class="form-control form-select">
-                  <option value="totp" selected>TOTP (Thời gian)</option>
-                  <option value="hotp">HOTP (Số lần sử dụng)</option>
+                  <option value="TOTP" selected>TOTP (Thời gian)</option>
+                  <option value="HOTP">HOTP (Số lần sử dụng)</option>
                 </select>
                 <small>Loại khóa xác thực (TOTP hoặc HOTP)</small>
               </div>
@@ -106,7 +127,21 @@
   <!-- Notification Toast -->
   <div id="notification" class="notification"></div>
 
+  <!-- QR Scanner Modal -->
+  <div id="qr-scanner-modal" class="qr-modal" style="display: none;">
+    <div class="qr-modal-content">
+      <div class="qr-modal-header">
+        <h3>Quét QR Code TOTP</h3>
+        <button type="button" class="qr-close-btn" id="close-qr-scanner">&times;</button>
+      </div>
+      <div class="qr-modal-body">
+        <div id="qr-reader" style="width: 100%;"></div>
+        <div id="qr-reader-results" class="qr-results"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- otplib library for TOTP generation -->
 
-  <%- include('partials/footer', { additionalJS: [ '/js/vendor/buffer.js' , '/js/vendor/otplib.js' ,'/js/totp-indexeddb.js'
+  <%- include('partials/footer', { additionalJS: [ '/js/vendor/buffer.js' , '/js/vendor/otplib.js' , '/js/vendor/html5-qrcode.min.js' ,'/js/totp-indexeddb.js'
     , '/js/totp-lib.js' , '/js/totp.js' ] }) %>

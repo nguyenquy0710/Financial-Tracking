@@ -1,4 +1,14 @@
 {
+  // Chat mode files locations for Copilot Chat extension configuration
+  "chat.modeFilesLocations": {
+    ".github/chatmodes": true,
+    "/Users/vscode/repos/chatmodes": true
+  },
+  // Olamall AI integration settings for Copilot Chat extension
+  // "chat.olamallEnabled": false,
+  // "chat.olamallApiKey": "",
+  // "chat.olamallCustomModelEndpoint": "",
+
   // Controls if quick suggestions should show up while typing
   "editor.quickSuggestions": {
     "comments": "on",

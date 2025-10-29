@@ -172,7 +172,7 @@ exports.createTotpAccount = async (req, res, next) => {
  */
 exports.updateTotpAccount = async (req, res, next) => {
   try {
-    const { serviceName, accountName, secret, issuer, algorithm, digits, period } = req.body;
+    const { serviceName, accountName, secret, issuer, algorithm, digits, period, otpType, counter } = req.body;
 
     const account = await Totp.findOne({
       _id: req.params.id,
@@ -193,6 +193,8 @@ exports.updateTotpAccount = async (req, res, next) => {
     if (algorithm) account.algorithm = algorithm;
     if (digits) account.digits = digits;
     if (period) account.period = period;
+    if (otpType) account.otpType = otpType;
+    if (counter !== undefined) account.counter = counter;
 
     // Update secret if provided
     if (secret) {

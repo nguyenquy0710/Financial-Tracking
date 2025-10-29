@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   await syncWithServer();
 
   setupFormHandlers();
+  setupQRScanner();
   setupThemeToggle();
 });
 
@@ -68,6 +69,208 @@ const setupThemeToggle = () => {
     icon.textContent = isDark ? '☀️' : '🌙';
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
   });
+};
+
+// Setup QR Scanner
+let html5QrCode = null;
+const setupQRScanner = () => {
+  const scanBtn = document.getElementById('scan-qr-btn');
+  const modal = document.getElementById('qr-scanner-modal');
+  const closeBtn = document.getElementById('close-qr-scanner');
+  const resultsDiv = document.getElementById('qr-reader-results');
+
+  // Show QR scanner modal
+  scanBtn.addEventListener('click', async () => {
+    modal.style.display = 'block';
+    await startQRScanner();
+  });
+
+  // Close modal
+  closeBtn.addEventListener('click', async () => {
+    await stopQRScanner();
+    modal.style.display = 'none';
+    resultsDiv.innerHTML = '';
+    resultsDiv.classList.remove('show');
+  });
+
+  // Close modal on outside click
+  modal.addEventListener('click', async (e) => {
+    if (e.target === modal) {
+      await stopQRScanner();
+      modal.style.display = 'none';
+      resultsDiv.innerHTML = '';
+      resultsDiv.classList.remove('show');
+    }
+  });
+};
+
+// Start QR Scanner
+const startQRScanner = async () => {
+  const qrReaderDiv = document.getElementById('qr-reader');
+  
+  try {
+    if (!html5QrCode) {
+      html5QrCode = new Html5Qrcode('qr-reader');
+    }
+
+    const config = {
+      fps: 10,
+      qrbox: { width: 250, height: 250 },
+      aspectRatio: 1.0
+    };
+
+    await html5QrCode.start(
+      { facingMode: "environment" }, // Use back camera
+      config,
+      onQRCodeScanned,
+      onQRCodeError
+    );
+  } catch (err) {
+    console.error('Failed to start QR scanner:', err);
+    showNotification('Không thể khởi động camera. Vui lòng kiểm tra quyền truy cập.', 'error');
+  }
+};
+
+// Stop QR Scanner
+const stopQRScanner = async () => {
+  if (html5QrCode) {
+    try {
+      // Try to stop the scanner - html5QrCode handles state internally
+      await html5QrCode.stop();
+      html5QrCode.clear();
+    } catch (err) {
+      // If scanner is not running, this will throw an error which we can safely ignore
+      if (err.message && !err.message.includes('not started')) {
+        console.error('Failed to stop QR scanner:', err);
+      }
+    }
+  }
+};
+
+// Handle QR Code scan success
+const onQRCodeScanned = async (decodedText, decodedResult) => {
+  console.log('QR Code scanned:', decodedText);
+  
+  const resultsDiv = document.getElementById('qr-reader-results');
+  
+  try {
+    // Parse otpauth URL
+    const otpData = parseOtpAuthUrl(decodedText);
+    
+    if (otpData) {
+      resultsDiv.innerHTML = `<p class="success">✅ Quét thành công! Đang điền thông tin...</p>`;
+      resultsDiv.classList.add('show');
+      
+      // Fill form with parsed data
+      fillFormFromQRData(otpData);
+      
+      // Stop scanner and close modal
+      await stopQRScanner();
+      setTimeout(() => {
+        document.getElementById('qr-scanner-modal').style.display = 'none';
+        resultsDiv.innerHTML = '';
+        resultsDiv.classList.remove('show');
+      }, 1500);
+      
+      showNotification('Đã quét QR code thành công!');
+    } else {
+      resultsDiv.innerHTML = `<p class="error">❌ QR code không hợp lệ. Vui lòng quét QR code TOTP.</p>`;
+      resultsDiv.classList.add('show');
+    }
+  } catch (error) {
+    console.error('Failed to parse QR code:', error);
+    resultsDiv.innerHTML = `<p class="error">❌ Lỗi khi xử lý QR code: ${error.message}</p>`;
+    resultsDiv.classList.add('show');
+  }
+};
+
+// Handle QR Code scan error
+const onQRCodeError = (errorMessage) => {
+  // Ignore frequent scanning errors
+  // console.debug('QR scan error:', errorMessage);
+};
+
+// Parse otpauth:// URL
+const parseOtpAuthUrl = (url) => {
+  try {
+    // Check if it's a valid otpauth URL
+    if (!url.startsWith('otpauth://')) {
+      return null;
+    }
+
+    const urlObj = new URL(url);
+    
+    // Extract type (totp or hotp) from hostname
+    const type = urlObj.hostname.toUpperCase();
+    
+    // Extract label (issuer:accountName or just accountName)
+    const path = decodeURIComponent(urlObj.pathname.substring(1));
+    let issuer = '';
+    let accountName = '';
+    
+    if (path.includes(':')) {
+      const parts = path.split(':');
+      issuer = parts[0];
+      accountName = parts.slice(1).join(':');
+    } else {
+      accountName = path;
+    }
+    
+    // Extract query parameters
+    const params = new URLSearchParams(urlObj.search);
+    const secret = params.get('secret');
+    const algorithm = params.get('algorithm') || 'SHA1';
+    const digits = parseInt(params.get('digits') || '6', 10);
+    const period = parseInt(params.get('period') || '30', 10);
+    const counter = parseInt(params.get('counter') || '0', 10);
+    
+    // Override issuer if provided in params
+    if (params.get('issuer')) {
+      issuer = params.get('issuer');
+    }
+    
+    if (!secret) {
+      throw new Error('Secret key không tìm thấy trong QR code');
+    }
+    
+    // Fallback for issuer - use part before @ or the whole accountName
+    if (!issuer) {
+      issuer = accountName.includes('@') ? accountName.split('@')[0] : accountName;
+    }
+    
+    return {
+      type: type,
+      issuer: issuer,
+      accountName,
+      secret,
+      algorithm,
+      digits,
+      period,
+      counter
+    };
+  } catch (error) {
+    console.error('Failed to parse otpauth URL:', error);
+    return null;
+  }
+};
+
+// Fill form with QR data
+const fillFormFromQRData = (data) => {
+  document.getElementById('service-name').value = data.issuer || data.accountName;
+  document.getElementById('username').value = data.accountName;
+  document.getElementById('secret-key').value = data.secret;
+  document.getElementById('issuer').value = data.issuer || '';
+  document.getElementById('algorithm').value = data.algorithm || 'SHA1';
+  document.getElementById('otp-type').value = data.type; // Keep original case (TOTP/HOTP)
+  document.getElementById('digits').value = data.digits.toString();
+  document.getElementById('interval').value = data.period.toString();
+  
+  if (data.type === 'HOTP') {
+    document.getElementById('counter').value = data.counter.toString();
+  }
+  
+  // Scroll to form to show filled data
+  document.getElementById('form-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
 };
 
 // Load all TOTP accounts from server and sync with IndexedDB
@@ -269,10 +472,12 @@ const handleFormSubmit = async () => {
   const serviceName = document.getElementById('service-name').value.trim();
   const accountName = document.getElementById('username').value.trim();
   const secret = document.getElementById('secret-key').value.trim().toUpperCase();
+  const issuer = document.getElementById('issuer').value.trim();
+  const algorithm = document.getElementById('algorithm').value.trim();
   const otpType = document.getElementById('otp-type').value.trim().toUpperCase();
-  const digits = parseInt(document.getElementById('digits').value, 6);
-  const interval = parseInt(document.getElementById('interval').value, 30);
-  const counter = parseInt(document.getElementById('counter').value, 0);
+  const digits = parseInt(document.getElementById('digits').value, 10) || 6;
+  const interval = parseInt(document.getElementById('interval').value, 10) || 30;
+  const counter = parseInt(document.getElementById('counter').value, 10) || 0;
 
   if (!serviceName || !accountName || !secret) {
     showNotification('Vui lòng điền đầy đủ thông tin', 'error');
@@ -290,12 +495,13 @@ const handleFormSubmit = async () => {
     serviceName,
     accountName,
     secret,
+    issuer: issuer || serviceName,
+    algorithm: algorithm || 'SHA1',
     otpType,
     digits,
     period: interval,
     counter: otpType === 'HOTP' ? counter : undefined
   };
-  // const { serviceName, accountName, secret, issuer, algorithm, digits, period } = req.body;
 
   try {
     let response;
@@ -322,26 +528,42 @@ const handleFormSubmit = async () => {
 };
 
 // Edit account
-const editAccount = (accountId) => {
-  const account = accounts.find((a) => a.id === accountId);
-  if (!account) return;
+const editAccount = async (accountId) => {
+  try {
+    // Fetch account details from server to get all fields including secret
+    const response = await sdkAuth.callApiWithAuth(`/totp/${accountId}`, 'GET');
+    
+    if (!response.success || !response.data) {
+      showNotification('Không thể tải thông tin tài khoản', 'error');
+      return;
+    }
 
-  editingAccountId = accountId;
+    const account = response.data;
+    editingAccountId = accountId;
 
-  // Show form section
-  const formSection = document.getElementById('form-section');
-  formSection.style.display = 'block';
-  formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Show form section
+    const formSection = document.getElementById('form-section');
+    formSection.style.display = 'block';
+    formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-  document.getElementById('form-title').textContent = 'Chỉnh Sửa Tài Khoản';
-  document.getElementById('service-name').value = account.serviceName;
-  document.getElementById('username').value = account.accountName;
-  document.getElementById('secret-key').value = '';
-  document.getElementById('digits').value = account.digits;
-  document.getElementById('interval').value = account.period;
+    // Fill form with account data
+    document.getElementById('form-title').textContent = 'Chỉnh Sửa Tài Khoản';
+    document.getElementById('service-name').value = account.serviceName || '';
+    document.getElementById('username').value = account.accountName || '';
+    document.getElementById('secret-key').value = account.secret || '';
+    document.getElementById('issuer').value = account.issuer || '';
+    document.getElementById('algorithm').value = account.algorithm || 'SHA1';
+    document.getElementById('otp-type').value = account.otpType || 'TOTP';
+    document.getElementById('digits').value = account.digits || 6;
+    document.getElementById('interval').value = account.period || 30;
+    document.getElementById('counter').value = account.counter || 0;
 
-  document.getElementById('submit-btn').innerHTML = '<span class="icon">💾</span> Cập Nhật';
-  document.getElementById('cancel-btn').style.display = 'inline-block';
+    document.getElementById('submit-btn').innerHTML = '<span class="icon">💾</span> Cập Nhật';
+    document.getElementById('cancel-btn').style.display = 'inline-block';
+  } catch (error) {
+    console.error('Failed to load account for editing:', error);
+    showNotification('Không thể tải thông tin tài khoản', 'error');
+  }
 };
 
 // Delete account

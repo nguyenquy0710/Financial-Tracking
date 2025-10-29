@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "FinTrack (Financial Tracking) – Người bạn đồng hành tài chính thông minh - Smart Financial Companion Platform",
   "main": "src/index.js",
+  "private": true,
+  "homepage": "https://fintrack.quyit.id.vn",
   "scripts": {
     "clean": "rimraf dist .tsbuildinfo",
     "copyfiles": "copyfiles -u 1 \"public/**/*\" dist/public/ && copyfiles -u 1 \"views/**/*\" dist/views/",
@@ -40,6 +42,7 @@
     "express": "^4.18.2",
     "express-validator": "^7.0.1",
     "helmet": "^7.1.0",
+    "html5-qrcode": "^2.3.8",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.3",
     "morgan": "^1.10.0",
