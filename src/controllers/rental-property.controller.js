@@ -1,6 +1,5 @@
 const { default: RentalProperty } = require("@/models/rental-property.model");
 const { default: Rental } = require("@/models/rental.model");
-const mongoose = require('mongoose');
 
 /**
  * @desc    Get all rental properties for a user
