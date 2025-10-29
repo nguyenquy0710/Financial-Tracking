@@ -183,25 +183,25 @@
 }
 
 /* Property detail page styles */
-.property-details {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 15px;
-}
-
 .detail-row {
-  padding: 10px 0;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.detail-row:last-child {
-  border-bottom: none;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  height: 100%;
 }
 
 .detail-row strong {
-  display: inline-block;
-  min-width: 180px;
-  color: #2c3e50;
+  display: block;
+  color: #495057;
+  font-size: 0.875rem;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.detail-row br + * {
+  color: #212529;
+  font-size: 1rem;
 }
 
 .btn-info {

@@ -63,57 +63,83 @@ const displayPropertyInfo = () => {
   const container = document.getElementById('property-info');
   
   container.innerHTML = `
-    <div class="property-details">
-      <div class="detail-row">
-        <strong>Mã phòng:</strong> ${property.roomCode}
+    <div class="row g-3">
+      <div class="col-md-6 col-lg-4">
+        <div class="detail-row">
+          <strong>Mã phòng:</strong><br/>${property.roomCode}
+        </div>
       </div>
-      <div class="detail-row">
-        <strong>Tên phòng:</strong> ${property.propertyName}
+      <div class="col-md-6 col-lg-4">
+        <div class="detail-row">
+          <strong>Tên phòng:</strong><br/>${property.propertyName}
+        </div>
       </div>
-      <div class="detail-row">
-        <strong>Địa chỉ:</strong> ${property.address || 'N/A'}
+      <div class="col-md-6 col-lg-4">
+        <div class="detail-row">
+          <strong>Địa chỉ:</strong><br/>${property.address || 'N/A'}
+        </div>
       </div>
-      <div class="detail-row">
-        <strong>Ngày bắt đầu:</strong> ${new Date(property.startDate).toLocaleDateString('vi-VN')}
+      <div class="col-md-6 col-lg-4">
+        <div class="detail-row">
+          <strong>Ngày bắt đầu:</strong><br/>${new Date(property.startDate).toLocaleDateString('vi-VN')}
+        </div>
       </div>
       ${property.endDate ? `
-      <div class="detail-row">
-        <strong>Ngày kết thúc:</strong> ${new Date(property.endDate).toLocaleDateString('vi-VN')}
+      <div class="col-md-6 col-lg-4">
+        <div class="detail-row">
+          <strong>Ngày kết thúc:</strong><br/>${new Date(property.endDate).toLocaleDateString('vi-VN')}
+        </div>
       </div>
       ` : ''}
-      <div class="detail-row">
-        <strong>Trạng thái:</strong> 
-        <span class="badge ${property.isActive ? 'badge-success' : 'badge-secondary'}">
-          ${property.isActive ? 'Đang thuê' : 'Đã trả phòng'}
-        </span>
+      <div class="col-md-6 col-lg-4">
+        <div class="detail-row">
+          <strong>Trạng thái:</strong><br/>
+          <span class="badge ${property.isActive ? 'badge-success' : 'badge-secondary'}">
+            ${property.isActive ? 'Đang thuê' : 'Đã trả phòng'}
+          </span>
+        </div>
       </div>
-      <div class="detail-row">
-        <strong>Tiền nhà:</strong> ${AppSDK.Utility.formatCurrency(property.rentAmount)}/tháng
+      <div class="col-md-6 col-lg-4">
+        <div class="detail-row">
+          <strong>Tiền nhà:</strong><br/>${AppSDK.Utility.formatCurrency(property.rentAmount)}/tháng
+        </div>
       </div>
-      <div class="detail-row">
-        <strong>Chỉ số điện ban đầu:</strong> ${property.initialElectricityReading} kWh (${AppSDK.Utility.formatCurrency(property.electricityRate)}/kWh)
+      <div class="col-md-6 col-lg-4">
+        <div class="detail-row">
+          <strong>Chỉ số điện ban đầu:</strong><br/>${property.initialElectricityReading} kWh (${AppSDK.Utility.formatCurrency(property.electricityRate)}/kWh)
+        </div>
       </div>
-      <div class="detail-row">
-        <strong>Chỉ số nước ban đầu:</strong> ${property.initialWaterReading} m³ (${AppSDK.Utility.formatCurrency(property.waterRate)}/m³)
+      <div class="col-md-6 col-lg-4">
+        <div class="detail-row">
+          <strong>Chỉ số nước ban đầu:</strong><br/>${property.initialWaterReading} m³ (${AppSDK.Utility.formatCurrency(property.waterRate)}/m³)
+        </div>
       </div>
       ${property.internetFee ? `
-      <div class="detail-row">
-        <strong>Phí internet:</strong> ${AppSDK.Utility.formatCurrency(property.internetFee)}/tháng
+      <div class="col-md-6 col-lg-4">
+        <div class="detail-row">
+          <strong>Phí internet:</strong><br/>${AppSDK.Utility.formatCurrency(property.internetFee)}/tháng
+        </div>
       </div>
       ` : ''}
       ${property.parkingFee ? `
-      <div class="detail-row">
-        <strong>Phí gửi xe:</strong> ${AppSDK.Utility.formatCurrency(property.parkingFee)}/tháng
+      <div class="col-md-6 col-lg-4">
+        <div class="detail-row">
+          <strong>Phí gửi xe:</strong><br/>${AppSDK.Utility.formatCurrency(property.parkingFee)}/tháng
+        </div>
       </div>
       ` : ''}
       ${property.garbageFee ? `
-      <div class="detail-row">
-        <strong>Phí rác:</strong> ${AppSDK.Utility.formatCurrency(property.garbageFee)}/tháng
+      <div class="col-md-6 col-lg-4">
+        <div class="detail-row">
+          <strong>Phí rác:</strong><br/>${AppSDK.Utility.formatCurrency(property.garbageFee)}/tháng
+        </div>
       </div>
       ` : ''}
       ${property.notes ? `
-      <div class="detail-row">
-        <strong>Ghi chú:</strong> ${property.notes}
+      <div class="col-12">
+        <div class="detail-row">
+          <strong>Ghi chú:</strong><br/>${property.notes}
+        </div>
       </div>
       ` : ''}
     </div>
