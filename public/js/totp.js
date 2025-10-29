@@ -261,7 +261,7 @@ const fillFormFromQRData = (data) => {
   document.getElementById('secret-key').value = data.secret;
   document.getElementById('issuer').value = data.issuer || '';
   document.getElementById('algorithm').value = data.algorithm || 'SHA1';
-  document.getElementById('otp-type').value = data.type.toLowerCase();
+  document.getElementById('otp-type').value = data.type; // Keep original case (TOTP/HOTP)
   document.getElementById('digits').value = data.digits.toString();
   document.getElementById('interval').value = data.period.toString();
   
@@ -475,9 +475,9 @@ const handleFormSubmit = async () => {
   const issuer = document.getElementById('issuer').value.trim();
   const algorithm = document.getElementById('algorithm').value.trim();
   const otpType = document.getElementById('otp-type').value.trim().toUpperCase();
-  const digits = parseInt(document.getElementById('digits').value, 10);
-  const interval = parseInt(document.getElementById('interval').value, 10);
-  const counter = parseInt(document.getElementById('counter').value, 10);
+  const digits = parseInt(document.getElementById('digits').value, 10) || 6;
+  const interval = parseInt(document.getElementById('interval').value, 10) || 30;
+  const counter = parseInt(document.getElementById('counter').value, 10) || 0;
 
   if (!serviceName || !accountName || !secret) {
     showNotification('Vui lòng điền đầy đủ thông tin', 'error');
@@ -553,7 +553,7 @@ const editAccount = async (accountId) => {
     document.getElementById('secret-key').value = account.secret || '';
     document.getElementById('issuer').value = account.issuer || '';
     document.getElementById('algorithm').value = account.algorithm || 'SHA1';
-    document.getElementById('otp-type').value = (account.otpType || 'TOTP').toLowerCase();
+    document.getElementById('otp-type').value = account.otpType || 'TOTP';
     document.getElementById('digits').value = account.digits || 6;
     document.getElementById('interval').value = account.period || 30;
     document.getElementById('counter').value = account.counter || 0;
