@@ -12,6 +12,7 @@ interface UtilityUsage {
 // 2. Define the Rental document interface
 export interface IRentalModel extends Document {
   userId: mongoose.Types.ObjectId;
+  propertyId?: mongoose.Types.ObjectId; // Reference to RentalProperty
   propertyName: string;
   address?: string;
   month: Date;
@@ -37,6 +38,11 @@ const RentalSchema = new Schema<IRentalModel>(
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: true
+    },
+    propertyId: {
+      type: Schema.Types.ObjectId,
+      ref: 'RentalProperty',
+      required: false
     },
     propertyName: {
       type: String,

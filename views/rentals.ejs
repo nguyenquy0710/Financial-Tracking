@@ -60,13 +60,13 @@
           <!-- Rentals List -->
           <div class="card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-              <h2>Danh sách thuê phòng</h2>
-              <button class="btn btn-primary" onclick="showAddModal()">
-                <span class="icon">➕</span> Thêm mới
+              <h2>Danh sách phòng thuê</h2>
+              <button class="btn btn-primary" onclick="showAddPropertyModal()">
+                <span class="icon">➕</span> Thêm phòng mới
               </button>
             </div>
 
-            <div id="rentals-list" class="table-container">
+            <div id="properties-list" class="table-container">
               <p class="loading">Đang tải dữ liệu...</p>
             </div>
           </div>
@@ -74,48 +74,49 @@
       </main>
   </div>
 
-  <!-- Add/Edit Rental Modal -->
-  <div id="rentalModal" class="modal" style="display: none;">
+  <!-- Add/Edit Property Modal -->
+  <div id="propertyModal" class="modal" style="display: none;">
     <div class="modal-content">
-      <span class="close" onclick="closeRentalModal()">&times;</span>
-      <h2 id="modalTitle">Thêm thuê phòng</h2>
-      <form id="rentalForm">
-        <input type="hidden" id="rentalId">
+      <span class="close" onclick="closePropertyModal()">&times;</span>
+      <h2 id="propertyModalTitle">Thêm phòng thuê</h2>
+      <form id="propertyForm">
+        <input type="hidden" id="propertyId">
+
+        <div class="form-group">
+          <label for="roomCode" class="form-label">Mã phòng *</label>
+          <input type="text" class="form-control" id="roomCode" required placeholder="Ví dụ: P101">
+        </div>
 
         <div class="form-group">
           <label for="propertyName" class="form-label">Tên phòng *</label>
-          <input type="text" class="form-control" id="propertyName" required placeholder="Ví dụ: Phòng A101">
+          <input type="text" class="form-control" id="propertyName" required placeholder="Ví dụ: Phòng trọ 101">
         </div>
 
         <div class="form-group">
           <label for="address" class="form-label">Địa chỉ</label>
-          <input type="text" class="form-control" id="address" placeholder="Ví dụ: 123 Đường ABC">
+          <input type="text" class="form-control" id="address" placeholder="Ví dụ: 123 Đường ABC, Quận XYZ">
         </div>
 
         <div class="form-group">
-          <label for="monthStart" class="form-label">Tháng bắt đầu *</label>
-          <input type="date" class="form-control" id="monthStart" required>
+          <label for="startDate" class="form-label">Ngày bắt đầu thuê *</label>
+          <input type="date" class="form-control" id="startDate" required>
         </div>
 
         <div class="form-group">
-          <label for="rentAmount" class="form-label">Tiền nhà *</label>
+          <label for="rentAmount" class="form-label">Tiền nhà (VND) *</label>
           <input type="number" class="form-control" id="rentAmount" required min="0" step="100000">
         </div>
 
         <div class="form-section">
-          <h3>Điện</h3>
+          <h3>Chỉ số khởi điểm</h3>
           <div class="form-row">
             <div class="form-group">
-              <label for="electricityStart">Chỉ số đầu</label>
-              <input type="number" id="electricityStart" min="0" step="0.01">
-            </div>
-            <div class="form-group" style="display: none">
-              <label for="electricityEnd">Chỉ số cuối</label>
-              <input type="number" id="electricityEnd" min="0" step="0.01">
+              <label for="initialElectricityReading">Điện (kWh) *</label>
+              <input type="number" class="form-control" id="initialElectricityReading" min="0" step="0.01" required>
             </div>
             <div class="form-group">
-              <label for="electricityRate">Đơn giá *</label>
-              <input type="number" id="electricityRate" min="0" step="1000" required>
+              <label for="electricityRate">Đơn giá điện (VND/kWh) *</label>
+              <input type="number" class="form-control" id="electricityRate" min="0" step="100" required>
             </div>
           </div>
         </div>
@@ -124,61 +125,41 @@
           <h3>Nước</h3>
           <div class="form-row">
             <div class="form-group">
-              <label for="waterStart">Chỉ số đầu</label>
-              <input type="number" id="waterStart" min="0" step="0.01">
-            </div>
-            <div class="form-group" style="display: none">
-              <label for="waterEnd">Chỉ số cuối</label>
-              <input type="number" id="waterEnd" min="0" step="0.01">
+              <label for="initialWaterReading">Nước (m³) *</label>
+              <input type="number" class="form-control" id="initialWaterReading" min="0" step="0.01" required>
             </div>
             <div class="form-group">
-              <label for="waterRate">Đơn giá</label>
-              <input type="number" id="waterRate" min="0">
+              <label for="waterRate">Đơn giá nước (VND/m³) *</label>
+              <input type="number" class="form-control" id="waterRate" min="0" step="100" required>
             </div>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label for="internet">Internet</label>
-            <input type="number" id="internet" min="0" value="0">
+            <label for="internetFee">Internet (VND)</label>
+            <input type="number" class="form-control" id="internetFee" min="0" value="0">
           </div>
           <div class="form-group">
-            <label for="parking">Gửi xe</label>
-            <input type="number" id="parking" min="0" value="0">
+            <label for="parkingFee">Gửi xe (VND)</label>
+            <input type="number" class="form-control" id="parkingFee" min="0" value="0">
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
-            <label for="garbage">Rác</label>
-            <input type="number" id="garbage" min="0" value="0">
-          </div>
-          <div class="form-group">
-            <label for="bonus">Phụ thu/Giảm trừ</label>
-            <input type="number" id="bonus" value="0">
+            <label for="garbageFee">Rác (VND)</label>
+            <input type="number" class="form-control" id="garbageFee" min="0" value="0">
           </div>
         </div>
 
         <div class="form-group">
           <label for="notes">Ghi chú</label>
-          <textarea id="notes" rows="3"></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="isPaid">
-            <input type="checkbox" id="isPaid">
-            Đã thanh toán
-          </label>
-        </div>
-
-        <div class="form-group" id="paymentDateGroup" style="display: none;">
-          <label for="paymentDate">Ngày thanh toán</label>
-          <input type="date" id="paymentDate">
+          <textarea class="form-control" id="notes" rows="3"></textarea>
         </div>
 
         <div class="form-actions">
-          <button type="button" class="btn btn-secondary" onclick="closeRentalModal()">Hủy</button>
+          <button type="button" class="btn btn-secondary" onclick="closePropertyModal()">Hủy</button>
           <button type="submit" class="btn btn-primary">Lưu</button>
         </div>
       </form>
