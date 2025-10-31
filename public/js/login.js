@@ -11,7 +11,7 @@ $(document).ready(function () {
 
   // Check if already logged in
   if (localStorage.getItem('authToken')) {
-    window.location.href = `/dashboard?redirectUrl=${redirectUrl ? encodeURIComponent(redirectUrl) : ''}`;
+    window.location.href = `/app/dashboard?redirectUrl=${redirectUrl ? encodeURIComponent(redirectUrl) : ''}`;
     return;
   }
 
@@ -143,7 +143,7 @@ $(document).ready(function () {
         // Add smooth transition effect
         $('body').fadeOut(500, function () {
           // Redirect to dashboard
-          window.location.href = '/dashboard';
+          window.location.href = '/app/dashboard';
         });
       } else {
         throw new Error(response.message || 'Đăng nhập thất bại');

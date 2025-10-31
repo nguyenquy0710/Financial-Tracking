@@ -92,6 +92,7 @@ mode: fintrack
 - ⏳ **Pending**: Controllers, Routes (APIs, Web, Admin), Utils
 
 **Migration Philosophy**:
+
 - Surgical, incremental migration
 - Models first (completed) → Controllers → Routes → Utils
 - Maintain backward compatibility
@@ -242,19 +243,20 @@ Financial-Tracking/
 
 ```typescript
 interface IAllocation {
-  motherGift: number;  // Gửi Mẹ - Tiền gửi gia đình (Custom amount)
-  nec: number;         // 55% - Necessities (Chi phí thiết yếu)
-  ffa: number;         // 10% - Financial Freedom Account (Tự do tài chính)
-  educ: number;        // 10% - Education (Giáo dục)
-  play: number;        // 10% - Play/Entertainment (Giải trí)
-  give: number;        // 7% - Charity/Giving (Từ thiện)
-  lts: number;         // 8% - Long-Term Savings (Tiết kiệm dài hạn)
+  motherGift: number; // Gửi Mẹ - Tiền gửi gia đình (Custom amount)
+  nec: number; // 55% - Necessities (Chi phí thiết yếu)
+  ffa: number; // 10% - Financial Freedom Account (Tự do tài chính)
+  educ: number; // 10% - Education (Giáo dục)
+  play: number; // 10% - Play/Entertainment (Giải trí)
+  give: number; // 7% - Charity/Giving (Từ thiện)
+  lts: number; // 8% - Long-Term Savings (Tiết kiệm dài hạn)
 }
 ```
 
 **Cultural Adaptation**: "Gửi Mẹ" (Mother Gift) is a Vietnamese tradition where working adults contribute to their parents/family. This is treated as a priority allocation before the standard 6 jars percentages.
 
 **Calculation Flow**:
+
 1. Receive monthly salary: 10,000,000 VND
 2. Deduct "Gửi Mẹ": 1,000,000 VND → Remaining: 9,000,000 VND
 3. Apply 6 Jars:
@@ -266,6 +268,7 @@ interface IAllocation {
    - LTS (8%): 720,000 VND
 
 **Implementation** (in `expense.model.ts`):
+
 ```typescript
 static calculateSixJarsAllocation(salary: number) {
   return {
@@ -283,12 +286,14 @@ static calculateSixJarsAllocation(salary: number) {
 ### 2. Financial Tracking Features
 
 #### Income Management
+
 - **Salary Tracking**: Company salary (basic, KPI, projects, OT, bonus)
 - **Freelance Income**: Side projects, gigs
 - **Other Income**: Investments, gifts, etc.
 - **Model**: `salary.model.ts`
 
 #### Expense Management
+
 - **Manual Entry**: Add expenses with category and amount
 - **6 Jars Allocation**: Automatic or manual allocation to jars
 - **Monthly Aggregation**: View spending by month
@@ -296,18 +301,21 @@ static calculateSixJarsAllocation(salary: number) {
 - **Model**: `expense.model.ts`
 
 #### Savings & Investments
+
 - **Savings Goals**: Set and track savings targets
 - **Deposits**: Fixed deposits, savings accounts
 - **Investments**: Track investment performance (FFA jar)
 - **Models**: `saving.model.ts`, `deposit.model.ts`, `goal.model.ts`
 
 #### Budget Management
+
 - **Monthly Budgets**: Set limits per category
 - **Budget vs Actual**: Compare planned vs actual spending
 - **Alerts**: Notifications when approaching limits
 - **Model**: `budget.model.ts`
 
 #### Recurring Bills
+
 - **Auto-tracking**: Rent, utilities, subscriptions
 - **Reminder System**: Payment due dates
 - **Model**: `recurringBill.model.ts`
@@ -315,6 +323,7 @@ static calculateSixJarsAllocation(salary: number) {
 ### 3. Rental Management (NEW Feature)
 
 Track monthly rental expenses including:
+
 - Base rent
 - Electricity charges
 - Water charges
@@ -328,6 +337,7 @@ Track monthly rental expenses including:
 ### 4. Transaction History
 
 Centralized transaction log for all financial activities:
+
 - Income transactions
 - Expense transactions
 - Transfer between accounts
@@ -341,18 +351,18 @@ Centralized transaction log for all financial activities:
 
 ### Migration Status Dashboard
 
-| Layer | Status | Files | Notes |
-|-------|--------|-------|-------|
-| Models | ✅ 100% | 15/15 | All models use IAbsBaseModel |
-| Config | ✅ 100% | 3/3 | config.ts, enums.ts complete |
-| Constants | ✅ 100% | 1/1 | route_prefix.constant.ts |
-| Middleware | 🔄 50% | 2/5 | index.ts, logger.middleware.ts done |
-| Controllers | ⏳ 0% | 0/17 | Pending migration |
-| Routes | 🔄 10% | 2/20 | rental.route.ts, totp.route.ts done |
-| Utils | ⏳ 0% | 0/10 | Pending migration |
-| Domains | 🆕 N/A | - | New architecture layer |
-| Repositories | 🆕 N/A | - | New architecture layer |
-| Plugins | 🔄 50% | 1/2 | softDelete done, auditFields pending |
+| Layer        | Status  | Files | Notes                                |
+| ------------ | ------- | ----- | ------------------------------------ |
+| Models       | ✅ 100% | 15/15 | All models use IAbsBaseModel         |
+| Config       | ✅ 100% | 3/3   | config.ts, enums.ts complete         |
+| Constants    | ✅ 100% | 1/1   | route_prefix.constant.ts             |
+| Middleware   | 🔄 50%  | 2/5   | index.ts, logger.middleware.ts done  |
+| Controllers  | ⏳ 0%   | 0/17  | Pending migration                    |
+| Routes       | 🔄 10%  | 2/20  | rental.route.ts, totp.route.ts done  |
+| Utils        | ⏳ 0%   | 0/10  | Pending migration                    |
+| Domains      | 🆕 N/A  | -     | New architecture layer               |
+| Repositories | 🆕 N/A  | -     | New architecture layer               |
+| Plugins      | 🔄 50%  | 1/2   | softDelete done, auditFields pending |
 
 ### Migration Principles
 
@@ -371,11 +381,11 @@ All models extend this interface:
 
 ```typescript
 export default interface IAbsBaseModel extends Document {
-  createdAt?: Date;        // Automatic timestamp
-  updatedAt?: Date;        // Automatic timestamp
-  createdBy?: Types.ObjectId;  // Audit field (optional)
-  updatedBy?: Types.ObjectId;  // Audit field (optional)
-  isDeleted?: boolean;     // Soft delete flag
+  createdAt?: Date; // Automatic timestamp
+  updatedAt?: Date; // Automatic timestamp
+  createdBy?: Types.ObjectId; // Audit field (optional)
+  updatedBy?: Types.ObjectId; // Audit field (optional)
+  isDeleted?: boolean; // Soft delete flag
 }
 ```
 
@@ -387,10 +397,11 @@ Consistent schema creation:
 export function createBaseSchema<T extends Document = IAbsBaseModel>(
   definition: Record<string, any>,
   options: BaseSchemaOptions = {}
-): Schema<T>
+): Schema<T>;
 ```
 
 **Features**:
+
 - Automatic `timestamps: true`
 - Optional soft delete (`isDeleted` + plugin)
 - Optional audit fields (`createdBy`/`updatedBy` + plugin)
@@ -400,6 +411,7 @@ export function createBaseSchema<T extends Document = IAbsBaseModel>(
 ### Path Aliases
 
 **Configured in `tsconfig.json`**:
+
 ```json
 {
   "compilerOptions": {
@@ -412,6 +424,7 @@ export function createBaseSchema<T extends Document = IAbsBaseModel>(
 ```
 
 **Usage**:
+
 ```typescript
 // ✅ CORRECT
 import { default as User } from '@/models/user.model';
@@ -450,11 +463,13 @@ Controller Access
 **Location**: `src/middleware/authHandler.js`
 
 **Behavior**:
+
 - Expects `Authorization: Bearer <token>` header
 - Returns JSON error responses
 - Status codes: 401 (Unauthorized), 403 (Forbidden)
 
 **Usage**:
+
 ```javascript
 router.get('/api/expenses', apiAuthHandler, getExpenses);
 ```
@@ -464,13 +479,15 @@ router.get('/api/expenses', apiAuthHandler, getExpenses);
 **Location**: `src/middleware/authHandler.js`
 
 **Behavior**:
+
 - Expects JWT in cookie or header
 - Redirects to `/login` on auth failure
 - Sets flash messages for user feedback
 
 **Usage**:
+
 ```javascript
-router.get('/dashboard', webAuthHandler, renderDashboard);
+router.get('/app/dashboard', webAuthHandler, renderDashboard);
 ```
 
 ### JWT Token Structure
@@ -490,6 +507,7 @@ router.get('/dashboard', webAuthHandler, renderDashboard);
 **Model**: `totp.model.ts`
 
 **Features**:
+
 - Time-based One-Time Password (RFC 6238)
 - QR code generation for authenticator apps
 - Encrypted secret storage
@@ -535,13 +553,13 @@ router.get('/dashboard', webAuthHandler, renderDashboard);
 // ⚠️ ORDER MATTERS - Web routes MUST come first!
 
 // 1. Web UI Routes
-app.use(ROUTE_PREFIX.BASE, viewRoutes);           // /
+app.use(ROUTE_PREFIX.BASE, viewRoutes); // /
 
 // 2. Admin Routes
 app.use(ADMIN_ROUTE_PREFIX.BASE, viewAdminRoutes); // /admin
 
 // 3. API Routes
-app.use(API_ROUTE_PREFIX.BASE, apiRoutes);         // /api
+app.use(API_ROUTE_PREFIX.BASE, apiRoutes); // /api
 ```
 
 **Why?** Web routes may have catch-all patterns that conflict with API routes if registered later.
@@ -554,20 +572,20 @@ app.use(API_ROUTE_PREFIX.BASE, apiRoutes);         // /api
 export const ROUTE_PREFIX = {
   BASE: '/',
   AUTH: '/auth',
-  DASHBOARD: '/dashboard',
+  DASHBOARD: '/app/dashboard'
   // ...
 };
 
 export const API_ROUTE_PREFIX = {
   BASE: '/api',
   AUTH: '/api/auth',
-  EXPENSES: '/api/expenses',
+  EXPENSES: '/api/expenses'
   // ...
 };
 
 export const ADMIN_ROUTE_PREFIX = {
   BASE: '/admin',
-  DASHBOARD: '/admin/dashboard',
+  DASHBOARD: '/admin/dashboard'
   // ...
 };
 ```
@@ -575,6 +593,7 @@ export const ADMIN_ROUTE_PREFIX = {
 ### API Response Pattern
 
 **Success Response**:
+
 ```json
 {
   "success": true,
@@ -585,6 +604,7 @@ export const ADMIN_ROUTE_PREFIX = {
 ```
 
 **Error Response**:
+
 ```json
 {
   "success": false,
@@ -602,7 +622,7 @@ exports.someController = async (req, res, next) => {
   try {
     // Business logic
     const result = await Model.find(query);
-    
+
     res.status(200).json({
       success: true,
       data: result
@@ -621,23 +641,23 @@ exports.someController = async (req, res, next) => {
 
 ### Model List & Purposes
 
-| Model | Purpose | Key Features |
-|-------|---------|--------------|
-| `user.model.ts` | User accounts | Auth, profile, preferences |
-| `expense.model.ts` | Expense tracking | 6 Jars allocation, categories |
-| `salary.model.ts` | Income tracking | Company + freelance income |
-| `rental.model.ts` | Rental expenses | Utilities, monthly tracking |
-| `saving.model.ts` | Savings goals | Target amounts, progress |
-| `deposit.model.ts` | Fixed deposits | Interest, maturity tracking |
-| `goal.model.ts` | Financial goals | Target dates, milestones |
-| `transaction.model.ts` | Transaction log | All financial activities |
-| `category.model.ts` | Expense categories | Income/expense types |
-| `budget.model.ts` | Budget planning | Monthly limits, tracking |
-| `recurringBill.model.ts` | Recurring bills | Auto-tracking, reminders |
-| `bankAccount.model.ts` | Bank accounts | Account details, balance |
-| `totp.model.ts` | 2FA TOTP | Secret storage, verification |
-| `systemConfig.model.ts` | System settings | App configuration |
-| `userConfig.model.ts` | User preferences | Language, currency, etc. |
+| Model                    | Purpose            | Key Features                  |
+| ------------------------ | ------------------ | ----------------------------- |
+| `user.model.ts`          | User accounts      | Auth, profile, preferences    |
+| `expense.model.ts`       | Expense tracking   | 6 Jars allocation, categories |
+| `salary.model.ts`        | Income tracking    | Company + freelance income    |
+| `rental.model.ts`        | Rental expenses    | Utilities, monthly tracking   |
+| `saving.model.ts`        | Savings goals      | Target amounts, progress      |
+| `deposit.model.ts`       | Fixed deposits     | Interest, maturity tracking   |
+| `goal.model.ts`          | Financial goals    | Target dates, milestones      |
+| `transaction.model.ts`   | Transaction log    | All financial activities      |
+| `category.model.ts`      | Expense categories | Income/expense types          |
+| `budget.model.ts`        | Budget planning    | Monthly limits, tracking      |
+| `recurringBill.model.ts` | Recurring bills    | Auto-tracking, reminders      |
+| `bankAccount.model.ts`   | Bank accounts      | Account details, balance      |
+| `totp.model.ts`          | 2FA TOTP           | Secret storage, verification  |
+| `systemConfig.model.ts`  | System settings    | App configuration             |
+| `userConfig.model.ts`    | User preferences   | Language, currency, etc.      |
 
 ### Common Model Patterns
 
@@ -667,7 +687,7 @@ expense.updatedBy = req.user._id;
 
 ```typescript
 // Define virtual
-expenseSchema.virtual('monthFormatted').get(function() {
+expenseSchema.virtual('monthFormatted').get(function () {
   return this.month.toISOString().substring(0, 7); // YYYY-MM
 });
 
@@ -679,7 +699,7 @@ const formatted = expense.monthFormatted; // "2024-10"
 
 ```typescript
 // Define static
-expenseSchema.statics.findByMonth = function(userId, month) {
+expenseSchema.statics.findByMonth = function (userId, month) {
   return this.find({ userId, month }).sort({ createdAt: -1 });
 };
 
@@ -691,7 +711,7 @@ const expenses = await Expense.findByMonth(userId, new Date('2024-10-01'));
 
 ```typescript
 // Define instance method
-expenseSchema.methods.applySixJarSystem = function() {
+expenseSchema.methods.applySixJarSystem = function () {
   this.allocation = calculateAllocation(this.previousMonthSalary);
   return this.save();
 };
@@ -714,10 +734,9 @@ expenseSchema.index({ userId: 1, category: 1 });
 
 ```javascript
 const connectDB = async () => {
-  const uri = process.env.NODE_ENV === 'test'
-    ? process.env.MONGODB_URI_TEST
-    : process.env.MONGODB_URI;
-  
+  const uri =
+    process.env.NODE_ENV === 'test' ? process.env.MONGODB_URI_TEST : process.env.MONGODB_URI;
+
   await mongoose.connect(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -788,6 +807,7 @@ npm run format          # Prettier format
 **Command**: `npm run dev`
 
 **Behavior**:
+
 - Uses `ts-node` for TypeScript execution without compilation
 - Uses `tsconfig-paths/register` for `@/` alias support
 - Watches `src/` for changes (`.js`, `.ts`, `.json`)
@@ -801,6 +821,7 @@ npm run format          # Prettier format
 **File**: `.env` (gitignored, copy from `.env.example`)
 
 **Key Variables**:
+
 ```env
 # Server
 NODE_ENV=development
@@ -833,6 +854,7 @@ LOG_LEVEL=info
 ### Test Framework
 
 **Libraries**:
+
 - Jest: Test runner, assertions, mocking
 - Supertest: HTTP assertion library
 - MongoDB Memory Server: In-memory database (optional)
@@ -858,6 +880,7 @@ module.exports = {
 **Location**: `tests/`
 
 **Files**:
+
 - `auth.test.js` - Authentication flows
 - `expense.test.js` - Expense management
 - `salary.test.js` - Salary tracking
@@ -880,7 +903,7 @@ describe('Expense API', () => {
       email: 'test@example.com',
       password: 'password123'
     });
-    
+
     // Get auth token
     const res = await request(app)
       .post('/api/auth/login')
@@ -949,6 +972,7 @@ it('should fetch data from MISA', async () => {
 **Cloudflare Turnstile**: Verification skipped when `NODE_ENV=test`
 
 **Test Command**:
+
 ```bash
 NODE_ENV=test npm test
 ```
@@ -962,22 +986,26 @@ NODE_ENV=test npm test
 **Purpose**: Sync transactions from MISA Money Keeper app
 
 **Files**:
+
 - Controller: `src/controllers/misa.controller.js`
 - Routes: `src/routes/apis/misa.route.js`
 - Tests: `tests/misa.test.js`
 
 **API Endpoints**:
+
 - `POST /api/misa/auth` - Authenticate with MISA
 - `GET /api/misa/transactions` - Fetch transactions
 - `POST /api/misa/import` - Import transactions to FinTrack
 
 **Authentication Flow**:
+
 1. User provides MISA credentials
 2. FinTrack exchanges for MISA access token
 3. Token stored encrypted in user config
 4. Used for subsequent API calls
 
 **Data Mapping**:
+
 ```javascript
 {
   misaTransaction: {
@@ -1004,17 +1032,20 @@ NODE_ENV=test npm test
 **Library**: `xlsx`
 
 **Files**:
+
 - Controller: `src/controllers/excel.controller.js`
 - Routes: `src/routes/apis/excel.route.js`
 - Parser: `src/utils/excelParser.js`
 
 **Supported Sheets**:
+
 - Rental expenses
 - Salary data
 - Expense transactions
 - Budget planning
 
 **Import Flow**:
+
 1. User uploads Excel file (.xlsx, .xls)
 2. Server parses sheets using `xlsx`
 3. Validates data against model schemas
@@ -1022,6 +1053,7 @@ NODE_ENV=test npm test
 5. Returns import summary (success/fail counts)
 
 **Export Flow**:
+
 1. User requests export (date range, filters)
 2. Server queries data from MongoDB
 3. Formats data for Excel (headers, formatting)
@@ -1029,21 +1061,22 @@ NODE_ENV=test npm test
 5. Returns file download
 
 **Example Parser**:
+
 ```javascript
 function parseRentalSheet(worksheet) {
   const data = [];
   const range = XLSX.utils.decode_range(worksheet['!ref']);
-  
+
   for (let row = 1; row <= range.e.r; row++) {
     data.push({
       month: getCellValue(worksheet, row, 0),
       baseRent: getCellValue(worksheet, row, 1),
       electricity: getCellValue(worksheet, row, 2),
-      water: getCellValue(worksheet, row, 3),
+      water: getCellValue(worksheet, row, 3)
       // ...
     });
   }
-  
+
   return data;
 }
 ```
@@ -1055,11 +1088,13 @@ function parseRentalSheet(worksheet) {
 **Library**: `vietqr`
 
 **Use Cases**:
+
 - Receive payments
 - Rental payment reminders
 - Peer-to-peer transfers
 
 **Example**:
+
 ```javascript
 const vietQR = require('vietqr');
 
@@ -1091,7 +1126,7 @@ try {
 // Error Handler Middleware
 module.exports = (err, req, res, next) => {
   const statusCode = err.statusCode || 500;
-  
+
   res.status(statusCode).json({
     success: false,
     error: err.message,
@@ -1105,6 +1140,7 @@ module.exports = (err, req, res, next) => {
 **Library**: `express-validator`
 
 **Pattern**:
+
 ```javascript
 // Route
 router.post(
@@ -1131,20 +1167,21 @@ exports.validate = (req, res, next) => {
 ### 3. Pagination
 
 **Pattern**:
+
 ```javascript
 exports.getExpenses = async (req, res, next) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
-    
+
     const expenses = await Expense.find({ userId: req.user.id })
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
-    
+
     const total = await Expense.countDocuments({ userId: req.user.id });
-    
+
     res.json({
       success: true,
       data: expenses,
@@ -1168,6 +1205,7 @@ exports.getExpenses = async (req, res, next) => {
 **Configuration**: `src/utils/logger.js`
 
 **Usage**:
+
 ```javascript
 const { logger } = require('@/utils/logger');
 
@@ -1177,6 +1215,7 @@ logger.warn('High expense detected', { amount: expense.totalAmount });
 ```
 
 **Log Files**:
+
 - `logs/access.log` - HTTP access logs (Morgan)
 - `logs/error.log` - Error logs
 - `logs/combined.log` - All logs
@@ -1191,6 +1230,7 @@ logger.warn('High expense detected', { amount: expense.totalAmount });
 **Access**: `http://localhost:3000/api-docs`
 
 **JSDoc Example**:
+
 ```javascript
 /**
  * @swagger
@@ -1223,6 +1263,7 @@ logger.warn('High expense detected', { amount: expense.totalAmount });
 **Cause**: Path aliases not resolving
 
 **Solution**:
+
 ```bash
 # Development
 npm run dev  # Uses tsconfig-paths/register
@@ -1235,6 +1276,7 @@ npm start
 #### 2. "Route not found" - API endpoint returns 404
 
 **Check**:
+
 1. Route registration order in `src/index.js`
    - Web routes before API routes?
 2. Route prefix in constants
@@ -1243,6 +1285,7 @@ npm start
 #### 3. "Unauthorized" - Auth always fails
 
 **Check**:
+
 1. Using correct auth handler?
    - `apiAuthHandler` for API
    - `webAuthHandler` for Web UI
@@ -1253,6 +1296,7 @@ npm start
 #### 4. "Build fails" - TypeScript compilation errors
 
 **Check**:
+
 1. Path aliases configured in `tsconfig.json`?
 2. Missing type definitions?
    ```bash
@@ -1263,6 +1307,7 @@ npm start
 #### 5. "Tests fail" - Database connection errors
 
 **Check**:
+
 1. `MONGODB_URI_TEST` in `.env`?
 2. MongoDB running?
 3. Test database cleanup in `afterEach`?
@@ -1272,6 +1317,7 @@ npm start
 **Cause**: Missing auth middleware
 
 **Solution**:
+
 ```javascript
 // Add auth middleware before controller
 router.get('/expenses', apiAuthHandler, getExpenses);
@@ -1281,6 +1327,7 @@ router.get('/expenses', apiAuthHandler, getExpenses);
 #### 7. "Database initialization fails"
 
 **Check**:
+
 1. Did you build first?
    ```bash
    npm run build
@@ -1292,6 +1339,7 @@ router.get('/expenses', apiAuthHandler, getExpenses);
 #### 8. "MISA integration not working"
 
 **Check**:
+
 1. `MISA_BASE_URL` and `MISA_AUTH_URL` in `.env`?
 2. MISA credentials valid?
 3. Network access to MISA API?
@@ -1300,6 +1348,7 @@ router.get('/expenses', apiAuthHandler, getExpenses);
 #### 9. "Excel import fails"
 
 **Check**:
+
 1. File format (.xlsx, .xls)?
 2. Sheet names match expected (e.g., "Rental", "Salary")?
 3. Column headers match parser expectations?
@@ -1308,6 +1357,7 @@ router.get('/expenses', apiAuthHandler, getExpenses);
 #### 10. "6 Jars allocation incorrect"
 
 **Check**:
+
 1. `previousMonthSalary` set correctly?
 2. Percentages: NEC 55%, FFA 10%, EDUC 10%, PLAY 10%, GIVE 7%, LTS 8%
 3. `motherGift` set manually (not auto-calculated)

@@ -12,6 +12,7 @@ chăm
 chẩn
 chấp
 chạy
+chép
 chiếm
 chiếu
 chính
@@ -32,6 +33,7 @@ dạng
 danh
 dịch
 đích
+diện
 điện
 điều
 đính

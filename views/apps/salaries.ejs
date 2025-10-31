@@ -1,4 +1,4 @@
-<%- include('partials/header', { title: 'Lương' , additionalCSS: ['/css/dashboard.css'] }) %>
+<%- include('partials/header', { title: 'Lương' , additionalCSS: [''] }) %>
   <div class="app-container">
     <%- include('partials/sidebar', { currentPage: 'salaries' }) %>
 
@@ -86,7 +86,7 @@
       </div>
       <form id="salaryForm">
         <input type="hidden" id="salaryId" />
-        
+
         <div class="form-group">
           <label for="month">Tháng:</label>
           <input type="month" id="month" required />
@@ -197,7 +197,7 @@
       width: 100%;
       height: 100%;
       overflow: auto;
-      background-color: rgba(0,0,0,0.4);
+      background-color: rgba(0, 0, 0, 0.4);
     }
 
     .modal-content {
@@ -326,11 +326,13 @@
       margin: 15px 0;
     }
 
-    .misa-login-section, .misa-search-section {
+    .misa-login-section,
+    .misa-search-section {
       display: none;
     }
 
-    .misa-login-section.active, .misa-search-section.active {
+    .misa-login-section.active,
+    .misa-search-section.active {
       display: block;
     }
   </style>

@@ -143,7 +143,7 @@ Server sẽ chạy tại / Server will run at: `http://localhost:3000`
 **FinTrack** sử dụng kiến trúc MVC (Model-View-Controller) với Express.js và EJS template engine:
 
 - **API Routes** (`/api/*`): RESTful API endpoints for programmatic access
-- **Web UI Routes** (`/`, `/login`, `/dashboard`, etc.): Server-side rendered pages using EJS templates
+- **Web UI Routes** (`/`, `/login`, `/app/dashboard`, etc.): Server-side rendered pages using EJS templates
 - **Static Assets**: CSS, JavaScript, and images served from the `public` directory
 - **Template Engine**: EJS for dynamic server-side HTML rendering
 

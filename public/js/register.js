@@ -1,14 +1,14 @@
 // Register page JavaScript with jQuery
 
 // Turnstile callback
-window.onTurnstileSuccess = function(token) {
+window.onTurnstileSuccess = function (token) {
   console.log('Turnstile verification successful');
 };
 
 $(document).ready(function () {
   // Check if already logged in
   if (localStorage.getItem('authToken')) {
-    window.location.href = '/dashboard';
+    window.location.href = '/app/dashboard';
     return;
   }
 
@@ -188,7 +188,7 @@ $(document).ready(function () {
         // Add smooth transition effect
         $('body').fadeOut(500, function () {
           // Redirect to dashboard
-          window.location.href = '/dashboard';
+          window.location.href = '/app/dashboard';
         });
       } else {
         throw new Error(response.message || 'Đăng ký thất bại');
