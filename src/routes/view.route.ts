@@ -82,15 +82,4 @@ viewRoutes.get(ROUTE_PREFIX.AUTH.WEB_PAGE.REGISTER, (req, res) => {
   });
 });
 
-// Forgot Password page - allows users to request a password reset
-viewRoutes.get(ROUTE_PREFIX.AUTH.WEB_PAGE.FORGOT_PASSWORD, (req, res) => {
-  res.render('forgot-password', {
-    title: 'Quên mật khẩu',
-    currentPage: 'forgot-password',
-    turnstile: {
-      siteKey: config.turnstile.siteKey || ''
-    },
-  });
-});
-
 export default viewRoutes;

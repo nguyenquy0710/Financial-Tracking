@@ -15,7 +15,7 @@ totpRoute.use(webAuthHandler);
 totpRoute.get(TOTP_PREFIX.WEB_PAGE.INDEX, (req: Request, res: Response) => {
   const { query, headers } = req;
 
-  res.render('totp', {
+  res.render('apps/totp', {
     title: 'Xác thực 2 yếu tố (TOTP)',
     currentPage: CURRENT_PAGE
   });

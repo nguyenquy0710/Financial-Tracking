@@ -24,7 +24,7 @@ viewAppRoutes.get('/', (req: Request, res: Response) => {
 // GET: /app/dashboard
 // Dashboard and main app pages
 viewAppRoutes.get('/dashboard', (req: Request, res: Response) => {
-  res.render('dashboard', {
+  res.render('apps/dashboard', {
     title: 'Dashboard',
     currentPage: 'dashboard'
   });
@@ -37,49 +37,49 @@ viewAppRoutes.use(APP_ROUTE_PREFIX.RENTAL.BASE, rentalRoute); // e.g., /rentals/
 viewAppRoutes.use(APP_ROUTE_PREFIX.TOTP.BASE, totpRoute); // e.g., /totp/*
 
 viewAppRoutes.get('/salaries', (req: Request, res: Response) => {
-  res.render('salaries', {
+  res.render('apps/salaries', {
     title: 'Lương',
     currentPage: 'salaries'
   });
 });
 
 viewAppRoutes.get('/expenses', (req: Request, res: Response) => {
-  res.render('expenses', {
+  res.render('apps/expenses', {
     title: 'Chi tiêu',
     currentPage: 'expenses'
   });
 });
 
 viewAppRoutes.get('/savings', (req: Request, res: Response) => {
-  res.render('savings', {
+  res.render('apps/savings', {
     title: 'Tiết kiệm',
     currentPage: 'savings'
   });
 });
 
 viewAppRoutes.get('/deposits', (req: Request, res: Response) => {
-  res.render('deposits', {
+  res.render('apps/deposits', {
     title: 'Tiền gửi',
     currentPage: 'deposits'
   });
 });
 
 viewAppRoutes.get('/recurring-bills', (req: Request, res: Response) => {
-  res.render('recurring-bills', {
+  res.render('apps/recurring-bills', {
     title: 'Hóa đơn định kỳ',
     currentPage: 'recurring-bills'
   });
 });
 
 viewAppRoutes.get('/excel', (req, res) => {
-  res.render('excel', {
+  res.render('apps/excel', {
     title: 'Excel Import/Export',
     currentPage: 'excel'
   });
 });
 
 viewAppRoutes.get('/settings', (req, res) => {
-  res.render('settings', {
+  res.render('apps/settings', {
     title: 'Cài đặt',
     currentPage: 'settings'
   });

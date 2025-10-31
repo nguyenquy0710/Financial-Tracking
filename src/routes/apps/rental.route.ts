@@ -19,7 +19,7 @@ rentalRoute.use(webAuthHandler);
 // GET: /rentals
 // Render the rentals page listing all rentals.
 rentalRoute.get(RENTAL_PREFIX.WEB_PAGE.INDEX, (req: Request, res: Response) => {
-  res.render('rentals', {
+  res.render('apps/rentals', {
     title: 'Thuê phòng',
     currentPage: CURRENT_PAGE
   });
@@ -34,7 +34,7 @@ rentalRoute.get(RENTAL_PREFIX.WEB_PAGE.DETAIL, async (req: Request, res: Respons
   // In a real application, you might want to fetch rental details from the database here
   const rental = await rentalDomain.getRentalById(rentalId);
 
-  res.render('rental-detail', {
+  res.render('apps/rental-detail', {
     title: 'Chi tiết thuê phòng',
     currentPage: CURRENT_PAGE,
     rentalId: rentalId,
