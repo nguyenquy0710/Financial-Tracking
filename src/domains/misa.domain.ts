@@ -1,10 +1,10 @@
 import Salary from '@/models/salary.model';
-import config from '../config/config';
+import configApp from '../config/config';
 
 import { ImportResult, MisaLoginResponse, MisaResponse, MisaTransaction } from './misa.response.models';
 import Expense from '@/models/expense.model';
 
-const MISA_CONFIG = config.externalAPIs.misa;
+const MISA_CONFIG = configApp.externalAPIs.misa;
 
 /**
  * Helper function to make HTTP requests to MISA API endpoints

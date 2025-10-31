@@ -19,6 +19,7 @@ const { default: customMiddleware } = require('./middleware');
 
 // Import routes modules
 const { ROUTE_PREFIX, API_ROUTE_PREFIX } = require('./constants/route_prefix.constant');
+const { X_REQUEST_ID, X_DEVICE_ID } = require('./constants/app_key_config.constant');
 const { default: viewRoutes } = require('./routes/view.route');
 
 // Initialize app
@@ -27,10 +28,13 @@ const app = express();
 // Set view engine
 app.set('view engine', 'ejs');
 app.set('views', './views');
+app.set('trust proxy', true); // Trust proxy headers (if behind a proxy)
 
+// ================ Database Connection ================ //
 // Connect to database
 connectDB();
 
+// ================ Middleware Setup ================ //
 // Middleware
 // app.use(helmet({
 //   contentSecurityPolicy: {
@@ -77,13 +81,17 @@ app.use(
 app.use(express.json()); // Parse JSON
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded
 app.use(cookieParser()); // Parse cookies
-app.use(customMiddleware); // <-- middleware ở đây
+app.use(customMiddleware()); // <-- middleware ở đây
 
-// Serve static files
+// ================ Static Files ================ //
+// Serve static files from 'public' directory
 app.use(express.static('public'));
 
 // ================ Logging ================ //
 // ⚙️ Kích hoạt Morgan với luồng ghi log xoay
+morgan.token('deviceId', (req) => req.headers?.[X_DEVICE_ID] || '-');
+morgan.token('requestId', (req) => req.headers?.[X_REQUEST_ID] || req.requestId || '-');
+
 if (config.server.env === 'development') {
   // In log ra console + ghi vào file access.log
   app.use(morgan('dev', { stream: morganAccessStream }));

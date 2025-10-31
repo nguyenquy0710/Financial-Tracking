@@ -8,21 +8,19 @@ const registry = new FinalizationRegistry<string>((className) => {
 });
 
 /**
- * Abstract Base Domain Class for all domain classes to extend.
- * Provides common functionality such as logging and cleanup.
- * Uses FinalizationRegistry to handle automatic cleanup when instances are garbage collected.
+ * Abstract Base Domain Class
  * @abstract
  * @class AbsBaseDomain
- *  @extends {WinstonLogger} for logging capabilities
- *  @uses {FinalizationRegistry} for automatic cleanup on garbage collection
- *  @example
- *  class MyDomain extends AbsBaseDomain {
- *    constructor() {
+ * @extends {WinstonLogger} for logging capabilities
+ * @uses {FinalizationRegistry} for automatic cleanup on garbage collection
+ * @example
+ * class MyDomain extends AbsBaseDomain {
+ *   constructor() {
  *     super();
  *   }
  *   protected onDestroy(): void {
- *    this.logger.info("MyDomain cleaned up resources");
- *  }
+ *     this.logger.info("MyDomain cleaned up resources");
+ *   }
  * }
  * @note Remember to call super() in the constructor of derived classes.
  * @note Override onDestroy() in derived classes to add custom cleanup logic.
@@ -55,7 +53,7 @@ export default abstract class AbsBaseDomain {
     registry.register(this, className);
 
     // Log khi khởi tạo domain
-    this.logger.info(`${className} initialized`);
+    // this.logger.info(`${className} initialized`);
   }
 
   /**

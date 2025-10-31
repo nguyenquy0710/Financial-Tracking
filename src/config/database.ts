@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
-import config from "./config";
+import configApp from "./config";
 
 // Function to connect to MongoDB using Mongoose
 export const connectDB = async () => {
   try {
-    const mongoURI = config.database.uri || process.env['MONGODB_URI'] || 'mongodb://localhost:27017/fintrack';
+    const mongoURI = configApp.database.uri || process.env['MONGODB_URI'] || 'mongodb://localhost:27017/fintrack';
     console.log('🚀 QuyNH: connectDB -> mongoURI', mongoURI);
 
     const options: any = {

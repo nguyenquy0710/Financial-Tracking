@@ -36,7 +36,7 @@ const apiAuthHandler = async (req, res, next) => {
 
     // Add user to request
     req.user = user;
-    req.userId = user._id;
+    req.userId = user['id'] || user._id;
 
     next();
   } catch (error) {

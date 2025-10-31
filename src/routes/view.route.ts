@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 
-import config from '@/config/config';
+import configApp from '@/config/config';
 import { ADMIN_ROUTE_PREFIX, API_ROUTE_PREFIX, APP_ROUTE_PREFIX, ROUTE_PREFIX } from '@/constants/route_prefix.constant';
 import { X_DEVICE_ID } from '@/constants/app_key_config.constant';
 import viewAppRoutes from './apps/view.route';
@@ -40,7 +40,7 @@ viewRoutes.get(ROUTE_PREFIX.CHANGELOG.BASE, (req: Request, res: Response) => {
     title: 'Nhật ký phát triển',
     currentPage: 'changelog',
     turnstile: {
-      siteKey: config.turnstile.siteKey || ''
+      siteKey: configApp.turnstile.siteKey || ''
     }
   });
 });
@@ -69,8 +69,8 @@ viewRoutes.get('/appInfo', (req: Request, res: Response) => {
   res.json({
     success: true,
     deviceId: deviceId,
-    appVersion: config.app.version,
-    buildNumber: config.app.buildNumber,
+    appVersion: configApp.app.version,
+    buildNumber: configApp.app.buildNumber,
     menuBar: [
       { name: 'home', label: 'Trang chủ', link: '/' },
       { name: ROUTE_PREFIX.CHANGELOG.MENU_NAME, label: 'Nhật ký phát triển', link: ROUTE_PREFIX.CHANGELOG.BASE },
@@ -105,7 +105,7 @@ viewRoutes.get(ROUTE_PREFIX.AUTH.WEB_PAGE.LOGIN, (req: Request, res: Response) =
       user: { email, password }
     },
     turnstile: {
-      siteKey: config.turnstile.siteKey || ''
+      siteKey: configApp.turnstile.siteKey || ''
     },
   });
 });
@@ -116,7 +116,7 @@ viewRoutes.get(ROUTE_PREFIX.AUTH.WEB_PAGE.REGISTER, (req: Request, res: Response
     title: 'Đăng ký',
     currentPage: 'register',
     turnstile: {
-      siteKey: config.turnstile.siteKey || ''
+      siteKey: configApp.turnstile.siteKey || ''
     },
   });
 });
