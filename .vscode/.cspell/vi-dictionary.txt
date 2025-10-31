@@ -1,5 +1,6 @@
 # Custom Dictionary Words
 bằng
+Bảng
 biến
 biết
 biểu
@@ -71,6 +72,7 @@ khách
 khai
 khảo
 khẩu
+khiển
 khóa
 khoản
 Khoảng

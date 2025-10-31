@@ -5,6 +5,7 @@ export const config = {
   app: {
     name: process.env.APP_NAME || 'FinTrack',
     version: process.env.APP_VERSION || '1.0.0',
+    buildNumber: process.env.BUILD_NUMBER || '100',
     description:
       process.env.APP_DESCRIPTION ||
       'FinTrack (Financial Tracking) – Người bạn đồng hành tài chính thông minh - Smart Financial Companion Platform',

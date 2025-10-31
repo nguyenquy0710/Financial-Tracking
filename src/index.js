@@ -4,6 +4,7 @@ const cors = require('cors');
 // const helmet = require('helmet');
 const morgan = require('morgan');
 const compression = require('compression');
+const cookieParser = require('cookie-parser');
 const swaggerUi = require('swagger-ui-express');
 
 // Import configuration and utilities
@@ -75,6 +76,7 @@ app.use(
 ); // Compress responses
 app.use(express.json()); // Parse JSON
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded
+app.use(cookieParser()); // Parse cookies
 app.use(customMiddleware); // <-- middleware ở đây
 
 // Serve static files
