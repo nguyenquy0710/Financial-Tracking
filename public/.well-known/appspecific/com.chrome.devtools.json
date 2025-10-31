@@ -1,0 +1,39 @@
+{
+  "version": "1.0",
+  "appName": "FinTrack DevTools",
+  "updateURL": "https://example.com/fintrack/devtools/updates.json",
+  "supportURL": "https://example.com/fintrack/devtools/support",
+  "license": "MIT",
+  "author": "FinTrack Team",
+  "devtools": {
+    "remoteDebugging": {
+      "enabled": false,
+      "port": 9222
+    },
+    "protocol": "chrome",
+    "features": [
+      "console",
+      "elements",
+      "network",
+      "sources",
+      "performance",
+      "memory",
+      "application",
+      "security",
+      "audits"
+    ]
+  },
+  "permissions": {
+    "networkAccess": true,
+    "fileSystemAccess": false
+  },
+  "settings": {
+    "theme": "dark",
+    "fontSize": 14,
+    "showLineNumbers": true
+  },
+  "shortcuts": {
+    "openDevTools": "Ctrl+Shift+I",
+    "reloadApp": "Ctrl+R"
+  }
+}
