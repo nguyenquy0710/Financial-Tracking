@@ -1,7 +1,9 @@
-const express = require('express');
-const apiRoutes = express.Router();
+import express, { Request, Response, NextFunction } from 'express';
 
-const { API_ROUTE_PREFIX } = require('@/constants/route_prefix.constant');
+import { API_ROUTE_PREFIX } from '@/constants/route_prefix.constant';
+
+// Create a router for API routes
+const apiRoutes = express.Router();
 
 // Import custom middleware
 // const authHandler = require('./../../middleware/auth');
@@ -46,4 +48,4 @@ apiRoutes.use('/bank-accounts', bankAccountRoutes);
 apiRoutes.use('/system-config', userConfigRoutes);
 apiRoutes.use('/totp', totpRoutes);
 
-module.exports = apiRoutes;
+export default apiRoutes;

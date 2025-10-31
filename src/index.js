@@ -3,7 +3,6 @@ const express = require('express');
 const cors = require('cors');
 // const helmet = require('helmet');
 const morgan = require('morgan');
-const path = require('path');
 const compression = require('compression');
 const swaggerUi = require('swagger-ui-express');
 
@@ -18,10 +17,8 @@ const errorHandler = require('./middleware/errorHandler');
 const { default: customMiddleware } = require('./middleware');
 
 // Import routes modules
-const { ADMIN_ROUTE_PREFIX, ROUTE_PREFIX, API_ROUTE_PREFIX } = require('./constants/route_prefix.constant');
-const apiRoutes = require('./routes/apis/api.route');
-const viewRoutes = require('./routes/view.route');
-const viewAdminRoutes = require('./routes/admin/view.route');
+const { ROUTE_PREFIX, API_ROUTE_PREFIX } = require('./constants/route_prefix.constant');
+const { default: viewRoutes } = require('./routes/view.route');
 
 // Initialize app
 const app = express();
@@ -95,10 +92,6 @@ if (config.server.env === 'development') {
 
 // ================ Web App Routes ================ //
 app.use(ROUTE_PREFIX.BASE, viewRoutes); // Main web app routes (removed welcome route)
-app.use(ADMIN_ROUTE_PREFIX.BASE, viewAdminRoutes); // Admin web app routes
-
-// ================ API Routes ================ //
-app.use(API_ROUTE_PREFIX.BASE, apiRoutes); // General API routes like auth, users, profile etc.
 
 // ================ Swagger Documentation ================ //
 app.use(
@@ -117,11 +110,6 @@ app.get(API_ROUTE_PREFIX.SWAGGER_JSON, (req, res) => {
 });
 
 // ================ Additional Routes ================ //
-// Serve CHANGELOG.md file
-app.get('/CHANGELOG.md', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'CHANGELOG.md'));
-});
-
 // Health check
 app.get('/health', (req, res) => {
   res.json({
