@@ -8,8 +8,8 @@ const swaggerUi = require('swagger-ui-express');
 
 // Import configuration and utilities
 const { default: config } = require('./config/config');
+const { default: connectDB } = require('./config/database');
 const swaggerSpec = require('./config/swagger');
-const connectDB = require('./config/database');
 const { morganAccessStream } = require('./utils/logger');
 
 // Import custom middleware

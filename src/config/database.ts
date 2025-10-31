@@ -1,11 +1,13 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
+import config from "./config";
 
-const connectDB = async () => {
+// Function to connect to MongoDB using Mongoose
+export const connectDB = async () => {
   try {
-    const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/fintrack';
+    const mongoURI = config.database.uri || process.env['MONGODB_URI'] || 'mongodb://localhost:27017/fintrack';
     console.log('🚀 QuyNH: connectDB -> mongoURI', mongoURI);
 
-    const options = {
+    const options: any = {
       useNewUrlParser: true,
       useUnifiedTopology: true
     };
@@ -14,18 +16,18 @@ const connectDB = async () => {
 
     console.log('✅ MongoDB connected successfully');
 
-    mongoose.connection.on('error', err => {
+    mongoose.connection.on('error', (err: any) => {
       console.error('❌ MongoDB connection error:', err);
     });
 
     mongoose.connection.on('disconnected', () => {
       console.log('⚠️  MongoDB disconnected');
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('❌ MongoDB connection failed:', error.message);
     console.log('⚠️  Server will continue without database. API endpoints will not work.');
     // Don't exit - allow server to serve static files
   }
 };
 
-module.exports = connectDB;
+export default connectDB;

@@ -37,6 +37,7 @@ dịch
 định
 đoán
 đoạn
+dòng
 đóng
 đồng
 động
