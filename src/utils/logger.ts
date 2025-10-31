@@ -77,7 +77,7 @@ export const createLogger = (
         format: winston.format.combine(
           winston.format.colorize(),
           winston.format.printf((info: any) => {
-            console.log("🚀 QuyNH: info", info)
+            // console.log("🚀 QuyNH: info", info)
             const { timestamp, level, message, label, requestId, userId, ...rest } = info || {};
 
             // Thêm các thông tin bổ sung nếu có

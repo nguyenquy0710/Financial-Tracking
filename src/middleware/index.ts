@@ -7,7 +7,7 @@ import { X_DEVICE_ID, X_REQUEST_ID } from "@/constants/app_key_config.constant";
 
 /**
  * Custom Middleware
- * @param opts Options for middleware configuration (hiện chưa dùng)
+ * @param {*} opts Options for middleware configuration (hiện chưa dùng)
  * @returns express.Router instance with middleware applied
  */
 export default function customMiddleware(opts: any): express.Router {
@@ -15,10 +15,26 @@ export default function customMiddleware(opts: any): express.Router {
 
   // Middleware thêm header X_REQUEST_ID và X-Powered-By
   router.use((req, res, next) => {
-    req.headers[X_REQUEST_ID] = uuidv4().split("-")[0];
 
-    (req as any).requestId = req.headers[X_REQUEST_ID];
-    (req as any).deviceId = req.headers[X_DEVICE_ID] || req.cookies[X_DEVICE_ID] || '';
+    // Check for existing device ID in headers or cookies
+    let deviceId = req.headers[X_DEVICE_ID] || req.cookies[X_DEVICE_ID] || '';
+    if (!deviceId) {
+      // Generate a simple random device ID (for demonstration purposes)
+      deviceId = 'device-' + Math.random().toString(36).substr(2, 9) + Math.random().toString(36).substr(2, 9);
+      // Set device ID in cookie for future requests
+      res.cookie(X_DEVICE_ID, deviceId, { httpOnly: true, maxAge: 31536000000 }); // 1 year
+    }
+
+    // Thêm X_REQUEST_ID nếu chưa có
+    let requestId = req.headers[X_REQUEST_ID] || '';
+    if (!requestId) {
+      requestId = uuidv4().split("-")[0];
+      req.headers[X_REQUEST_ID] = requestId;
+    }
+
+    // Gán requestId và deviceId vào req để sử dụng trong các middleware hoặc route handler khác
+    (req as any).requestId = requestId;
+    (req as any).deviceId = deviceId;
 
     res.setHeader('X-Powered-By', configApp.app?.name || 'FinTrack');
 

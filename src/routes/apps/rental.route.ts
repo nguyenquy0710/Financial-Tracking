@@ -1,9 +1,9 @@
 import express, { Request, Response } from 'express';
 const rentalRoute = express.Router();
 
-import { webAuthHandler } from '../../middleware/authHandler';
 import { rentalDomain } from '@/domains/rental.domain';
 import { APP_ROUTE_PREFIX } from '@/constants/route_prefix.constant';
+import { webAuthHandler } from '@/middleware/authHandler';
 
 const { RENTAL: RENTAL_PREFIX } = APP_ROUTE_PREFIX;
 const CURRENT_PAGE = RENTAL_PREFIX.MENU_NAME; // 'Rentals'

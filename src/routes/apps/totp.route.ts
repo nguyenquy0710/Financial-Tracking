@@ -1,8 +1,8 @@
 import express, { Request, Response, NextFunction } from 'express';
 const totpRoute = express.Router();
 
-import { webAuthHandler } from '../../middleware/authHandler';
 import { APP_ROUTE_PREFIX } from '@/constants/route_prefix.constant';
+import { webAuthHandler } from '@/middleware/authHandler';
 
 // Define route prefixes and current page
 const { TOTP: TOTP_PREFIX } = APP_ROUTE_PREFIX;

@@ -88,6 +88,7 @@ viewRoutes.get('/appInfo', (req: Request, res: Response) => {
 
 // Authentication pages
 viewRoutes.get(ROUTE_PREFIX.AUTH.WEB_PAGE.LOGIN, (req: Request, res: Response) => {
+  const { redirectUrl, errorMessage, } = req.query || {};
 
   // Load default user data for development environment (if available)
   const defaultDataUserQuyNH = process.env['NODE_ENV'] == 'development'
@@ -102,10 +103,12 @@ viewRoutes.get(ROUTE_PREFIX.AUTH.WEB_PAGE.LOGIN, (req: Request, res: Response) =
     title: 'Đăng nhập',
     currentPage: 'login',
     defaultData: {
-      user: { email, password }
+      user: { email, password },
+      redirectUrl: redirectUrl || '',
+      errorMessage: errorMessage || '',
     },
     turnstile: {
-      siteKey: configApp.turnstile.siteKey || ''
+      siteKey: configApp.turnstile.siteKey || '',
     },
   });
 });
