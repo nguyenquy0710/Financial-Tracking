@@ -85,14 +85,17 @@ Tệp XML tiêu chuẩn cho công cụ tìm kiếm (SEO).
 Standard XML format for search engines (SEO).
 
 **Vị trí / Location**: `/public/sitemap.xml`
-**URL truy cập / Access URL**: `http://localhost:3000/sitemap.xml`
+**URL truy cập / Access URL**: `https://example.com/sitemap.xml`
+
+**⚠️ Lưu ý / Note**: Thay đổi `https://example.com` thành domain thực tế của bạn trước khi deploy.
+**⚠️ Note**: Replace `https://example.com` with your actual domain before deployment.
 
 ### sitemap.txt
 Tệp văn bản dễ đọc với mô tả song ngữ (Tiếng Việt/English).
 Human-readable text format with bilingual descriptions (Vietnamese/English).
 
 **Vị trí / Location**: `/public/sitemap.txt`
-**URL truy cập / Access URL**: `http://localhost:3000/sitemap.txt`
+**URL truy cập / Access URL**: `https://example.com/sitemap.txt`
 
 ## Thay đổi trong Code / Code Changes
 
