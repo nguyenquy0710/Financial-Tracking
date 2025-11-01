@@ -99,7 +99,7 @@ const loadProperties = async () => {
 
 // View property details
 const viewPropertyDetails = (propertyId) => {
-  window.location.href = `/rentals/${propertyId}/detail`;
+  window.location.href = `/app/rentals/${propertyId}/detail`;
 };
 
 // Show add property modal

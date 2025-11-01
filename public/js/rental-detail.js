@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       title: "Lỗi",
       text: 'Không tìm thấy mã phòng!'
     });
-    window.location.href = '/rentals';
+    window.location.href = '/app/rentals';
     return;
   }
   await loadPropertyDetails();
@@ -47,7 +47,7 @@ const loadPropertyDetails = async () => {
         title: "Lỗi",
         text: 'Không thể tải thông tin phòng!'
       });
-      window.location.href = '/rentals';
+      window.location.href = '/app/rentals';
     }
   } catch (error) {
     console.error('Failed to load property details:', error);
