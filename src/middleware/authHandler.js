@@ -63,13 +63,13 @@ const apiAuthHandler = async (req, res, next) => {
       });
     }
 
-    if (process.env.NODE_ENV !== 'production') {
-      console.log("🚀 QuyNH: apiAuthHandler -> errorRef", errorRef);
-      console.log("🚀 QuyNH: apiAuthHandler -> req.userId", req['userId']);
-      console.log("🚀 QuyNH: apiAuthHandler -> req.isAuthenticated", req['isAuthenticated']);
+    // if (process.env.NODE_ENV !== 'production') {
+    //   console.log("🚀 QuyNH: apiAuthHandler -> errorRef", errorRef);
+    //   console.log("🚀 QuyNH: apiAuthHandler -> req.userId", req['userId']);
+    //   console.log("🚀 QuyNH: apiAuthHandler -> req.isAuthenticated", req['isAuthenticated']);
 
-      console.log("🚀 QuyNH: apiAuthHandler -> { baseUrl, originalUrl, path, params, query, secret }", { baseUrl, originalUrl, path, params, query, secret });
-    }
+    //   console.log("🚀 QuyNH: apiAuthHandler -> { baseUrl, originalUrl, path, params, query, secret }", { baseUrl, originalUrl, path, params, query, secret });
+    // }
 
     next();
   } catch (error) {
