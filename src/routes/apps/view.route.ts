@@ -71,13 +71,6 @@ viewAppRoutes.get('/recurring-bills', (req: Request, res: Response) => {
   });
 });
 
-viewAppRoutes.get('/excel', (req, res) => {
-  res.render('apps/excel', {
-    title: 'Excel Import/Export',
-    currentPage: 'excel'
-  });
-});
-
 viewAppRoutes.get('/settings', (req, res) => {
   res.render('apps/settings', {
     title: 'Cài đặt',
