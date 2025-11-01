@@ -1,3 +1,6 @@
+// =============================================
+// AppAuthSDK - SDK quản lý xác thực người dùng
+// =============================================
 class AppAuthSDK extends AppSDK {
 
   constructor(baseURL = AppSDK.BASE_URL || window.location.origin) {
