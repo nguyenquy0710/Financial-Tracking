@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-// const helmet = require('helmet');
+const helmet = require('helmet');
 const morgan = require('morgan');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
@@ -36,37 +36,43 @@ connectDB();
 
 // ================ Middleware Setup ================ //
 // Middleware
-// app.use(helmet({
-//   contentSecurityPolicy: {
-//     directives: {
-//       defaultSrc: ['\'self\''],
-//       scriptSrc: [
-//         '\'self\'',
-//         '\'unsafe-hashes\'',
-//         '\'unsafe-inline\'',
-//         'https://code.jquery.com',
-//         'https://cdn.jsdelivr.net',
-//         'https://cdnjs.cloudflare.com'
-//       ],
-//       styleSrc: [
-//         '\'self\'',
-//         '\'unsafe-hashes\'',
-//         '\'unsafe-inline\'',
-//         'https://cdn.jsdelivr.net',
-//         'https://cdnjs.cloudflare.com'
-//       ],
-//       fontSrc: [
-//         '\'self\'',
-//         '\'unsafe-hashes\'',
-//         '\'unsafe-inline\'',
-//         'https://cdnjs.cloudflare.com',
-//         'https://cdn.jsdelivr.net'
-//       ],
-//       imgSrc: ['\'self\'', 'data:', 'https:'],
-//       connectSrc: ['\'self\'']
-//     }
-//   }
-// })); // Security headers
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ['\'self\''],
+      scriptSrc: [
+        '\'self\'',
+        '\'unsafe-inline\'',
+        'https://code.jquery.com',
+        'https://cdn.jsdelivr.net',
+        'https://cdnjs.cloudflare.com',
+        'https://challenges.cloudflare.com' // Cloudflare Turnstile
+      ],
+      styleSrc: [
+        '\'self\'',
+        '\'unsafe-inline\'',
+        'https://cdn.jsdelivr.net',
+        'https://cdnjs.cloudflare.com'
+      ],
+      fontSrc: [
+        '\'self\'',
+        '\'unsafe-inline\'',
+        'https://cdnjs.cloudflare.com',
+        'https://cdn.jsdelivr.net'
+      ],
+      imgSrc: ['\'self\'', 'data:', 'https:'],
+      connectSrc: [
+        '\'self\'',
+        'https://challenges.cloudflare.com' // Cloudflare Turnstile API
+      ],
+      frameSrc: [
+        '\'self\'',
+        'https://challenges.cloudflare.com' // Cloudflare Turnstile iframe
+      ],
+      frameAncestors: ['\'self\'']
+    }
+  }
+})); // Security headers
 app.use(cors(config.cors)); // CORS
 app.use(
   compression({
