@@ -140,18 +140,18 @@ AppSDK.Alert = {
         icon, title, text, draggable,
         allowOutsideClick: () => !Swal.isLoading(),
         showClass: {
-          popup: `
-            animate__animated
-            animate__fadeInUp
-            animate__faster
-          `
+          // popup: `
+          //   animate__animated
+          //   animate__fadeInUp
+          //   animate__faster
+          // `
         },
         hideClass: {
-          popup: `
-            animate__animated
-            animate__fadeOutDown
-            animate__faster
-          `
+          // popup: `
+          //   animate__animated
+          //   animate__fadeOutDown
+          //   animate__faster
+          // `
         },
         ...options
       });
