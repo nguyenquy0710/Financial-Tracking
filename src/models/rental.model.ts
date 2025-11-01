@@ -1,122 +1,150 @@
 import mongoose, { Document, Schema, Model } from 'mongoose';
+import { createBaseSchema } from '@/abstracts/absBase.model';
 
-// 1. Define nested interfaces for electricity, water, etc.
-interface UtilityUsage {
-  startReading: number;
-  endReading: number;
-  consumption: number;
-  rate: number;
-  amount: number;
-}
-
-// 2. Define the Rental document interface
+// Define the RentalProperty document interface
 export interface IRentalModel extends Document {
   userId: mongoose.Types.ObjectId;
-  propertyId?: mongoose.Types.ObjectId; // Reference to RentalProperty
-  propertyName: string;
-  address?: string;
-  month: Date;
-  rentAmount: number;
-  electricity: UtilityUsage;
-  water: UtilityUsage;
-  internet: number;
-  parking: number;
-  garbage: number;
-  bonus: number;
-  total: number;
-  notes?: string;
-  isPaid: boolean;
-  paymentDate?: Date;
+  roomCode: string; // Mã phòng
+  propertyName: string; // Tên phòng
+  address?: string; // Địa chỉ
+  initialElectricityReading: number; // Chỉ số điện ban đầu
+  initialWaterReading: number; // Chỉ số nước ban đầu
+  electricityRate: number; // Đơn giá điện
+  waterRate: number; // Đơn giá nước
+  rentAmount: number; // Tiền nhà cố định hàng tháng
+  internetFee?: number; // Phí internet cố định
+  parkingFee?: number; // Phí gửi xe cố định
+  garbageFee?: number; // Phí rác cố định
+  startDate: Date; // Ngày bắt đầu thuê
+  endDate?: Date; // Ngày kết thúc thuê (nếu đã trả phòng)
+  isActive: boolean; // Còn đang thuê hay không
+  notes?: string; // Ghi chú
   createdAt?: Date;
   updatedAt?: Date;
+  createdBy?: mongoose.Types.ObjectId;
+  updatedBy?: mongoose.Types.ObjectId;
+  isDeleted?: boolean;
 }
 
-// 3. Define the schema
-const RentalSchema = new Schema<IRentalModel>(
+// Create the schema
+const rentalSchema = createBaseSchema<IRentalModel>(
   {
     userId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true
+      required: [true, 'User ID is required']
     },
-    propertyId: {
-      type: Schema.Types.ObjectId,
-      ref: 'RentalProperty',
-      required: false
+    roomCode: {
+      type: String,
+      required: [true, 'Room code is required'],
+      trim: true,
+      maxlength: [50, 'Room code cannot exceed 50 characters']
     },
     propertyName: {
       type: String,
-      required: true,
-      trim: true
+      required: [true, 'Property name is required'],
+      trim: true,
+      maxlength: [200, 'Property name cannot exceed 200 characters']
     },
     address: {
       type: String,
-      trim: true
+      trim: true,
+      maxlength: [500, 'Address cannot exceed 500 characters']
     },
-    month: {
-      type: Date,
-      required: true
+    initialElectricityReading: {
+      type: Number,
+      required: [true, 'Initial electricity reading is required'],
+      min: [0, 'Initial electricity reading cannot be negative'],
+      default: 0
+    },
+    initialWaterReading: {
+      type: Number,
+      required: [true, 'Initial water reading is required'],
+      min: [0, 'Initial water reading cannot be negative'],
+      default: 0
+    },
+    electricityRate: {
+      type: Number,
+      required: [true, 'Electricity rate is required'],
+      min: [0, 'Electricity rate cannot be negative'],
+      default: 0
+    },
+    waterRate: {
+      type: Number,
+      required: [true, 'Water rate is required'],
+      min: [0, 'Water rate cannot be negative'],
+      default: 0
     },
     rentAmount: {
       type: Number,
-      default: 0,
-      min: 0
-    },
-    electricity: {
-      startReading: { type: Number, default: 0 },
-      endReading: { type: Number, default: 0 },
-      consumption: { type: Number, default: 0 },
-      rate: { type: Number, default: 0 },
-      amount: { type: Number, default: 0 }
-    },
-    water: {
-      startReading: { type: Number, default: 0 },
-      endReading: { type: Number, default: 0 },
-      consumption: { type: Number, default: 0 },
-      rate: { type: Number, default: 0 },
-      amount: { type: Number, default: 0 }
-    },
-    internet: {
-      type: Number,
+      required: [true, 'Rent amount is required'],
+      min: [0, 'Rent amount cannot be negative'],
       default: 0
     },
-    parking: {
+    internetFee: {
       type: Number,
+      min: [0, 'Internet fee cannot be negative'],
       default: 0
     },
-    garbage: {
+    parkingFee: {
       type: Number,
+      min: [0, 'Parking fee cannot be negative'],
       default: 0
     },
-    bonus: {
+    garbageFee: {
       type: Number,
+      min: [0, 'Garbage fee cannot be negative'],
       default: 0
     },
-    total: {
-      type: Number,
-      default: 0
+    startDate: {
+      type: Date,
+      required: [true, 'Start date is required']
+    },
+    endDate: {
+      type: Date
+    },
+    isActive: {
+      type: Boolean,
+      default: true
     },
     notes: {
-      type: String
-    },
-    isPaid: {
-      type: Boolean,
-      default: false
-    },
-    paymentDate: {
-      type: Date
+      type: String,
+      maxlength: [1000, 'Notes cannot exceed 1000 characters']
     }
   },
   {
-    timestamps: true
+    softDelete: true,
+    auditFields: true,
+    schemaOptions: {
+      collection: 'rental_properties'
+    }
   }
 );
 
-// 4. Add indexes
-RentalSchema.index({ userId: 'ascending', month: 'descending' });
-RentalSchema.index({ userId: 'ascending', propertyName: 'ascending', month: 'descending' });
+// Add indexes
+rentalSchema.index({ userId: 'ascending', isActive: 'descending', createdAt: 'descending' });
+rentalSchema.index({ userId: 'ascending', roomCode: 'ascending' });
 
-// 5. Export the model
-const Rental: Model<IRentalModel> = mongoose.models.Rental as Model<IRentalModel>
-  || mongoose.model<IRentalModel>('Rental', RentalSchema);
+// Add static methods
+rentalSchema.statics.findByUserId = async function (userId: mongoose.Types.ObjectId) {
+  return this.find({ userId, isDeleted: { $ne: true } })
+    .sort({ isActive: -1, createdAt: -1 });
+};
+
+rentalSchema.statics.findActiveProperties = async function (userId: mongoose.Types.ObjectId) {
+  return this.find({ userId, isActive: true, isDeleted: { $ne: true } })
+    .sort({ createdAt: -1 });
+};
+
+// Define static methods interface
+export interface IRentalStatic extends Model<IRentalModel> {
+  findByUserId(userId: mongoose.Types.ObjectId): Promise<IRentalModel[]>;
+  findActiveProperties(userId: mongoose.Types.ObjectId): Promise<IRentalModel[]>;
+}
+
+// Export the model
+const Rental: IRentalStatic =
+  mongoose.models.Rental as IRentalStatic ||
+  mongoose.model<IRentalModel, IRentalStatic>('Rental', rentalSchema);
+
 export default Rental;

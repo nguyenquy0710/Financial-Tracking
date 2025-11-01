@@ -1,5 +1,5 @@
 import AbsBaseDomain from '@/abstracts/absBase.domain';
-import RentalPropertySchema, { IRentalPropertyModel } from '@/models/rental-property.model';
+import RentalPropertySchema, { IRentalModel } from '@/models/rental.model';
 import { Types } from 'mongoose';
 
 export default class RentalPropertyDomain extends AbsBaseDomain {
@@ -15,10 +15,10 @@ export default class RentalPropertyDomain extends AbsBaseDomain {
   /**
    * Get rental property by ID
    */
-  async getRentalPropertyById(id: string): Promise<IRentalPropertyModel | null> {
+  async getRentalPropertyById(id: string): Promise<IRentalModel | null> {
     try {
-      const property = await RentalPropertySchema.findById(id).lean<IRentalPropertyModel>().exec();
-      return property as IRentalPropertyModel | null;
+      const property = await RentalPropertySchema.findById(id).lean<IRentalModel>().exec();
+      return property as IRentalModel | null;
     } catch (error) {
       this.logger.error('Error retrieving rental property by ID:', error);
       return null;
@@ -28,11 +28,11 @@ export default class RentalPropertyDomain extends AbsBaseDomain {
   /**
    * Get all rental properties for a user
    */
-  async getRentalPropertiesByUserId(userId: string | Types.ObjectId): Promise<IRentalPropertyModel[]> {
+  async getRentalPropertiesByUserId(userId: string | Types.ObjectId): Promise<IRentalModel[]> {
     try {
       const userObjectId = typeof userId === 'string' ? new Types.ObjectId(userId) : userId;
       const properties = await RentalPropertySchema.findByUserId(userObjectId);
-      return properties as IRentalPropertyModel[];
+      return properties as IRentalModel[];
     } catch (error) {
       this.logger.error('Error retrieving rental properties by user ID:', error);
       return [];
@@ -42,11 +42,11 @@ export default class RentalPropertyDomain extends AbsBaseDomain {
   /**
    * Get active rental properties for a user
    */
-  async getActiveRentalProperties(userId: string | Types.ObjectId): Promise<IRentalPropertyModel[]> {
+  async getActiveRentalProperties(userId: string | Types.ObjectId): Promise<IRentalModel[]> {
     try {
       const userObjectId = typeof userId === 'string' ? new Types.ObjectId(userId) : userId;
       const properties = await RentalPropertySchema.findActiveProperties(userObjectId);
-      return properties as IRentalPropertyModel[];
+      return properties as IRentalModel[];
     } catch (error) {
       this.logger.error('Error retrieving active rental properties:', error);
       return [];
@@ -56,19 +56,19 @@ export default class RentalPropertyDomain extends AbsBaseDomain {
   /**
    * Create a new rental property
    */
-  async createRentalProperty(data: Partial<IRentalPropertyModel>): Promise<IRentalPropertyModel> {
+  async createRentalProperty(data: Partial<IRentalModel>): Promise<IRentalModel> {
     const property = new RentalPropertySchema(data);
     await property.save();
-    return property.toObject() as unknown as IRentalPropertyModel;
+    return property.toObject() as unknown as IRentalModel;
   }
 
   /**
    * Update a rental property
    */
-  async updateRentalProperty(id: string, data: Partial<IRentalPropertyModel>): Promise<IRentalPropertyModel | null> {
-    const property = await RentalPropertySchema.findByIdAndUpdate(id, data, { new: true }).lean<IRentalPropertyModel>().exec();
+  async updateRentalProperty(id: string, data: Partial<IRentalModel>): Promise<IRentalModel | null> {
+    const property = await RentalPropertySchema.findByIdAndUpdate(id, data, { new: true }).lean<IRentalModel>().exec();
     if (property) {
-      return property as IRentalPropertyModel;
+      return property as IRentalModel;
     }
     return null;
   }
@@ -78,8 +78,8 @@ export default class RentalPropertyDomain extends AbsBaseDomain {
    */
   async deleteRentalProperty(id: string): Promise<boolean> {
     const result = await RentalPropertySchema.findByIdAndUpdate(
-      id, 
-      { isDeleted: true, isActive: false }, 
+      id,
+      { isDeleted: true, isActive: false },
       { new: true }
     ).exec();
     return !!result;
