@@ -28,6 +28,7 @@ otplib
 PDPA
 pids
 pycache
+qrcode
 quynh
 reranker
 sapo
