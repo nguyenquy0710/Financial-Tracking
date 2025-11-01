@@ -1,3 +1,6 @@
+// =============================================
+// AppExternal SDK - Module cho các ứng dụng bên ngoài
+// =============================================
 class AppExternal {
   constructor(baseURL = '') {
     this.baseURL = baseURL;
@@ -9,6 +12,7 @@ class AppExternal {
     this.onStatusChange = null;
     this.onError = (err) => { }; // callback khi có lỗi
   }
+
 }
 
 // =============================================
@@ -23,7 +27,6 @@ AppExternal.API_BASE_URL = AppSDK.apiBaseURL
 // =============================================
 // Các module bên ngoài có thể thêm vào đây
 // =============================================
-
 AppExternal['VietQR'] = {
   getBanks: async () => {
     try {

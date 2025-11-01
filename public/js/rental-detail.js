@@ -7,7 +7,7 @@ let token = sdkAuth.getAuthToken();
 
 // Redirect to login if not authenticated
 if (!sdkAuth.isAuthenticated()) {
-  window.location.href = `/login?redirectUrl=${encodeURIComponent(window.location.pathname)}`;
+  window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}`;
 }
 
 // Load property details on page load
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       title: "Lỗi",
       text: 'Không tìm thấy mã phòng!'
     });
-    window.location.href = '/rentals';
+    window.location.href = '/app/rentals';
     return;
   }
   await loadPropertyDetails();
@@ -35,10 +35,10 @@ const loadPropertyDetails = async () => {
 
       // Display property info
       displayPropertyInfo();
-      
+
       // Display statistics
       displayStatistics();
-      
+
       // Display monthly records
       displayMonthlyRecords();
     } else {
@@ -47,7 +47,7 @@ const loadPropertyDetails = async () => {
         title: "Lỗi",
         text: 'Không thể tải thông tin phòng!'
       });
-      window.location.href = '/rentals';
+      window.location.href = '/app/rentals';
     }
   } catch (error) {
     console.error('Failed to load property details:', error);
@@ -61,7 +61,7 @@ const loadPropertyDetails = async () => {
 
 const displayPropertyInfo = () => {
   const container = document.getElementById('property-info');
-  
+
   container.innerHTML = `
     <table class="table table-bordered table-hover">
       <tbody>

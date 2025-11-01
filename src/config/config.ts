@@ -37,8 +37,12 @@ export const configApp = {
 
   // CORS Configuration
   cors: {
-    origin: process.env.CORS_ORIGIN || '*',
-    credentials: true
+    origin: process.env.CORS_ORIGIN || '*', // Allow all origins by default
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH', 'HEAD', 'CONNECT'],
+    credentials: true, // Allow cookies to be sent (cookie / session-based auth)
+    optionsSuccessStatus: 200,
+    exposedHeaders: ['Authorization', 'Content-Length', 'X-Device-ID', 'X-CSRF-Token', 'X-Auth-Token', 'Set-Cookie', 'Cookie', 'User-Agent', 'Referer', 'Accept-Encoding', 'Accept-Language', 'Connection', 'Host', 'Cache-Control', 'Pragma', 'Expires', 'If-Modified-Since', 'If-None-Match', 'DNT', 'TE', 'Upgrade-Insecure-Requests', 'Sec-Fetch-Dest', 'Sec-Fetch-Mode', 'Sec-Fetch-Site', 'Sec-Fetch-User', 'Sec-GPC', 'Range', 'X-Requested-With'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin', 'Access-Control-Allow-Origin', 'Access-Control-Allow-Credentials', 'X-Device-ID', 'X-CSRF-Token', 'X-Auth-Token', 'Set-Cookie', 'Cookie', 'User-Agent', 'Referer', 'Accept-Encoding', 'Accept-Language', 'Connection', 'Host', 'Cache-Control', 'Pragma', 'Expires', 'If-Modified-Since', 'If-None-Match', 'DNT', 'TE', 'Upgrade-Insecure-Requests', 'Sec-Fetch-Dest', 'Sec-Fetch-Mode', 'Sec-Fetch-Site', 'Sec-Fetch-User', 'Sec-GPC', 'Range', 'X-Requested-With']
   },
 
   // File Upload Configuration
