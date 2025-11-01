@@ -65,7 +65,7 @@ const loadProperties = async () => {
                             <tbody>
                                 ${properties.map(property => `
                                     <tr>
-                                        <td><strong>${property.roomCode}</strong></td>
+                                        <td><a href="#" onclick="viewPropertyDetails('${property._id}')" title="Xem chi tiết" style="text-decoration: none;"><strong>${property.roomCode}</strong></a></td>
                                         <td>${property.propertyName}</td>
                                         <td>${property.address || 'N/A'}</td>
                                         <td>${AppSDK.Utility.formatCurrency(property.rentAmount)}</td>

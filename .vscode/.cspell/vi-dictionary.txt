@@ -33,6 +33,7 @@ dạng
 danh
 dịch
 đích
+điểm
 diện
 điện
 điều
@@ -146,6 +147,7 @@ phòng
 phục
 phương
 quản
+Quận
 Quang
 quên
 quyền
