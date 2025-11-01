@@ -16,6 +16,7 @@
     "dev": "nodemon --watch src --ext js,ts,json --exec ts-node -r tsconfig-paths/register src/index.js --ignore src/scripts/",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
+    "verify:csp": "node tests/verify-csp.js",
     "lint": "eslint src/**/*.js --ignore-pattern public/*",
     "lint:fix": "eslint src/**/*.js --fix --ignore-pattern public/*",
     "format": "prettier --write \"src/**/*.js\" --ignore-path .prettierignore",

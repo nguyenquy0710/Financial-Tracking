@@ -55,12 +55,18 @@ Enabled the `helmet` middleware with proper CSP configuration in `src/index.js`:
 ## Verification Steps
 To verify the fix works correctly:
 
-1. **Start the application:**
+1. **Run automated verification:**
+   ```bash
+   npm run verify:csp
+   ```
+   This script checks that all required CSP directives are properly configured.
+
+2. **Start the application:**
    ```bash
    npm run dev
    ```
 
-2. **Navigate to login page:**
+3. **Navigate to login page:**
    ```
    http://localhost:3000/login
    ```

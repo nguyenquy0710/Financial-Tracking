@@ -34,7 +34,6 @@ app.use(helmet({
       ],
       fontSrc: [
         '\'self\'',
-        '\'unsafe-inline\'',
         'https://cdnjs.cloudflare.com',
         'https://cdn.jsdelivr.net'
       ],
