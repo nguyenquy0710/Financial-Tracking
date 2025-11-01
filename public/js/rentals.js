@@ -5,7 +5,7 @@ let token = sdkAuth.getAuthToken();
 
 // Redirect to login if not authenticated
 if (!sdkAuth.isAuthenticated()) {
-  window.location.href = `/login?redirectUrl=${encodeURIComponent(window.location.pathname)}`;
+  window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}`;
 }
 
 // Load properties on page load
@@ -78,9 +78,9 @@ const loadProperties = async () => {
                                         <td>
                                             <button class="btn btn-sm btn-info" onclick="viewPropertyDetails('${property._id}')" title="Xem chi tiết">👁️</button>
                                             <button class="btn btn-sm" onclick="editProperty('${property._id}')" title="Chỉnh sửa">✏️</button>
-                                            ${property.isActive ? 
-                                              `<button class="btn btn-sm btn-warning" onclick="deactivateProperty('${property._id}')" title="Trả phòng">🔒</button>` : 
-                                              ''}
+                                            ${property.isActive ?
+          `<button class="btn btn-sm btn-warning" onclick="deactivateProperty('${property._id}')" title="Trả phòng">🔒</button>` :
+          ''}
                                             <button class="btn btn-sm btn-danger" onclick="deleteProperty('${property._id}')" title="Xóa">🗑️</button>
                                         </td>
                                     </tr>
@@ -129,12 +129,12 @@ const editProperty = async (id) => {
   document.getElementById('address').value = property.address || '';
   document.getElementById('startDate').value = property.startDate ? property.startDate.split('T')[0] : '';
   document.getElementById('rentAmount').value = property.rentAmount || 0;
-  
+
   document.getElementById('initialElectricityReading').value = property.initialElectricityReading || 0;
   document.getElementById('electricityRate').value = property.electricityRate || 0;
   document.getElementById('initialWaterReading').value = property.initialWaterReading || 0;
   document.getElementById('waterRate').value = property.waterRate || 0;
-  
+
   document.getElementById('internetFee').value = property.internetFee || 0;
   document.getElementById('parkingFee').value = property.parkingFee || 0;
   document.getElementById('garbageFee').value = property.garbageFee || 0;

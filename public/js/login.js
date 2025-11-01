@@ -9,9 +9,9 @@ $(document).ready(function () {
   const redirectUrl = AppSDK.getQueryParam("redirect");
   console.log("🚀 QuyNH: redirect", redirectUrl)
 
-  // Check if already logged in
+  // If already logged in, redirect to dashboard
   if (localStorage.getItem('authToken')) {
-    window.location.href = `/app/dashboard?redirectUrl=${redirectUrl ? encodeURIComponent(redirectUrl) : ''}`;
+    window.location.href = `/app/dashboard?redirect=${redirectUrl ? encodeURIComponent(redirectUrl) : ''}`;
     return;
   }
 
@@ -78,9 +78,9 @@ $(document).ready(function () {
   $('#login-form').on('submit', async function (e) {
     e.preventDefault();
 
-    const email = $('#email').val().trim();
+    const email = $('#email').val()?.trim();
     const password = $('#password').val();
-    const redirectUrl = $('#redirectUrl').val().trim();
+    const redirectUrl = $('#redirectUrl').val()?.trim();
     const rememberMe = $('#remember-me').is(':checked');
 
     // Reset validation states

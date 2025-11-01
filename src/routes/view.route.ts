@@ -88,7 +88,7 @@ viewRoutes.get('/appInfo', (req: Request, res: Response) => {
 
 // Authentication pages
 viewRoutes.get(ROUTE_PREFIX.AUTH.WEB_PAGE.LOGIN, (req: Request, res: Response) => {
-  const { redirectUrl, errorMessage, } = req.query || {};
+  const { redirect, errorMessage, } = req.query || {};
 
   // Load default user data for development environment (if available)
   const defaultDataUserQuyNH = process.env['NODE_ENV'] == 'development'
@@ -104,7 +104,7 @@ viewRoutes.get(ROUTE_PREFIX.AUTH.WEB_PAGE.LOGIN, (req: Request, res: Response) =
     currentPage: 'login',
     defaultData: {
       user: { email, password },
-      redirectUrl: redirectUrl || '',
+      redirectUrl: redirect || '',
       errorMessage: errorMessage || '',
     },
     turnstile: {

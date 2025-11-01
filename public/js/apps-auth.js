@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const publicPages = ['/', '/login', '/register', '/changelog'];
 
   if (!publicPages.includes(currentPage) && !sdkAuth.isAuthenticated()) {
-    window.location.href = '/login?redirectUrl=' + encodeURIComponent(currentPage);
+    window.location.href = '/login?redirect=' + encodeURIComponent(currentPage);
   }
 });
 
