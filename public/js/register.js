@@ -6,9 +6,12 @@ window.onTurnstileSuccess = function (token) {
 };
 
 $(document).ready(function () {
-  // Check if already logged in
+  const redirectUrl = AppSDK.getQueryParam("redirect");
+  console.log("🚀 QuyNH: redirect", redirectUrl)
+
+  // Check if already logged in and redirect
   if (localStorage.getItem('authToken')) {
-    window.location.href = '/app/dashboard';
+    window.location.href = `/app/dashboard?redirect=${redirectUrl ? encodeURIComponent(redirectUrl) : ''}`;
     return;
   }
 
@@ -170,7 +173,8 @@ $(document).ready(function () {
 
       if (response.success) {
         // Store token
-        localStorage.setItem('authToken', response.data.token);
+        cookieStore.set('authToken', response.data.token); // For cookies
+        localStorage.setItem('authToken', response.data.token); // For localStorage
 
         // Store user info
         if (response.data.user) {

@@ -97,6 +97,16 @@ class AppSDK {
     const value = params.get(name);
     return value ? decodeURIComponent(value) : null;
   }
+
+  /**
+   * Hàm kiểm tra định dạng email hợp lệ.
+   * @param {*} email - chuỗi email cần kiểm tra
+   * @returns {boolean} - true nếu email hợp lệ, ngược lại false nếu không hợp lệ
+   */
+  static validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  }
 }
 
 // =============================================
