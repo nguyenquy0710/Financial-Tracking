@@ -146,7 +146,7 @@
   border-top: 1px solid #e0e0e0;
 }
 
-.btn-sm {
+/* .btn-sm {
   padding: 4px 8px;
   font-size: 14px;
   border: none;
@@ -154,7 +154,7 @@
   cursor: pointer;
   background: #f0f0f0;
   margin-right: 5px;
-}
+} */
 
 .btn-sm:hover {
   background: #e0e0e0;

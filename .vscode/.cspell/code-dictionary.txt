@@ -18,6 +18,7 @@ miscased
 myharavan
 mysapogo
 ncnodes
+ngrok
 npmjs
 nssm
 nuxt

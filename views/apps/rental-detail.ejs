@@ -70,12 +70,26 @@
           <div class="card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
               <h2>Lịch sử thanh toán theo tháng</h2>
-              <button class="btn btn-primary" onclick="showAddMonthlyRecordModal()">
+              <button class="btn btn-primary btn-sm" onclick="showAddMonthlyRecordModal()">
                 <span class="icon">➕</span> Thêm dữ liệu tháng
               </button>
             </div>
 
             <div id="monthly-records" class="table-container">
+              <p class="loading">Đang tải dữ liệu...</p>
+            </div>
+          </div>
+
+          <!-- Notes -->
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+              <h2>Ghi chú</h2>
+              <button class="btn btn-primary btn-sm" onclick="showAddNoteModal()">
+                <span class="icon">➕</span> Thêm ghi chú
+              </button>
+            </div>
+
+            <div id="property-notes" class="table-container">
               <p class="loading">Đang tải dữ liệu...</p>
             </div>
           </div>
@@ -185,7 +199,7 @@
     </div>
   </div>
 
-  <script>
+  <script type="text/javascript">
     // Pass property ID to JavaScript
     const PROPERTY_ID = '<%= rentalId %>';
   </script>
