@@ -112,6 +112,19 @@ const showAddPropertyModal = () => {
   document.getElementById('startDate').value = new Date().toISOString().split('T')[0];
 
   document.getElementById('propertyModal').style.display = 'block';
+
+  // Áp dụng cho tất cả input có class .format-currency
+  document.querySelectorAll('.format-currency').forEach(input => {
+    let config = {};
+
+    if (input['id'] == 'rentAmount') {
+      config.style = 'currency';
+      config.currency = 'VND';
+    }
+
+    // Gọi hàm từ AppExternal để áp dụng định dạng tiền tệ
+    AppExternal.applyCurrencyFormat(input, config);
+  });
 };
 
 const closePropertyModal = () => {

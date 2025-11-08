@@ -104,7 +104,8 @@
 
         <div class="form-group">
           <label for="rentAmount" class="form-label">Tiền nhà (VND) *</label>
-          <input type="number" class="form-control" id="rentAmount" required min="0" step="100000">
+          <input type="text" class="form-control format-currency" id="rentAmount" required min="0" step="100000"
+            placeholder="Nhập số tiền...">
         </div>
 
         <div class="form-section">
@@ -112,11 +113,13 @@
           <div class="form-row">
             <div class="form-group">
               <label for="initialElectricityReading">Điện (kWh) *</label>
-              <input type="number" class="form-control" id="initialElectricityReading" min="0" step="0.01" required>
+              <input type="text" class="form-control format-currency" id="initialElectricityReading" min="0" step="0.01" required
+                placeholder="Nhập chỉ số...">
             </div>
             <div class="form-group">
               <label for="electricityRate">Đơn giá điện (VND/kWh) *</label>
-              <input type="number" class="form-control" id="electricityRate" min="0" step="100" required>
+              <input type="text" class="form-control format-currency" id="electricityRate" min="0" step="100" required
+                placeholder="Nhập đơn giá...">
             </div>
           </div>
         </div>
@@ -126,11 +129,13 @@
           <div class="form-row">
             <div class="form-group">
               <label for="initialWaterReading">Nước (m³) *</label>
-              <input type="number" class="form-control" id="initialWaterReading" min="0" step="0.01" required>
+              <input type="text" class="form-control format-currency" id="initialWaterReading" min="0" step="0.01" required
+                placeholder="Nhập chỉ số...">
             </div>
             <div class="form-group">
               <label for="waterRate">Đơn giá nước (VND/m³) *</label>
-              <input type="number" class="form-control" id="waterRate" min="0" step="100" required>
+              <input type="text" class="form-control format-currency" id="waterRate" min="0" step="100" required
+                placeholder="Nhập đơn giá...">
             </div>
           </div>
         </div>
@@ -138,24 +143,24 @@
         <div class="form-row">
           <div class="form-group">
             <label for="internetFee">Internet (VND)</label>
-            <input type="number" class="form-control" id="internetFee" min="0" value="0">
+            <input type="text" class="form-control format-currency" id="internetFee" min="0" value="0" placeholder="Nhập số tiền...">
           </div>
           <div class="form-group">
             <label for="parkingFee">Gửi xe (VND)</label>
-            <input type="number" class="form-control" id="parkingFee" min="0" value="0">
+            <input type="text" class="form-control format-currency" id="parkingFee" min="0" value="0" placeholder="Nhập số tiền...">
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group">
             <label for="garbageFee">Rác (VND)</label>
-            <input type="number" class="form-control" id="garbageFee" min="0" value="0">
+            <input type="text" class="form-control format-currency" id="garbageFee" min="0" value="0" placeholder="Nhập số tiền...">
           </div>
         </div>
 
         <div class="form-group">
           <label for="notes">Ghi chú</label>
-          <textarea class="form-control" id="notes" rows="3"></textarea>
+          <textarea class="form-control" id="notes" rows="3" placeholder="Nhập ghi chú..."></textarea>
         </div>
 
         <div class="form-actions">

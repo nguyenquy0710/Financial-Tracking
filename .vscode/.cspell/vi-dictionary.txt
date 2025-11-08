@@ -80,6 +80,7 @@ khóa
 khoản
 Khoảng
 khôi
+khỏi
 khởi
 không
 khớp
@@ -141,6 +142,7 @@ phần
 phản
 pháp
 phát
+phẩy
 phép
 Phiên
 phòng
@@ -155,6 +157,7 @@ rằng
 riêng
 rỗng
 sách
+sạch
 sánh
 tảng
 thái
