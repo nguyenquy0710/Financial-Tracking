@@ -113,14 +113,17 @@ const showAddPropertyModal = () => {
 
   document.getElementById('propertyModal').style.display = 'block';
 
+  // Áp dụng cho tất cả input có class .format-number
+  document.querySelectorAll('.format-number').forEach(input => {
+    AppExternal.applyCurrencyFormat(input);
+  });
+
   // Áp dụng cho tất cả input có class .format-currency
   document.querySelectorAll('.format-currency').forEach(input => {
-    let config = {};
-
-    if (input['id'] == 'rentAmount') {
-      config.style = 'currency';
-      config.currency = 'VND';
-    }
+    let config = {
+      style: 'currency',
+      currency: 'VND'
+    };
 
     // Gọi hàm từ AppExternal để áp dụng định dạng tiền tệ
     AppExternal.applyCurrencyFormat(input, config);

@@ -79,41 +79,41 @@
     <div class="modal-content">
       <span class="close" onclick="closePropertyModal()">&times;</span>
       <h2 id="propertyModalTitle">Thêm phòng thuê</h2>
-      <form id="propertyForm">
+      <form id="propertyForm" class="row g-0">
         <input type="hidden" id="propertyId">
 
-        <div class="form-group">
+        <div class="form-group col-md-6 p-1">
           <label for="roomCode" class="form-label">Mã phòng *</label>
           <input type="text" class="form-control" id="roomCode" required placeholder="Ví dụ: P101">
         </div>
 
-        <div class="form-group">
+        <div class="form-group col-md-6 p-1">
           <label for="propertyName" class="form-label">Tên phòng *</label>
           <input type="text" class="form-control" id="propertyName" required placeholder="Ví dụ: Phòng trọ 101">
         </div>
 
-        <div class="form-group">
+        <div class="form-group col-md-12 p-1">
           <label for="address" class="form-label">Địa chỉ</label>
           <input type="text" class="form-control" id="address" placeholder="Ví dụ: 123 Đường ABC, Quận XYZ">
         </div>
 
-        <div class="form-group">
+        <div class="form-group col-md-12 p-1">
           <label for="startDate" class="form-label">Ngày bắt đầu thuê *</label>
           <input type="date" class="form-control" id="startDate" required>
         </div>
 
-        <div class="form-group">
+        <div class="form-group col-md-12 p-1">
           <label for="rentAmount" class="form-label">Tiền nhà (VND) *</label>
           <input type="text" class="form-control format-currency" id="rentAmount" required min="0" step="100000"
             placeholder="Nhập số tiền...">
         </div>
 
-        <div class="form-section">
+        <div class="form-section col-md-12 p-1">
           <h3>Chỉ số khởi điểm</h3>
-          <div class="form-row">
+          <div class="form-row form-section col-md-12 p-1">
             <div class="form-group">
               <label for="initialElectricityReading">Điện (kWh) *</label>
-              <input type="text" class="form-control format-currency" id="initialElectricityReading" min="0" step="0.01" required
+              <input type="text" class="form-control format-number" id="initialElectricityReading" min="0" step="0.01" required
                 placeholder="Nhập chỉ số...">
             </div>
             <div class="form-group">
@@ -124,12 +124,12 @@
           </div>
         </div>
 
-        <div class="form-section">
+        <div class="form-section col-md-12 p-1">
           <h3>Nước</h3>
-          <div class="form-row">
+          <div class="form-row form-section col-md-12 p-1">
             <div class="form-group">
               <label for="initialWaterReading">Nước (m³) *</label>
-              <input type="text" class="form-control format-currency" id="initialWaterReading" min="0" step="0.01" required
+              <input type="text" class="form-control format-number" id="initialWaterReading" min="0" step="0.01" required
                 placeholder="Nhập chỉ số...">
             </div>
             <div class="form-group">
@@ -140,21 +140,25 @@
           </div>
         </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label for="internetFee">Internet (VND)</label>
-            <input type="text" class="form-control format-currency" id="internetFee" min="0" value="0" placeholder="Nhập số tiền...">
-          </div>
-          <div class="form-group">
-            <label for="parkingFee">Gửi xe (VND)</label>
-            <input type="text" class="form-control format-currency" id="parkingFee" min="0" value="0" placeholder="Nhập số tiền...">
+        <div class="form-section col-md-12 p-1">
+          <div class="form-row form-section col-md-12 p-1">
+            <div class="form-group">
+              <label for="internetFee">Internet (VND)</label>
+              <input type="text" class="form-control format-currency" id="internetFee" min="0" value="0" placeholder="Nhập số tiền...">
+            </div>
+            <div class="form-group">
+              <label for="parkingFee">Gửi xe (VND)</label>
+              <input type="text" class="form-control format-currency" id="parkingFee" min="0" value="0" placeholder="Nhập số tiền...">
+            </div>
           </div>
         </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label for="garbageFee">Rác (VND)</label>
-            <input type="text" class="form-control format-currency" id="garbageFee" min="0" value="0" placeholder="Nhập số tiền...">
+        <div class="form-section col-md-12 p-1">
+          <div class="form-row form-section col-md-12 p-1">
+            <div class="form-group">
+              <label for="garbageFee">Rác (VND)</label>
+              <input type="text" class="form-control format-currency" id="garbageFee" min="0" value="0" placeholder="Nhập số tiền...">
+            </div>
           </div>
         </div>
 
