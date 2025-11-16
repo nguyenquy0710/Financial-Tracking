@@ -1,4 +1,5 @@
 name: Deploy Jekyll Documentation
+run-name: Deploy Jekyll Documentation - ${{ github.event_name }} event on ${{ github.ref_name }}
 
 on:
   # push:

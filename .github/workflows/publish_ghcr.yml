@@ -4,7 +4,7 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 name: 'Publish: Docker Image to GHCR'
-run-name: 'Publish to GHCR by @${{ github.actor }} on ${{ github.event_name }} #${{ github.ref }}'
+run-name: 'Publish to GHCR by @${{ github.actor }} on ${{ github.event_name }} #${{ github.ref_name }}'
 
 on:
   workflow_dispatch: # ✅ Cho phép chạy thủ công

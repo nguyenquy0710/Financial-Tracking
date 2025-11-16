@@ -1,5 +1,5 @@
 name: Update Changelog on Release
-run-name: 'Update Changelog on Releaser on ${{ github.event_name }} by @${{ github.actor }} #${{ github.ref }}'
+run-name: 'Update Changelog on Releaser on ${{ github.event_name }} by @${{ github.actor }} #${{ github.ref_name }}'
 
 on:
   workflow_dispatch: # ✅ Cho phép chạy thủ công
