@@ -90,11 +90,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: jekyll-site
-          path: ./docs/_site
+      # - name: Download build artifact
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: jekyll-site
+      #     path: ./docs/_site
 
       - name: Deploy to External Repository
         uses: peaceiris/actions-gh-pages@v3
