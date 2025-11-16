@@ -99,9 +99,9 @@ jobs:
       - name: Deploy to External Repository
         uses: peaceiris/actions-gh-pages@v3
         with:
-          deploy_key: ${{ secrets.DEPLOY_KEY }}
+          # deploy_key: ${{ secrets.DEPLOY_KEY }}
           # Hoặc sử dụng personal_token thay thế:
-          # personal_token: ${{ secrets.PAT }}
+          personal_token: ${{ secrets.GITHUB_TOKEN }}
           external_repository: nqdev-storage/pages
           publish_branch: main
           publish_dir: ./docs/_site
