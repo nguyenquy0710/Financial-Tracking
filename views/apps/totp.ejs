@@ -1,0 +1,147 @@
+<%- include('partials/header', { title: 'TOTP Authenticator' , additionalCSS: ['/css/totp.css'] }) %>
+
+  <div class="app-container">
+    <%- include('partials/sidebar', { currentPage: 'totp' }) %>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <header class="top-bar totp-header">
+          <h1>🔐 TOTP Authenticator</h1>
+          <div class="header-actions">
+            <button id="theme-toggle" class="btn btn-icon" title="Chuyển chế độ tối">
+              <span class="icon">🌙</span>
+            </button>
+            <div class="user-info">
+              <span id="user-name">User</span>
+              <button class="btn-logout">Đăng xuất</button>
+            </div>
+          </div>
+        </header>
+
+        <div class="content">
+          <!-- Accounts List - Prioritized Section -->
+          <section class="accounts-section card">
+            <div class="section-header">
+              <h2>Danh Sách Tài Khoản</h2>
+              <button type="button" class="btn btn-primary btn-add-account" id="show-add-form-btn">
+                <span class="icon">➕</span> Thêm Tài Khoản
+              </button>
+            </div>
+            <div id="accounts-container">
+              <div class="loading">Đang tải...</div>
+            </div>
+          </section>
+
+          <!-- Add/Edit Account Form - Collapsible -->
+          <section class="form-section card" id="form-section" style="display: none;">
+            <div class="form-header">
+              <h2 id="form-title">Thêm Tài Khoản Mới</h2>
+              <button type="button" class="btn btn-secondary btn-scan-qr" id="scan-qr-btn">
+                <span class="icon">📷</span> Quét QR Code
+              </button>
+            </div>
+            <form id="account-form">
+              <input type="hidden" id="account-id" value="">
+
+              <div class="form-group">
+                <label for="service-name">Tên Dịch Vụ *</label>
+                <input type="text" id="service-name" class="form-control" placeholder="VD: Google, Facebook, GitHub..." required
+                  data-bs-toggle="tooltip" data-bs-title="Tên dịch vụ hoặc ứng dụng mà bạn đang thêm tài khoản xác thực.">
+                <small>Tên dịch vụ hoặc ứng dụng mà bạn đang thêm tài khoản xác thực.</small>
+              </div>
+
+              <div class="form-group">
+                <label for="username">Tên Người Dùng *</label>
+                <input type="text" id="username" class="form-control" placeholder="VD: user@example.com" required>
+                <small>Tên người dùng hoặc email liên kết với tài khoản dịch vụ.</small>
+              </div>
+
+              <div class="form-group">
+                <label for="secret-key">Secret Key (Khóa Bí Mật) *</label>
+                <input type="text" id="secret-key" class="form-control" placeholder="VD: JBSWY3DPEHPK3PXP" required pattern="[A-Z2-7]+"
+                  title="Secret key phải là ký tự A-Z và 2-7">
+                <small>Secret key thường có định dạng Base32 (chỉ chứa A-Z và 2-7)</small>
+              </div>
+
+              <div class="form-group">
+                <label for="issuer">Nhà phát hành (Issuer)</label>
+                <input type="text" id="issuer" class="form-control" placeholder="VD: Google, GitHub, Facebook...">
+                <small>Nhà phát hành dịch vụ (mặc định sẽ dùng tên dịch vụ nếu không điền)</small>
+              </div>
+
+              <div class="form-group">
+                <label for="algorithm">Thuật toán</label>
+                <select id="algorithm" class="form-control form-select">
+                  <option value="SHA1" selected>SHA1</option>
+                  <option value="SHA256">SHA256</option>
+                  <option value="SHA512">SHA512</option>
+                </select>
+                <small>Thuật toán băm dùng để tạo mã OTP (mặc định là SHA1)</small>
+              </div>
+
+              <div class="form-group">
+                <label for="otp-type">Loại khóa *</label>
+                <select id="otp-type" class="form-control form-select">
+                  <option value="TOTP" selected>TOTP (Thời gian)</option>
+                  <option value="HOTP">HOTP (Số lần sử dụng)</option>
+                </select>
+                <small>Loại khóa xác thực (TOTP hoặc HOTP)</small>
+              </div>
+
+              <div class="form-group">
+                <label for="digits">Số chữ số của mã OTP *</label>
+                <select id="digits" class="form-control form-select">
+                  <option value="6" selected>6 chữ số</option>
+                  <option value="7">7 chữ số</option>
+                  <option value="8">8 chữ số</option>
+                </select>
+                <small>Số chữ số trong mã OTP (mặc định là 6)</small>
+              </div>
+
+              <div class="form-group">
+                <label for="interval">Khoảng thời gian (giây)</label>
+                <input type="number" id="interval" class="form-control" value="30" min="10" max="300" required>
+                <small>Chỉ áp dụng cho TOTP. Mặc định là 30 giây.</small>
+              </div>
+
+              <div class="form-group">
+                <label for="counter">Bộ đếm (Chỉ HOTP)</label>
+                <input type="number" id="counter" class="form-control" value="0" min="0" required>
+                <small>Chỉ áp dụng cho HOTP. Bắt đầu từ 0.</small>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="submit-btn">
+                  <span class="icon">➕</span> Thêm Tài Khoản
+                </button>
+                <button type="button" class="btn btn-secondary" id="cancel-btn" style="display: none;">
+                  <span class="icon">❌</span> Hủy
+                </button>
+              </div>
+            </form>
+          </section>
+        </div>
+      </main>
+  </div>
+
+  <!-- Notification Toast -->
+  <div id="notification" class="notification"></div>
+
+  <!-- QR Scanner Modal -->
+  <div id="qr-scanner-modal" class="qr-modal" style="display: none;">
+    <div class="qr-modal-content">
+      <div class="qr-modal-header">
+        <h3>Quét QR Code TOTP</h3>
+        <button type="button" class="qr-close-btn" id="close-qr-scanner">&times;</button>
+      </div>
+      <div class="qr-modal-body">
+        <div id="qr-reader" style="width: 100%;"></div>
+        <div id="qr-reader-results" class="qr-results"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- otplib library for TOTP generation -->
+
+  <%- include('partials/footer', { additionalJS: [ '/js/vendor/buffer.js' , '/js/vendor/otplib.js' , '/js/vendor/html5-qrcode.min.js' ,'/js/totp-indexeddb.js'
+    , '/js/totp-lib.js' , '/js/totp.js' ] }) %>

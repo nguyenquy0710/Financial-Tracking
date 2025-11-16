@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Load user information
 const loadUserInfo = async () => {
   try {
-    const data = await apiCall('/auth/me');
+    const data = await sdkAuth.callApiWithAuth('/auth/me');
     if (data.success && data.data) {
       document.getElementById('user-name').textContent = data.data.name || 'User';
     }
@@ -55,7 +55,7 @@ const loadSummaryData = async () => {
     const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
 
     // Load salaries
-    const salaryData = await apiCall(`/salaries?startDate=${startOfMonth.toISOString()}&endDate=${endOfMonth.toISOString()}`);
+    const salaryData = await sdkAuth.callApiWithAuth(`/salaries?startDate=${startOfMonth.toISOString()}&endDate=${endOfMonth.toISOString()}`);
     let totalIncome = 0;
     if (salaryData.success && salaryData.data) {
       totalIncome = salaryData.data.reduce((sum, s) => sum + (s.totalIncome || 0), 0);
@@ -63,7 +63,7 @@ const loadSummaryData = async () => {
     document.getElementById('total-income').textContent = formatCurrency(totalIncome);
 
     // Load expenses
-    const expenseData = await apiCall(`/expenses?startDate=${startOfMonth.toISOString()}&endDate=${endOfMonth.toISOString()}`);
+    const expenseData = await sdkAuth.callApiWithAuth(`/expenses?startDate=${startOfMonth.toISOString()}&endDate=${endOfMonth.toISOString()}`);
     let totalExpense = 0;
     let transactionCount = 0;
     const categoryTotals = {};
@@ -79,7 +79,7 @@ const loadSummaryData = async () => {
     document.getElementById('total-expense').textContent = formatCurrency(totalExpense);
 
     // Load rentals
-    const rentalData = await apiCall(`/rentals?startDate=${startOfMonth.toISOString()}&endDate=${endOfMonth.toISOString()}`);
+    const rentalData = await sdkAuth.callApiWithAuth(`/rentals?startDate=${startOfMonth.toISOString()}&endDate=${endOfMonth.toISOString()}`);
     let totalRent = 0;
     if (rentalData.success && rentalData.data) {
       totalRent = rentalData.data.reduce((sum, r) => sum + (r.total || 0), 0);
@@ -134,9 +134,9 @@ const loadRecentActivities = async () => {
   try {
     // Load different types of activities
     const [expenses, salaries, rentals] = await Promise.all([
-      apiCall('/expenses?perPage=3'),
-      apiCall('/salaries?perPage=2'),
-      apiCall('/rentals?perPage=2')
+      sdkAuth.callApiWithAuth('/expenses?perPage=3'),
+      sdkAuth.callApiWithAuth('/salaries?perPage=2'),
+      sdkAuth.callApiWithAuth('/rentals?perPage=2')
     ]);
 
     const activities = [];
@@ -271,7 +271,7 @@ const restoreChartCanvas = (containerId, canvasId) => {
 // Load expense chart by category
 const loadExpenseChart = async (startDate, endDate) => {
   try {
-    const expenseData = await apiCall(`/expenses?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`);
+    const expenseData = await sdkAuth.callApiWithAuth(`/expenses?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`);
 
     // Group expenses by category
     const categoryData = {};
@@ -380,9 +380,9 @@ const loadIncomeExpenseChart = async (startDate, endDate) => {
 
       // Load data for this month
       const [salaryData, expenseData, rentalData] = await Promise.all([
-        apiCall(`/salaries?startDate=${monthStart.toISOString()}&endDate=${monthEnd.toISOString()}`),
-        apiCall(`/expenses?startDate=${monthStart.toISOString()}&endDate=${monthEnd.toISOString()}`),
-        apiCall(`/rentals?startDate=${monthStart.toISOString()}&endDate=${monthEnd.toISOString()}`)
+        sdkAuth.callApiWithAuth(`/salaries?startDate=${monthStart.toISOString()}&endDate=${monthEnd.toISOString()}`),
+        sdkAuth.callApiWithAuth(`/expenses?startDate=${monthStart.toISOString()}&endDate=${monthEnd.toISOString()}`),
+        sdkAuth.callApiWithAuth(`/rentals?startDate=${monthStart.toISOString()}&endDate=${monthEnd.toISOString()}`)
       ]);
 
       // Calculate totals

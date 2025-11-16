@@ -1,43 +1,4 @@
-const Category = require('../models/Category');
-const config = require('../config/config');
-
-/**
- * Initialize default categories for the system
- */
-async function initializeDefaultCategories() {
-  try {
-    // Check if default categories already exist
-    const existingCategories = await Category.countDocuments({ isDefault: true });
-
-    if (existingCategories > 0) {
-      console.log('✓ Default categories already initialized');
-      return;
-    }
-
-    // Create expense categories
-    const expenseCategories = config.defaultCategories.expense.map(cat => ({
-      ...cat,
-      type: 'expense',
-      isDefault: true,
-      userId: null
-    }));
-
-    // Create income categories
-    const incomeCategories = config.defaultCategories.income.map(cat => ({
-      ...cat,
-      type: 'income',
-      isDefault: true,
-      userId: null
-    }));
-
-    // Insert all categories
-    await Category.insertMany([...expenseCategories, ...incomeCategories]);
-
-    console.log('✓ Default categories initialized successfully');
-  } catch (error) {
-    console.error('✗ Error initializing default categories:', error);
-  }
-}
+const { default: Category } = require("@/models/category.model");
 
 /**
  * Auto-categorize transaction based on keywords
@@ -190,7 +151,6 @@ function generateSpendingInsights(transactions, budgets) {
 }
 
 module.exports = {
-  initializeDefaultCategories,
   autoCategorizeTransaction,
   formatCurrency,
   getDateRange,

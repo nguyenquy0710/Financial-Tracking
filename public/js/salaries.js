@@ -4,7 +4,7 @@ let salaries = [];
 let token = localStorage.getItem('authToken');
 
 if (!token) {
-  window.location.href = `/login?redirectUrl=${encodeURIComponent(window.location.pathname)}`;
+  window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}`;
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -17,7 +17,7 @@ const loadSalaries = async () => {
   container.innerHTML = '<p class="loading">Đang tải...</p>';
 
   try {
-    const response = await apiCall('/salaries');
+    const response = await sdkAuth.callApiWithAuth('/salaries');
 
     if (response.success && response.data) {
       salaries = response.data;
@@ -303,16 +303,16 @@ let selectedMisaTransaction = null;
 
 const showMisaImportModal = () => {
   document.getElementById('misaImportModal').style.display = 'block';
-  
+
   // Reset to login section
   document.getElementById('misaLoginSection').classList.add('active');
   document.getElementById('misaSearchSection').classList.remove('active');
-  
+
   // Set default month to current month for search
   const now = new Date();
   const monthStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
   document.getElementById('misaSearchMonth').value = monthStr;
-  
+
   // Clear previous data
   misaToken = null;
   selectedMisaTransaction = null;
@@ -350,10 +350,10 @@ const loginToMisa = async () => {
     });
 
     const data = await response.json();
-    
+
     if (data.success && data.data && data.data.token) {
       misaToken = data.data.token;
-      
+
       AppSDK.Alert.show({
         icon: AppSDK.Enums.AlertIcon.SUCCESS,
         title: "Thành công",
@@ -423,7 +423,7 @@ const searchMisaTransactions = async () => {
     });
 
     const data = await response.json();
-    
+
     if (data.success && data.data) {
       displayMisaTransactions(data.data);
     } else {
@@ -445,10 +445,10 @@ const searchMisaTransactions = async () => {
 
 const displayMisaTransactions = (data) => {
   const container = document.getElementById('misaTransactionList');
-  
+
   // Handle different response structures
   const transactions = data.data || data.items || data.transactions || [];
-  
+
   if (!transactions || transactions.length === 0) {
     container.innerHTML = '<p style="text-align: center; color: #888;">Không tìm thấy giao dịch thu nhập nào trong tháng này.</p>';
     return;
@@ -458,7 +458,7 @@ const displayMisaTransactions = (data) => {
     const date = new Date(txn.transactionDate || txn.date);
     const amount = txn.amount || txn.totalAmount || 0;
     const note = txn.note || txn.description || txn.content || 'Không có ghi chú';
-    
+
     return `
       <div class="transaction-item" data-index="${index}" onclick="selectMisaTransaction(${index})">
         <div style="display: flex; justify-content: space-between; align-items: center;">

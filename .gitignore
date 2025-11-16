@@ -141,3 +141,4 @@ vite.config.ts.timestamp-*
 
 # Backup HTML files (replaced by EJS templates)
 public/html-backup/
+public/statistical.json

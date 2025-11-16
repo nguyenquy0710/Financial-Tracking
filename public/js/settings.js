@@ -6,7 +6,7 @@ let token = localStorage.getItem(AppSDK.Enums.KeyStorage.AUTH_TOKEN ?? 'authToke
 let currentUser = null;
 
 if (!token) {
-  window.location.href = `/login?redirectUrl=${encodeURIComponent(window.location.pathname)}`;
+  window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}`;
 }
 
 async function loadUserInfo() {
@@ -82,7 +82,7 @@ function populateBankDropdown() {
 
 function showEditProfileForm() {
   if (!currentUser) return;
-  
+
   document.getElementById('editProfileName').value = currentUser.name || '';
   document.getElementById('editProfilePhone').value = currentUser.phone || '';
   document.getElementById('profileModal').style.display = 'block';
@@ -446,12 +446,12 @@ async function loadMisaConfig() {
 function displayMisaConfig(config) {
   const container = document.getElementById('misaConfigInfo');
   const misaConfig = config.misa || {};
-  
+
   if (misaConfig.isConfigured) {
-    const lastValidated = misaConfig.lastValidated 
+    const lastValidated = misaConfig.lastValidated
       ? new Date(misaConfig.lastValidated).toLocaleString('vi-VN')
       : 'Chưa xác minh';
-    
+
     container.innerHTML = `
       <div class="misa-config-details" style="margin-bottom: 15px;">
         <p style="margin: 8px 0;"><strong>Username:</strong> ${misaConfig.username}</p>
@@ -512,7 +512,7 @@ async function testMisaCredentials() {
     });
 
     const data = await response.json();
-    
+
     if (data.success && data.valid) {
       AppSDK.Alert.show({
         icon: AppSDK.Enums.AlertIcon.SUCCESS,
@@ -553,7 +553,7 @@ document.getElementById('misaConfigForm')?.addEventListener('submit', async (e) 
     });
 
     const data = await response.json();
-    
+
     if (data.success) {
       AppSDK.Alert.show({
         icon: AppSDK.Enums.AlertIcon.SUCCESS,

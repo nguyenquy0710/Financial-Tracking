@@ -3,38 +3,24 @@ const express = require('express');
 const cors = require('cors');
 // const helmet = require('helmet');
 const morgan = require('morgan');
-const rfs = require('rotating-file-stream');
-const fs = require('fs');
-const path = require('path');
 const compression = require('compression');
+const cookieParser = require('cookie-parser');
 const swaggerUi = require('swagger-ui-express');
 
 // Import configuration and utilities
-const config = require('./config/config');
+const { default: config } = require('./config/config');
+const { default: connectDB } = require('./config/database');
 const swaggerSpec = require('./config/swagger');
-const connectDB = require('./config/database');
+const { morganAccessStream } = require('./utils/logger');
 
 // Import custom middleware
 const errorHandler = require('./middleware/errorHandler');
+const { default: customMiddleware } = require('./middleware');
 
-// Import routes
-const authRoutes = require('./routes/authRoutes');
-const transactionRoutes = require('./routes/transactionRoutes');
-const categoryRoutes = require('./routes/categoryRoutes');
-const budgetRoutes = require('./routes/budgetRoutes');
-const goalRoutes = require('./routes/goalRoutes');
-const rentalRoutes = require('./routes/rentalRoutes');
-const salaryRoutes = require('./routes/salaryRoutes');
-const expenseRoutes = require('./routes/expenseRoutes');
-const excelRoutes = require('./routes/excelRoutes');
-const savingRoutes = require('./routes/savingRoutes');
-const depositRoutes = require('./routes/depositRoutes');
-const recurringBillRoutes = require('./routes/recurringBillRoutes');
-const bankAccountRoutes = require('./routes/bankAccountRoutes');
-const viewRoutes = require('./routes/viewRoutes');
-const externalRoutes = require('./routes/externalRoutes');
-const misaRoutes = require('./routes/misaRoutes');
-const systemConfigRoutes = require('./routes/systemConfigRoutes');
+// Import routes modules
+const { ROUTE_PREFIX, API_ROUTE_PREFIX } = require('./constants/route_prefix.constant');
+const { X_REQUEST_ID, X_DEVICE_ID } = require('./constants/app_key_config.constant');
+const { default: viewRoutes } = require('./routes/view.route');
 
 // Initialize app
 const app = express();
@@ -42,10 +28,13 @@ const app = express();
 // Set view engine
 app.set('view engine', 'ejs');
 app.set('views', './views');
+app.set('trust proxy', true); // Trust proxy headers (if behind a proxy)
 
+// ================ Database Connection ================ //
 // Connect to database
 connectDB();
 
+// ================ Middleware Setup ================ //
 // Middleware
 // app.use(helmet({
 //   contentSecurityPolicy: {
@@ -91,42 +80,32 @@ app.use(
 ); // Compress responses
 app.use(express.json()); // Parse JSON
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded
+app.use(cookieParser()); // Parse cookies
+app.use(customMiddleware()); // <-- middleware ở đây
 
-// Serve static files
+// ================ Static Files ================ //
+// Serve static files from 'public' directory
 app.use(express.static('public'));
-
-// Serve CHANGELOG.md file
-app.get('/CHANGELOG.md', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'CHANGELOG.md'));
-});
 
 // ================ Logging ================ //
 // ⚙️ Kích hoạt Morgan với luồng ghi log xoay
+morgan.token('deviceId', (req) => req.headers?.[X_DEVICE_ID] || '-');
+morgan.token('requestId', (req) => req.headers?.[X_REQUEST_ID] || req.requestId || '-');
+
 if (config.server.env === 'development') {
-  app.use(morgan('dev')); // In log ra console + ghi vào file access.log
+  // In log ra console + ghi vào file access.log
+  app.use(morgan('dev', { stream: morganAccessStream }));
 } else {
-  // Tạo đường dẫn đến file log
-  const logDirectory = path.join(__dirname, '..', 'logs');
-  if (!fs.existsSync(logDirectory)) {
-    fs.mkdirSync(logDirectory);
-  }
-
-  // 🔁 Tạo luồng ghi log xoay theo ngày + giới hạn dung lượng
-  const accessLogStream = rfs.createStream('access.log', {
-    interval: '1d', // Xoay log mỗi ngày (1d = one day)
-    size: '10M', // Giới hạn kích thước mỗi file: 10MB
-    compress: 'gzip', // Tự động nén log cũ để tiết kiệm dung lượng
-    path: logDirectory, // Thư mục chứa log
-    maxFiles: 30, // (Tuỳ chọn) Giữ tối đa 30 file log
-    teeToStdout: false // Không in ra console (nếu muốn in thêm thì bật morgan('dev'))
-  });
-
-  app.use(morgan('combined', { stream: accessLogStream })); // Ghi log vào file access.log
+  // Chỉ ghi log vào file access.log
+  app.use(morgan('combined', { stream: morganAccessStream }));
 }
+
+// ================ Web App Routes ================ //
+app.use(ROUTE_PREFIX.BASE, viewRoutes); // Main web app routes (removed welcome route)
 
 // ================ Swagger Documentation ================ //
 app.use(
-  '/api-docs',
+  API_ROUTE_PREFIX.SWAGGER,
   swaggerUi.serve,
   swaggerUi.setup(swaggerSpec, {
     customCss: '.swagger-ui .topbar { display: none }',
@@ -135,32 +114,12 @@ app.use(
 );
 
 // Swagger JSON
-app.get('/api-docs.json', (req, res) => {
+app.get(API_ROUTE_PREFIX.SWAGGER_JSON, (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   res.send(swaggerSpec);
 });
 
-// Web UI Routes - Must come before API routes
-app.use('/', viewRoutes);
-
-// API Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/transactions', transactionRoutes);
-app.use('/api/categories', categoryRoutes);
-app.use('/api/externals', externalRoutes);
-app.use('/api/misa', misaRoutes);
-app.use('/api/budgets', budgetRoutes);
-app.use('/api/goals', goalRoutes);
-app.use('/api/rentals', rentalRoutes);
-app.use('/api/salaries', salaryRoutes);
-app.use('/api/expenses', expenseRoutes);
-app.use('/api/excel', excelRoutes);
-app.use('/api/savings', savingRoutes);
-app.use('/api/deposits', depositRoutes);
-app.use('/api/recurring-bills', recurringBillRoutes);
-app.use('/api/bank-accounts', bankAccountRoutes);
-app.use('/api/system-config', systemConfigRoutes);
-
+// ================ Additional Routes ================ //
 // Health check
 app.get('/health', (req, res) => {
   res.json({
@@ -173,6 +132,7 @@ app.get('/health', (req, res) => {
 
 // Welcome route - Now removed as root is handled by viewRoutes
 
+// ================ Error Handling ================ //
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({
@@ -184,6 +144,7 @@ app.use((req, res) => {
 // Error handler
 app.use(errorHandler);
 
+// ================ Start Server ================ //
 // Start server
 const PORT = config.server.port;
 app.listen(PORT, () => {
@@ -200,6 +161,9 @@ app.listen(PORT, () => {
 ║                                                           ║
 ╚═══════════════════════════════════════════════════════════╝
   `);
+
+  // Log Turnstile keys for verification
+  console.log("🚀 QuyNH: config.turnstile.siteKey:", config.turnstile.siteKey);
 });
 
 // Handle unhandled promise rejections

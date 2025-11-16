@@ -1,0 +1,44 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2019",
+    "lib": ["es2019", "ES2021", "DOM"], // Include DOM library for browser compatibility if needed
+    "declaration": true,
+    "outDir": "./dist", // Output directory for compiled files
+    "rootDir": "./", // Root directory of source files
+    "baseUrl": "./", // Base URL for module resolution
+    "strict": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "sourceMap": true, // Enable source maps for better debugging
+    "incremental": true, // Enable incremental compilation
+    "allowJs": true, // For checking JS files in the project
+    "checkJs": false, // Set to true if you want to enable type checking for JS files
+    "removeComments": true, // Remove comments in the output files
+    "pretty": true, // Pretty print the output
+    "tsBuildInfoFile": ".tsbuildinfo", // Incremental build info file location
+    "plugins": [{ "transform": "typescript-transform-paths" }], // Plugin for path aliasing support
+    "typeRoots": ["./node_modules/@types"], // Specify type declaration files location
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["src/**/*", "views/**/*"],
+  "exclude": [
+    "node_modules",
+    "examples",
+    "docs",
+    "tests",
+    "logs",
+    "coverage",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "**/*.md"
+  ],
+  "excludedFiles": ["index.ts"]
+}

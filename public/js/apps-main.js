@@ -1,4 +1,6 @@
-// apps-main.js
+// =============================================
+// AppSDK - SDK chính cho ứng dụng
+// =============================================
 class AppSDK {
   constructor(baseURL = '') {
     this.baseURL = baseURL;
@@ -75,6 +77,36 @@ class AppSDK {
       this.intervalId = null;
     }
   }
+
+  /**
+   * Hàm lấy giá trị của một tham số trong URL query string theo tên.
+   *
+   * Ví dụ:
+   * Nếu URL hiện tại là:
+   *    https://example.com/?user=john&age=25
+   * Gọi hàm:
+   *    getQueryParam("user")  // → "john"
+   *    getQueryParam("age")   // → "25"
+   *    getQueryParam("city")  // → null (không tồn tại)
+   *
+   * @param {string} name - Tên của tham số cần lấy trong query string.
+   * @returns {string|null} - Giá trị của tham số nếu tồn tại, hoặc `null` nếu không tìm thấy.
+   */
+  static getQueryParam(name) {
+    const params = new URLSearchParams(window.location.search);
+    const value = params.get(name);
+    return value ? decodeURIComponent(value) : null;
+  }
+
+  /**
+   * Hàm kiểm tra định dạng email hợp lệ.
+   * @param {*} email - chuỗi email cần kiểm tra
+   * @returns {boolean} - true nếu email hợp lệ, ngược lại false nếu không hợp lệ
+   */
+  static validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  }
 }
 
 // =============================================
@@ -107,6 +139,9 @@ AppSDK['Enums'] = Object.freeze({
   }),
 });
 
+// =============================================
+// Module hiển thị cảnh báo (SweetAlert2)
+// =============================================
 AppSDK.Alert = {
   // Hàm hiển thị SweetAlert2 (https://sweetalert2.github.io/#examples)
   show: ({ icon = AppSDK.Enums.AlertIcon.INFO, title = "Thông báo", text = "", draggable = false, options = {} } = {}) => {
@@ -115,18 +150,18 @@ AppSDK.Alert = {
         icon, title, text, draggable,
         allowOutsideClick: () => !Swal.isLoading(),
         showClass: {
-          popup: `
-            animate__animated
-            animate__fadeInUp
-            animate__faster
-          `
+          // popup: `
+          //   animate__animated
+          //   animate__fadeInUp
+          //   animate__faster
+          // `
         },
         hideClass: {
-          popup: `
-            animate__animated
-            animate__fadeOutDown
-            animate__faster
-          `
+          // popup: `
+          //   animate__animated
+          //   animate__fadeOutDown
+          //   animate__faster
+          // `
         },
         ...options
       });
@@ -166,6 +201,9 @@ AppSDK.Alert = {
 
 }
 
+// =============================================
+// Module tiện ích chung
+// =============================================
 AppSDK.Utility = {
   // Hàm định dạng tiền tệ
   formatCurrency: (amount = 0, locale = 'vi-VN', currency = 'VND') => {

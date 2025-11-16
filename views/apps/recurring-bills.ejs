@@ -1,0 +1,161 @@
+<%- include('partials/header', { title: 'Hóa đơn định kỳ' , additionalCSS: [''] }) %>
+  <div class="app-container">
+    <%- include('partials/sidebar', { currentPage: 'recurring-bills' }) %>
+      <main class="main-content">
+        <header class="top-bar">
+          <h1>Hóa Đơn Định Kỳ</h1>
+          <div class="user-info">
+            <span id="user-name">User</span>
+            <button class="btn-logout">Đăng xuất</button>
+          </div>
+        </header>
+        <div class="content">
+
+          <div class="row g-3 mb-4">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="stat-card">
+                <h3>Tổng Hóa Đơn Tháng</h3>
+                <p class="stat-value" id="totalMonthly">0 VNĐ</p>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="stat-card">
+                <h3>Sắp Đến Hạn</h3>
+                <p class="stat-value" id="upcomingCount">0</p>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="stat-card">
+                <h3>Quá Hạn</h3>
+                <p class="stat-value" id="overdueCount">0</p>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="stat-card">
+                <h3>Hoạt Động</h3>
+                <p class="stat-value" id="activeCount">0</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h2>Danh Sách Hóa Đơn</h2>
+              <button class="btn btn-primary" onclick="showAddBillForm()">+ Thêm Hóa Đơn</button>
+            </div>
+            <div class="card-body">
+              <div class="filters">
+                <select id="typeFilter" onchange="filterBills()">
+                  <option value="">Tất cả loại</option>
+                  <option value="rent">Tiền nhà</option>
+                  <option value="electricity">Điện</option>
+                  <option value="water">Nước</option>
+                  <option value="internet">Internet</option>
+                  <option value="parking">Gửi xe</option>
+                  <option value="garbage">Rác</option>
+                  <option value="other">Khác</option>
+                </select>
+                <select id="statusFilter" onchange="filterBills()">
+                  <option value="true">Đang hoạt động</option>
+                  <option value="false">Đã dừng</option>
+                  <option value="">Tất cả</option>
+                </select>
+              </div>
+
+              <div id="billsList" class="table-responsive">
+                <p class="loading">Đang tải dữ liệu...</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h2>🔔 Sắp Đến Hạn (7 ngày)</h2>
+            </div>
+            <div class="card-body">
+              <div id="upcomingBills" class="table-responsive">
+                <p class="loading">Đang tải dữ liệu...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+  </div>
+
+  <!-- Add/Edit Bill Modal -->
+  <div id="billModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close" onclick="closeBillModal()">&times;</span>
+      <h2 id="modalTitle">Thêm Hóa Đơn Định Kỳ</h2>
+      <form id="billForm">
+        <input type="hidden" id="billId">
+
+        <div class="form-group">
+          <label for="name">Tên hóa đơn *</label>
+          <input type="text" id="name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="type">Loại *</label>
+          <select id="type" required>
+            <option value="rent">Tiền nhà</option>
+            <option value="electricity">Điện</option>
+            <option value="water">Nước</option>
+            <option value="internet">Internet</option>
+            <option value="parking">Gửi xe</option>
+            <option value="garbage">Rác</option>
+            <option value="other">Khác</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="amount">Số tiền *</label>
+          <input type="number" id="amount" required min="0">
+        </div>
+
+        <div class="form-group">
+          <label for="frequency">Tần suất *</label>
+          <select id="frequency" required>
+            <option value="monthly">Hàng tháng</option>
+            <option value="weekly">Hàng tuần</option>
+            <option value="quarterly">Hàng quý</option>
+            <option value="yearly">Hàng năm</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="dueDay">Ngày đến hạn (1-31)</label>
+          <input type="number" id="dueDay" min="1" max="31">
+        </div>
+
+        <div class="form-group">
+          <label for="nextDueDate">Ngày đến hạn tiếp theo *</label>
+          <input type="date" id="nextDueDate" required>
+        </div>
+
+        <div class="form-group">
+          <label for="reminderDays">Nhắc nhở trước (ngày)</label>
+          <input type="number" id="reminderDays" value="3" min="0">
+        </div>
+
+        <div class="form-group">
+          <label for="autoDebit">
+            <input type="checkbox" id="autoDebit">
+            Tự động thanh toán
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label for="notes">Ghi chú</label>
+          <textarea id="notes" rows="3"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="closeBillModal()">Hủy</button>
+          <button type="submit" class="btn btn-primary">Lưu</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <%- include('partials/footer', { additionalJS: [ '/js/recurring-bills.js' ] }) %>

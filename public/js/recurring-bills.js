@@ -4,7 +4,7 @@ let bills = [];
 let token = localStorage.getItem(AppSDK.Enums.KeyStorage.AUTH_TOKEN ?? 'authToken');
 
 if (!token) {
-  window.location.href = `/login?redirectUrl=${encodeURIComponent(window.location.pathname)}`;
+  window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}`;
 }
 
 async function loadBills() {

@@ -1,11 +1,12 @@
 const swaggerJsdoc = require('swagger-jsdoc');
-const config = require('./config');
+const { default: config } = require('./config');
 
+// Swagger definition and options for swagger-jsdoc setup
 const swaggerDefinition = {
   openapi: '3.0.0',
   info: {
     title: 'FinTrack API Documentation',
-    version: '1.0.0',
+    version: `${(config.app.version ?? '1.0.0')}`,
     description:
       'FinTrack (Financial Tracking) – Người bạn đồng hành tài chính thông minh - Smart Financial Companion Platform',
     contact: {
@@ -17,6 +18,8 @@ const swaggerDefinition = {
       url: 'https://opensource.org/licenses/MIT'
     }
   },
+
+  // Define servers for different environments (Development, Production)
   servers: [
     {
       url: `http://localhost:${config.server.port}`,
@@ -27,6 +30,8 @@ const swaggerDefinition = {
       description: 'Production server'
     }
   ],
+
+  // Define security schemes for bearer token authentication
   components: {
     securitySchemes: {
       bearerAuth: {
@@ -61,7 +66,8 @@ const swaggerDefinition = {
           createdAt: {
             type: 'string',
             format: 'date-time',
-            description: 'Creation timestamp'
+            description: 'Creation timestamp',
+            $ref: '#/components/schemas/Timestamp'
           }
         }
       },
@@ -101,7 +107,8 @@ const swaggerDefinition = {
           createdAt: {
             type: 'string',
             format: 'date-time',
-            description: 'Creation timestamp'
+            description: 'Creation timestamp',
+            $ref: '#/components/schemas/Timestamp'
           }
         }
       },
@@ -269,6 +276,8 @@ const swaggerDefinition = {
       }
     }
   },
+
+  // Global security requirement - all endpoints require bearer token unless otherwise specified
   security: [
     {
       bearerAuth: []
@@ -276,11 +285,20 @@ const swaggerDefinition = {
   ]
 };
 
+// Options for swagger-jsdoc - paths to files containing OpenAPI definitions
 const options = {
   swaggerDefinition,
-  apis: ['./src/routes/*.js', './src/controllers/*.js', './src/models/*.js']
+  apis: [
+    './src/routes/*.js',
+    './src/routes/apis/*.js',
+    './src/routes/admin/*.js',
+    './src/controllers/*.js',
+    './src/models/*.js'
+  ]
 };
 
+// Initialize swagger-jsdoc -> returns validated swagger spec in json format
 const swaggerSpec = swaggerJsdoc(options);
 
+// Export the swagger specification to be used in index.js
 module.exports = swaggerSpec;

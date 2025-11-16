@@ -11,11 +11,13 @@ FinTrack is built with a modern technology stack, focusing on performance, secur
 ## 🎯 Kiến trúc / Architecture
 
 ### Dual Interface Architecture
+
 - **RESTful API** (`/api/*`): Endpoints cho truy cập programmatic
 - **Web UI** (Server-Side Rendered): Giao diện web sử dụng EJS templates
 - **Static Assets**: CSS/JS riêng biệt cho từng feature
 
 ### Design Patterns
+
 - **MVC Pattern**: Model-View-Controller separation
 - **Middleware Chain**: Express middleware for authentication, validation, error handling
 - **Repository Pattern**: Mongoose models for data access
@@ -26,6 +28,7 @@ FinTrack is built with a modern technology stack, focusing on performance, secur
 ## 🔧 Backend Technologies
 
 ### Core Framework
+
 - **Node.js** >= 18.0.0 - JavaScript runtime
 - **Express.js** ^4.18.2 - Web application framework
   - Fast, minimalist web framework
@@ -33,6 +36,7 @@ FinTrack is built with a modern technology stack, focusing on performance, secur
   - RESTful API support
 
 ### Database
+
 - **MongoDB** >= 4.4 - NoSQL database
   - Document-oriented storage
   - Flexible schema design
@@ -43,6 +47,7 @@ FinTrack is built with a modern technology stack, focusing on performance, secur
   - Query building and population
 
 ### Authentication & Security
+
 - **jsonwebtoken** ^9.0.2 - JWT token generation and verification
 - **bcryptjs** ^2.4.3 - Password hashing with salt
 - **helmet** ^7.1.0 - Security headers middleware
@@ -53,6 +58,7 @@ FinTrack is built with a modern technology stack, focusing on performance, secur
 - **express-validator** ^7.0.1 - Request validation middleware
 
 ### File Processing
+
 - **multer** ^2.0.2 - File upload handling
 - **xlsx** ^0.18.5 - Excel file import/export
   - Read/write .xlsx files
@@ -60,18 +66,21 @@ FinTrack is built with a modern technology stack, focusing on performance, secur
   - Support for financial data formats
 
 ### Utilities & Middleware
+
 - **dotenv** ^16.3.1 - Environment variable management
 - **morgan** ^1.10.0 - HTTP request logger
 - **compression** ^1.7.4 - Response compression (gzip)
 - **rotating-file-stream** ^3.2.7 - Log rotation
 
 ### API Documentation
+
 - **swagger-jsdoc** ^6.2.8 - JSDoc to Swagger/OpenAPI spec generator
 - **swagger-ui-express** ^5.0.1 - Interactive API documentation UI
   - Accessible at `/api-docs`
   - JSON spec at `/api-docs.json`
 
 ### External Integrations
+
 - **vietqr** ^1.1.9 - Vietnamese banking QR code integration
   - VietQR payment support
   - Bank account verification
@@ -81,12 +90,14 @@ FinTrack is built with a modern technology stack, focusing on performance, secur
 ## 🎨 Frontend Technologies
 
 ### Template Engine
+
 - **EJS** ^3.1.10 - Embedded JavaScript templates
   - Server-side rendering
   - Partials for reusable components
   - Layout inheritance
 
 ### CSS Framework & UI
+
 - **Bootstrap** 5.3.8 (via CDN) - Responsive CSS framework
   - Grid system
   - Pre-built components
@@ -100,6 +111,7 @@ FinTrack is built with a modern technology stack, focusing on performance, secur
   - And more...
 
 ### JavaScript Libraries
+
 - **Vanilla JavaScript** - No heavy frontend framework
 - **jQuery** (via CDN) - DOM manipulation and AJAX
 - **Chart.js** 4.4.1 (via CDN) - Data visualization
@@ -108,6 +120,7 @@ FinTrack is built with a modern technology stack, focusing on performance, secur
   - Responsive and interactive
 
 ### Frontend Structure
+
 ```
 public/
 ├── css/              # Stylesheets
@@ -132,6 +145,7 @@ public/
 ## 🧪 Testing & Quality Assurance
 
 ### Testing Framework
+
 - **Jest** ^29.7.0 - JavaScript testing framework
   - Unit tests
   - Integration tests
@@ -141,6 +155,7 @@ public/
   - Request/response validation
 
 ### Code Quality
+
 - **ESLint** ^8.56.0 - JavaScript linter
   - Code style enforcement
   - Error detection
@@ -150,6 +165,7 @@ public/
   - Auto-formatting on save
 
 ### Testing Configuration
+
 ```javascript
 // jest.config.js
 - Test Environment: Node.js
@@ -159,6 +175,7 @@ public/
 ```
 
 ### Quality Metrics
+
 - **Code Coverage**: ≥70% (branches, functions, lines, statements)
 - **ESLint Rules**: Based on `eslint:recommended`
 - **Ignored Patterns**: `public/*` (frontend code)
@@ -168,22 +185,25 @@ public/
 ## 🛠️ Development Tools
 
 ### Development Dependencies
+
 - **nodemon** ^3.0.2 - Auto-restart on file changes
   - Watch mode for development
   - Fast feedback loop
 
 ### Version Control
+
 - **Git** - Source code management
 - **GitHub** - Repository hosting and collaboration
 
 ### Scripts
+
 ```json
 {
-  "start": "node src/index.js",           // Production mode
-  "dev": "nodemon src/index.js",          // Development with hot reload
-  "test": "jest --coverage",              // Run tests with coverage
-  "test:watch": "jest --watch",           // Watch mode for tests
-  "lint": "eslint src/**/*.js",           // Check code style
+  "start": "node src/index.js", // Production mode
+  "dev": "nodemon src/index.js", // Development with hot reload
+  "test": "jest --coverage", // Run tests with coverage
+  "test:watch": "jest --watch", // Watch mode for tests
+  "lint": "eslint src/**/*.js", // Check code style
   "lint:fix": "eslint src/**/*.js --fix", // Auto-fix linting issues
   "format": "prettier --write src/**/*.js", // Format code
   "init:db": "node src/scripts/initDB.js" // Initialize database
@@ -195,6 +215,7 @@ public/
 ## 🐳 DevOps & Deployment
 
 ### Containerization
+
 - **Docker** - Container platform
   - Multi-stage builds
   - Non-root user for security
@@ -202,6 +223,7 @@ public/
   - Base image: `node:22.12.0-alpine`
 
 ### Container Orchestration
+
 - **Docker Compose** v3.8 - Multi-container deployment
   - MongoDB service
   - FinTrack API service
@@ -209,15 +231,17 @@ public/
   - Volume management
 
 ### Docker Configuration
+
 ```yaml
 Services:
-- mongodb: MongoDB 7 with health checks
-- api: FinTrack application with Express.js
+  - mongodb: MongoDB 7 with health checks
+  - api: FinTrack application with Express.js
 Networks: fintrack-network (bridge)
 Volumes: mongodb_data (persistent storage)
 ```
 
 ### Deployment Features
+
 - **Health Checks**: Built-in health endpoints
 - **Auto-restart**: `unless-stopped` restart policy
 - **Service Dependencies**: API waits for MongoDB
@@ -288,23 +312,27 @@ Financial-Tracking/
 ## 🔐 Security Features
 
 ### Authentication
+
 - **JWT Tokens**: Stateless authentication
 - **Bearer Token**: Authorization header
 - **Token Expiry**: 7 days default
 - **Password Hashing**: bcrypt with salt rounds (12)
 
 ### Security Headers (via Helmet)
+
 - Content Security Policy (CSP)
 - X-Frame-Options
 - X-Content-Type-Options
 - Strict-Transport-Security
 
 ### Input Validation
+
 - Request body validation with express-validator
 - Schema validation with Mongoose
 - XSS protection
 
 ### Data Protection
+
 - Password fields excluded from queries by default
 - MongoDB connection string in environment variables
 - Sensitive data in `.env` file (not committed)
@@ -314,10 +342,12 @@ Financial-Tracking/
 ## 🌍 Internationalization (i18n)
 
 ### Supported Languages
+
 - **Vietnamese (vi)**: Primary language
 - **English (en)**: Secondary language
 
 ### Implementation
+
 - User language preference stored in database
 - UI text supports both languages
 - Vietnamese financial terminology used throughout
@@ -328,18 +358,21 @@ Financial-Tracking/
 ## 📊 Performance Optimizations
 
 ### Backend
+
 - **Compression**: gzip compression for responses >1KB
 - **Connection Pooling**: MongoDB connection reuse
 - **Pagination**: Limit/skip for large datasets
 - **Indexes**: Database indexes on frequently queried fields
 
 ### Frontend
+
 - **CDN**: External libraries loaded from CDN
 - **Lazy Loading**: Charts loaded on demand
 - **Minimal Dependencies**: Vanilla JS where possible
 - **Responsive Design**: Mobile-first approach
 
 ### Caching
+
 - Static assets served with appropriate cache headers
 - Database query result caching (planned)
 
@@ -348,6 +381,7 @@ Financial-Tracking/
 ## 🔄 API Design
 
 ### RESTful Endpoints
+
 ```
 /api/auth/*           - Authentication
 /api/transactions/*   - Financial transactions
@@ -364,6 +398,7 @@ Financial-Tracking/
 ```
 
 ### Response Format
+
 ```json
 {
   "success": true|false,
@@ -373,6 +408,7 @@ Financial-Tracking/
 ```
 
 ### Authentication Flow
+
 - Login/Register: POST `/api/auth/login`, `/api/auth/register`
 - Protected Routes: `Authorization: Bearer <token>`
 - Token Verification: Middleware in `src/middleware/auth.js`
@@ -382,6 +418,7 @@ Financial-Tracking/
 ## 📱 Browser & Environment Support
 
 ### Browsers
+
 - Chrome (latest)
 - Firefox (latest)
 - Safari (latest)
@@ -389,11 +426,13 @@ Financial-Tracking/
 - Mobile browsers (iOS Safari, Chrome Mobile)
 
 ### Node.js
+
 - **Minimum**: Node.js 18.0.0
 - **Recommended**: Node.js 18.x or 20.x LTS
 - **Package Manager**: npm 9.0.0 or higher
 
 ### MongoDB
+
 - **Minimum**: MongoDB 4.4
 - **Recommended**: MongoDB 5.x or 7.x
 - **Driver**: Mongoose 8.0.3
@@ -403,6 +442,7 @@ Financial-Tracking/
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 ```bash
 - Node.js >= 18.0.0
 - MongoDB >= 4.4
@@ -411,6 +451,7 @@ Financial-Tracking/
 ```
 
 ### Installation
+
 ```bash
 # Clone repository
 git clone https://github.com/nguyenquy0710/Financial-Tracking.git
@@ -434,6 +475,7 @@ npm run dev
 ```
 
 ### Production Deployment
+
 ```bash
 # Using Docker Compose
 docker-compose up -d
@@ -447,6 +489,7 @@ npm start
 ## 📚 Documentation
 
 ### Available Docs
+
 - **API Documentation**: [Swagger UI](http://localhost:3000/api-docs)
 - **Quick Start**: [docs/QUICKSTART.md](./QUICKSTART.md)
 - **Authentication Flow**: [docs/AUTHENTICATION_FLOW.md](./AUTHENTICATION_FLOW.md)
@@ -459,7 +502,9 @@ npm start
 ## 🎯 Key Features Implementation
 
 ### 6 Jars Budget Method
+
 Phương pháp quản lý tài chính với 7 "lọ" (jars):
+
 - **Gửi Mẹ**: Tiền gửi gia đình
 - **NEC (55%)**: Nhu cầu thiết yếu
 - **FFA (10%)**: Tự do tài chính
@@ -469,6 +514,7 @@ Phương pháp quản lý tài chính với 7 "lọ" (jars):
 - **LTS (10%)**: Tiết kiệm dài hạn
 
 ### Financial Tracking
+
 - Income tracking (salary, freelance)
 - Expense categorization
 - Rental management (room/house)
@@ -477,6 +523,7 @@ Phương pháp quản lý tài chính với 7 "lọ" (jars):
 - Budget planning
 
 ### Data Visualization
+
 - Chart.js for interactive charts
 - Expense breakdown by category
 - Income vs expense comparison
@@ -512,17 +559,20 @@ VIETQR_API_KEY=your-vietqr-api-key
 ## 🤝 Contributing
 
 ### Code Style
+
 - ESLint configuration: `.eslintrc.json`
 - Prettier configuration: `.prettierrc.json`
 - Auto-format on commit (recommended)
 
 ### Testing Requirements
+
 - Write tests for new features
 - Maintain ≥70% code coverage
 - Run `npm test` before committing
 - Integration tests with Supertest
 
 ### Pull Request Process
+
 1. Fork the repository
 2. Create feature branch (`git checkout -b feature/AmazingFeature`)
 3. Commit changes (`git commit -m 'Add AmazingFeature'`)
@@ -554,4 +604,4 @@ This project is licensed under the MIT License - see the [LICENSE](../LICENSE) f
 
 **Made with ❤️ in Vietnam**
 
-*Last Updated: January 2025*
+_Last Updated: January 2025_
