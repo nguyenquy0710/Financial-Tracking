@@ -107,3 +107,5 @@ jobs:
           publish_dir: ./docs/_site
           keep_files: false
           force_orphan: true
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
