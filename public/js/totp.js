@@ -8,7 +8,7 @@ let totpDB = null; // IndexedDB instance
 
 // Redirect to login if not authenticated
 if (!sdkAuth.isAuthenticated()) {
-  window.location.href = `/login?redirectUrl=${encodeURIComponent(window.location.pathname)}`;
+  window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}`;
 }
 
 // Load accounts on page load
@@ -107,7 +107,7 @@ const setupQRScanner = () => {
 // Start QR Scanner
 const startQRScanner = async () => {
   const qrReaderDiv = document.getElementById('qr-reader');
-  
+
   try {
     if (!html5QrCode) {
       html5QrCode = new Html5Qrcode('qr-reader');
@@ -150,20 +150,20 @@ const stopQRScanner = async () => {
 // Handle QR Code scan success
 const onQRCodeScanned = async (decodedText, decodedResult) => {
   console.log('QR Code scanned:', decodedText);
-  
+
   const resultsDiv = document.getElementById('qr-reader-results');
-  
+
   try {
     // Parse otpauth URL
     const otpData = parseOtpAuthUrl(decodedText);
-    
+
     if (otpData) {
       resultsDiv.innerHTML = `<p class="success">✅ Quét thành công! Đang điền thông tin...</p>`;
       resultsDiv.classList.add('show');
-      
+
       // Fill form with parsed data
       fillFormFromQRData(otpData);
-      
+
       // Stop scanner and close modal
       await stopQRScanner();
       setTimeout(() => {
@@ -171,7 +171,7 @@ const onQRCodeScanned = async (decodedText, decodedResult) => {
         resultsDiv.innerHTML = '';
         resultsDiv.classList.remove('show');
       }, 1500);
-      
+
       showNotification('Đã quét QR code thành công!');
     } else {
       resultsDiv.innerHTML = `<p class="error">❌ QR code không hợp lệ. Vui lòng quét QR code TOTP.</p>`;
@@ -199,15 +199,15 @@ const parseOtpAuthUrl = (url) => {
     }
 
     const urlObj = new URL(url);
-    
+
     // Extract type (totp or hotp) from hostname
     const type = urlObj.hostname.toUpperCase();
-    
+
     // Extract label (issuer:accountName or just accountName)
     const path = decodeURIComponent(urlObj.pathname.substring(1));
     let issuer = '';
     let accountName = '';
-    
+
     if (path.includes(':')) {
       const parts = path.split(':');
       issuer = parts[0];
@@ -215,7 +215,7 @@ const parseOtpAuthUrl = (url) => {
     } else {
       accountName = path;
     }
-    
+
     // Extract query parameters
     const params = new URLSearchParams(urlObj.search);
     const secret = params.get('secret');
@@ -223,21 +223,21 @@ const parseOtpAuthUrl = (url) => {
     const digits = parseInt(params.get('digits') || '6', 10);
     const period = parseInt(params.get('period') || '30', 10);
     const counter = parseInt(params.get('counter') || '0', 10);
-    
+
     // Override issuer if provided in params
     if (params.get('issuer')) {
       issuer = params.get('issuer');
     }
-    
+
     if (!secret) {
       throw new Error('Secret key không tìm thấy trong QR code');
     }
-    
+
     // Fallback for issuer - use part before @ or the whole accountName
     if (!issuer) {
       issuer = accountName.includes('@') ? accountName.split('@')[0] : accountName;
     }
-    
+
     return {
       type: type,
       issuer: issuer,
@@ -264,11 +264,11 @@ const fillFormFromQRData = (data) => {
   document.getElementById('otp-type').value = data.type; // Keep original case (TOTP/HOTP)
   document.getElementById('digits').value = data.digits.toString();
   document.getElementById('interval').value = data.period.toString();
-  
+
   if (data.type === 'HOTP') {
     document.getElementById('counter').value = data.counter.toString();
   }
-  
+
   // Scroll to form to show filled data
   document.getElementById('form-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
 };
@@ -532,7 +532,7 @@ const editAccount = async (accountId) => {
   try {
     // Fetch account details from server to get all fields including secret
     const response = await sdkAuth.callApiWithAuth(`/totp/${accountId}`, 'GET');
-    
+
     if (!response.success || !response.data) {
       showNotification('Không thể tải thông tin tài khoản', 'error');
       return;
@@ -649,7 +649,7 @@ async function apiCallTotp(endpoint, method = 'GET', data = null) {
 
   if (response.status === 401) {
     localStorage.removeItem('authToken');
-    window.location.href = `/login?redirectUrl=${encodeURIComponent(window.location.pathname)}`;
+    window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}`;
     return;
   }
 

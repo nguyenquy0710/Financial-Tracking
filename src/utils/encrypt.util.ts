@@ -1,10 +1,10 @@
 import crypto from 'crypto';
 
-import config from '@/config/config';
+import configApp from '@/config/config';
 
 // Encryption configuration
-export const ALGORITHM = config.totp.aesAlgorithm || 'aes-256-cbc';
-export const ENCRYPTION_KEY = config.totp.encryptionKey; // Must be 32 bytes for aes-256
+export const ALGORITHM = configApp.totp.aesAlgorithm || 'aes-256-cbc';
+export const ENCRYPTION_KEY = configApp.totp.encryptionKey; // Must be 32 bytes for aes-256
 export const IV_LENGTH = 16;
 
 /**

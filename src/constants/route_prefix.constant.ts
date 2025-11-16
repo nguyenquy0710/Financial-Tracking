@@ -1,7 +1,8 @@
 // src/constants/route_prefix.constant.ts
 // Constants for route prefixes used in the application
 
-interface RoutePrefix {
+// Type definition for route prefix structure
+export interface RoutePrefix {
   MENU_NAME?: string;
   BASE: string;
   SUB_ROUTE?: {
@@ -11,7 +12,14 @@ interface RoutePrefix {
 
 // General route prefixes for main application routes
 export const ROUTE_PREFIX = {
+  MENU_NAME: 'Landing',
   BASE: '/',
+
+  CHANGELOG: {
+    MENU_NAME: 'Changelog',
+    BASE: '/changelog',
+    FILE_PATH: '/CHANGELOG.md',
+  },
 
   AUTH: {
     MENU_NAME: 'Auth',
@@ -22,6 +30,13 @@ export const ROUTE_PREFIX = {
       REGISTER: '/register',
     }
   },
+
+};
+
+// Route prefixes for app module routes
+export const APP_ROUTE_PREFIX = {
+  MENU_NAME: 'App',
+  BASE: '/app',
 
   DASHBOARD: {
     MENU_NAME: 'Dashboard',

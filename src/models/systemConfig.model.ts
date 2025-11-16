@@ -100,7 +100,7 @@ systemConfigSchema.virtual('valueType').get(function (this: ISystemConfigModel) 
 });
 
 // 7. Indexes for efficient queries
-systemConfigSchema.index({ configName: 1 });
+// systemConfigSchema.index({ configName: 1 });
 systemConfigSchema.index({ isActive: 1 });
 systemConfigSchema.index({ configName: 1, isActive: 1 });
 
@@ -108,12 +108,17 @@ systemConfigSchema.index({ configName: 1, isActive: 1 });
 systemConfigSchema.pre('save', function (next) {
   const config = this as ISystemConfigModel;
 
+  // Normalize config name
+  if (!config.configName) {
+    config.configName = config.configName?.toUpperCase()?.trim() || '';
+  }
+
   // Update the updatedAt field
   config.updatedAt = new Date();
 
   // Validate config name format
   if (!/^[A-Z0-9_]+$/.test(config.configName)) {
-    return next(new Error('Config name can only contain uppercase letters, numbers and underscores'));
+    return next(new Error(`Config name ${config.configName} can only contain uppercase letters, numbers and underscores`));
   }
 
   next();

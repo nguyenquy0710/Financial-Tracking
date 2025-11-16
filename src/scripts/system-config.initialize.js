@@ -37,7 +37,7 @@ module.exports = {
       // Create default configurations
       const configsToInsert = Object.entries(defaultSystemConfigs)
         .map(([key, value]) => ({
-          configName: key,
+          configName: key.toUpperCase().trim(),
           configValue: value,
           isActive: true,
           createdAt: new Date(),

@@ -1,0 +1,7 @@
+`.well-known` được sử dụng để đặt các tệp mà các dịch vụ hoặc ứng dụng có thể tìm thấy và truy cập qua một URL tiêu chuẩn mà không cần phải cấu hình riêng biệt cho từng dịch vụ.
+
+Ví dụ:
+
+- Let's Encrypt sử dụng `.well-known/acme-challenge/` để xác thực quyền sở hữu tên miền khi cấp chứng chỉ SSL.
+- Webfinger sử dụng `.well-known/webfinger` để cung cấp thông tin về người dùng.
+  - Ví dụ: `GET http://yourdomain.com/.well-known/webfinger?resource=acct:example-user@yourdomain.com`

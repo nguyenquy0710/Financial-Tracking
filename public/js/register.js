@@ -1,14 +1,17 @@
 // Register page JavaScript with jQuery
 
 // Turnstile callback
-window.onTurnstileSuccess = function(token) {
+window.onTurnstileSuccess = function (token) {
   console.log('Turnstile verification successful');
 };
 
 $(document).ready(function () {
-  // Check if already logged in
+  const redirectUrl = AppSDK.getQueryParam("redirect");
+  console.log("🚀 QuyNH: redirect", redirectUrl)
+
+  // Check if already logged in and redirect
   if (localStorage.getItem('authToken')) {
-    window.location.href = '/dashboard';
+    window.location.href = `/app/dashboard?redirect=${redirectUrl ? encodeURIComponent(redirectUrl) : ''}`;
     return;
   }
 
@@ -170,7 +173,8 @@ $(document).ready(function () {
 
       if (response.success) {
         // Store token
-        localStorage.setItem('authToken', response.data.token);
+        cookieStore.set('authToken', response.data.token); // For cookies
+        localStorage.setItem('authToken', response.data.token); // For localStorage
 
         // Store user info
         if (response.data.user) {
@@ -188,7 +192,7 @@ $(document).ready(function () {
         // Add smooth transition effect
         $('body').fadeOut(500, function () {
           // Redirect to dashboard
-          window.location.href = '/dashboard';
+          window.location.href = '/app/dashboard';
         });
       } else {
         throw new Error(response.message || 'Đăng ký thất bại');

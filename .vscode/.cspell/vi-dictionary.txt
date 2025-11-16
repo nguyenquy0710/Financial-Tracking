@@ -1,5 +1,6 @@
 # Custom Dictionary Words
 bằng
+Bảng
 biến
 biết
 biểu
@@ -11,6 +12,7 @@ chăm
 chẩn
 chấp
 chạy
+chép
 chiếm
 chiếu
 chính
@@ -31,12 +33,15 @@ dạng
 danh
 dịch
 đích
+điểm
+diện
 điện
 điều
 đính
 định
 đoán
 đoạn
+dòng
 đóng
 đồng
 động
@@ -70,10 +75,12 @@ khách
 khai
 khảo
 khẩu
+khiển
 khóa
 khoản
 Khoảng
 khôi
+khỏi
 khởi
 không
 khớp
@@ -109,6 +116,7 @@ nghe
 nghĩa
 ngoài
 Ngôn
+ngược
 người
 nguồn
 nguyên
@@ -122,6 +130,7 @@ nhanh
 nhập
 nhất
 nhật
+nhau
 Nhiệm
 nhiên
 nhiều
@@ -133,18 +142,22 @@ phần
 phản
 pháp
 phát
+phẩy
 phép
 Phiên
 phòng
 phục
 phương
 quản
+Quận
 Quang
 quên
 quyền
 rằng
 riêng
+rỗng
 sách
+sạch
 sánh
 tảng
 thái
@@ -174,6 +187,7 @@ thường
 tích
 tiên
 tiền
+tiện
 Tiếng
 tiếp
 tiết
@@ -198,6 +212,7 @@ tương
 tượng
 tuyệt
 uống
+viên
 viet
 Viết
 Việt

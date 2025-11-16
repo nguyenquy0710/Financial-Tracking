@@ -4,7 +4,7 @@ let salaries = [];
 let token = localStorage.getItem('authToken');
 
 if (!token) {
-  window.location.href = `/login?redirectUrl=${encodeURIComponent(window.location.pathname)}`;
+  window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}`;
 }
 
 document.addEventListener('DOMContentLoaded', async () => {

@@ -6,12 +6,12 @@ window.onTurnstileSuccess = function (token) {
 };
 
 $(document).ready(function () {
-  const redirectUrl = getQueryParam("redirectUrl");
-  console.log("🚀 QuyNH: redirectUrl", redirectUrl)
+  const redirectUrl = AppSDK.getQueryParam("redirect");
+  console.log("🚀 QuyNH: redirect", redirectUrl)
 
-  // Check if already logged in
+  // If already logged in, redirect to dashboard
   if (localStorage.getItem('authToken')) {
-    window.location.href = `/dashboard?redirectUrl=${redirectUrl ? encodeURIComponent(redirectUrl) : ''}`;
+    window.location.href = `/app/dashboard?redirect=${redirectUrl ? encodeURIComponent(redirectUrl) : ''}`;
     return;
   }
 
@@ -29,7 +29,20 @@ $(document).ready(function () {
     }
   });
 
-  // Get query parameters from URL
+  /**
+   * Hàm lấy giá trị của một tham số trong URL query string theo tên.
+   *
+   * Ví dụ:
+   * Nếu URL hiện tại là:
+   *    https://example.com/?user=john&age=25
+   * Gọi hàm:
+   *    getQueryParam("user")  // → "john"
+   *    getQueryParam("age")   // → "25"
+   *    getQueryParam("city")  // → null (không tồn tại)
+   *
+   * @param {string} name - Tên của tham số cần lấy trong query string.
+   * @returns {string|null} - Giá trị của tham số nếu tồn tại, hoặc `null` nếu không tìm thấy.
+   */
   function getQueryParam(name) {
     const params = new URLSearchParams(window.location.search);
     const value = params.get(name);
@@ -65,8 +78,9 @@ $(document).ready(function () {
   $('#login-form').on('submit', async function (e) {
     e.preventDefault();
 
-    const email = $('#email').val().trim();
+    const email = $('#email').val()?.trim();
     const password = $('#password').val();
+    const redirectUrl = $('#redirectUrl').val()?.trim();
     const rememberMe = $('#remember-me').is(':checked');
 
     // Reset validation states
@@ -120,12 +134,23 @@ $(document).ready(function () {
         url: '/api/auth/login',
         method: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify({ email, password, turnstileToken })
+        data: JSON.stringify({
+          email, password, turnstileToken, rememberMe,
+          redirectUrl: redirectUrl,
+        })
       });
 
       if (response.success) {
         // Store token
-        localStorage.setItem('authToken', response.data.token);
+        cookieStore.set('authToken', response.data.token); // For cookies
+        localStorage.setItem('authToken', response.data.token); // For localStorage
+
+        // Remember me functionality
+        if (rememberMe) {
+          localStorage.setItem('rememberMe', 'true');
+        } else {
+          localStorage.removeItem('rememberMe');
+        }
 
         // Store user info
         if (response.data.user) {
@@ -143,7 +168,7 @@ $(document).ready(function () {
         // Add smooth transition effect
         $('body').fadeOut(500, function () {
           // Redirect to dashboard
-          window.location.href = '/dashboard';
+          window.location.href = '/app/dashboard';
         });
       } else {
         throw new Error(response.message || 'Đăng nhập thất bại');

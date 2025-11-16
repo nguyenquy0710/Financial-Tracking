@@ -1,4 +1,4 @@
-const { default: Rental } = require("@/models/rental.model");
+const { default: Rental } = require("@/models/rentalDetail.model");
 
 /**
  * @desc    Get all rentals for a user

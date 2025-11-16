@@ -5,7 +5,7 @@ let token = sdkAuth.getAuthToken();
 
 // Redirect to login if not authenticated
 if (!sdkAuth.isAuthenticated()) {
-  window.location.href = `/login?redirectUrl=${encodeURIComponent(window.location.pathname)}`;
+  window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}`;
 }
 
 // Load properties on page load
@@ -65,7 +65,7 @@ const loadProperties = async () => {
                             <tbody>
                                 ${properties.map(property => `
                                     <tr>
-                                        <td><strong>${property.roomCode}</strong></td>
+                                        <td><a href="#" onclick="viewPropertyDetails('${property._id}')" title="Xem chi tiết" style="text-decoration: none;"><strong>${property.roomCode}</strong></a></td>
                                         <td>${property.propertyName}</td>
                                         <td>${property.address || 'N/A'}</td>
                                         <td>${AppSDK.Utility.formatCurrency(property.rentAmount)}</td>
@@ -78,9 +78,9 @@ const loadProperties = async () => {
                                         <td>
                                             <button class="btn btn-sm btn-info" onclick="viewPropertyDetails('${property._id}')" title="Xem chi tiết">👁️</button>
                                             <button class="btn btn-sm" onclick="editProperty('${property._id}')" title="Chỉnh sửa">✏️</button>
-                                            ${property.isActive ? 
-                                              `<button class="btn btn-sm btn-warning" onclick="deactivateProperty('${property._id}')" title="Trả phòng">🔒</button>` : 
-                                              ''}
+                                            ${property.isActive ?
+          `<button class="btn btn-sm btn-warning" onclick="deactivateProperty('${property._id}')" title="Trả phòng">🔒</button>` :
+          ''}
                                             <button class="btn btn-sm btn-danger" onclick="deleteProperty('${property._id}')" title="Xóa">🗑️</button>
                                         </td>
                                     </tr>
@@ -99,7 +99,7 @@ const loadProperties = async () => {
 
 // View property details
 const viewPropertyDetails = (propertyId) => {
-  window.location.href = `/rentals/${propertyId}/detail`;
+  window.location.href = `/app/rentals/${propertyId}/detail`;
 };
 
 // Show add property modal
@@ -112,6 +112,22 @@ const showAddPropertyModal = () => {
   document.getElementById('startDate').value = new Date().toISOString().split('T')[0];
 
   document.getElementById('propertyModal').style.display = 'block';
+
+  // Áp dụng cho tất cả input có class .format-number
+  document.querySelectorAll('.format-number').forEach(input => {
+    AppExternal.applyCurrencyFormat(input);
+  });
+
+  // Áp dụng cho tất cả input có class .format-currency
+  document.querySelectorAll('.format-currency').forEach(input => {
+    let config = {
+      style: 'currency',
+      currency: 'VND'
+    };
+
+    // Gọi hàm từ AppExternal để áp dụng định dạng tiền tệ
+    AppExternal.applyCurrencyFormat(input, config);
+  });
 };
 
 const closePropertyModal = () => {
@@ -129,12 +145,12 @@ const editProperty = async (id) => {
   document.getElementById('address').value = property.address || '';
   document.getElementById('startDate').value = property.startDate ? property.startDate.split('T')[0] : '';
   document.getElementById('rentAmount').value = property.rentAmount || 0;
-  
+
   document.getElementById('initialElectricityReading').value = property.initialElectricityReading || 0;
   document.getElementById('electricityRate').value = property.electricityRate || 0;
   document.getElementById('initialWaterReading').value = property.initialWaterReading || 0;
   document.getElementById('waterRate').value = property.waterRate || 0;
-  
+
   document.getElementById('internetFee').value = property.internetFee || 0;
   document.getElementById('parkingFee').value = property.parkingFee || 0;
   document.getElementById('garbageFee').value = property.garbageFee || 0;

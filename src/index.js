@@ -3,14 +3,14 @@ const express = require('express');
 const cors = require('cors');
 // const helmet = require('helmet');
 const morgan = require('morgan');
-const path = require('path');
 const compression = require('compression');
+const cookieParser = require('cookie-parser');
 const swaggerUi = require('swagger-ui-express');
 
 // Import configuration and utilities
 const { default: config } = require('./config/config');
+const { default: connectDB } = require('./config/database');
 const swaggerSpec = require('./config/swagger');
-const connectDB = require('./config/database');
 const { morganAccessStream } = require('./utils/logger');
 
 // Import custom middleware
@@ -18,10 +18,9 @@ const errorHandler = require('./middleware/errorHandler');
 const { default: customMiddleware } = require('./middleware');
 
 // Import routes modules
-const { ADMIN_ROUTE_PREFIX, ROUTE_PREFIX, API_ROUTE_PREFIX } = require('./constants/route_prefix.constant');
-const apiRoutes = require('./routes/apis/api.route');
-const viewRoutes = require('./routes/view.route');
-const viewAdminRoutes = require('./routes/admin/view.route');
+const { ROUTE_PREFIX, API_ROUTE_PREFIX } = require('./constants/route_prefix.constant');
+const { X_REQUEST_ID, X_DEVICE_ID } = require('./constants/app_key_config.constant');
+const { default: viewRoutes } = require('./routes/view.route');
 
 // Initialize app
 const app = express();
@@ -29,10 +28,13 @@ const app = express();
 // Set view engine
 app.set('view engine', 'ejs');
 app.set('views', './views');
+app.set('trust proxy', true); // Trust proxy headers (if behind a proxy)
 
+// ================ Database Connection ================ //
 // Connect to database
 connectDB();
 
+// ================ Middleware Setup ================ //
 // Middleware
 // app.use(helmet({
 //   contentSecurityPolicy: {
@@ -78,13 +80,18 @@ app.use(
 ); // Compress responses
 app.use(express.json()); // Parse JSON
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded
-app.use(customMiddleware); // <-- middleware ở đây
+app.use(cookieParser()); // Parse cookies
+app.use(customMiddleware()); // <-- middleware ở đây
 
-// Serve static files
+// ================ Static Files ================ //
+// Serve static files from 'public' directory
 app.use(express.static('public'));
 
 // ================ Logging ================ //
 // ⚙️ Kích hoạt Morgan với luồng ghi log xoay
+morgan.token('deviceId', (req) => req.headers?.[X_DEVICE_ID] || '-');
+morgan.token('requestId', (req) => req.headers?.[X_REQUEST_ID] || req.requestId || '-');
+
 if (config.server.env === 'development') {
   // In log ra console + ghi vào file access.log
   app.use(morgan('dev', { stream: morganAccessStream }));
@@ -95,10 +102,6 @@ if (config.server.env === 'development') {
 
 // ================ Web App Routes ================ //
 app.use(ROUTE_PREFIX.BASE, viewRoutes); // Main web app routes (removed welcome route)
-app.use(ADMIN_ROUTE_PREFIX.BASE, viewAdminRoutes); // Admin web app routes
-
-// ================ API Routes ================ //
-app.use(API_ROUTE_PREFIX.BASE, apiRoutes); // General API routes like auth, users, profile etc.
 
 // ================ Swagger Documentation ================ //
 app.use(
@@ -117,11 +120,6 @@ app.get(API_ROUTE_PREFIX.SWAGGER_JSON, (req, res) => {
 });
 
 // ================ Additional Routes ================ //
-// Serve CHANGELOG.md file
-app.get('/CHANGELOG.md', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'CHANGELOG.md'));
-});
-
 // Health check
 app.get('/health', (req, res) => {
   res.json({

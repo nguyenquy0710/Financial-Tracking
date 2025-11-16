@@ -18,6 +18,7 @@ miscased
 myharavan
 mysapogo
 ncnodes
+ngrok
 npmjs
 nssm
 nuxt
@@ -31,6 +32,7 @@ pycache
 quynh
 reranker
 sapo
+spreadsheetml
 swal
 totp
 uuidv

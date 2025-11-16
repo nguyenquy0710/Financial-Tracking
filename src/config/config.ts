@@ -1,10 +1,11 @@
 // src/config/config.ts
 
-export const config = {
+export const configApp = {
   // Application Settings
   app: {
     name: process.env.APP_NAME || 'FinTrack',
     version: process.env.APP_VERSION || '1.0.0',
+    buildNumber: process.env.BUILD_NUMBER || '100',
     description:
       process.env.APP_DESCRIPTION ||
       'FinTrack (Financial Tracking) – Người bạn đồng hành tài chính thông minh - Smart Financial Companion Platform',
@@ -36,8 +37,12 @@ export const config = {
 
   // CORS Configuration
   cors: {
-    origin: process.env.CORS_ORIGIN || '*',
-    credentials: true
+    origin: process.env.CORS_ORIGIN || '*', // Allow all origins by default
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH', 'HEAD', 'CONNECT'],
+    credentials: true, // Allow cookies to be sent (cookie / session-based auth)
+    optionsSuccessStatus: 200,
+    exposedHeaders: ['Authorization', 'Content-Length', 'X-Device-ID', 'X-CSRF-Token', 'X-Auth-Token', 'Set-Cookie', 'Cookie', 'User-Agent', 'Referer', 'Accept-Encoding', 'Accept-Language', 'Connection', 'Host', 'Cache-Control', 'Pragma', 'Expires', 'If-Modified-Since', 'If-None-Match', 'DNT', 'TE', 'Upgrade-Insecure-Requests', 'Sec-Fetch-Dest', 'Sec-Fetch-Mode', 'Sec-Fetch-Site', 'Sec-Fetch-User', 'Sec-GPC', 'Range', 'X-Requested-With'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin', 'Access-Control-Allow-Origin', 'Access-Control-Allow-Credentials', 'X-Device-ID', 'X-CSRF-Token', 'X-Auth-Token', 'Set-Cookie', 'Cookie', 'User-Agent', 'Referer', 'Accept-Encoding', 'Accept-Language', 'Connection', 'Host', 'Cache-Control', 'Pragma', 'Expires', 'If-Modified-Since', 'If-None-Match', 'DNT', 'TE', 'Upgrade-Insecure-Requests', 'Sec-Fetch-Dest', 'Sec-Fetch-Mode', 'Sec-Fetch-Site', 'Sec-Fetch-User', 'Sec-GPC', 'Range', 'X-Requested-With']
   },
 
   // File Upload Configuration
@@ -84,4 +89,4 @@ export const config = {
 };
 
 // Export the configuration object
-export default config;
+export default configApp;

@@ -1,0 +1,59 @@
+# FinTrack Sitemap
+# Danh sách các URL của ứng dụng FinTrack
+
+## Landing and Public Pages (Trang công khai)
+/                                   - Trang chủ (Home page)
+/changelog                          - Nhật ký phát triển (Changelog)
+/CHANGELOG.md                       - File CHANGELOG thô (Raw CHANGELOG file)
+
+## Authentication Pages (Trang xác thực)
+/login                              - Đăng nhập (Login)
+/register                           - Đăng ký (Register)
+
+## Application Pages (Trang ứng dụng - Yêu cầu đăng nhập)
+/app                                - Chuyển hướng đến dashboard (Redirect to dashboard)
+/app/dashboard                      - Bảng điều khiển (Dashboard)
+/app/salaries                       - Quản lý lương (Salary management)
+/app/expenses                       - Quản lý chi tiêu (Expense management)
+/app/savings                        - Quản lý tiết kiệm (Savings management)
+/app/deposits                       - Quản lý tiền gửi (Deposits management)
+/app/recurring-bills                - Quản lý hóa đơn định kỳ (Recurring bills management)
+/app/rentals                        - Quản lý thuê phòng (Rental management)
+/app/rentals/:id/detail             - Chi tiết thuê phòng (Rental detail)
+/app/excel                          - Import/Export Excel
+/app/totp                           - Xác thực 2 yếu tố TOTP (TOTP 2FA)
+/app/settings                       - Cài đặt (Settings)
+
+## Admin Pages (Trang quản trị - Yêu cầu quyền admin)
+/admin                              - Chuyển hướng đến admin dashboard (Redirect to admin dashboard)
+/admin/dashboard                    - Bảng điều khiển quản trị (Admin dashboard)
+/admin/settings                     - Cài đặt quản trị (Admin settings)
+
+## API Endpoints (Các điểm cuối API)
+/api                                - API base
+/api/auth                           - Authentication API
+/api/salaries                       - Salaries API
+/api/expenses                       - Expenses API
+/api/savings                        - Savings API
+/api/deposits                       - Deposits API
+/api/budget                         - Budget API
+/api/transactions                   - Transactions API
+/api/categories                     - Categories API
+/api/bankAccount                    - Bank Account API
+/api/rental-properties              - Rental Properties API
+/api/rentals                        - Rentals API
+/api/recurring-bills                - Recurring Bills API
+/api/totp                           - TOTP API
+/api/excel                          - Excel API
+/api/misa                           - MISA Integration API
+/api/external                       - External API
+/api/goal                           - Goals API
+/api/userConfig                     - User Configuration API
+
+## Documentation (Tài liệu)
+/api-docs                           - Swagger API Documentation
+/api-docs.json                      - Swagger JSON spec
+
+## System (Hệ thống)
+/health                             - Health check endpoint
+/appInfo                            - Application information endpoint

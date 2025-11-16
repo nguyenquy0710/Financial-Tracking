@@ -1,5 +1,5 @@
-const { default: RentalProperty } = require("@/models/rental-property.model");
-const { default: Rental } = require("@/models/rental.model");
+const { default: RentalProperty } = require("@/models/rental.model");
+const { default: Rental } = require("@/models/rentalDetail.model");
 
 /**
  * @desc    Get all rental properties for a user
@@ -105,7 +105,7 @@ exports.getRentalPropertyDetails = async (req, res, next) => {
     monthlyRecords.forEach(record => {
       const total = record.total || 0;
       stats.grandTotal += total;
-      
+
       if (record.isPaid) {
         stats.totalPaid += total;
       } else {
@@ -150,9 +150,9 @@ exports.createRentalProperty = async (req, res, next) => {
       'startDate', 'notes'
     ];
 
-    const propertyData = { 
+    const propertyData = {
       userId: req.user.id,
-      createdBy: req.user._id 
+      createdBy: req.user._id
     };
 
     allowedFields.forEach(field => {
@@ -160,7 +160,7 @@ exports.createRentalProperty = async (req, res, next) => {
         propertyData[field] = req.body[field];
       }
     });
-    
+
     const property = await RentalProperty.create(propertyData);
 
     res.status(201).json({
@@ -212,7 +212,7 @@ exports.updateRentalProperty = async (req, res, next) => {
       }
     });
     updates.updatedBy = req.user._id;
-    
+
     property = await RentalProperty.findByIdAndUpdate(req.params.id, updates, {
       new: true,
       runValidators: true
@@ -295,7 +295,7 @@ exports.deactivateRentalProperty = async (req, res, next) => {
     } else {
       property.endDate = new Date();
     }
-    
+
     await property.save();
 
     res.status(200).json({

@@ -7,7 +7,7 @@ let token = sdkAuth.getAuthToken();
 
 // Redirect to login if not authenticated
 if (!sdkAuth.isAuthenticated()) {
-  window.location.href = `/login?redirectUrl=${encodeURIComponent(window.location.pathname)}`;
+  window.location.href = `/login?redirect=${encodeURIComponent(window.location.pathname)}`;
 }
 
 // Load property details on page load
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       title: "Lỗi",
       text: 'Không tìm thấy mã phòng!'
     });
-    window.location.href = '/rentals';
+    window.location.href = '/app/rentals';
     return;
   }
   await loadPropertyDetails();
@@ -35,10 +35,10 @@ const loadPropertyDetails = async () => {
 
       // Display property info
       displayPropertyInfo();
-      
+
       // Display statistics
       displayStatistics();
-      
+
       // Display monthly records
       displayMonthlyRecords();
     } else {
@@ -47,7 +47,7 @@ const loadPropertyDetails = async () => {
         title: "Lỗi",
         text: 'Không thể tải thông tin phòng!'
       });
-      window.location.href = '/rentals';
+      window.location.href = '/app/rentals';
     }
   } catch (error) {
     console.error('Failed to load property details:', error);
@@ -61,7 +61,7 @@ const loadPropertyDetails = async () => {
 
 const displayPropertyInfo = () => {
   const container = document.getElementById('property-info');
-  
+
   container.innerHTML = `
     <table class="table table-bordered table-hover">
       <tbody>
@@ -101,11 +101,11 @@ const displayPropertyInfo = () => {
         </tr>
         <tr>
           <th>Chỉ số điện ban đầu</th>
-          <td>${property.initialElectricityReading} kWh (${AppSDK.Utility.formatCurrency(property.electricityRate)}/kWh)</td>
+          <td>${AppSDK.Utility.formatCurrency(property.initialElectricityReading)} kWh (${AppSDK.Utility.formatCurrency(property.electricityRate)}/kWh)</td>
         </tr>
         <tr>
           <th>Chỉ số nước ban đầu</th>
-          <td>${property.initialWaterReading} m³ (${AppSDK.Utility.formatCurrency(property.waterRate)}/m³)</td>
+          <td>${AppSDK.Utility.formatCurrency(property.initialWaterReading)} m³ (${AppSDK.Utility.formatCurrency(property.waterRate)}/m³)</td>
         </tr>
         ${property.internetFee ? `
         <tr>
@@ -172,10 +172,10 @@ const displayMonthlyRecords = () => {
             <td><strong>${new Date(record.month).toLocaleDateString('vi-VN', { month: '2-digit', year: 'numeric' })}</strong></td>
             <td>${AppSDK.Utility.formatCurrency(record.rentAmount)}</td>
             <td>${AppSDK.Utility.formatCurrency(record.electricity?.amount || 0)}<br/>
-                <small>(${record.electricity?.startReading || 0} → ${record.electricity?.endReading || 0} kWh)</small>
+                <small>(${AppSDK.Utility.formatCurrency(record.electricity?.startReading || 0)} → ${AppSDK.Utility.formatCurrency(record.electricity?.endReading || 0)} kWh)</small>
             </td>
             <td>${AppSDK.Utility.formatCurrency(record.water?.amount || 0)}<br/>
-                <small>(${record.water?.startReading || 0} → ${record.water?.endReading || 0} m³)</small>
+                <small>(${AppSDK.Utility.formatCurrency(record.water?.startReading || 0)} → ${AppSDK.Utility.formatCurrency(record.water?.endReading || 0)} m³)</small>
             </td>
             <td>${AppSDK.Utility.formatCurrency((record.internet || 0) + (record.parking || 0) + (record.garbage || 0))}</td>
             <td><strong>${AppSDK.Utility.formatCurrency(record.total)}</strong></td>

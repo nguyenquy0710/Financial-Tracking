@@ -1,5 +1,5 @@
 require('dotenv').config();
-const connectDB = require('../config/database');
+const { default: connectDB } = require('@/config/database');
 
 /**
  * Initialize the database with default structures and data.

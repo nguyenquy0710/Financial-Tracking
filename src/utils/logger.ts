@@ -36,6 +36,12 @@ const createRotateFileStream = (context: string = 'application', options?: any) 
 /**
  * Tạo logger có cả output ra console và file riêng theo domain
  * @param context tên domain (VD: 'TotpDomain')
+ * @param options tuỳ chọn cho rotating-file-stream
+ * @returns Winston Logger instance
+ * @example
+ * const logger = createLogger('MyDomain');
+ * logger.info('This is an info message');
+ * logger.error('This is an error message');
  */
 export const createLogger = (
   context: string,
@@ -52,12 +58,14 @@ export const createLogger = (
       winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss" }),
       // winston.format.json(), // Ghi log dưới dạng JSON
       winston.format.prettyPrint(), // Định dạng dễ đọc hơn khi xem trực tiếp file log (nhưng không chuẩn JSON)
-      winston.format.printf((info) => {
-        const { timestamp, level, message, label, requestId, userId, ...rest } = info;
-        const extras = Object.keys(rest).length ? ` ${JSON.stringify(rest)}` : "";
-        return `[${timestamp}] [${label}] ${level.toUpperCase()}${requestId ? ` [req:${requestId}]` : ""}${userId ? ` [user:${userId}]` : ""}: ${message}${extras}`;
+      winston.format.printf((info: any) => {
+        const { timestamp, level, message, label, requestId, userId, ...rest } = info || {};
 
-        // return `[${timestamp}] [${label}] ${level.toUpperCase()} [req:${requestId ?? '-'}] [user:${userId ?? '-'}]: ${message}`;
+        // Thêm các thông tin bổ sung nếu có
+        const extras = Object.keys(rest).length ? ` ${JSON.stringify(rest)}` : "";
+
+        // Tùy chỉnh định dạng log theo ý muốn
+        return `[${timestamp}] [${label}] ${level.toUpperCase()} [req:${requestId ?? '-'}] [user:${userId ?? '-'}]: ${message}${extras}`;
       }),
     ),
     // Chỉ định các transport cho logger
@@ -68,8 +76,14 @@ export const createLogger = (
       new winston.transports.Console({
         format: winston.format.combine(
           winston.format.colorize(),
-          winston.format.printf(({ timestamp, level, message, requestId, userId, label }) => {
-            return `[${timestamp}] [${label}] ${level}: ${message} [req:${requestId ?? '-'}] [user:${userId ?? '-'}]`;
+          winston.format.printf((info: any) => {
+            // console.log("🚀 QuyNH: info", info)
+            const { timestamp, level, message, label, requestId, userId, ...rest } = info || {};
+
+            // Thêm các thông tin bổ sung nếu có
+            const extras = Object.keys(rest).length ? ` ${JSON.stringify(rest)}` : "";
+
+            return `[${timestamp}] [${label}] ${level.toUpperCase()} [req:${requestId ?? '-'}] [user:${userId ?? '-'}]: ${message}${extras}`;
           })
         ),
       }),
@@ -82,10 +96,24 @@ export const createLogger = (
 // ================== Logger mặc định dùng toàn app ==================
 // 🔁 Tạo luồng ghi log xoay theo ngày + giới hạn dung lượng
 export const accessLogStream = createLogger("access");
+export const httpLogStream = createLogger("http");
 
 // ================== Stream cho Morgan ==================
 export const morganAccessStream: winston.Logger & any = {
   write: (message: string) => {
-    accessLogStream.info(message?.trim() || ''); // Ghi log truy cập HTTP qua Winston
+    // Ensure the message is safely logged as a non-empty string
+    const logMessage = message?.trim() || '';
+
+    // Nếu message rỗng thì không log gì cả
+    if (!logMessage) {
+      return;
+    }
+
+    // Ghi log theo mức độ khác nhau
+    if (logMessage.includes('404')) {
+      accessLogStream.warn(logMessage);  // Ghi log cảnh báo cho các lỗi 404
+    } else {
+      accessLogStream.info(logMessage);  // Ghi log thông thường cho các yêu cầu khác
+    }
   },
 };

@@ -1,0 +1,288 @@
+# CODEOWNERS for FinTrack - Smart Financial Companion Platform
+#
+# This file defines who owns different parts of the FinTrack codebase.
+# When someone opens a pull request that modifies files defined in this file,
+# the designated code owners will be automatically requested for review.
+#
+# More info: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# =============================================================================
+# Global ownership
+# =============================================================================
+
+# Default owners for everything in the repository
+# These owners will be requested for review when someone opens a pull request,
+# unless a later rule takes precedence.
+* @nguyenquy0710
+
+# =============================================================================
+# Core Configuration & Build System
+# =============================================================================
+
+# Package management and dependencies
+package.json @nguyenquy0710
+package-lock.json @nguyenquy0710
+yarn.lock @nguyenquy0710
+
+# TypeScript configuration and build system
+tsconfig.json @nguyenquy0710
+tsconfig.*.json @nguyenquy0710
+gulpfile.js @nguyenquy0710
+jest.config.js @nguyenquy0710
+
+# Environment and configuration files
+.env.example @nguyenquy0710
+.env* @nguyenquy0710
+.gitignore @nguyenquy0710
+.gitattributes @nguyenquy0710
+
+# Docker and deployment configuration
+Dockerfile @nguyenquy0710
+docker-compose.yml @nguyenquy0710
+Jenkinsfile @nguyenquy0710
+
+# GitHub configuration
+.github/ @nguyenquy0710
+
+# =============================================================================
+# Documentation
+# =============================================================================
+
+# Main documentation files
+README.md @nguyenquy0710
+CHANGELOG.md @nguyenquy0710
+CONTRIBUTING.md @nguyenquy0710
+LICENSE @nguyenquy0710
+AGENTS.md @nguyenquy0710
+
+# Technical documentation
+docs/ @nguyenquy0710
+*.md @nguyenquy0710
+
+# =============================================================================
+# Source Code - Core Architecture
+# =============================================================================
+
+# Main application entry point
+src/index.js @nguyenquy0710
+
+# Abstract base classes and core patterns
+src/abstracts/ @nguyenquy0710
+
+# Core configuration and database setup
+src/config/ @nguyenquy0710
+
+# Constants and enums (TypeScript)
+src/constants/ @nguyenquy0710
+
+# =============================================================================
+# Source Code - Data Layer
+# =============================================================================
+
+# TypeScript models (completed migration)
+src/models/ @nguyenquy0710
+
+# Plugins for Mongoose (TypeScript migration pending)
+src/plugins/ @nguyenquy0710
+
+# Repository pattern (TypeScript migration pending)
+src/repositories/ @nguyenquy0710
+
+# =============================================================================
+# Source Code - Business Logic
+# =============================================================================
+
+# Controllers (JavaScript - migration pending)
+src/controllers/ @nguyenquy0710
+
+# Domain logic (TypeScript - new pattern)
+src/domains/ @nguyenquy0710
+
+# =============================================================================
+# Source Code - Web Layer
+# =============================================================================
+
+# Middleware (TypeScript migration in progress)
+src/middleware/ @nguyenquy0710
+
+# Routes (mixed JS/TS)
+src/routes/ @nguyenquy0710
+
+# =============================================================================
+# Source Code - Financial Domain Specific
+# =============================================================================
+
+# 6 Jars Method implementation
+src/controllers/budget.controller.js @nguyenquy0710
+src/models/budget.model.ts @nguyenquy0710
+src/routes/apis/budget.route.js @nguyenquy0710
+
+# Rental management system
+src/controllers/rental*.controller.js @nguyenquy0710
+src/models/rental*.model.ts @nguyenquy0710
+src/routes/apis/rental*.route.js @nguyenquy0710
+src/routes/rental.route.ts @nguyenquy0710
+
+# Salary management
+src/controllers/salary.controller.js @nguyenquy0710
+src/models/salary.model.ts @nguyenquy0710
+src/routes/apis/salary.route.js @nguyenquy0710
+
+# Expense tracking
+src/controllers/expense.controller.js @nguyenquy0710
+src/models/expense.model.ts @nguyenquy0710
+src/routes/apis/expense.route.js @nguyenquy0710
+
+# Savings and deposits
+src/controllers/deposit.controller.js @nguyenquy0710
+src/controllers/saving.controller.js @nguyenquy0710
+src/models/deposit.model.ts @nguyenquy0710
+src/models/saving.model.ts @nguyenquy0710
+src/routes/apis/deposit.route.js @nguyenquy0710
+src/routes/apis/saving.route.js @nguyenquy0710
+
+# Transaction management
+src/controllers/transaction.controller.js @nguyenquy0710
+src/models/transaction.model.ts @nguyenquy0710
+src/routes/apis/transaction.route.js @nguyenquy0710
+
+# Goals and recurring bills
+src/controllers/goal.controller.js @nguyenquy0710
+src/controllers/recurringBill.controller.js @nguyenquy0710
+src/models/goal.model.ts @nguyenquy0710
+src/models/recurringBill.model.ts @nguyenquy0710
+src/routes/apis/goal.route.js @nguyenquy0710
+src/routes/apis/recurringBill.route.js @nguyenquy0710
+
+# =============================================================================
+# Source Code - Integration & External Services
+# =============================================================================
+
+# MISA Money Keeper integration
+src/controllers/misa.controller.js @nguyenquy0710
+src/routes/apis/misa.route.js @nguyenquy0710
+
+# Excel import/export functionality
+src/controllers/excel.controller.js @nguyenquy0710
+src/routes/apis/excel.route.js @nguyenquy0710
+
+# Bank account integration
+src/controllers/bankAccount.controller.js @nguyenquy0710
+src/models/bankAccount.model.ts @nguyenquy0710
+src/routes/apis/bankAccount.route.js @nguyenquy0710
+
+# External API integrations
+src/controllers/external.controller.js @nguyenquy0710
+src/routes/apis/external.route.js @nguyenquy0710
+
+# =============================================================================
+# Source Code - Security & Authentication
+# =============================================================================
+
+# Authentication and authorization
+src/controllers/auth.controller.js @nguyenquy0710
+src/routes/apis/auth.route.js @nguyenquy0710
+
+# TOTP (Two-Factor Authentication)
+src/controllers/totp.controller.js @nguyenquy0710
+src/models/totp.model.ts @nguyenquy0710
+src/routes/apis/totp.route.js @nguyenquy0710
+src/routes/totp.route.ts @nguyenquy0710
+
+# User management and configuration
+src/controllers/userConfig.controller.js @nguyenquy0710
+src/models/user.model.ts @nguyenquy0710
+src/models/userConfig.model.ts @nguyenquy0710
+src/models/systemConfig.model.ts @nguyenquy0710
+src/routes/apis/userConfig.route.js @nguyenquy0710
+
+# Categories and classification
+src/controllers/category.controller.js @nguyenquy0710
+src/models/category.model.ts @nguyenquy0710
+src/routes/apis/category.route.js @nguyenquy0710
+
+# =============================================================================
+# Source Code - Utilities & Scripts
+# =============================================================================
+
+# Utility functions
+src/utils/ @nguyenquy0710
+
+# Database initialization and scripts
+src/scripts/ @nguyenquy0710
+
+# =============================================================================
+# Frontend & UI
+# =============================================================================
+
+# EJS templates for server-side rendering
+views/ @nguyenquy0710
+
+# Static assets
+public/ @nguyenquy0710
+
+# CSS stylesheets
+public/css/ @nguyenquy0710
+
+# JavaScript client-side code
+public/js/ @nguyenquy0710
+
+# Static images and fonts
+public/images/ @nguyenquy0710
+public/fonts/ @nguyenquy0710
+public/libs/ @nguyenquy0710
+
+# =============================================================================
+# Testing
+# =============================================================================
+
+# Test files
+tests/ @nguyenquy0710
+**/*.test.js @nguyenquy0710
+**/*.spec.js @nguyenquy0710
+**/*.test.ts @nguyenquy0710
+**/*.spec.ts @nguyenquy0710
+
+# =============================================================================
+# Development Tools & Scripts
+# =============================================================================
+
+# Development scripts
+bin/ @nguyenquy0710
+
+# Examples and documentation
+examples/ @nguyenquy0710
+
+# Logs directory
+logs/ @nguyenquy0710
+
+# =============================================================================
+# IDE and Workspace Configuration
+# =============================================================================
+
+# VS Code workspace configuration
+FinTrack.code-workspace @nguyenquy0710
+.vscode/ @nguyenquy0710
+
+# =============================================================================
+# Notes
+# =============================================================================
+#
+# File patterns explanation:
+# - **/*.ext matches files with .ext extension in any directory
+# - /path/ matches the specific directory
+# - /path/* matches files directly in the directory
+# - /path/**/* matches files in the directory and all subdirectories
+#
+# Review requirements:
+# - @nguyenquy0710 is the primary maintainer and owner of all code
+# - All pull requests will require review from the designated code owners
+# - Code owners are automatically notified when files they own are modified
+#
+# TypeScript Migration Status (as of October 2025):
+# - Models: ✅ Completed (all .model.ts)
+# - Config/Constants: ✅ Completed (.ts)
+# - Controllers: 🔄 In progress (mostly .js, migrating to .ts)
+# - Routes: 🔄 In progress (mixed .js and .ts)
+# - Middleware: 🔄 In progress
+# - Domains/Repositories: 🔄 New patterns being implemented

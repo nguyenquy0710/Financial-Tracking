@@ -1,3 +1,6 @@
+// =============================================
+// AppAuthSDK - SDK quản lý xác thực người dùng
+// =============================================
 class AppAuthSDK extends AppSDK {
 
   constructor(baseURL = AppSDK.BASE_URL || window.location.origin) {
@@ -158,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const publicPages = ['/', '/login', '/register', '/changelog'];
 
   if (!publicPages.includes(currentPage) && !sdkAuth.isAuthenticated()) {
-    window.location.href = '/login?redirectUrl=' + encodeURIComponent(currentPage);
+    window.location.href = '/login?redirect=' + encodeURIComponent(currentPage);
   }
 });
 
