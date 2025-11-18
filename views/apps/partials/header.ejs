@@ -4,24 +4,38 @@
   <div class="app-container">
     <%- include('../../apps/partials/sidebar', { currentPage: currentPage }) %>
 
+      <!-- Notification Toast -->
+      <div id="notification" class="notification"></div>
+
       <!-- Start of main content -->
       <main class="main-content">
 
         <!-- Start of top bar -->
-        <header class="top-bar">
-          <h1>
-            <%= pageTitle || locals.pageTitle || 'pageTitle' %>
+        <header class="top-bar totp-header">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <% if (turnbackUrl !='' && turnbackUrl !=null) { %>
+              <a href="<%= turnbackUrl || locals.turnbackUrl %>" class="btn btn-secondary" style="text-decoration: none;">← Quay lại</a>
+              <% } %>
 
-              <% if (pageDescription !='' && pageDescription !=null) { %>
-                <small>
-                  <%= pageDescription || locals.pageDescription || '' %>
-                </small>
-                <% } %>
-          </h1>
+                <h1>
+                  <%= pageTitle || locals.pageTitle || 'pageTitle' %>
 
-          <div class="user-info">
-            <span id="user-name">User</span>
-            <button class="btn-logout">Đăng xuất</button>
+                    <% if (pageDescription !='' && pageDescription !=null) { %>
+                      <small>
+                        <%= pageDescription || locals.pageDescription || '' %>
+                      </small>
+                      <% } %>
+                </h1>
+          </div>
+
+          <div class="header-actions">
+            <button id="theme-toggle" class="btn btn-icon" title="Chuyển chế độ tối">
+              <span class="icon">🌙</span>
+            </button>
+            <div class="user-info">
+              <span id="user-name">User</span>
+              <button class="btn-logout">Đăng xuất</button>
+            </div>
           </div>
         </header>
         <!-- End of top bar -->

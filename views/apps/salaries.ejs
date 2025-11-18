@@ -1,77 +1,62 @@
-<%- include('partials/header', { title: 'Lương' , additionalCSS: [''] }) %>
-  <div class="app-container">
-    <%- include('partials/sidebar', { currentPage: 'salaries' }) %>
+<%- include('partials/header', { title: 'Lương' , additionalCSS: [''] , currentPage: 'salaries' , pageTitle: 'Quản lý lương' ,
+  pageDescription: '' }) %>
 
-      <!-- Main Content -->
-      <main class="main-content">
-        <header class="top-bar">
-          <h1>Quản lý lương</h1>
-          <div class="user-info">
-            <span id="user-name">User</span>
-            <button class="btn-logout">Đăng xuất</button>
-          </div>
-        </header>
-
-        <div class="content">
-          <!-- Summary Cards -->
-          <div class="row g-3 mb-4">
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="summary-card">
-                <div class="card-icon">💰</div>
-                <div class="card-content">
-                  <h3>Tổng thu nhập</h3>
-                  <p class="amount" id="total-income">0 VND</p>
-                  <span class="period">Tất cả</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="summary-card">
-                <div class="card-icon">🏢</div>
-                <div class="card-content">
-                  <h3>Lương công ty</h3>
-                  <p class="amount" id="company-salary">0 VND</p>
-                  <span class="period">Trung bình</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="summary-card">
-                <div class="card-icon">💼</div>
-                <div class="card-content">
-                  <h3>Freelance</h3>
-                  <p class="amount" id="freelance-income">0 VND</p>
-                  <span class="period">Trung bình</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="summary-card">
-                <div class="card-icon">📈</div>
-                <div class="card-content">
-                  <h3>Tăng trưởng</h3>
-                  <p class="amount" id="growth-rate">0%</p>
-                  <span class="period">So với tháng trước</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Salaries List -->
-          <div class="card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-              <h2>Lịch sử lương</h2>
-              <button class="btn btn-primary" onclick="showAddModal()">
-                <span class="icon">➕</span> Thêm mới
-              </button>
-            </div>
-
-            <div id="salaries-list" class="table-container">
-              <p class="loading">Đang tải dữ liệu...</p>
-            </div>
-          </div>
+  <!-- Summary Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="summary-card">
+        <div class="card-icon">💰</div>
+        <div class="card-content">
+          <h3>Tổng thu nhập</h3>
+          <p class="amount" id="total-income">0 VND</p>
+          <span class="period">Tất cả</span>
         </div>
-      </main>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="summary-card">
+        <div class="card-icon">🏢</div>
+        <div class="card-content">
+          <h3>Lương công ty</h3>
+          <p class="amount" id="company-salary">0 VND</p>
+          <span class="period">Trung bình</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="summary-card">
+        <div class="card-icon">💼</div>
+        <div class="card-content">
+          <h3>Freelance</h3>
+          <p class="amount" id="freelance-income">0 VND</p>
+          <span class="period">Trung bình</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="summary-card">
+        <div class="card-icon">📈</div>
+        <div class="card-content">
+          <h3>Tăng trưởng</h3>
+          <p class="amount" id="growth-rate">0%</p>
+          <span class="period">So với tháng trước</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Salaries List -->
+  <div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <h2>Lịch sử lương</h2>
+      <button class="btn btn-primary" onclick="showAddModal()">
+        <span class="icon">➕</span> Thêm mới
+      </button>
+    </div>
+
+    <div id="salaries-list" class="table-container">
+      <p class="loading">Đang tải dữ liệu...</p>
+    </div>
   </div>
 
   <!-- Add/Edit Salary Modal -->

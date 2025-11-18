@@ -35,6 +35,7 @@ export function initLocalsMiddleware(app: Router | Application): void {
       res.locals.currentPage = '';
       res.locals.pageTitle = '';
       res.locals.pageDescription = '';
+      res.locals.turnbackUrl = '';
       res.locals.additionalCSS = [];
       res.locals.additionalJS = [];
 

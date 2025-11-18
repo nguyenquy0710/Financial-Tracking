@@ -108,8 +108,8 @@ exports.saveConfig = async (req, res, next) => {
       accessToken: loginResult.data.accessToken,
       refreshToken: loginResult.data.refreshToken,
       userMisaId: loginResult.data.userMisaId,
-      userMoneyKeeperId: loginResult.data.userMoneyKeeperId,
-      sessionMoneyKeeperId: loginResult.data.sessionMoneyKeeperId,
+      userMoneyKeeperId: loginResult.data.userId,
+      sessionMoneyKeeperId: loginResult.data.sessionId,
 
       isDefault: true,
       isActive: true,

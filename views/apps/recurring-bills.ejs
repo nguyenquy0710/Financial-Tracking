@@ -1,85 +1,72 @@
-<%- include('partials/header', { title: 'Hóa đơn định kỳ' , additionalCSS: [''] }) %>
-  <div class="app-container">
-    <%- include('partials/sidebar', { currentPage: 'recurring-bills' }) %>
-      <main class="main-content">
-        <header class="top-bar">
-          <h1>Hóa Đơn Định Kỳ</h1>
-          <div class="user-info">
-            <span id="user-name">User</span>
-            <button class="btn-logout">Đăng xuất</button>
-          </div>
-        </header>
-        <div class="content">
+<%- include('partials/header', { title: 'Hóa đơn định kỳ' , additionalCSS: [''] , currentPage: 'recurring-bills' ,
+  pageTitle: 'Hóa Đơn Định Kỳ' , pageDescription: '' }) %>
 
-          <div class="row g-3 mb-4">
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="stat-card">
-                <h3>Tổng Hóa Đơn Tháng</h3>
-                <p class="stat-value" id="totalMonthly">0 VNĐ</p>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="stat-card">
-                <h3>Sắp Đến Hạn</h3>
-                <p class="stat-value" id="upcomingCount">0</p>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="stat-card">
-                <h3>Quá Hạn</h3>
-                <p class="stat-value" id="overdueCount">0</p>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="stat-card">
-                <h3>Hoạt Động</h3>
-                <p class="stat-value" id="activeCount">0</p>
-              </div>
-            </div>
-          </div>
+  <div class="row g-3 mb-4">
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="stat-card">
+        <h3>Tổng Hóa Đơn Tháng</h3>
+        <p class="stat-value" id="totalMonthly">0 VNĐ</p>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="stat-card">
+        <h3>Sắp Đến Hạn</h3>
+        <p class="stat-value" id="upcomingCount">0</p>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="stat-card">
+        <h3>Quá Hạn</h3>
+        <p class="stat-value" id="overdueCount">0</p>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="stat-card">
+        <h3>Hoạt Động</h3>
+        <p class="stat-value" id="activeCount">0</p>
+      </div>
+    </div>
+  </div>
 
-          <div class="card">
-            <div class="card-header">
-              <h2>Danh Sách Hóa Đơn</h2>
-              <button class="btn btn-primary" onclick="showAddBillForm()">+ Thêm Hóa Đơn</button>
-            </div>
-            <div class="card-body">
-              <div class="filters">
-                <select id="typeFilter" onchange="filterBills()">
-                  <option value="">Tất cả loại</option>
-                  <option value="rent">Tiền nhà</option>
-                  <option value="electricity">Điện</option>
-                  <option value="water">Nước</option>
-                  <option value="internet">Internet</option>
-                  <option value="parking">Gửi xe</option>
-                  <option value="garbage">Rác</option>
-                  <option value="other">Khác</option>
-                </select>
-                <select id="statusFilter" onchange="filterBills()">
-                  <option value="true">Đang hoạt động</option>
-                  <option value="false">Đã dừng</option>
-                  <option value="">Tất cả</option>
-                </select>
-              </div>
+  <div class="card">
+    <div class="card-header">
+      <h2>Danh Sách Hóa Đơn</h2>
+      <button class="btn btn-primary" onclick="showAddBillForm()">+ Thêm Hóa Đơn</button>
+    </div>
+    <div class="card-body">
+      <div class="filters">
+        <select id="typeFilter" onchange="filterBills()">
+          <option value="">Tất cả loại</option>
+          <option value="rent">Tiền nhà</option>
+          <option value="electricity">Điện</option>
+          <option value="water">Nước</option>
+          <option value="internet">Internet</option>
+          <option value="parking">Gửi xe</option>
+          <option value="garbage">Rác</option>
+          <option value="other">Khác</option>
+        </select>
+        <select id="statusFilter" onchange="filterBills()">
+          <option value="true">Đang hoạt động</option>
+          <option value="false">Đã dừng</option>
+          <option value="">Tất cả</option>
+        </select>
+      </div>
 
-              <div id="billsList" class="table-responsive">
-                <p class="loading">Đang tải dữ liệu...</p>
-              </div>
-            </div>
-          </div>
+      <div id="billsList" class="table-responsive">
+        <p class="loading">Đang tải dữ liệu...</p>
+      </div>
+    </div>
+  </div>
 
-          <div class="card">
-            <div class="card-header">
-              <h2>🔔 Sắp Đến Hạn (7 ngày)</h2>
-            </div>
-            <div class="card-body">
-              <div id="upcomingBills" class="table-responsive">
-                <p class="loading">Đang tải dữ liệu...</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
+  <div class="card">
+    <div class="card-header">
+      <h2>🔔 Sắp Đến Hạn (7 ngày)</h2>
+    </div>
+    <div class="card-body">
+      <div id="upcomingBills" class="table-responsive">
+        <p class="loading">Đang tải dữ liệu...</p>
+      </div>
+    </div>
   </div>
 
   <!-- Add/Edit Bill Modal -->

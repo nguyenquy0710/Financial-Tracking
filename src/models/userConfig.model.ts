@@ -403,6 +403,10 @@ userConfigSchema.methods.compareMisaPassword = async function (
   return bcrypt.compare(candidatePassword, misaConfig.password);
 };
 
+/**
+ * Get a safe version of the user configuration with sensitive data removed.
+ * @returns A safe version of the user configuration with sensitive data removed.
+ */
 userConfigSchema.methods.getSafeConfig = function () {
   const safeConfig = this.toObject();
 
@@ -421,6 +425,11 @@ userConfigSchema.methods.getSafeConfig = function () {
   return safeConfig;
 };
 
+/**
+ * Upsert (insert or update) a MISA configuration for the user.
+ * @param config - The MISA configuration to upsert.
+ * @returns The upserted MISA configuration.
+ */
 userConfigSchema.methods.upsertMisaConfig = async function (
   config: Omit<IMisaConfig, 'isConfigured' | 'isDefault' | 'isActive'>
 ): Promise<IMisaConfig> {
@@ -429,7 +438,7 @@ userConfigSchema.methods.upsertMisaConfig = async function (
     ...config,
     isConfigured: !!config.username && !!config.password,
     isDefault: this.misa.length === 0, // First config becomes default
-    isActive: true,
+    isActive: !!config.accessToken && !!config.refreshToken, // Active if tokens are present
   };
 
   //  Check if a config with the same username exists

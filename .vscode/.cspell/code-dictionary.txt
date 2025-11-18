@@ -10,6 +10,7 @@ esms
 esmsvn
 haravan
 HOTP
+indexeddb
 initdb
 jscoverage
 jspm
@@ -29,13 +30,16 @@ otplib
 PDPA
 pids
 pycache
+qrcode
 quynh
 reranker
+ripemd
 sapo
 spreadsheetml
 swal
 totp
 totps
+upserted
 uuidv
 vietqr
 virtuals

@@ -107,6 +107,29 @@ class AppSDK {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
   }
+
+  /**
+   * Hàm thiết lập nút chuyển đổi giao diện sáng/tối.
+   * Yêu cầu có phần tử HTML với id="theme-toggle" và một phần tử con với class="icon" để hiển thị biểu tượng.
+   */
+  static setupThemeToggle() {
+    const themeToggle = document.getElementById('theme-toggle');
+    const icon = themeToggle.querySelector('.icon');
+
+    // Check saved theme
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      document.body.classList.add('dark-mode');
+      icon.textContent = '☀️';
+    }
+
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      const isDark = document.body.classList.contains('dark-mode');
+      icon.textContent = isDark ? '☀️' : '🌙';
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+  }
 }
 
 // =============================================
@@ -267,4 +290,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Bắt đầu auto-check mỗi 30s
   // sdk.startAutoCheck(30000);
+
+  AppSDK.setupThemeToggle();
 });

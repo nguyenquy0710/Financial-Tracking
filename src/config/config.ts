@@ -14,6 +14,18 @@ export const configApp = {
     supportEmail: process.env.APP_SUPPORT_EMAIL || 'support@fintrack.com',
   },
 
+  // AES CBC Encryption Settings
+  aesCbc: {
+    algorithm: process.env.AES_CBC_ALGORITHM || 'aes-256-cbc',
+    encoding: process.env.AES_CBC_ENCODING || 'utf8',
+    outputEncoding: process.env.AES_CBC_OUTPUT_ENCODING || 'hex', // Options: hex, base64, binary (or raw), utf8
+    digest: process.env.AES_CBC_DIGEST || 'sha256', // Options: sha1, sha256, sha512, md5, ripemd160, blake2b
+    keyLength: parseInt(process.env.AES_CBC_KEY_LENGTH || '32', 10), // in bytes
+    ivLength: parseInt(process.env.AES_CBC_IV_LENGTH || '16', 10), // in bytes
+    key: process.env.AES_CBC_KEY || 'your-32-byte-hex-key', // 32-byte hex key for AES-256
+    iv: process.env.AES_CBC_IV || 'your-16-byte-hex-iv', // 16-byte hex IV for AES
+  },
+
   // JWT Configuration
   jwt: {
     secret: process.env.JWT_SECRET || 'fintrack-secret-key-change-in-production',
