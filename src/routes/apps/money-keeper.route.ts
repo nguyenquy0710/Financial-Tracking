@@ -3,21 +3,20 @@ const moneyKeeperRoute = express.Router();
 
 import { APP_ROUTE_PREFIX } from '@/constants/route_prefix.constant';
 import { webAuthHandler } from '@/middleware/authHandler';
-import rentalRoute from './rental.route';
 
 const { MONEY_KEEPER: MONEY_KEEPER_PREFIX } = APP_ROUTE_PREFIX;
 const CURRENT_PAGE = MONEY_KEEPER_PREFIX.MENU_NAME; // 'Money Keeper'
 
 /**
- * Rental Routes
- * These routes render EJS templates for rental management
+ * Money Keeper Routes
+ * These routes render EJS templates for Money Keeper integration
  */
 
 // All routes require authentication
 moneyKeeperRoute.use(webAuthHandler);
 
-// GET: /rentals
-// Render the rentals page listing all rentals.
+// GET: /money-keeper
+// Render the Money Keeper index page.
 moneyKeeperRoute.get(MONEY_KEEPER_PREFIX.WEB_PAGE.INDEX, (req: Request, res: Response) => {
   res.render('apps/money-keeper/index', {
     title: 'Money Keeper',
@@ -25,8 +24,8 @@ moneyKeeperRoute.get(MONEY_KEEPER_PREFIX.WEB_PAGE.INDEX, (req: Request, res: Res
   });
 });
 
-// GET: /rentals/setting
-// Render the rental settings page.
+// GET: /money-keeper/setting
+// Render the Money Keeper settings page.
 moneyKeeperRoute.get(MONEY_KEEPER_PREFIX.WEB_PAGE.SETTING, (req: Request, res: Response) => {
   res.render('apps/money-keeper/setting', {
     title: 'Money Keeper Settings',
@@ -34,8 +33,8 @@ moneyKeeperRoute.get(MONEY_KEEPER_PREFIX.WEB_PAGE.SETTING, (req: Request, res: R
   });
 });
 
-// GET: /rentals/:id/detail
-// Render the rental detail page for a specific rental.
+// GET: /money-keeper/:id/detail
+// Render the Money Keeper detail page for a specific item.
 moneyKeeperRoute.get(MONEY_KEEPER_PREFIX.WEB_PAGE.DETAIL, (req: Request, res: Response) => {
   const itemId: string = req.params.id ?? '';
   res.render('apps/money-keeper/detail', {
@@ -45,8 +44,8 @@ moneyKeeperRoute.get(MONEY_KEEPER_PREFIX.WEB_PAGE.DETAIL, (req: Request, res: Re
   });
 });
 
-// GET: /rentals/:id/sync-data
-// Render the rental data synchronization page for a specific rental.
+// GET: /money-keeper/:id/sync-data
+// Render the Money Keeper data synchronization page for a specific item.
 moneyKeeperRoute.get(MONEY_KEEPER_PREFIX.WEB_PAGE.SYNC_DATA, (req: Request, res: Response) => {
   const itemId: string = req.params.id ?? '';
   res.render('apps/money-keeper/sync-data', {
