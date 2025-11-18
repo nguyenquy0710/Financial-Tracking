@@ -1,6 +1,7 @@
 const { misaDomain } = require("@/domains/misa.domain");
 const { default: UserConfig } = require('@/models/userConfig.model');
 const { default: MoneyKeeperWallet } = require('@/models/moneyKeeperWallet.model');
+const { ConfigStatus } = require("@/config/enums");
 
 /**
  * @desc    Validate Money Keeper credentials and fetch wallets
@@ -80,8 +81,7 @@ exports.saveConfig = async (req, res, next) => {
     }
 
     // Validate credentials first
-    const tempMisaDomain = new (require('@/domains/misa.domain').default)();
-    const loginResult = await tempMisaDomain.loginForWeb(username, password);
+    const loginResult = await misaDomain.loginForWeb(username, password);
 
     if (!loginResult.ok || !loginResult.data.accessToken) {
       return res.status(401).json({
@@ -102,11 +102,19 @@ exports.saveConfig = async (req, res, next) => {
     }
 
     // Add or update MISA config
-    await userConfig.addMisaConfig({
-      username,
-      password,
+    await userConfig.upsertMisaConfig({
+      username: username,
+      password: password,
+      accessToken: loginResult.data.accessToken,
+      refreshToken: loginResult.data.refreshToken,
+      userMisaId: loginResult.data.userMisaId,
+      userMoneyKeeperId: loginResult.data.userMoneyKeeperId,
+      sessionMoneyKeeperId: loginResult.data.sessionMoneyKeeperId,
+
+      isDefault: true,
+      isActive: true,
       lastValidated: new Date(),
-      validationStatus: 'active',
+      validationStatus: ConfigStatus.ACTIVE,
       errorMessage: undefined
     });
 
@@ -281,7 +289,7 @@ exports.syncWallets = async (req, res, next) => {
 exports.getWallets = async (req, res, next) => {
   try {
     const wallets = await MoneyKeeperWallet.findByUserId(req.userId);
-    
+
     res.status(200).json({
       success: true,
       count: wallets.length,
@@ -300,10 +308,10 @@ exports.getWallets = async (req, res, next) => {
 exports.getWalletSummary = async (req, res, next) => {
   try {
     const summary = await MoneyKeeperWallet.getWalletSummary(req.userId);
-    
+
     // Calculate total
     const total = summary.reduce((acc, item) => acc + item.totalAmount, 0);
-    
+
     res.status(200).json({
       success: true,
       data: {

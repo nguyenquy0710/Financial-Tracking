@@ -1,15 +1,23 @@
 import mongoose, { Document, Schema, Model, Types } from 'mongoose';
 import bcrypt from 'bcryptjs';
 import { ConfigStatus } from '@/config/enums';
+import { createBaseSchema } from '@/abstracts/absBase.model';
 
 // 2. Define interfaces for nested objects
 export interface IMisaConfig extends Document {
   username?: string;
   password?: string;
+  accessToken?: string;
+  refreshToken?: string;
+  userMisaId?: string;
+  userMoneyKeeperId?: string;
+  sessionMoneyKeeperId?: string;
+
   isConfigured: boolean;
   isDefault: boolean;
   isActive: boolean;
   lastValidated?: Date;
+
   validationStatus?: ConfigStatus;
   errorMessage?: string;
 }
@@ -54,13 +62,13 @@ export interface IUserConfigModel extends Document {
   // Instance methods
   compareMisaPassword(candidatePassword: string, misaIndex?: number): Promise<boolean>;
   getSafeConfig(): any;
-  addMisaConfig(config: Omit<IMisaConfig, 'isConfigured' | 'isDefault' | 'isActive'>): Promise<IMisaConfig>;
+  upsertMisaConfig(config: Omit<IMisaConfig, 'isConfigured' | 'isDefault' | 'isActive'>): Promise<IMisaConfig>;
   setActiveMisaConfig(index: number): Promise<void>;
   validateMisaConfig(index: number, isValid: boolean, errorMessage?: string): Promise<void>;
 }
 
 // 4. Define the schema
-const userConfigSchema = new Schema<IUserConfigModel>(
+const userConfigSchema = createBaseSchema<IUserConfigModel>(
   {
     userId: {
       type: Schema.Types.ObjectId,
@@ -87,6 +95,27 @@ const userConfigSchema = new Schema<IUserConfigModel>(
           message: 'MISA password must be at least 4 characters long'
         }
       },
+      accessToken: {
+        type: String,
+        trim: true,
+      },
+      refreshToken: {
+        type: String,
+        trim: true,
+      },
+      userMisaId: {
+        type: String,
+        trim: true,
+      },
+      userMoneyKeeperId: {
+        type: String,
+        trim: true,
+      },
+      sessionMoneyKeeperId: {
+        type: String,
+        trim: true,
+      },
+
       isConfigured: {
         type: Boolean,
         default: false
@@ -99,6 +128,7 @@ const userConfigSchema = new Schema<IUserConfigModel>(
         type: Boolean,
         default: true
       },
+
       lastValidated: {
         type: Date
       },
@@ -192,10 +222,14 @@ const userConfigSchema = new Schema<IUserConfigModel>(
     }
   },
   {
-    timestamps: true,
+    softDelete: true,
+    auditFields: true,
+    schemaOptions: {
+      // collection: 'user_configs' // Optional: specify collection name
+    },
     toJSON: {
       virtuals: true,
-      transform: function (doc, ret: any) {
+      transform: function (doc: any, ret: any) {
         ret.id = ret._id;
         delete ret._id;
         delete ret.__v;
@@ -216,7 +250,7 @@ const userConfigSchema = new Schema<IUserConfigModel>(
     },
     toObject: {
       virtuals: true,
-      transform: function (doc, ret) {
+      transform: function (doc: any, ret: any) {
         // Ensure sensitive fields are never sent in object
         if (ret.misa) {
           ret.misa.forEach((misaConfig: any) => {
@@ -387,24 +421,46 @@ userConfigSchema.methods.getSafeConfig = function () {
   return safeConfig;
 };
 
-userConfigSchema.methods.addMisaConfig = async function (
+userConfigSchema.methods.upsertMisaConfig = async function (
   config: Omit<IMisaConfig, 'isConfigured' | 'isDefault' | 'isActive'>
 ): Promise<IMisaConfig> {
+  // Create new config object with computed fields
   const newConfig: IMisaConfig = {
     ...config,
     isConfigured: !!config.username && !!config.password,
     isDefault: this.misa.length === 0, // First config becomes default
-    isActive: true
+    isActive: true,
   };
+
+  //  Check if a config with the same username exists
+  const existingIndex = this.misa.findIndex((c: IMisaConfig) => c.username === newConfig.username);
+  if (existingIndex !== -1) {
+    // Update existing config
+    Object.assign(this.misa[existingIndex], newConfig);
+
+    // Mark document as modified (if using Mongoose)
+    this.markModified('misa');
+
+    await this.save();
+    return this.misa[existingIndex];
+  }
 
   // Deactivate other MISA configs if this one is being set as active
   if (newConfig.isActive) {
     this.misa.forEach((existingConfig: IMisaConfig) => {
       existingConfig.isActive = false;
     });
+
+    // Again, mark document as modified (if needed)
+    this.markModified('misa');
   }
 
+  // Add the new config
   this.misa.push(newConfig);
+
+  // Mark document as modified (if needed)
+  this.markModified('misa');
+
   await this.save();
 
   return newConfig;

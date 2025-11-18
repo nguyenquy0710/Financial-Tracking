@@ -35,6 +35,7 @@ sapo
 spreadsheetml
 swal
 totp
+totps
 uuidv
 vietqr
 virtuals

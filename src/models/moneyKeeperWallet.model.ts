@@ -98,7 +98,7 @@ const moneyKeeperWalletSchema = createBaseSchema<IMoneyKeeperWalletModel>(
     softDelete: true,
     auditFields: true,
     schemaOptions: {
-      collection: 'moneykeeper_wallets'
+      // collection: 'moneykeeper_wallets'
     }
   }
 );
@@ -118,12 +118,12 @@ export interface IMoneyKeeperWalletModelStatic extends Model<IMoneyKeeperWalletM
 }
 
 // Static method: Find all wallets for a user
-moneyKeeperWalletSchema.statics.findByUserId = function(userId: Types.ObjectId | string) {
+moneyKeeperWalletSchema.statics.findByUserId = function (userId: Types.ObjectId | string) {
   return this.find({ userId, isDeleted: false }).sort({ walletName: 1 });
 };
 
 // Static method: Find a specific wallet by walletId
-moneyKeeperWalletSchema.statics.findByWalletId = function(
+moneyKeeperWalletSchema.statics.findByWalletId = function (
   userId: Types.ObjectId | string,
   walletId: string
 ) {
@@ -131,7 +131,7 @@ moneyKeeperWalletSchema.statics.findByWalletId = function(
 };
 
 // Static method: Sync a wallet (upsert)
-moneyKeeperWalletSchema.statics.syncWallet = async function(
+moneyKeeperWalletSchema.statics.syncWallet = async function (
   userId: Types.ObjectId | string,
   walletData: any
 ) {
@@ -150,7 +150,7 @@ moneyKeeperWalletSchema.statics.syncWallet = async function(
     existingWallet.currentAmount = walletData.currentAmount;
     existingWallet.convertCurrentAmount = walletData.convertCurrentAmount;
     existingWallet.lastSynced = new Date();
-    
+
     return existingWallet.save();
   } else {
     // Create new wallet
@@ -170,13 +170,13 @@ moneyKeeperWalletSchema.statics.syncWallet = async function(
       lastSynced: new Date(),
       createdBy: userId
     });
-    
+
     return newWallet.save();
   }
 };
 
 // Static method: Get wallet summary
-moneyKeeperWalletSchema.statics.getWalletSummary = async function(userId: Types.ObjectId | string) {
+moneyKeeperWalletSchema.statics.getWalletSummary = async function (userId: Types.ObjectId | string) {
   return this.aggregate([
     {
       $match: {
