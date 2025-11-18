@@ -33,25 +33,21 @@ moneyKeeperRoute.get(MONEY_KEEPER_PREFIX.WEB_PAGE.SETTING, (req: Request, res: R
   });
 });
 
-// GET: /money-keeper/:id/detail
+// GET: /money-keeper/detail
 // Render the Money Keeper detail page for a specific item.
 moneyKeeperRoute.get(MONEY_KEEPER_PREFIX.WEB_PAGE.DETAIL, (req: Request, res: Response) => {
-  const itemId: string = req.params.id ?? '';
   res.render('apps/money-keeper/detail', {
     title: 'Money Keeper Detail',
     currentPage: CURRENT_PAGE,
-    itemId: itemId
   });
 });
 
-// GET: /money-keeper/:id/sync-data
+// GET: /money-keeper/sync-data
 // Render the Money Keeper data synchronization page for a specific item.
 moneyKeeperRoute.get(MONEY_KEEPER_PREFIX.WEB_PAGE.SYNC_DATA, (req: Request, res: Response) => {
-  const itemId: string = req.params.id ?? '';
   res.render('apps/money-keeper/sync-data', {
     title: 'Money Keeper Sync Data',
     currentPage: CURRENT_PAGE,
-    itemId: itemId
   });
 });
 

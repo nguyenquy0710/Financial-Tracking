@@ -17,7 +17,7 @@
             </div>
             <div class="card-body">
               <p class="info-text">Nhập thông tin đăng nhập Money Keeper để tích hợp và đồng bộ dữ liệu tài chính của bạn.</p>
-              
+
               <div id="configStatus" class="config-status" style="display: none;">
                 <!-- Will show current configuration status -->
               </div>
@@ -25,12 +25,14 @@
               <form id="moneyKeeperConfigForm">
                 <div class="form-group">
                   <label for="username">Username / Email *</label>
-                  <input type="text" id="username" name="username" class="form-control" required placeholder="Nhập username hoặc email Money Keeper">
+                  <input type="text" id="username" name="username" class="form-control" required
+                    placeholder="Nhập username hoặc email Money Keeper">
                 </div>
 
                 <div class="form-group">
                   <label for="password">Password *</label>
-                  <input type="password" id="password" name="password" class="form-control" required placeholder="Nhập mật khẩu Money Keeper">
+                  <input type="password" id="password" name="password" class="form-control" required
+                    placeholder="Nhập mật khẩu Money Keeper">
                 </div>
 
                 <div class="form-actions">
@@ -283,6 +285,4 @@
     }
   </style>
 
-  <script src="/js/money-keeper-setting.js"></script>
-
-<%- include('../partials/footer') %>
+  <%- include('../partials/footer', { additionalJS: [ '/js/money-keeper-setting.js' ] }) %>

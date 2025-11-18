@@ -1,4 +1,4 @@
-const { misaDomain } = require('@/domains/misa.domain');
+const { misaDomain } = require("@/domains/misa.domain");
 const { default: UserConfig } = require('@/models/userConfig.model');
 
 /**
@@ -17,11 +17,9 @@ exports.validateAndFetchWallets = async (req, res, next) => {
       });
     }
 
-    // Create a new instance to avoid storing credentials in the global instance
-    const tempMisaDomain = new (require('@/domains/misa.domain').default)();
-    
     // Attempt to login
-    const loginResult = await tempMisaDomain.loginForWeb(username, password);
+    const loginResult = await misaDomain.loginForWeb(username, password);
+    console.log("🚀 QuyNH: exports.validateAndFetchWallets -> loginResult", loginResult);
 
     if (!loginResult.ok || !loginResult.data.accessToken) {
       return res.status(401).json({
@@ -34,7 +32,7 @@ exports.validateAndFetchWallets = async (req, res, next) => {
     const token = loginResult.data.accessToken;
 
     // Fetch wallets list
-    const walletsResult = await tempMisaDomain.getWalletAccounts(token, {
+    const walletsResult = await misaDomain.getWalletAccounts(token, {
       searchText: '',
       walletType: null,
       inActive: null,

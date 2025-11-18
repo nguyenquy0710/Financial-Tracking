@@ -1,6 +1,7 @@
 // Money Keeper Settings Page JavaScript
 
 let validatedWallets = [];
+let token = localStorage.getItem(AppSDK.Enums.KeyStorage.AUTH_TOKEN ?? 'authToken');
 
 document.addEventListener('DOMContentLoaded', () => {
   // Load existing configuration
@@ -18,7 +19,7 @@ async function loadCurrentConfig() {
   try {
     const response = await fetch('/api/money-keeper/config', {
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
+        'Authorization': `Bearer ${token}`
       }
     });
 
@@ -58,7 +59,7 @@ async function handleCheckAccount() {
   const btn = document.getElementById('btnCheckAccount');
   const btnText = btn.querySelector('.btn-text');
   const btnLoading = btn.querySelector('.btn-loading');
-  
+
   btn.disabled = true;
   btnText.style.display = 'none';
   btnLoading.style.display = 'inline';
@@ -68,7 +69,7 @@ async function handleCheckAccount() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({ username, password })
     });
@@ -77,13 +78,13 @@ async function handleCheckAccount() {
 
     if (result.success) {
       showMessage('success', '✓ Xác thực thành công! Đang tải danh sách ví...');
-      
+
       // Store validated wallets
       validatedWallets = result.data.wallets;
-      
+
       // Display wallets
       displayWallets(validatedWallets);
-      
+
       // Show save button
       document.getElementById('btnSaveConfig').style.display = 'block';
     } else {
@@ -130,25 +131,25 @@ function createWalletCard(wallet) {
   const walletTypeLabel = getWalletTypeLabel(wallet.walletType);
   const isNegative = wallet.currentAmount < 0;
   const formattedAmount = formatCurrency(wallet.currentAmount);
-  
+
   return `
     <div class="wallet-card ${wallet.inActive ? 'inactive' : ''}">
       <div class="wallet-header">
-        ${wallet.bankLogo 
-          ? `<img src="${wallet.bankLogo}" alt="${wallet.bankName}" class="wallet-logo" onerror="this.style.display='none'">` 
-          : `<div class="wallet-logo-placeholder">${wallet.walletName.charAt(0)}</div>`
-        }
+        ${wallet.bankLogo
+      ? `<img src="${wallet.bankLogo}" alt="${wallet.bankName}" class="wallet-logo" onerror="this.style.display='none'">`
+      : `<div class="wallet-logo-placeholder">${wallet.walletName.charAt(0)}</div>`
+    }
         <div class="wallet-name">${wallet.walletName}</div>
         <span class="wallet-type-badge wallet-type-${wallet.walletType}">${walletTypeLabel}</span>
       </div>
-      
+
       <div class="wallet-info">
         ${wallet.bankName ? `<div>🏦 ${wallet.bankName}</div>` : ''}
         <div>💱 ${wallet.currencyCode}</div>
         ${wallet.inActive ? '<div>⚠️ Không hoạt động</div>' : ''}
         ${wallet.excludeReport ? '<div>📊 Loại trừ báo cáo</div>' : ''}
       </div>
-      
+
       <div class="wallet-amount ${isNegative ? 'negative' : ''}">
         ${formattedAmount}
       </div>
@@ -210,7 +211,7 @@ async function handleSaveConfig(event) {
   const btn = document.getElementById('btnSaveConfig');
   const btnText = btn.querySelector('.btn-text');
   const btnLoading = btn.querySelector('.btn-loading');
-  
+
   btn.disabled = true;
   btnText.style.display = 'none';
   btnLoading.style.display = 'inline';
@@ -220,7 +221,7 @@ async function handleSaveConfig(event) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({
         username,
@@ -233,7 +234,7 @@ async function handleSaveConfig(event) {
 
     if (result.success) {
       showMessage('success', '✓ Cấu hình đã được lưu thành công!');
-      
+
       // Update status
       const configStatus = document.getElementById('configStatus');
       configStatus.className = 'config-status';
