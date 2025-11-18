@@ -2,32 +2,6 @@
  * Styles for the TOTP (Time-based One-Time Password) page
  */
 
-.totp-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.btn-icon {
-  background: transparent;
-  border: 1px solid #ddd;
-  padding: 0.5rem 0.75rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.btn-icon:hover {
-  background: #f5f5f5;
-  border-color: #ccc;
-}
-
 .form-section {
   margin-top: 2rem;
   padding: 1.5rem;
@@ -363,43 +337,6 @@
   background: #dc3545;
 }
 
-/* Dark mode support */
-body.dark-mode .form-section h2,
-body.dark-mode .accounts-section h2,
-body.dark-mode .section-header h2,
-body.dark-mode .account-info h3 {
-  color: #f0f0f0;
-}
-
-body.dark-mode .form-group label,
-body.dark-mode .account-info p {
-  color: #ccc;
-}
-
-body.dark-mode .form-group input {
-  background: #2a2a2a;
-  border-color: #444;
-  color: #f0f0f0;
-}
-
-body.dark-mode .account-card {
-  background: #1e1e1e;
-  border-color: #444;
-}
-
-body.dark-mode .totp-display {
-  background: #2a2a2a;
-}
-
-body.dark-mode .btn-icon {
-  border-color: #444;
-  color: #f0f0f0;
-}
-
-body.dark-mode .btn-icon:hover {
-  background: #2a2a2a;
-}
-
 /* Responsive design */
 @media (max-width: 768px) {
   #accounts-container {
@@ -559,29 +496,4 @@ body.dark-mode .btn-icon:hover {
 .qr-results .error {
   color: #dc3545;
   font-weight: 600;
-}
-
-/* Dark mode support for QR modal */
-body.dark-mode .qr-modal-content {
-  background-color: #1e1e1e;
-}
-
-body.dark-mode .qr-modal-header {
-  border-bottom-color: #444;
-}
-
-body.dark-mode #qr-reader {
-  border-color: #444;
-}
-
-body.dark-mode .qr-results {
-  background: #2a2a2a;
-}
-
-body.dark-mode .qr-results p {
-  color: #f0f0f0;
-}
-
-body.dark-mode .form-header h2 {
-  color: #f0f0f0;
 }

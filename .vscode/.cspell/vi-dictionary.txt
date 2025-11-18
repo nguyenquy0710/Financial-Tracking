@@ -158,6 +158,7 @@ riêng
 rỗng
 sách
 sạch
+sáng
 sánh
 tảng
 thái
@@ -165,6 +166,7 @@ tham
 thân
 tháng
 thành
+thao
 thập
 thất
 thấy
@@ -207,6 +209,7 @@ Trung
 trước
 trường
 truy
+truyền
 từng
 tương
 tượng

@@ -133,7 +133,7 @@ if (typeof module !== 'undefined' && module.exports) {
 
 // =============================================
 // Khởi tạo SDK với cấu hình authToken
-// Nếu chạy trên browser đã import <script src="main-apps.js"></script>
+// Nếu chạy trên browser đã import <script src="/js/apps/auth.js"></script>
 // =============================================
 const sdkAuth = new AppAuthSDK(baseURL = AppSDK.BASE_URL || window.location.origin);
 
@@ -155,7 +155,8 @@ sdkAuth.onError = (err) => {
 };
 
 // =============================================
-// Check authentication on page load for protected pages
+// Tự động kiểm tra xác thực khi tải trang
+// =============================================
 document.addEventListener('DOMContentLoaded', () => {
   const currentPage = window.location.pathname;
   const publicPages = ['/', '/login', '/register', '/changelog'];
@@ -163,10 +164,10 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!publicPages.includes(currentPage) && !sdkAuth.isAuthenticated()) {
     window.location.href = '/login?redirect=' + encodeURIComponent(currentPage);
   }
-});
 
-// Attach logout function to logout button if exists
-const logoutButtons = document.getElementsByClassName("btn-logout");
-Array.from(logoutButtons).forEach(button => {
-  button.addEventListener("click", sdkAuth.logout.bind(sdkAuth));
+  // Attach logout function to logout button if exists
+  const logoutButtons = document.getElementsByClassName("btn-logout");
+  Array.from(logoutButtons).forEach(button => {
+    button.addEventListener("click", sdkAuth.logout.bind(sdkAuth));
+  });
 });

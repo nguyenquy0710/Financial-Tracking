@@ -1,76 +1,63 @@
-<%- include('partials/header', { title: 'Cài đặt' , additionalCSS: [''] }) %>
+<%- include('partials/header', { title: 'Cài đặt' , additionalCSS: [''] , currentPage: 'settings' , pageTitle: 'Cài đặt' ,
+  pageDescription: '' }) %>
 
-  <div class="app-container">
-    <%- include('partials/sidebar', { currentPage: 'settings' }) %>
-      <main class="main-content">
-        <header class="top-bar">
-          <h1>Cài đặt</h1>
-          <div class="user-info">
-            <span id="user-name">User</span>
-            <button class="btn-logout">Đăng xuất</button>
-          </div>
-        </header>
-        <div class="content">
-          <div class="card">
-            <div class="card-header">
-              <h2>👤 Thông tin cá nhân</h2>
-            </div>
-            <div class="card-body">
-              <div id="userInfo">
-                <p class="loading">Đang tải dữ liệu...</p>
-              </div>
-            </div>
-          </div>
+  <div class="card">
+    <div class="card-header">
+      <h2>👤 Thông tin cá nhân</h2>
+    </div>
+    <div class="card-body">
+      <div id="userInfo">
+        <p class="loading">Đang tải dữ liệu...</p>
+      </div>
+    </div>
+  </div>
 
-          <div class="card">
-            <div class="card-header">
-              <h2>🏦 Tài khoản ngân hàng</h2>
-              <button class="btn btn-primary" onclick="showAddAccountForm()">+ Thêm Tài Khoản</button>
-            </div>
-            <div class="card-body">
-              <div id="bankAccountsList">
-                <p class="loading">Đang tải dữ liệu...</p>
-              </div>
-            </div>
-          </div>
+  <div class="card">
+    <div class="card-header">
+      <h2>🏦 Tài khoản ngân hàng</h2>
+      <button class="btn btn-primary" onclick="showAddAccountForm()">+ Thêm Tài Khoản</button>
+    </div>
+    <div class="card-body">
+      <div id="bankAccountsList">
+        <p class="loading">Đang tải dữ liệu...</p>
+      </div>
+    </div>
+  </div>
 
-          <div class="card">
-            <div class="card-header">
-              <h2>🎨 Tùy chỉnh</h2>
-            </div>
-            <div class="card-body">
-              <div class="settings-form">
-                <div class="form-group">
-                  <label for="language">Ngôn ngữ</label>
-                  <select id="language" class="form-control">
-                    <option value="vi">Tiếng Việt</option>
-                    <option value="en">English</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="currency">Đơn vị tiền tệ</label>
-                  <select id="currency" class="form-control">
-                    <option value="VND" selected>VNĐ</option>
-                    <option value="USD">USD</option>
-                  </select>
-                </div>
-                <button class="btn btn-primary" onclick="savePreferences()">Lưu Tùy Chỉnh</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <h2>💼 Cấu hình MISA Money Keeper</h2>
-            </div>
-            <div class="card-body">
-              <div id="misaConfigInfo">
-                <p class="loading">Đang tải dữ liệu...</p>
-              </div>
-            </div>
-          </div>
+  <div class="card">
+    <div class="card-header">
+      <h2>🎨 Tùy chỉnh</h2>
+    </div>
+    <div class="card-body">
+      <div class="settings-form">
+        <div class="form-group">
+          <label for="language">Ngôn ngữ</label>
+          <select id="language" class="form-control">
+            <option value="vi">Tiếng Việt</option>
+            <option value="en">English</option>
+          </select>
         </div>
-      </main>
+        <div class="form-group">
+          <label for="currency">Đơn vị tiền tệ</label>
+          <select id="currency" class="form-control">
+            <option value="VND" selected>VNĐ</option>
+            <option value="USD">USD</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" onclick="savePreferences()">Lưu Tùy Chỉnh</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2>💼 Cấu hình MISA Money Keeper</h2>
+    </div>
+    <div class="card-body">
+      <div id="misaConfigInfo">
+        <p class="loading">Đang tải dữ liệu...</p>
+      </div>
+    </div>
   </div>
 
   <!-- Add/Edit Bank Account Modal -->
