@@ -98,3 +98,10 @@ if (typeof module !== 'undefined' && module.exports) {
 } else {
   window.AppExternal = AppExternal; // Cho browser
 }
+
+// =============================================
+// Tự động kiểm tra khi tải trang
+// =============================================
+document.addEventListener('DOMContentLoaded', () => {
+  // Có thể thêm các thao tác tự động khi tải trang ở đây
+});

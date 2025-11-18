@@ -64,13 +64,13 @@ export const APP_ROUTE_PREFIX = {
   },
 
   MONEY_KEEPER: {
-    MENU_NAME: 'Money Keeper',
+    MENU_NAME: 'money-keeper',
     BASE: '/money-keeper',
     WEB_PAGE: {
       INDEX: '/',
       SETTING: '/setting',
-      DETAIL: '/:id/detail',
-      SYNC_DATA: '/:id/sync-data',
+      DETAIL: '/detail',
+      SYNC_DATA: '/sync-data',
     }
   }
 };

@@ -1,100 +1,82 @@
-<%- include('partials/header', { title: 'Chi tiết thuê phòng' , additionalCSS: ['/css/rentals.css'] }) %>
-  <div class="app-container">
-    <%- include('partials/sidebar', { currentPage: 'rentals' }) %>
+<%- include('partials/header', { title: 'Chi tiết thuê phòng' , additionalCSS: ['/css/rentals.css'], currentPage: 'rentals' ,
+  pageTitle: 'Chi tiết thuê phòng' , pageDescription: '' , turnbackUrl: '/app/rentals' }) %>
 
-      <!-- Main Content -->
-      <main class="main-content">
-        <header class="top-bar">
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <a href="/app/rentals" class="btn btn-secondary" style="text-decoration: none;">← Quay lại</a>
-            <h1>Chi tiết thuê phòng</h1>
-          </div>
-          <div class="user-info">
-            <span id="user-name">User</span>
-            <button class="btn-logout">Đăng xuất</button>
-          </div>
-        </header>
+  <!-- Property Info Card -->
+  <div class="card mb-4">
+    <h2>Thông tin phòng</h2>
+    <div id="property-info" class="loading">Đang tải thông tin...</div>
+  </div>
 
-        <div class="content">
-          <!-- Property Info Card -->
-          <div class="card mb-4">
-            <h2>Thông tin phòng</h2>
-            <div id="property-info" class="loading">Đang tải thông tin...</div>
-          </div>
-
-          <!-- Summary Cards -->
-          <div class="row g-3 mb-4">
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="summary-card">
-                <div class="card-icon">💰</div>
-                <div class="card-content">
-                  <h3>Tổng chi phí</h3>
-                  <p class="amount" id="stat-total">0 VND</p>
-                  <span class="period" id="stat-months">0 tháng</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="summary-card">
-                <div class="card-icon">⚡</div>
-                <div class="card-content">
-                  <h3>Tổng tiền điện</h3>
-                  <p class="amount" id="stat-electricity">0 VND</p>
-                  <span class="period">Tất cả các tháng</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="summary-card">
-                <div class="card-icon">💧</div>
-                <div class="card-content">
-                  <h3>Tổng tiền nước</h3>
-                  <p class="amount" id="stat-water">0 VND</p>
-                  <span class="period">Tất cả các tháng</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="summary-card">
-                <div class="card-icon">📊</div>
-                <div class="card-content">
-                  <h3>Trung bình/tháng</h3>
-                  <p class="amount" id="stat-avg">0 VND</p>
-                  <span class="period">Chi phí</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Monthly Records -->
-          <div class="card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-              <h2>Lịch sử thanh toán theo tháng</h2>
-              <button class="btn btn-primary btn-sm" onclick="showAddMonthlyRecordModal()">
-                <span class="icon">➕</span> Thêm dữ liệu tháng
-              </button>
-            </div>
-
-            <div id="monthly-records" class="table-container">
-              <p class="loading">Đang tải dữ liệu...</p>
-            </div>
-          </div>
-
-          <!-- Notes -->
-          <div class="card">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-              <h2>Ghi chú</h2>
-              <button class="btn btn-primary btn-sm" onclick="showAddNoteModal()">
-                <span class="icon">➕</span> Thêm ghi chú
-              </button>
-            </div>
-
-            <div id="property-notes" class="table-container">
-              <p class="loading">Đang tải dữ liệu...</p>
-            </div>
-          </div>
+  <!-- Summary Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="summary-card">
+        <div class="card-icon">💰</div>
+        <div class="card-content">
+          <h3>Tổng chi phí</h3>
+          <p class="amount" id="stat-total">0 VND</p>
+          <span class="period" id="stat-months">0 tháng</span>
         </div>
-      </main>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="summary-card">
+        <div class="card-icon">⚡</div>
+        <div class="card-content">
+          <h3>Tổng tiền điện</h3>
+          <p class="amount" id="stat-electricity">0 VND</p>
+          <span class="period">Tất cả các tháng</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="summary-card">
+        <div class="card-icon">💧</div>
+        <div class="card-content">
+          <h3>Tổng tiền nước</h3>
+          <p class="amount" id="stat-water">0 VND</p>
+          <span class="period">Tất cả các tháng</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="summary-card">
+        <div class="card-icon">📊</div>
+        <div class="card-content">
+          <h3>Trung bình/tháng</h3>
+          <p class="amount" id="stat-avg">0 VND</p>
+          <span class="period">Chi phí</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Monthly Records -->
+  <div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <h2>Lịch sử thanh toán theo tháng</h2>
+      <button class="btn btn-primary btn-sm" onclick="showAddMonthlyRecordModal()">
+        <span class="icon">➕</span> Thêm dữ liệu tháng
+      </button>
+    </div>
+
+    <div id="monthly-records" class="table-container">
+      <p class="loading">Đang tải dữ liệu...</p>
+    </div>
+  </div>
+
+  <!-- Notes -->
+  <div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <h2>Ghi chú</h2>
+      <button class="btn btn-primary btn-sm" onclick="showAddNoteModal()">
+        <span class="icon">➕</span> Thêm ghi chú
+      </button>
+    </div>
+
+    <div id="property-notes" class="table-container">
+      <p class="loading">Đang tải dữ liệu...</p>
+    </div>
   </div>
 
   <!-- Add/Edit Monthly Record Modal -->
@@ -203,4 +185,5 @@
     // Pass property ID to JavaScript
     const PROPERTY_ID = '<%= rentalId %>';
   </script>
+
   <%- include('partials/footer', { additionalJS: [ '/js/rental-detail.js' ] }) %>

@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   setupFormHandlers();
   setupQRScanner();
-  setupThemeToggle();
 });
 
 // Setup form handlers
@@ -48,26 +47,6 @@ const setupFormHandlers = () => {
 
   cancelBtn.addEventListener('click', () => {
     resetForm();
-  });
-};
-
-// Setup theme toggle
-const setupThemeToggle = () => {
-  const themeToggle = document.getElementById('theme-toggle');
-  const icon = themeToggle.querySelector('.icon');
-
-  // Check saved theme
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme === 'dark') {
-    document.body.classList.add('dark-mode');
-    icon.textContent = '☀️';
-  }
-
-  themeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-    const isDark = document.body.classList.contains('dark-mode');
-    icon.textContent = isDark ? '☀️' : '🌙';
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
   });
 };
 

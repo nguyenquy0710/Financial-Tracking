@@ -85,6 +85,7 @@ const TotpSchema = createBaseSchema<ITotpModel>(
     softDelete: true,
     auditFields: true,
     schemaOptions: {
+      // collection: 'totps',
       toJSON: {
         transform: function (doc: any, ret: any) {
           // Don't expose encrypted secret in JSON
