@@ -231,14 +231,6 @@ if (typeof module !== 'undefined' && module.exports) {
 // =============================================
 const sdk = new AppSDK(baseURL = AppSDK.BASE_URL);
 
-// Gọi thủ công
-// AppSDK.Alert.show({
-//   icon: AppSDK.Enums.AlertIcon.SUCCESS,
-//   title: "Hoàn tất",
-//   draggable: true,
-//   text: "API đã phản hồi thành công!"
-// });
-
 // Lắng nghe sự kiện thay đổi
 sdk.onStatusChange = (status) => {
   console.log("✅ API Status:", status);
@@ -266,5 +258,13 @@ sdk.onError = (err) => {
   }
 };
 
-// Bắt đầu auto-check mỗi 30s
-// sdk.startAutoCheck(30000);
+// =============================================
+// Tự động kiểm tra khi tải trang
+// =============================================
+document.addEventListener('DOMContentLoaded', () => {
+  // Kiểm tra trạng thái API khi tải trang
+  // sdk.checkAPIHealth();
+
+  // Bắt đầu auto-check mỗi 30s
+  // sdk.startAutoCheck(30000);
+});
