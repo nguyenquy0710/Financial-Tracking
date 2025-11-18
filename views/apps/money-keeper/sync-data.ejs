@@ -1,0 +1,353 @@
+<%- include('../partials/header', { title: 'Money Keeper - Đồng bộ dữ liệu' , additionalCSS: [''] }) %>
+
+  <div class="app-container">
+    <%- include('../partials/sidebar', { currentPage: currentPage }) %>
+      <main class="main-content">
+        <header class="top-bar">
+          <h1>🔄 Đồng Bộ Dữ Liệu Money Keeper</h1>
+          <div class="user-info">
+            <span id="user-name">User</span>
+            <button class="btn-logout">Đăng xuất</button>
+          </div>
+        </header>
+        <div class="content">
+          <!-- Configuration Status -->
+          <div class="card">
+            <div class="card-header">
+              <h2>📋 Trạng Thái Cấu Hình</h2>
+            </div>
+            <div class="card-body">
+              <div id="configStatusSection">
+                <p class="loading">Đang kiểm tra cấu hình...</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sync Wallets Section -->
+          <div id="syncSection" class="card" style="display: none;">
+            <div class="card-header">
+              <h2>💰 Đồng Bộ Ví</h2>
+            </div>
+            <div class="card-body">
+              <p class="info-text">Đồng bộ danh sách ví từ Money Keeper về hệ thống.</p>
+              
+              <div class="sync-controls">
+                <button id="btnSyncWallets" class="btn btn-primary">
+                  <span class="btn-text">🔄 Đồng Bộ Ví Ngay</span>
+                  <span class="btn-loading" style="display: none;">⏳ Đang đồng bộ...</span>
+                </button>
+                <div id="syncMessage" class="message" style="display: none;"></div>
+              </div>
+
+              <div id="syncResults" style="display: none; margin-top: 24px;">
+                <h3>Kết Quả Đồng Bộ</h3>
+                <div id="syncStats" class="sync-stats"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Synced Wallets Display -->
+          <div id="walletsSection" class="card" style="display: none;">
+            <div class="card-header">
+              <h2>💼 Ví Đã Đồng Bộ</h2>
+              <button id="btnRefreshWallets" class="btn btn-secondary">🔃 Làm Mới</button>
+            </div>
+            <div class="card-body">
+              <div id="walletsSummary" class="wallets-summary"></div>
+              <div id="walletsList" class="wallet-list">
+                <p class="loading">Đang tải danh sách ví...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+  </div>
+
+  <style>
+    .info-text {
+      color: #666;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+    }
+
+    .config-status {
+      padding: 16px;
+      border-radius: 8px;
+      border-left: 4px solid;
+      margin-bottom: 16px;
+    }
+
+    .config-status.configured {
+      background-color: #e8f5e9;
+      border-left-color: #4caf50;
+    }
+
+    .config-status.not-configured {
+      background-color: #fff3e0;
+      border-left-color: #ff9800;
+    }
+
+    .sync-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      color: white;
+      align-self: flex-start;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background-color: #0056b3;
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+      color: white;
+      padding: 8px 16px;
+      font-size: 13px;
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background-color: #545b62;
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .message {
+      padding: 12px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .message.success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .message.error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .message.warning {
+      background-color: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeaa7;
+    }
+
+    .sync-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .stat-card {
+      padding: 16px;
+      border-radius: 8px;
+      background-color: #f8f9fa;
+      border: 1px solid #dee2e6;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #6c757d;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #212529;
+    }
+
+    .wallets-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+      padding: 16px;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+    }
+
+    .summary-item {
+      text-align: center;
+    }
+
+    .summary-label {
+      font-size: 12px;
+      color: #6c757d;
+      margin-bottom: 4px;
+    }
+
+    .summary-value {
+      font-size: 20px;
+      font-weight: 600;
+      color: #212529;
+    }
+
+    .summary-value.positive {
+      color: #28a745;
+    }
+
+    .summary-value.negative {
+      color: #dc3545;
+    }
+
+    .wallet-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 16px;
+    }
+
+    .wallet-card {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 16px;
+      background-color: #fff;
+      transition: all 0.3s;
+    }
+
+    .wallet-card:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-color: #007bff;
+    }
+
+    .wallet-card.inactive {
+      opacity: 0.6;
+      background-color: #f5f5f5;
+    }
+
+    .wallet-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .wallet-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .wallet-logo-placeholder {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #007bff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .wallet-name {
+      font-weight: 600;
+      font-size: 16px;
+      color: #333;
+      flex: 1;
+    }
+
+    .wallet-type-badge {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .wallet-type-1 {
+      background-color: #e3f2fd;
+      color: #1976d2;
+    }
+
+    .wallet-type-2 {
+      background-color: #fff3e0;
+      color: #f57c00;
+    }
+
+    .wallet-type-3 {
+      background-color: #f3e5f5;
+      color: #7b1fa2;
+    }
+
+    .wallet-info {
+      margin-top: 8px;
+      font-size: 13px;
+      color: #666;
+    }
+
+    .wallet-info div {
+      margin-bottom: 4px;
+    }
+
+    .wallet-amount {
+      font-size: 18px;
+      font-weight: 700;
+      color: #2e7d32;
+      margin-top: 12px;
+    }
+
+    .wallet-amount.negative {
+      color: #c62828;
+    }
+
+    .wallet-meta {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #e0e0e0;
+      font-size: 12px;
+      color: #999;
+    }
+
+    .no-wallets {
+      text-align: center;
+      padding: 40px;
+      color: #999;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
+
+  <script src="/js/money-keeper-sync.js"></script>
+
+<%- include('../partials/footer') %>

@@ -139,4 +139,63 @@ router.post('/validate', moneyKeeperController.validateAndFetchWallets);
 router.get('/config', moneyKeeperController.getConfig);
 router.post('/config', moneyKeeperController.saveConfig);
 
+/**
+ * @swagger
+ * /api/money-keeper/sync/wallets:
+ *   post:
+ *     summary: 🔄 Đồng bộ ví từ Money Keeper
+ *     description: Đồng bộ danh sách ví từ Money Keeper về database
+ *     tags: [Money Keeper]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               password:
+ *                 type: string
+ *                 description: Money Keeper password (optional if already configured)
+ *     responses:
+ *       200:
+ *         description: Đồng bộ thành công
+ *       400:
+ *         description: Chưa cấu hình Money Keeper
+ *       401:
+ *         description: Đăng nhập thất bại
+ */
+router.post('/sync/wallets', moneyKeeperController.syncWallets);
+
+/**
+ * @swagger
+ * /api/money-keeper/wallets:
+ *   get:
+ *     summary: 💰 Lấy danh sách ví đã đồng bộ
+ *     description: Lấy danh sách ví từ database
+ *     tags: [Money Keeper]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Lấy danh sách thành công
+ */
+router.get('/wallets', moneyKeeperController.getWallets);
+
+/**
+ * @swagger
+ * /api/money-keeper/wallets/summary:
+ *   get:
+ *     summary: 📊 Lấy tổng hợp ví
+ *     description: Lấy thống kê tổng hợp về các ví
+ *     tags: [Money Keeper]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Lấy tổng hợp thành công
+ */
+router.get('/wallets/summary', moneyKeeperController.getWalletSummary);
+
 module.exports = router;
