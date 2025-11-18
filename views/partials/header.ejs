@@ -41,6 +41,8 @@
 
     <% if (locals.additionalCSS) { %>
       <% additionalCSS.forEach(css=> {
+        if(css.trim() === '') return;
+
         let hasQuery = css.includes("?");
         let hasVersion = css.includes("v=");
         let finalHref = css;

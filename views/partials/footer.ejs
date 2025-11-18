@@ -24,6 +24,8 @@
 
 <% if (locals.additionalJS) { %>
   <% additionalJS.forEach(js=> {
+    if(js.trim() === '') return;
+
     let hasQuery = js.includes("?");
     let hasVersion = js.includes("v=");
     let finalSrc = js;
