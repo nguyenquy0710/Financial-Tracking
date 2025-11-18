@@ -4,6 +4,7 @@ import { APP_ROUTE_PREFIX } from '@/constants/route_prefix.constant';
 
 import rentalRoute from './rental.route';
 import totpRoute from './totp.route';
+import moneyKeeperRoute from './money-keeper.route';
 
 // Create a router for view app routes
 const viewAppRoutes = express.Router();
@@ -33,7 +34,10 @@ viewAppRoutes.get('/dashboard', (req: Request, res: Response) => {
 // Rental module integration
 viewAppRoutes.use(APP_ROUTE_PREFIX.RENTAL.BASE, rentalRoute); // e.g., /rentals/*
 
-// TOTP 2FA page integration
+// Money Keeper module integration
+viewAppRoutes.use(APP_ROUTE_PREFIX.MONEY_KEEPER.BASE, moneyKeeperRoute); // e.g., /money-keeper/*
+
+// TOTP (2FA) module integration
 viewAppRoutes.use(APP_ROUTE_PREFIX.TOTP.BASE, totpRoute); // e.g., /totp/*
 
 viewAppRoutes.get('/salaries', (req: Request, res: Response) => {
