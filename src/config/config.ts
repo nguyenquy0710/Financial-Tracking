@@ -9,7 +9,9 @@ export const configApp = {
     description:
       process.env.APP_DESCRIPTION ||
       'FinTrack (Financial Tracking) – Người bạn đồng hành tài chính thông minh - Smart Financial Companion Platform',
-    baseURL: process.env.APP_BASE_URL || 'https://fintrack.quyit.id.vn'
+    baseURL: process.env.APP_BASE_URL || 'https://fintrack.quyit.id.vn',
+    footerText: process.env.APP_FOOTER_TEXT || '© 2025 FinTrack. All rights reserved.',
+    supportEmail: process.env.APP_SUPPORT_EMAIL || 'support@fintrack.com',
   },
 
   // JWT Configuration

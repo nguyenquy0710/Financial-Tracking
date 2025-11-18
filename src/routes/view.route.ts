@@ -4,11 +4,15 @@ import path from 'path';
 import configApp from '@/config/config';
 import { ADMIN_ROUTE_PREFIX, API_ROUTE_PREFIX, APP_ROUTE_PREFIX, ROUTE_PREFIX } from '@/constants/route_prefix.constant';
 import { X_DEVICE_ID } from '@/constants/app_key_config.constant';
+import { initLocalsMiddleware } from '@/middleware/locals.middleware';
 import viewAppRoutes from './apps/view.route';
 import viewAdminRoutes from './admin/view.route';
 import apiRoutes from './apis/api.route';
 
 const viewRoutes = express.Router();
+
+// Initialize locals constants
+initLocalsMiddleware(viewRoutes);
 
 /**
  * Web UI Routes
