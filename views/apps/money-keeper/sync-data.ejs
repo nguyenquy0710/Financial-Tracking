@@ -1,66 +1,53 @@
-<%- include('../partials/header', { title: 'Money Keeper - Đồng bộ dữ liệu' , additionalCSS: [''] }) %>
+<%- include('../partials/header', { title: 'Money Keeper - Đồng bộ dữ liệu' , additionalCSS: [''], currentPage: currentPage,
+  pageTitle: '🔄 Đồng Bộ Dữ Liệu Money Keeper' , pageDescription: '' }) %>
 
-  <div class="app-container">
-    <%- include('../partials/sidebar', { currentPage: currentPage }) %>
-      <main class="main-content">
-        <header class="top-bar">
-          <h1>🔄 Đồng Bộ Dữ Liệu Money Keeper</h1>
-          <div class="user-info">
-            <span id="user-name">User</span>
-            <button class="btn-logout">Đăng xuất</button>
-          </div>
-        </header>
-        <div class="content">
-          <!-- Configuration Status -->
-          <div class="card">
-            <div class="card-header">
-              <h2>📋 Trạng Thái Cấu Hình</h2>
-            </div>
-            <div class="card-body">
-              <div id="configStatusSection">
-                <p class="loading">Đang kiểm tra cấu hình...</p>
-              </div>
-            </div>
-          </div>
+  <!-- Configuration Status -->
+  <div class="card">
+    <div class="card-header">
+      <h2>📋 Trạng Thái Cấu Hình</h2>
+    </div>
+    <div class="card-body">
+      <div id="configStatusSection">
+        <p class="loading">Đang kiểm tra cấu hình...</p>
+      </div>
+    </div>
+  </div>
 
-          <!-- Sync Wallets Section -->
-          <div id="syncSection" class="card" style="display: none;">
-            <div class="card-header">
-              <h2>💰 Đồng Bộ Ví</h2>
-            </div>
-            <div class="card-body">
-              <p class="info-text">Đồng bộ danh sách ví từ Money Keeper về hệ thống.</p>
-              
-              <div class="sync-controls">
-                <button id="btnSyncWallets" class="btn btn-primary">
-                  <span class="btn-text">🔄 Đồng Bộ Ví Ngay</span>
-                  <span class="btn-loading" style="display: none;">⏳ Đang đồng bộ...</span>
-                </button>
-                <div id="syncMessage" class="message" style="display: none;"></div>
-              </div>
+  <!-- Sync Wallets Section -->
+  <div id="syncSection" class="card" style="display: none;">
+    <div class="card-header">
+      <h2>💰 Đồng Bộ Ví</h2>
+    </div>
+    <div class="card-body">
+      <p class="info-text">Đồng bộ danh sách ví từ Money Keeper về hệ thống.</p>
 
-              <div id="syncResults" style="display: none; margin-top: 24px;">
-                <h3>Kết Quả Đồng Bộ</h3>
-                <div id="syncStats" class="sync-stats"></div>
-              </div>
-            </div>
-          </div>
+      <div class="sync-controls">
+        <button id="btnSyncWallets" class="btn btn-primary">
+          <span class="btn-text">🔄 Đồng Bộ Ví Ngay</span>
+          <span class="btn-loading" style="display: none;">⏳ Đang đồng bộ...</span>
+        </button>
+        <div id="syncMessage" class="message" style="display: none;"></div>
+      </div>
 
-          <!-- Synced Wallets Display -->
-          <div id="walletsSection" class="card" style="display: none;">
-            <div class="card-header">
-              <h2>💼 Ví Đã Đồng Bộ</h2>
-              <button id="btnRefreshWallets" class="btn btn-secondary">🔃 Làm Mới</button>
-            </div>
-            <div class="card-body">
-              <div id="walletsSummary" class="wallets-summary"></div>
-              <div id="walletsList" class="wallet-list">
-                <p class="loading">Đang tải danh sách ví...</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
+      <div id="syncResults" style="display: none; margin-top: 24px;">
+        <h3>Kết Quả Đồng Bộ</h3>
+        <div id="syncStats" class="sync-stats"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Synced Wallets Display -->
+  <div id="walletsSection" class="card" style="display: none;">
+    <div class="card-header">
+      <h2>💼 Ví Đã Đồng Bộ</h2>
+      <button id="btnRefreshWallets" class="btn btn-secondary">🔃 Làm Mới</button>
+    </div>
+    <div class="card-body">
+      <div id="walletsSummary" class="wallets-summary"></div>
+      <div id="walletsList" class="wallet-list">
+        <p class="loading">Đang tải danh sách ví...</p>
+      </div>
+    </div>
   </div>
 
   <style>
@@ -348,6 +335,4 @@
     }
   </style>
 
-  <script src="/js/money-keeper-sync.js"></script>
-
-<%- include('../partials/footer') %>
+  <%- include('../partials/footer', { additionalJS: [ '/js/money-keeper-sync.js' ] }) %>

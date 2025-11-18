@@ -1,70 +1,56 @@
-<%- include('../partials/header', { title: 'Money Keeper - Cài đặt' , additionalCSS: [''] }) %>
+<%- include('../partials/header', { title: 'Money Keeper - Cài đặt' , additionalCSS: [''], currentPage: currentPage,
+  pageTitle: '💼 Cài Đặt Money Keeper' , pageDescription: '' }) %>
 
-  <div class="app-container">
-    <%- include('../partials/sidebar', { currentPage: currentPage }) %>
-      <main class="main-content">
-        <header class="top-bar">
-          <h1>💼 Cài Đặt Money Keeper</h1>
-          <div class="user-info">
-            <span id="user-name">User</span>
-            <button class="btn-logout">Đăng xuất</button>
-          </div>
-        </header>
-        <div class="content">
-          <div class="card">
-            <div class="card-header">
-              <h2>🔐 Thông Tin Đăng Nhập Money Keeper</h2>
-            </div>
-            <div class="card-body">
-              <p class="info-text">Nhập thông tin đăng nhập Money Keeper để tích hợp và đồng bộ dữ liệu tài chính của bạn.</p>
+  <div class="card">
+    <div class="card-header">
+      <h2>🔐 Thông Tin Đăng Nhập Money Keeper</h2>
+    </div>
+    <div class="card-body">
+      <p class="info-text">Nhập thông tin đăng nhập Money Keeper để tích hợp và đồng bộ dữ liệu tài chính của bạn.</p>
 
-              <div id="configStatus" class="config-status" style="display: none;">
-                <!-- Will show current configuration status -->
-              </div>
+      <div id="configStatus" class="config-status" style="display: none;">
+        <!-- Will show current configuration status -->
+      </div>
 
-              <form id="moneyKeeperConfigForm">
-                <div class="form-group">
-                  <label for="username">Username / Email *</label>
-                  <input type="text" id="username" name="username" class="form-control" required
-                    placeholder="Nhập username hoặc email Money Keeper">
-                </div>
-
-                <div class="form-group">
-                  <label for="password">Password *</label>
-                  <input type="password" id="password" name="password" class="form-control" required
-                    placeholder="Nhập mật khẩu Money Keeper">
-                </div>
-
-                <div class="form-actions">
-                  <button type="button" id="btnCheckAccount" class="btn btn-secondary">
-                    <span class="btn-text">🔍 Kiểm Tra Tài Khoản</span>
-                    <span class="btn-loading" style="display: none;">⏳ Đang kiểm tra...</span>
-                  </button>
-                  <button type="submit" id="btnSaveConfig" class="btn btn-primary" style="display: none;">
-                    <span class="btn-text">💾 Lưu Cấu Hình</span>
-                    <span class="btn-loading" style="display: none;">⏳ Đang lưu...</span>
-                  </button>
-                </div>
-              </form>
-
-              <div id="validationMessage" class="message" style="display: none;"></div>
-            </div>
-          </div>
-
-          <!-- Wallet List Section (shown after successful validation) -->
-          <div id="walletSection" class="card" style="display: none;">
-            <div class="card-header">
-              <h2>💰 Danh Sách Ví Money Keeper</h2>
-            </div>
-            <div class="card-body">
-              <p class="info-text">Các ví được tìm thấy trong tài khoản Money Keeper của bạn:</p>
-              <div id="walletList" class="wallet-list">
-                <!-- Wallets will be populated here -->
-              </div>
-            </div>
-          </div>
+      <form id="moneyKeeperConfigForm">
+        <div class="form-group">
+          <label for="username">Username / Email *</label>
+          <input type="text" id="username" name="username" class="form-control" required
+            placeholder="Nhập username hoặc email Money Keeper">
         </div>
-      </main>
+
+        <div class="form-group">
+          <label for="password">Password *</label>
+          <input type="password" id="password" name="password" class="form-control" required placeholder="Nhập mật khẩu Money Keeper">
+        </div>
+
+        <div class="form-actions">
+          <button type="button" id="btnCheckAccount" class="btn btn-secondary">
+            <span class="btn-text">🔍 Kiểm Tra Tài Khoản</span>
+            <span class="btn-loading" style="display: none;">⏳ Đang kiểm tra...</span>
+          </button>
+          <button type="submit" id="btnSaveConfig" class="btn btn-primary" style="display: none;">
+            <span class="btn-text">💾 Lưu Cấu Hình</span>
+            <span class="btn-loading" style="display: none;">⏳ Đang lưu...</span>
+          </button>
+        </div>
+      </form>
+
+      <div id="validationMessage" class="message" style="display: none;"></div>
+    </div>
+  </div>
+
+  <!-- Wallet List Section (shown after successful validation) -->
+  <div id="walletSection" class="card" style="display: none;">
+    <div class="card-header">
+      <h2>💰 Danh Sách Ví Money Keeper</h2>
+    </div>
+    <div class="card-body">
+      <p class="info-text">Các ví được tìm thấy trong tài khoản Money Keeper của bạn:</p>
+      <div id="walletList" class="wallet-list">
+        <!-- Wallets will be populated here -->
+      </div>
+    </div>
   </div>
 
   <style>
