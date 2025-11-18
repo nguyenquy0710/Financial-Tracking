@@ -1,22 +1,26 @@
 <!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-migrate-3.4.1.min.js" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/ui/1.14.1/jquery-ui.min.js" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-migrate-3.4.1.min.js" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://code.jquery.com/ui/1.14.1/jquery-ui.min.js" crossorigin="anonymous"></script>
 
 <!-- Bootstrap JS -->
 <script type="text/javascript" src="/libs/bootstrap-5.3.8-dist/js/bootstrap.bundle.min.js"></script>
 
 <script type="text/javascript" src="/libs/bootstrap-5.3.8-dist/js/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
   integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 
+<!-- Chart.js -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" async defer
+  crossorigin="anonymous"></script>
+
 <!-- SweetAlert2 CDN -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@11" async defer crossorigin="anonymous"></script>
 
 <!-- Custom JS -->
-<script src="/js/apps/main.js?v=<%= locals.timestamp || Date.now() %>"></script>
-<script src="/js/apps/external.js?v=<%= locals.timestamp || Date.now() %>"></script>
-<script src="/js/apps/auth.js?v=<%= locals.timestamp || Date.now() %>"></script>
+<script type="text/javascript" src="/js/apps/main.js?v=<%= locals.timestamp || Date.now() %>"></script>
+<script type="text/javascript" src="/js/apps/external.js?v=<%= locals.timestamp || Date.now() %>"></script>
+<script type="text/javascript" src="/js/apps/auth.js?v=<%= locals.timestamp || Date.now() %>"></script>
 
 <% if (locals.additionalJS) { %>
   <% additionalJS.forEach(js=> {
@@ -27,20 +31,23 @@
     finalSrc += (hasQuery ? "&" : "?") + "v=" + Date.now();
     }
     %>
-    <script src="<%= finalSrc %>"></script>
+    <script type="text/javascript" src="<%= finalSrc %>"></script>
     <% }) %>
       <% } %>
 
-        <script defer type="text/javascript">
-          // Enable Bootstrap tooltips if needed
-          var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-          // var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-          //   return new bootstrap.Tooltip(tooltipTriggerEl)
-          // });
+        <script async defer type="text/javascript">
+          // Chờ trang tải xong
+          document.addEventListener("DOMContentLoaded", function () {
+            // Kích hoạt tooltips sau khi trang đã được tải
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+              new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+          });
         </script>
 
         <!-- Hotjar Tracking Code for https://quyit.id.vn -->
-        <script>
+        <script async defer type="text/javascript">
           (function (h, o, t, j, a, r) {
             h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments) };
             h._hjSettings = { hjid: 4953028, hjsv: 6 };

@@ -22,22 +22,19 @@
     <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
 
     <!-- Web App Manifest -->
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="/manifest.json?v=<%= locals.timestamp || Date.now() %>">
 
     <title>
       <%= title %> - FinTrack
     </title>
 
     <!-- Bootstrap CSS -->
-    <link href="/libs/bootstrap-5.3.8-dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/libs/bootstrap-5.3.8-dist/css/bootstrap-grid.min.css" rel="stylesheet">
-    <link href="/libs/bootstrap-5.3.8-dist/css/bootstrap-utilities.min.css" rel="stylesheet">
+    <link href="/libs/bootstrap-5.3.8-dist/css/bootstrap.min.css?v=<%= locals.timestamp || Date.now() %>" rel="stylesheet">
+    <link href="/libs/bootstrap-5.3.8-dist/css/bootstrap-grid.min.css?v=<%= locals.timestamp || Date.now() %>" rel="stylesheet">
+    <link href="/libs/bootstrap-5.3.8-dist/css/bootstrap-utilities.min.css?v=<%= locals.timestamp || Date.now() %>" rel="stylesheet">
 
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/style-apps.css?v=<%= locals.timestamp || Date.now() %>">
