@@ -62,6 +62,17 @@ export const APP_ROUTE_PREFIX = {
       INDEX: '/',
     }
   },
+
+  MONEY_KEEPER: {
+    MENU_NAME: 'Money Keeper',
+    BASE: '/money-keeper',
+    WEB_PAGE: {
+      INDEX: '/',
+      SETTING: '/setting',
+      DETAIL: '/:id/detail',
+      SYNC_DATA: '/:id/sync-data',
+    }
+  }
 };
 
 // Route prefixes for admin module routes

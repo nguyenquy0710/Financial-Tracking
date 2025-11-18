@@ -8,7 +8,14 @@
 dist/
 
 # Ignore npm config files
-.npmrc
+# .npmrc
+.npmrc.local
 
 # Ignore Mac system files
 .DS_Store
+Thumbs.db
+
+# Ignore environment variable files
+.env
+.env.local
+.env.*.local
