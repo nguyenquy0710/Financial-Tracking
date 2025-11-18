@@ -1,57 +1,45 @@
-<%- include('partials/header', { title: 'Tiết kiệm' , additionalCSS: [''] }) %>
-  <div class="app-container">
-    <%- include('partials/sidebar', { currentPage: 'savings' }) %>
-      <main class="main-content">
-        <header class="top-bar">
-          <h1>Quản lý tiết kiệm</h1>
-          <div class="user-info">
-            <span id="user-name">User</span>
-            <button class="btn-logout">Đăng xuất</button>
-          </div>
-        </header>
-        <div class="content">
-          <div class="row g-3 mb-4">
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="stat-card">
-                <h3>Gửi Mẹ</h3>
-                <p class="stat-value" id="totalMother">0 VNĐ</p>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="stat-card">
-                <h3>Gửi Quỹ</h3>
-                <p class="stat-value" id="totalFund">0 VNĐ</p>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="stat-card">
-                <h3>Tổng Cộng</h3>
-                <p class="stat-value" id="totalSavings">0 VNĐ</p>
-              </div>
-            </div>
-          </div>
+<%- include('partials/header', { title: 'Tiết kiệm' , additionalCSS: [''] , currentPage: 'savings' , pageTitle: 'Quản lý tiết kiệm' ,
+  pageDescription: '' }) %>
 
-          <div class="card">
-            <div class="card-header">
-              <h2>Danh Sách Tiết Kiệm</h2>
-              <button class="btn btn-primary" onclick="showAddSavingForm()">+ Thêm Tiết Kiệm</button>
-            </div>
-            <div class="card-body">
-              <div class="filters">
-                <select id="typeFilter" onchange="filterSavings()">
-                  <option value="">Tất cả loại</option>
-                  <option value="mother">Gửi Mẹ</option>
-                  <option value="fund">Gửi Quỹ</option>
-                </select>
-                <input type="month" id="monthFilter" onchange="filterSavings()">
-              </div>
-              <div id="savingsList" class="table-responsive">
-                <p class="loading">Đang tải dữ liệu...</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
+  <div class="row g-3 mb-4">
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="stat-card">
+        <h3>Gửi Mẹ</h3>
+        <p class="stat-value" id="totalMother">0 VNĐ</p>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="stat-card">
+        <h3>Gửi Quỹ</h3>
+        <p class="stat-value" id="totalFund">0 VNĐ</p>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="stat-card">
+        <h3>Tổng Cộng</h3>
+        <p class="stat-value" id="totalSavings">0 VNĐ</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2>Danh Sách Tiết Kiệm</h2>
+      <button class="btn btn-primary" onclick="showAddSavingForm()">+ Thêm Tiết Kiệm</button>
+    </div>
+    <div class="card-body">
+      <div class="filters">
+        <select id="typeFilter" onchange="filterSavings()">
+          <option value="">Tất cả loại</option>
+          <option value="mother">Gửi Mẹ</option>
+          <option value="fund">Gửi Quỹ</option>
+        </select>
+        <input type="month" id="monthFilter" onchange="filterSavings()">
+      </div>
+      <div id="savingsList" class="table-responsive">
+        <p class="loading">Đang tải dữ liệu...</p>
+      </div>
+    </div>
   </div>
 
   <!-- Add/Edit Saving Modal -->

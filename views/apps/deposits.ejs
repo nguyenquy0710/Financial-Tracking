@@ -1,77 +1,64 @@
-<%- include('partials/header', { title: 'Tiền gửi' , additionalCSS: [''] }) %>
-  <div class="app-container">
-    <%- include('partials/sidebar', { currentPage: 'deposits' }) %>
-      <main class="main-content">
-        <header class="top-bar">
-          <h1>Sổ Tiết Kiệm / Đầu Tư</h1>
-          <div class="user-info">
-            <span id="user-name">User</span>
-            <button class="btn-logout">Đăng xuất</button>
-          </div>
-        </header>
-        <div class="content">
+<%- include('partials/header', { title: 'Tiền gửi' , additionalCSS: [''] , currentPage: 'deposits' , pageTitle: 'Sổ Tiết Kiệm / Đầu Tư' ,
+  pageDescription: '' }) %>
 
-          <div class="row g-3 mb-4">
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="stat-card">
-                <h3>Tổng Gốc</h3>
-                <p class="stat-value" id="totalPrincipal">0 VNĐ</p>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="stat-card">
-                <h3>Tổng Lãi</h3>
-                <p class="stat-value" id="totalInterest">0 VNĐ</p>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="stat-card">
-                <h3>Tổng Cộng</h3>
-                <p class="stat-value" id="totalAmount">0 VNĐ</p>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-              <div class="stat-card">
-                <h3>Lãi Suất TB</h3>
-                <p class="stat-value" id="avgRate">0%</p>
-              </div>
-            </div>
-          </div>
+  <div class="row g-3 mb-4">
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="stat-card">
+        <h3>Tổng Gốc</h3>
+        <p class="stat-value" id="totalPrincipal">0 VNĐ</p>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="stat-card">
+        <h3>Tổng Lãi</h3>
+        <p class="stat-value" id="totalInterest">0 VNĐ</p>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="stat-card">
+        <h3>Tổng Cộng</h3>
+        <p class="stat-value" id="totalAmount">0 VNĐ</p>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="stat-card">
+        <h3>Lãi Suất TB</h3>
+        <p class="stat-value" id="avgRate">0%</p>
+      </div>
+    </div>
+  </div>
 
-          <div class="card">
-            <div class="card-header">
-              <h2>Danh Sách Sổ Tiết Kiệm</h2>
-              <button class="btn btn-primary" onclick="showAddDepositForm()">+ Thêm Sổ</button>
-            </div>
-            <div class="card-body">
-              <div class="filters">
-                <input type="text" id="bankFilter" placeholder="Lọc theo ngân hàng" onchange="filterDeposits()">
-                <select id="statusFilter" onchange="filterDeposits()">
-                  <option value="">Tất cả trạng thái</option>
-                  <option value="active">Đang hoạt động</option>
-                  <option value="matured">Đã đến hạn</option>
-                  <option value="closed">Đã đóng</option>
-                </select>
-              </div>
+  <div class="card">
+    <div class="card-header">
+      <h2>Danh Sách Sổ Tiết Kiệm</h2>
+      <button class="btn btn-primary" onclick="showAddDepositForm()">+ Thêm Sổ</button>
+    </div>
+    <div class="card-body">
+      <div class="filters">
+        <input type="text" id="bankFilter" placeholder="Lọc theo ngân hàng" onchange="filterDeposits()">
+        <select id="statusFilter" onchange="filterDeposits()">
+          <option value="">Tất cả trạng thái</option>
+          <option value="active">Đang hoạt động</option>
+          <option value="matured">Đã đến hạn</option>
+          <option value="closed">Đã đóng</option>
+        </select>
+      </div>
 
-              <div id="depositsList" class="table-responsive">
-                <p class="loading">Đang tải dữ liệu...</p>
-              </div>
-            </div>
-          </div>
+      <div id="depositsList" class="table-responsive">
+        <p class="loading">Đang tải dữ liệu...</p>
+      </div>
+    </div>
+  </div>
 
-          <div class="card">
-            <div class="card-header">
-              <h2>🔔 Sắp Đáo Hạn (30 ngày)</h2>
-            </div>
-            <div class="card-body">
-              <div id="upcomingDeposits" class="table-responsive">
-                <p class="loading">Đang tải dữ liệu...</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
+  <div class="card">
+    <div class="card-header">
+      <h2>🔔 Sắp Đáo Hạn (30 ngày)</h2>
+    </div>
+    <div class="card-body">
+      <div id="upcomingDeposits" class="table-responsive">
+        <p class="loading">Đang tải dữ liệu...</p>
+      </div>
+    </div>
   </div>
 
   <!-- Add/Edit Deposit Modal -->

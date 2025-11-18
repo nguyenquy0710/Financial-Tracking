@@ -49,6 +49,7 @@ const systemConfigSchema = createBaseSchema<ISystemConfigModel>(
     softDelete: true,
     auditFields: false,
     schemaOptions: {
+      // collection: 'system_configs',
       toJSON: {
         virtuals: true,
         transform: function (doc: any, ret: any) {

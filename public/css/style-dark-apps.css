@@ -1,0 +1,61 @@
+/* Dark mode support */
+body.dark-mode .form-section h2,
+body.dark-mode .accounts-section h2,
+body.dark-mode .section-header h2,
+body.dark-mode .account-info h3 {
+  color: #f0f0f0;
+}
+
+body.dark-mode .form-group label,
+body.dark-mode .account-info p {
+  color: #ccc;
+}
+
+body.dark-mode .form-group input {
+  background: #2a2a2a;
+  border-color: #444;
+  color: #f0f0f0;
+}
+
+body.dark-mode .account-card {
+  background: #1e1e1e;
+  border-color: #444;
+}
+
+body.dark-mode .totp-display {
+  background: #2a2a2a;
+}
+
+body.dark-mode .btn-icon {
+  border-color: #444;
+  color: #f0f0f0;
+}
+
+body.dark-mode .btn-icon:hover {
+  background: #2a2a2a;
+}
+
+/* Dark mode support for QR modal */
+body.dark-mode .qr-modal-content {
+  background-color: #1e1e1e;
+}
+
+body.dark-mode .qr-modal-header {
+  border-bottom-color: #444;
+}
+
+body.dark-mode #qr-reader {
+  border-color: #444;
+}
+
+body.dark-mode .qr-results {
+  background: #2a2a2a;
+}
+
+body.dark-mode .qr-results p {
+  color: #f0f0f0;
+}
+
+body.dark-mode .form-header h2 {
+  color: #f0f0f0;
+}

@@ -1,6 +1,8 @@
 import mongoose, { Document, Schema, Model, Types } from 'mongoose';
 import bcrypt from 'bcryptjs';
 import { Currency, Language } from '@/config/enums';
+import EncryptUtil from '@/utils/encrypt.util';
+import configApp from '@/config/config';
 
 // 2. Define the User document interface
 export interface IUserModel extends Document {
@@ -15,6 +17,9 @@ export interface IUserModel extends Document {
   avatar?: string;
   createdAt?: Date;
   updatedAt?: Date;
+
+  // AES CBC IV for encrypting/decrypting sensitive data.
+  aesCbcIv?: string;
 
   // Virtual fields
   displayName: string;
@@ -111,7 +116,14 @@ const userSchema = new Schema<IUserModel>(
         },
         message: 'Avatar must be a valid URL or file path'
       }
-    }
+    },
+    aesCbcIv: {
+      type: String,
+      required: false,
+      trim: true,
+      minlength: [16, 'AES CBC IV must be 16 characters long'],
+      maxlength: [16, 'AES CBC IV must be 16 characters long']
+    },
   },
   {
     timestamps: true,
@@ -193,6 +205,12 @@ userSchema.pre('save', async function (next) {
     } catch (error) {
       return next(error as Error);
     }
+  }
+
+  // Ensure AES CBC IV is set for encrypting/decrypting sensitive data.
+  if (!user.aesCbcIv) {
+    // Generate a secure random 16-byte IV for AES CBC
+    user.aesCbcIv = EncryptUtil.get_random_bytes(configApp.aesCbc.ivLength, 'utf-8');  // 16 bytes = 128 bits
   }
 
   next();

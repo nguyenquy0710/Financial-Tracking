@@ -1,91 +1,75 @@
-<%- include('partials/header', { title: 'Chi tiêu' , additionalCSS: [ '/css/expenses.css' ] }) %>
+<%- include('partials/header', { title: 'Chi tiêu' , additionalCSS: [ '/css/expenses.css' ] , currentPage: 'expenses' ,
+  pageTitle: 'Quản lý chi tiêu' , pageDescription: '' }) %>
 
-  <div class="app-container">
-    <%- include('partials/sidebar', { currentPage: 'expenses' }) %>
-
-      <!-- Main Content -->
-      <main class="main-content">
-        <header class="top-bar">
-          <h1>Quản lý chi tiêu</h1>
-          <div class="user-info">
-            <span id="user-name">User</span>
-            <button class="btn-logout">Đăng xuất</button>
-          </div>
-        </header>
-
-        <div class="content">
-          <!-- 6 Jars Summary -->
-          <div class="card">
-            <h2>Phân bổ 6 lọ (6 Jars Method)</h2>
-            <div class="row g-3">
-              <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="jar-card">
-                  <div class="jar-icon">🎁</div>
-                  <h4>Gửi Mẹ</h4>
-                  <p class="jar-amount" id="jar-mother">0 VND</p>
-                </div>
-              </div>
-              <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="jar-card">
-                  <div class="jar-icon">🏠</div>
-                  <h4>NEC (55%)</h4>
-                  <p class="jar-subtitle">Nhu cầu thiết yếu</p>
-                  <p class="jar-amount" id="jar-nec">0 VND</p>
-                </div>
-              </div>
-              <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="jar-card">
-                  <div class="jar-icon">💎</div>
-                  <h4>FFA (10%)</h4>
-                  <p class="jar-subtitle">Tự do tài chính</p>
-                  <p class="jar-amount" id="jar-ffa">0 VND</p>
-                </div>
-              </div>
-              <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="jar-card">
-                  <div class="jar-icon">📚</div>
-                  <h4>EDUC (10%)</h4>
-                  <p class="jar-subtitle">Giáo dục Đào tạo</p>
-                  <p class="jar-amount" id="jar-educ">0 VND</p>
-                </div>
-              </div>
-              <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="jar-card">
-                  <div class="jar-icon">🎉</div>
-                  <h4>PLAY (10%)</h4>
-                  <p class="jar-subtitle">Hưởng thụ</p>
-                  <p class="jar-amount" id="jar-play">0 VND</p>
-                </div>
-              </div>
-              <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="jar-card">
-                  <div class="jar-icon">❤️</div>
-                  <h4>GIVE (7%)</h4>
-                  <p class="jar-subtitle">Cho đi</p>
-                  <p class="jar-amount" id="jar-give">0 VND</p>
-                </div>
-              </div>
-              <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="jar-card">
-                  <div class="jar-icon">🏦</div>
-                  <h4>LTS (10%)</h4>
-                  <p class="jar-subtitle">Tiết kiệm</p>
-                  <p class="jar-amount" id="jar-lts">0 VND</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Expenses List -->
-          <div class="card">
-            <h2>Danh sách chi tiêu</h2>
-
-            <div id="expenses-list" class="table-container">
-              <p class="loading">Đang tải dữ liệu...</p>
-            </div>
-          </div>
+  <!-- 6 Jars Summary -->
+  <div class="card">
+    <h2>Phân bổ 6 lọ (6 Jars Method)</h2>
+    <div class="row g-3">
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="jar-card">
+          <div class="jar-icon">🎁</div>
+          <h4>Gửi Mẹ</h4>
+          <p class="jar-amount" id="jar-mother">0 VND</p>
         </div>
-      </main>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="jar-card">
+          <div class="jar-icon">🏠</div>
+          <h4>NEC (55%)</h4>
+          <p class="jar-subtitle">Nhu cầu thiết yếu</p>
+          <p class="jar-amount" id="jar-nec">0 VND</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="jar-card">
+          <div class="jar-icon">💎</div>
+          <h4>FFA (10%)</h4>
+          <p class="jar-subtitle">Tự do tài chính</p>
+          <p class="jar-amount" id="jar-ffa">0 VND</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="jar-card">
+          <div class="jar-icon">📚</div>
+          <h4>EDUC (10%)</h4>
+          <p class="jar-subtitle">Giáo dục Đào tạo</p>
+          <p class="jar-amount" id="jar-educ">0 VND</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="jar-card">
+          <div class="jar-icon">🎉</div>
+          <h4>PLAY (10%)</h4>
+          <p class="jar-subtitle">Hưởng thụ</p>
+          <p class="jar-amount" id="jar-play">0 VND</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="jar-card">
+          <div class="jar-icon">❤️</div>
+          <h4>GIVE (7%)</h4>
+          <p class="jar-subtitle">Cho đi</p>
+          <p class="jar-amount" id="jar-give">0 VND</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="jar-card">
+          <div class="jar-icon">🏦</div>
+          <h4>LTS (10%)</h4>
+          <p class="jar-subtitle">Tiết kiệm</p>
+          <p class="jar-amount" id="jar-lts">0 VND</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Expenses List -->
+  <div class="card">
+    <h2>Danh sách chi tiêu</h2>
+
+    <div id="expenses-list" class="table-container">
+      <p class="loading">Đang tải dữ liệu...</p>
+    </div>
   </div>
 
   <%- include('partials/footer', { additionalJS: [ '/js/expenses.js' ] }) %>

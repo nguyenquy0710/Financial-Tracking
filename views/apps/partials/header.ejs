@@ -1,61 +1,45 @@
-<!DOCTYPE html>
-<html lang="vi" xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#" additionalCSS="" additionalJS=""
-  title="<%= title %> - FinTrack">
+<%- include('../../partials/header', { title: title || locals.title || 'title' , timestamp: Date.now(), additionalCSS: additionalCSS }) %>
 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="FinTrack - Ứng dụng quản lý tài chính cá nhân hiệu quả">
-    <meta name="author" content="Nguyen Quy">
-    <meta name="keywords" content="quản lý tài chính, thu nhập, chi tiêu, tiết kiệm, ngân sách, FinTrack">
-    <meta name="robots" content="noindex, nofollow">
+  <!-- Start of app container -->
+  <div class="app-container">
+    <%- include('../../apps/partials/sidebar', { currentPage: currentPage }) %>
 
-    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, proxy-revalidate">
-    <meta http-equiv="Referrer-Policy" content="no-referrer">
-    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
-    <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains">
-    <meta http-equiv="X-Content-Type-Options" content="nosniff">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <!-- Notification Toast -->
+      <div id="notification" class="notification"></div>
 
-    <!-- Favicons -->
-    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+      <!-- Start of main content -->
+      <main class="main-content">
 
-    <!-- Web App Manifest -->
-    <link rel="manifest" href="/manifest.json">
+        <!-- Start of top bar -->
+        <header class="top-bar totp-header">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <% if (turnbackUrl !='' && turnbackUrl !=null) { %>
+              <a href="<%= turnbackUrl || locals.turnbackUrl %>" class="btn btn-secondary" style="text-decoration: none;">← Quay lại</a>
+              <% } %>
 
-    <title>
-      <%= title %> - FinTrack
-    </title>
+                <h1>
+                  <%= pageTitle || locals.pageTitle || 'pageTitle' %>
 
-    <!-- Bootstrap CSS -->
-    <link href="/libs/bootstrap-5.3.8-dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/libs/bootstrap-5.3.8-dist/css/bootstrap-grid.min.css" rel="stylesheet">
-    <link href="/libs/bootstrap-5.3.8-dist/css/bootstrap-utilities.min.css" rel="stylesheet">
+                    <% if (pageDescription !='' && pageDescription !=null) { %>
+                      <small>
+                        <%= pageDescription || locals.pageDescription || '' %>
+                      </small>
+                      <% } %>
+                </h1>
+          </div>
 
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+          <div class="header-actions">
+            <button id="theme-toggle" class="btn btn-icon" title="Chuyển chế độ tối">
+              <span class="icon">🌙</span>
+            </button>
+            <div class="user-info">
+              <span id="user-name">User</span>
+              <button class="btn-logout">Đăng xuất</button>
+            </div>
+          </div>
+        </header>
+        <!-- End of top bar -->
 
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/style-apps.css?v=<%= locals.timestamp || Date.now() %>">
-
-    <% if (locals.additionalCSS) { %>
-      <% additionalCSS.forEach(css=> {
-        let hasQuery = css.includes("?");
-        let hasVersion = css.includes("v=");
-        let finalHref = css;
-        if (!hasVersion) {
-        finalHref += (hasQuery ? "&" : "?") + "v=" + (locals.timestamp || Date.now());
-        }
-        %>
-        <link rel="stylesheet" href="<%= finalHref %>">
-        <% }) %>
-          <% } %>
-
-  </head>
-
-  <body class="d-flex flex-column min-vh-100"> <!-- Start of body -->
-    <div class="loader" id="loader" style="display: none;"></div>
+        <!-- Start of content -->
+        <div class="content">
+          <!-- Inner content -->

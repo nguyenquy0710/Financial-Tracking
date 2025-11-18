@@ -116,7 +116,7 @@ const rentalSchema = createBaseSchema<IRentalModel>(
     softDelete: true,
     auditFields: true,
     schemaOptions: {
-      collection: 'rental'
+      // collection: 'rental'
     }
   }
 );
