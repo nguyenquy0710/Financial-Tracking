@@ -55,6 +55,7 @@ dưới
 giãn
 giao
 giây
+giấy
 giới
 giữa
 giúp
@@ -152,6 +153,7 @@ quản
 Quận
 Quang
 quên
+quét
 quyền
 rằng
 riêng

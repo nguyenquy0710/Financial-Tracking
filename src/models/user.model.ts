@@ -210,7 +210,7 @@ userSchema.pre('save', async function (next) {
   // Ensure AES CBC IV is set for encrypting/decrypting sensitive data.
   if (!user.aesCbcIv) {
     // Generate a secure random 16-byte IV for AES CBC
-    user.aesCbcIv = EncryptUtil.get_random_bytes(configApp.aesCbc.ivLength, 'utf-8');  // 16 bytes = 128 bits
+    user.aesCbcIv = EncryptUtil.get_random_bytes(configApp.aesCbc.ivLength);  // 16 bytes = 128 bits
   }
 
   next();

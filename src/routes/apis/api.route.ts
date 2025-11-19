@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 
 import { API_ROUTE_PREFIX } from '@/constants/route_prefix.constant';
+import moneyKeeperRoutes from './moneyKeeper.route';
 
 // Create a router for API routes
 const apiRoutes = express.Router();
@@ -23,8 +24,6 @@ const depositRoutes = require('./deposit.route');
 const recurringBillRoutes = require('./recurringBill.route');
 const bankAccountRoutes = require('./bankAccount.route');
 const externalRoutes = require('./external.route');
-const misaRoutes = require('./misa.route');
-const moneyKeeperRoutes = require('./moneyKeeper.route');
 const userConfigRoutes = require('./userConfig.route');
 const totpRoutes = require('./totp.route');
 
@@ -33,8 +32,7 @@ apiRoutes.use(API_ROUTE_PREFIX.AUTH.BASE, authRoutes);
 apiRoutes.use(API_ROUTE_PREFIX.TRANSACTIONS.BASE, transactionRoutes);
 apiRoutes.use(API_ROUTE_PREFIX.CATEGORIES.BASE, categoryRoutes);
 apiRoutes.use('/externals', externalRoutes);
-apiRoutes.use('/misa', misaRoutes);
-apiRoutes.use('/money-keeper', moneyKeeperRoutes);
+apiRoutes.use(API_ROUTE_PREFIX.MONEY_KEEPER.BASE, moneyKeeperRoutes);
 apiRoutes.use('/budgets', budgetRoutes);
 apiRoutes.use('/goals', goalRoutes);
 apiRoutes.use('/rentals', rentalRoutes);

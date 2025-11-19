@@ -1,7 +1,10 @@
 import mongoose, { Document, Schema, Model, Types } from 'mongoose';
 import bcrypt from 'bcryptjs';
 import { ConfigStatus } from '@/config/enums';
+import configApp from '@/config/config';
 import { createBaseSchema } from '@/abstracts/absBase.model';
+import EncryptUtil from '@/utils/encrypt.util';
+import User from './user.model';
 
 // 2. Define interfaces for nested objects
 export interface IMisaConfig extends Document {
@@ -58,6 +61,7 @@ export interface IUserConfigModel extends Document {
   activeMisaConfig: IMisaConfig | null;
   hasConfiguredMisa: boolean;
   hasAnyActiveConfig: boolean;
+  userAesCbcIv: string;
 
   // Instance methods
   compareMisaPassword(candidatePassword: string, misaIndex?: number): Promise<boolean>;
@@ -285,6 +289,17 @@ userConfigSchema.virtual('hasAnyActiveConfig').get(function (this: IUserConfigMo
     (this.api?.isActive && this.api?.isConfigured);
 });
 
+// Virtual for user's AES CBC IV value from User model for encryption/decryption operations
+userConfigSchema.virtual('userAesCbcIv').get(async function (this: IUserConfigModel): Promise<string> {
+  try {
+    const user = await User.findById(this.userId).select('+aesCbcIv').exec();
+    return user?.aesCbcIv || configApp.aesCbc.iv || '';
+  } catch (err) {
+    console.error('Error fetching user AesCbcIv:', err);
+    return configApp.aesCbc.iv || ''; // fallback in case of an error
+  }
+});
+
 // 8. Indexes for efficient queries
 userConfigSchema.index({ userId: 1 });
 userConfigSchema.index({ 'misa.isActive': 1 });
@@ -317,8 +332,7 @@ userConfigSchema.pre('save', async function (next) {
     for (const misaConfig of userConfig.misa) {
       if (misaConfig.isModified && misaConfig.isModified('password') && misaConfig.password) {
         try {
-          const salt = await bcrypt.genSalt(10);
-          misaConfig.password = await bcrypt.hash(misaConfig.password, salt);
+          misaConfig.password = EncryptUtil.encrypt(misaConfig.password, configApp.aesCbc.key, configApp.aesCbc.iv);
         } catch (error) {
           return next(error as Error);
         }
@@ -329,8 +343,7 @@ userConfigSchema.pre('save', async function (next) {
   // Hash API secret if modified
   if (userConfig.api && userConfig.isModified('api.secret') && userConfig.api.secret) {
     try {
-      const salt = await bcrypt.genSalt(10);
-      userConfig.api.secret = await bcrypt.hash(userConfig.api.secret, salt);
+      userConfig.api.secret = EncryptUtil.encrypt(userConfig.api.secret, configApp.aesCbc.key, configApp.aesCbc.iv);
     } catch (error) {
       return next(error as Error);
     }
@@ -400,6 +413,10 @@ userConfigSchema.methods.compareMisaPassword = async function (
     return false;
   }
 
+  console.log("🚀 QuyNH: compareMisaPassword -> candidatePassword", candidatePassword);
+  console.log("🚀 QuyNH: compareMisaPassword -> misaConfig.password", misaConfig.password);
+  // misaConfig.password = EncryptUtil.encrypt(misaConfig.password, configApp.aesCbc.key, configApp.aesCbc.iv);
+
   return bcrypt.compare(candidatePassword, misaConfig.password);
 };
 
@@ -444,6 +461,8 @@ userConfigSchema.methods.upsertMisaConfig = async function (
   //  Check if a config with the same username exists
   const existingIndex = this.misa.findIndex((c: IMisaConfig) => c.username === newConfig.username);
   if (existingIndex !== -1) {
+    newConfig.isDefault = this.misa[existingIndex].isDefault; // Preserve existing default status
+
     // Update existing config
     Object.assign(this.misa[existingIndex], newConfig);
 

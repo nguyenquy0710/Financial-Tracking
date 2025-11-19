@@ -72,6 +72,8 @@ exports.validateAndFetchWallets = async (req, res, next) => {
 exports.saveConfig = async (req, res, next) => {
   try {
     const { username, password, selectedWallets } = req.body;
+    const { user } = req;
+    console.log("🚀 QuyNH: exports.saveConfig -> user", user);
 
     if (!username || !password) {
       return res.status(400).json({
@@ -94,6 +96,7 @@ exports.saveConfig = async (req, res, next) => {
     // Find or create user config
     let userConfig = await UserConfig.findOne({ userId: req.userId });
 
+    // If not found, create a new one
     if (!userConfig) {
       userConfig = new UserConfig({
         userId: req.userId,

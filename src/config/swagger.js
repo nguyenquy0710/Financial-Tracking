@@ -290,10 +290,15 @@ const options = {
   swaggerDefinition,
   apis: [
     './src/routes/*.js',
+    './src/routes/*.ts',
     './src/routes/apis/*.js',
+    './src/routes/apis/*.ts',
     './src/routes/admin/*.js',
+    './src/routes/admin/*.ts',
     './src/controllers/*.js',
-    './src/models/*.js'
+    './src/controllers/*.ts',
+    './src/models/*.js',
+    './src/models/*.ts'
   ]
 };
 

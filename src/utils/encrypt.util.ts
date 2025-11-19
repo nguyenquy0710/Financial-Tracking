@@ -3,8 +3,8 @@ import crypto from 'crypto';
 import configApp from '@/config/config';
 
 // Encryption configuration
-export const ALGORITHM = configApp.totp.aesAlgorithm || 'aes-256-cbc';
-export const ENCRYPTION_KEY = configApp.totp.encryptionKey; // Must be 32 bytes for aes-256
+export const ALGORITHM = configApp.aesCbc.algorithm || 'aes-256-cbc';
+export const ENCRYPTION_KEY = configApp.aesCbc.key || ''; // Must be 32 bytes for aes-256
 export const IV_LENGTH = configApp.aesCbc.ivLength || 16;
 
 export default class EncryptUtil {
@@ -23,9 +23,17 @@ export default class EncryptUtil {
    * @param text - The text to encrypt.
    * @returns The encrypted text.
    */
-  static encrypt(text: string): string {
-    const iv = crypto.randomBytes(IV_LENGTH);
-    const key = Buffer.from(ENCRYPTION_KEY.substring(0, 64), 'hex');
+  static encrypt(text: string, keyString: string, ivString: string): string {
+    if (!keyString) {
+      keyString = ENCRYPTION_KEY;
+    }
+
+    if (!ivString) {
+      ivString = configApp.aesCbc.iv || this.get_random_bytes(IV_LENGTH);
+    }
+
+    const iv = Buffer.from(ivString.substring(0, 32), 'hex');
+    const key = Buffer.from(keyString.substring(0, 64), 'hex');
     const cipher = crypto.createCipheriv(ALGORITHM, key, iv);
     let encrypted = cipher.update(text, 'utf8', 'hex');
     encrypted += cipher.final('hex');

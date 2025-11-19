@@ -72,7 +72,7 @@ export const APP_ROUTE_PREFIX = {
       DETAIL: '/detail',
       SYNC_DATA: '/sync-data',
     }
-  }
+  },
 };
 
 // Route prefixes for admin module routes
@@ -116,5 +116,10 @@ export const API_ROUTE_PREFIX = {
   CATEGORIES: {
     MENU_NAME: 'Categories API',
     BASE: '/categories',
+  },
+
+  MONEY_KEEPER: {
+    MENU_NAME: 'Money Keeper API',
+    BASE: '/money-keeper',
   },
 };

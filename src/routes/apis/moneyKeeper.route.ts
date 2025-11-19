@@ -1,7 +1,9 @@
+import { apiAuthHandler } from "@/middleware/authHandler";
+
 const express = require('express');
-const router = express.Router();
+const moneyKeeperRoutes = express.Router();
+
 const moneyKeeperController = require('../../controllers/moneyKeeper.controller');
-const { apiAuthHandler } = require('../../middleware/authHandler');
 
 /**
  * @swagger
@@ -11,7 +13,7 @@ const { apiAuthHandler } = require('../../middleware/authHandler');
  */
 
 // All routes require authentication
-router.use(apiAuthHandler);
+moneyKeeperRoutes.use(apiAuthHandler);
 
 /**
  * @swagger
@@ -69,7 +71,7 @@ router.use(apiAuthHandler);
  *       401:
  *         description: Thông tin đăng nhập không hợp lệ
  */
-router.post('/validate', moneyKeeperController.validateAndFetchWallets);
+moneyKeeperRoutes.post('/validate', moneyKeeperController.validateAndFetchWallets);
 
 /**
  * @swagger
@@ -136,8 +138,8 @@ router.post('/validate', moneyKeeperController.validateAndFetchWallets);
  *                       type: string
  *                       format: date-time
  */
-router.get('/config', moneyKeeperController.getConfig);
-router.post('/config', moneyKeeperController.saveConfig);
+moneyKeeperRoutes.get('/config', moneyKeeperController.getConfig);
+moneyKeeperRoutes.post('/config', moneyKeeperController.saveConfig);
 
 /**
  * @swagger
@@ -166,7 +168,7 @@ router.post('/config', moneyKeeperController.saveConfig);
  *       401:
  *         description: Đăng nhập thất bại
  */
-router.post('/sync/wallets', moneyKeeperController.syncWallets);
+moneyKeeperRoutes.post('/sync/wallets', moneyKeeperController.syncWallets);
 
 /**
  * @swagger
@@ -181,7 +183,7 @@ router.post('/sync/wallets', moneyKeeperController.syncWallets);
  *       200:
  *         description: Lấy danh sách thành công
  */
-router.get('/wallets', moneyKeeperController.getWallets);
+moneyKeeperRoutes.get('/wallets', moneyKeeperController.getWallets);
 
 /**
  * @swagger
@@ -196,6 +198,6 @@ router.get('/wallets', moneyKeeperController.getWallets);
  *       200:
  *         description: Lấy tổng hợp thành công
  */
-router.get('/wallets/summary', moneyKeeperController.getWalletSummary);
+moneyKeeperRoutes.get('/wallets/summary', moneyKeeperController.getWalletSummary);
 
-module.exports = router;
+export default moneyKeeperRoutes;
