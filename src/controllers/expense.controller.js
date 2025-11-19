@@ -1,3 +1,5 @@
+const escapeStringRegexp = require('escape-string-regexp');
+
 const { default: Expense } = require("@/models/expense.model");
 
 /**
@@ -17,7 +19,9 @@ exports.getExpenses = async (req, res, next) => {
     }
 
     if (category) {
-      query.category = new RegExp(category, 'i');
+      // query.category = new RegExp(category, 'i');
+      const categoryRegex = RegExp(escapeStringRegexp(category), 'i'); // Escape special characters for regex
+      query.category = categoryRegex;
     }
 
     const expenses = await Expense.find(query).sort({ month: -1, createdAt: -1 });

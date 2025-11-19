@@ -58,5 +58,9 @@
     "*.ts": "${basename}.html, ${basename}.css, ${basename}.spec.ts",
     "*.js": "${basename}.test.js, ${basename}.map",
     "*.component.ts": "${basename}.component.html, ${basename}.component.css, ${basename}.component.scss, ${basename}.component.spec.ts"
+  },
+  "sonarlint.connectedMode.project": {
+    "connectionId": "nguyenquy0710",
+    "projectKey": "nguyenquy0710_Financial-Tracking"
   }
 }
