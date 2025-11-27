@@ -14,7 +14,7 @@ exports.getTransactions = async (req, res, next) => {
       page = 1,
       limit = 20,
       sortBy = 'date',
-      sortOrder = 'desc'
+      sortOrder = 'desc',
     } = req.query;
 
     const query = { userId: req.userId };
@@ -47,9 +47,9 @@ exports.getTransactions = async (req, res, next) => {
         pagination: {
           total,
           page: parseInt(page),
-          pages: Math.ceil(total / limit)
-        }
-      }
+          pages: Math.ceil(total / limit),
+        },
+      },
     });
   } catch (error) {
     next(error);
@@ -63,19 +63,19 @@ exports.getTransaction = async (req, res, next) => {
   try {
     const transaction = await Transaction.findOne({
       _id: req.params.id,
-      userId: req.userId
+      userId: req.userId,
     }).populate('categoryId', 'name nameVi icon color');
 
     if (!transaction) {
       return res.status(404).json({
         success: false,
-        message: 'Transaction not found'
+        message: 'Transaction not found',
       });
     }
 
     res.json({
       success: true,
-      data: { transaction }
+      data: { transaction },
     });
   } catch (error) {
     next(error);
@@ -89,7 +89,7 @@ exports.createTransaction = async (req, res, next) => {
   try {
     const transactionData = {
       ...req.body,
-      userId: req.userId
+      userId: req.userId,
     };
 
     const transaction = await Transaction.create(transactionData);
@@ -101,13 +101,13 @@ exports.createTransaction = async (req, res, next) => {
 
     const populatedTransaction = await Transaction.findById(transaction._id).populate(
       'categoryId',
-      'name nameVi icon color'
+      'name nameVi icon color',
     );
 
     res.status(201).json({
       success: true,
       message: 'Transaction created successfully',
-      data: { transaction: populatedTransaction }
+      data: { transaction: populatedTransaction },
     });
   } catch (error) {
     next(error);
@@ -121,21 +121,18 @@ exports.updateTransaction = async (req, res, next) => {
   try {
     let transaction = await Transaction.findOne({
       _id: req.params.id,
-      userId: req.userId
+      userId: req.userId,
     });
 
     if (!transaction) {
       return res.status(404).json({
         success: false,
-        message: 'Transaction not found'
+        message: 'Transaction not found',
       });
     }
 
     // If amount or category changed, update budget
-    if (
-      transaction.type === 'expense' &&
-      (req.body.amount !== undefined || req.body.categoryId !== undefined)
-    ) {
+    if (transaction.type === 'expense' && (req.body.amount !== undefined || req.body.categoryId !== undefined)) {
       // Subtract old amount
       await updateBudgetSpent(req.userId, transaction.categoryId, -transaction.amount);
       // Add new amount
@@ -146,13 +143,13 @@ exports.updateTransaction = async (req, res, next) => {
 
     transaction = await Transaction.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-      runValidators: true
+      runValidators: true,
     }).populate('categoryId', 'name nameVi icon color');
 
     res.json({
       success: true,
       message: 'Transaction updated successfully',
-      data: { transaction }
+      data: { transaction },
     });
   } catch (error) {
     next(error);
@@ -166,13 +163,13 @@ exports.deleteTransaction = async (req, res, next) => {
   try {
     const transaction = await Transaction.findOne({
       _id: req.params.id,
-      userId: req.userId
+      userId: req.userId,
     });
 
     if (!transaction) {
       return res.status(404).json({
         success: false,
-        message: 'Transaction not found'
+        message: 'Transaction not found',
       });
     }
 
@@ -185,7 +182,7 @@ exports.deleteTransaction = async (req, res, next) => {
 
     res.json({
       success: true,
-      message: 'Transaction deleted successfully'
+      message: 'Transaction deleted successfully',
     });
   } catch (error) {
     next(error);
@@ -213,9 +210,9 @@ exports.getStats = async (req, res, next) => {
         $group: {
           _id: '$type',
           total: { $sum: '$amount' },
-          count: { $sum: 1 }
-        }
-      }
+          count: { $sum: 1 },
+        },
+      },
     ]);
 
     // Category breakdown
@@ -225,16 +222,16 @@ exports.getStats = async (req, res, next) => {
         $group: {
           _id: '$categoryId',
           total: { $sum: '$amount' },
-          count: { $sum: 1 }
-        }
+          count: { $sum: 1 },
+        },
       },
       {
         $lookup: {
           from: 'categories',
           localField: '_id',
           foreignField: '_id',
-          as: 'category'
-        }
+          as: 'category',
+        },
       },
       { $unwind: '$category' },
       {
@@ -245,14 +242,14 @@ exports.getStats = async (req, res, next) => {
           icon: '$category.icon',
           color: '$category.color',
           total: 1,
-          count: 1
-        }
+          count: 1,
+        },
       },
-      { $sort: { total: -1 } }
+      { $sort: { total: -1 } },
     ]);
 
-    const income = stats.find(s => s._id === 'income')?.total || 0;
-    const expense = stats.find(s => s._id === 'expense')?.total || 0;
+    const income = stats.find((s) => s._id === 'income')?.total || 0;
+    const expense = stats.find((s) => s._id === 'expense')?.total || 0;
     const balance = income - expense;
 
     res.json({
@@ -262,10 +259,10 @@ exports.getStats = async (req, res, next) => {
           income,
           expense,
           balance,
-          transactionCount: stats.reduce((acc, s) => acc + s.count, 0)
+          transactionCount: stats.reduce((acc, s) => acc + s.count, 0),
         },
-        categoryBreakdown: categoryStats
-      }
+        categoryBreakdown: categoryStats,
+      },
     });
   } catch (error) {
     next(error);
@@ -281,7 +278,7 @@ async function updateBudgetSpent(userId, categoryId, amount) {
     categoryId,
     isActive: true,
     startDate: { $lte: now },
-    $or: [{ endDate: { $gte: now } }, { endDate: null }]
+    $or: [{ endDate: { $gte: now } }, { endDate: null }],
   });
 
   for (const budget of budgets) {

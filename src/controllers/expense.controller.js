@@ -1,6 +1,6 @@
 const escapeStringRegexp = require('escape-string-regexp');
 
-const { default: Expense } = require("@/models/expense.model");
+const { default: Expense } = require('@/models/expense.model');
 
 /**
  * @desc    Get all expenses for a user
@@ -29,7 +29,7 @@ exports.getExpenses = async (req, res, next) => {
     res.status(200).json({
       success: true,
       count: expenses.length,
-      data: expenses
+      data: expenses,
     });
   } catch (error) {
     next(error);
@@ -48,7 +48,7 @@ exports.getExpense = async (req, res, next) => {
     if (!expense) {
       return res.status(404).json({
         success: false,
-        message: 'Expense not found'
+        message: 'Expense not found',
       });
     }
 
@@ -56,13 +56,13 @@ exports.getExpense = async (req, res, next) => {
     if (expense.userId.toString() !== req.user.id) {
       return res.status(403).json({
         success: false,
-        message: 'Not authorized to access this expense'
+        message: 'Not authorized to access this expense',
       });
     }
 
     res.status(200).json({
       success: true,
-      data: expense
+      data: expense,
     });
   } catch (error) {
     next(error);
@@ -81,7 +81,7 @@ exports.createExpense = async (req, res, next) => {
 
     res.status(201).json({
       success: true,
-      data: expense
+      data: expense,
     });
   } catch (error) {
     next(error);
@@ -100,7 +100,7 @@ exports.updateExpense = async (req, res, next) => {
     if (!expense) {
       return res.status(404).json({
         success: false,
-        message: 'Expense not found'
+        message: 'Expense not found',
       });
     }
 
@@ -108,18 +108,18 @@ exports.updateExpense = async (req, res, next) => {
     if (expense.userId.toString() !== req.user.id) {
       return res.status(403).json({
         success: false,
-        message: 'Not authorized to update this expense'
+        message: 'Not authorized to update this expense',
       });
     }
 
     expense = await Expense.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-      runValidators: true
+      runValidators: true,
     });
 
     res.status(200).json({
       success: true,
-      data: expense
+      data: expense,
     });
   } catch (error) {
     next(error);
@@ -138,7 +138,7 @@ exports.deleteExpense = async (req, res, next) => {
     if (!expense) {
       return res.status(404).json({
         success: false,
-        message: 'Expense not found'
+        message: 'Expense not found',
       });
     }
 
@@ -146,7 +146,7 @@ exports.deleteExpense = async (req, res, next) => {
     if (expense.userId.toString() !== req.user.id) {
       return res.status(403).json({
         success: false,
-        message: 'Not authorized to delete this expense'
+        message: 'Not authorized to delete this expense',
       });
     }
 
@@ -154,7 +154,7 @@ exports.deleteExpense = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      data: {}
+      data: {},
     });
   } catch (error) {
     next(error);
@@ -175,10 +175,10 @@ exports.getExpenseStats = async (req, res, next) => {
           _id: '$category',
           totalAmount: { $sum: '$totalAmount' },
           avgAmount: { $avg: '$totalAmount' },
-          count: { $sum: 1 }
-        }
+          count: { $sum: 1 },
+        },
       },
-      { $sort: { totalAmount: -1 } }
+      { $sort: { totalAmount: -1 } },
     ]);
 
     // Calculate 6 jars allocation totals
@@ -193,17 +193,17 @@ exports.getExpenseStats = async (req, res, next) => {
           totalEDUC: { $sum: '$allocation.educ' },
           totalPLAY: { $sum: '$allocation.play' },
           totalGIVE: { $sum: '$allocation.give' },
-          totalLTS: { $sum: '$allocation.lts' }
-        }
-      }
+          totalLTS: { $sum: '$allocation.lts' },
+        },
+      },
     ]);
 
     res.status(200).json({
       success: true,
       data: {
         byCategory: stats,
-        jarsAllocation: jarsStats[0] || {}
-      }
+        jarsAllocation: jarsStats[0] || {},
+      },
     });
   } catch (error) {
     next(error);

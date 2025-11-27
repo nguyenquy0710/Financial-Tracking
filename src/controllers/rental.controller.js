@@ -1,4 +1,4 @@
-const { default: Rental } = require("@/models/rentalDetail.model");
+const { default: Rental } = require('@/models/rentalDetail.model');
 
 /**
  * @desc    Get all rentals for a user
@@ -25,7 +25,7 @@ exports.getRentals = async (req, res, next) => {
     res.status(200).json({
       success: true,
       count: rentals.length,
-      data: rentals
+      data: rentals,
     });
   } catch (error) {
     next(error);
@@ -44,7 +44,7 @@ exports.getRental = async (req, res, next) => {
     if (!rental) {
       return res.status(404).json({
         success: false,
-        message: 'Rental not found'
+        message: 'Rental not found',
       });
     }
 
@@ -52,13 +52,13 @@ exports.getRental = async (req, res, next) => {
     if (rental.userId.toString() !== req.user.id) {
       return res.status(403).json({
         success: false,
-        message: 'Not authorized to access this rental'
+        message: 'Not authorized to access this rental',
       });
     }
 
     res.status(200).json({
       success: true,
-      data: rental
+      data: rental,
     });
   } catch (error) {
     next(error);
@@ -77,7 +77,7 @@ exports.createRental = async (req, res, next) => {
 
     res.status(201).json({
       success: true,
-      data: rental
+      data: rental,
     });
   } catch (error) {
     next(error);
@@ -96,7 +96,7 @@ exports.updateRental = async (req, res, next) => {
     if (!rental) {
       return res.status(404).json({
         success: false,
-        message: 'Rental not found'
+        message: 'Rental not found',
       });
     }
 
@@ -104,18 +104,18 @@ exports.updateRental = async (req, res, next) => {
     if (rental.userId.toString() !== req.user.id) {
       return res.status(403).json({
         success: false,
-        message: 'Not authorized to update this rental'
+        message: 'Not authorized to update this rental',
       });
     }
 
     rental = await Rental.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-      runValidators: true
+      runValidators: true,
     });
 
     res.status(200).json({
       success: true,
-      data: rental
+      data: rental,
     });
   } catch (error) {
     next(error);
@@ -134,7 +134,7 @@ exports.deleteRental = async (req, res, next) => {
     if (!rental) {
       return res.status(404).json({
         success: false,
-        message: 'Rental not found'
+        message: 'Rental not found',
       });
     }
 
@@ -142,7 +142,7 @@ exports.deleteRental = async (req, res, next) => {
     if (rental.userId.toString() !== req.user.id) {
       return res.status(403).json({
         success: false,
-        message: 'Not authorized to delete this rental'
+        message: 'Not authorized to delete this rental',
       });
     }
 
@@ -150,7 +150,7 @@ exports.deleteRental = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      data: {}
+      data: {},
     });
   } catch (error) {
     next(error);
@@ -173,14 +173,14 @@ exports.getRentalStats = async (req, res, next) => {
           avgRent: { $avg: '$total' },
           count: { $sum: 1 },
           avgElectricity: { $avg: '$electricity.amount' },
-          avgWater: { $avg: '$water.amount' }
-        }
-      }
+          avgWater: { $avg: '$water.amount' },
+        },
+      },
     ]);
 
     res.status(200).json({
       success: true,
-      data: stats
+      data: stats,
     });
   } catch (error) {
     next(error);

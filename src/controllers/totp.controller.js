@@ -11,7 +11,7 @@ exports.getTotpAccounts = async (req, res, next) => {
     const accounts = await Totp.find({ userId: req.userId }).sort({ createdAt: -1 });
 
     // Include decrypted secrets for client-side TOTP generation
-    const accountsWithSecrets = accounts.map(account => {
+    const accountsWithSecrets = accounts.map((account) => {
       // const accountObj = account.toObject();
       // accountObj.secret = account.getDecryptedSecret();
       // accountObj.algorithm = account.algorithm;
@@ -19,7 +19,7 @@ exports.getTotpAccounts = async (req, res, next) => {
       // accountObj.period = account.period;
       // return accountObj;
 
-      console.log("🚀 QuyNH: exports.getTotpAccounts -> account.toObjectWithSecrets()", account.toObjectWithSecrets());
+      console.log('🚀 QuyNH: exports.getTotpAccounts -> account.toObjectWithSecrets()', account.toObjectWithSecrets());
 
       return account.toObjectWithSecrets();
     });
@@ -27,7 +27,7 @@ exports.getTotpAccounts = async (req, res, next) => {
     res.json({
       success: true,
       message: 'TOTP accounts retrieved successfully',
-      data: accountsWithSecrets
+      data: accountsWithSecrets,
     });
   } catch (error) {
     next(error);
@@ -44,14 +44,14 @@ exports.getTotpAccount = async (req, res, next) => {
     // Find account by ID and userId to ensure ownership
     const account = await Totp.findOne({
       _id: req.params.id,
-      userId: req.userId
+      userId: req.userId,
     });
 
     // Handle account not found case
     if (!account) {
       return res.status(404).json({
         success: false,
-        message: 'TOTP account not found'
+        message: 'TOTP account not found',
       });
     }
 
@@ -61,7 +61,7 @@ exports.getTotpAccount = async (req, res, next) => {
     res.json({
       success: true,
       message: 'TOTP account retrieved successfully',
-      data: accountsWithSecrets
+      data: accountsWithSecrets,
     });
   } catch (error) {
     next(error);
@@ -77,13 +77,13 @@ exports.generateTotpCode = async (req, res, next) => {
   try {
     const account = await Totp.findOne({
       _id: req.params.id,
-      userId: req.userId
+      userId: req.userId,
     });
 
     if (!account) {
       return res.status(404).json({
         success: false,
-        message: 'TOTP account not found'
+        message: 'TOTP account not found',
       });
     }
 
@@ -93,7 +93,7 @@ exports.generateTotpCode = async (req, res, next) => {
     authenticator.options = {
       digits: account.digits,
       step: account.period,
-      algorithm: account.algorithm.toLowerCase()
+      algorithm: account.algorithm.toLowerCase(),
     };
 
     const token = authenticator.generate(secret);
@@ -105,8 +105,8 @@ exports.generateTotpCode = async (req, res, next) => {
       data: {
         token,
         timeRemaining,
-        period: account.period
-      }
+        period: account.period,
+      },
     });
   } catch (error) {
     next(error);
@@ -121,13 +121,16 @@ exports.generateTotpCode = async (req, res, next) => {
 exports.createTotpAccount = async (req, res, next) => {
   try {
     const { serviceName, accountName, secret, issuer, algorithm, digits, period, otpType, counter } = req.body;
-    console.log("🚀 QuyNH: exports.createTotpAccount -> { serviceName, accountName, secret, issuer, algorithm, digits, period, otpType, counter }", { serviceName, accountName, secret, issuer, algorithm, digits, period, otpType, counter });
+    console.log(
+      '🚀 QuyNH: exports.createTotpAccount -> { serviceName, accountName, secret, issuer, algorithm, digits, period, otpType, counter }',
+      { serviceName, accountName, secret, issuer, algorithm, digits, period, otpType, counter },
+    );
 
     // Validate secret format (Base32)
     if (!secret || !/^[A-Z2-7]+$/.test(secret)) {
       return res.status(400).json({
         success: false,
-        message: 'Invalid secret key format. Must be Base32 (A-Z and 2-7)'
+        message: 'Invalid secret key format. Must be Base32 (A-Z and 2-7)',
       });
     }
 
@@ -141,7 +144,7 @@ exports.createTotpAccount = async (req, res, next) => {
       digits: digits || 6,
       period: period || 30,
       otpType: otpType || 'TOTP',
-      counter: otpType === 'HOTP' ? (counter || 0) : undefined
+      counter: otpType === 'HOTP' ? counter || 0 : undefined,
     });
 
     // Set encrypted secret
@@ -152,13 +155,13 @@ exports.createTotpAccount = async (req, res, next) => {
     res.status(201).json({
       success: true,
       message: 'TOTP account created successfully',
-      data: account
+      data: account,
     });
   } catch (error) {
     if (error.code === 11000) {
       return res.status(400).json({
         success: false,
-        message: 'An account with this service name and account name already exists'
+        message: 'An account with this service name and account name already exists',
       });
     }
     next(error);
@@ -176,13 +179,13 @@ exports.updateTotpAccount = async (req, res, next) => {
 
     const account = await Totp.findOne({
       _id: req.params.id,
-      userId: req.userId
+      userId: req.userId,
     });
 
     if (!account) {
       return res.status(404).json({
         success: false,
-        message: 'TOTP account not found'
+        message: 'TOTP account not found',
       });
     }
 
@@ -201,7 +204,7 @@ exports.updateTotpAccount = async (req, res, next) => {
       if (!/^[A-Z2-7]+$/.test(secret)) {
         return res.status(400).json({
           success: false,
-          message: 'Invalid secret key format. Must be Base32 (A-Z and 2-7)'
+          message: 'Invalid secret key format. Must be Base32 (A-Z and 2-7)',
         });
       }
       account.setSecret(secret);
@@ -212,7 +215,7 @@ exports.updateTotpAccount = async (req, res, next) => {
     res.json({
       success: true,
       message: 'TOTP account updated successfully',
-      data: account
+      data: account,
     });
   } catch (error) {
     next(error);
@@ -228,19 +231,19 @@ exports.deleteTotpAccount = async (req, res, next) => {
   try {
     const account = await Totp.findOneAndDelete({
       _id: req.params.id,
-      userId: req.userId
+      userId: req.userId,
     });
 
     if (!account) {
       return res.status(404).json({
         success: false,
-        message: 'TOTP account not found'
+        message: 'TOTP account not found',
       });
     }
 
     res.json({
       success: true,
-      message: 'TOTP account deleted successfully'
+      message: 'TOTP account deleted successfully',
     });
   } catch (error) {
     next(error);

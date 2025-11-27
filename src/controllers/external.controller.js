@@ -10,12 +10,12 @@ exports.getVietQrBanks = async (req, res, next) => {
 
     let vietQR = new VietQR({
       clientID: config.externalAPIs.vietQR.clientID,
-      apiKey: config.externalAPIs.vietQR.apiKey
+      apiKey: config.externalAPIs.vietQR.apiKey,
     });
 
     // list banks are supported create QR code by Vietqr
     const getBanks = await vietQR.getBanks(),
-      dataBanks = (getBanks?.data ?? []).filter(b => {
+      dataBanks = (getBanks?.data ?? []).filter((b) => {
         if (bank && !b.name.toLowerCase().includes(bank.toLowerCase())) return false;
         if (isActive !== undefined && String(b.isActive) !== String(isActive)) return false;
         return true;
@@ -32,8 +32,8 @@ exports.getVietQrBanks = async (req, res, next) => {
         page: parseInt(page),
         limit: parseInt(limit),
         total,
-        pages: Math.ceil(total / limit)
-      }
+        pages: Math.ceil(total / limit),
+      },
     });
   } catch (error) {
     next(error);

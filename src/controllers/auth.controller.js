@@ -4,9 +4,9 @@ const { default: User } = require('@/models/user.model');
 const { verifyTurnstileToken } = require('../utils/turnstile');
 
 // Generate JWT token
-const generateToken = userId => {
+const generateToken = (userId) => {
   return jwt.sign({ userId }, config.jwt.secret, {
-    expiresIn: config.jwt.expiresIn
+    expiresIn: config.jwt.expiresIn,
   });
 };
 
@@ -22,7 +22,7 @@ exports.register = async (req, res, next) => {
       if (!turnstileToken) {
         return res.status(400).json({
           success: false,
-          message: 'Turnstile verification is required'
+          message: 'Turnstile verification is required',
         });
       }
 
@@ -30,7 +30,7 @@ exports.register = async (req, res, next) => {
       if (!isValidTurnstile) {
         return res.status(400).json({
           success: false,
-          message: 'Turnstile verification failed. Please try again.'
+          message: 'Turnstile verification failed. Please try again.',
         });
       }
     }
@@ -40,7 +40,7 @@ exports.register = async (req, res, next) => {
     if (existingUser) {
       return res.status(400).json({
         success: false,
-        message: 'User already exists with this email'
+        message: 'User already exists with this email',
       });
     }
 
@@ -51,7 +51,7 @@ exports.register = async (req, res, next) => {
       name,
       phone,
       language,
-      currency
+      currency,
     });
 
     // Generate token
@@ -62,8 +62,8 @@ exports.register = async (req, res, next) => {
       message: 'User registered successfully',
       data: {
         user,
-        token
-      }
+        token,
+      },
     });
   } catch (error) {
     next(error);
@@ -82,7 +82,7 @@ exports.login = async (req, res, next) => {
       if (!turnstileToken) {
         return res.status(400).json({
           success: false,
-          message: 'Turnstile verification is required'
+          message: 'Turnstile verification is required',
         });
       }
 
@@ -90,7 +90,7 @@ exports.login = async (req, res, next) => {
       if (!isValidTurnstile) {
         return res.status(400).json({
           success: false,
-          message: 'Turnstile verification failed. Please try again.'
+          message: 'Turnstile verification failed. Please try again.',
         });
       }
     }
@@ -100,7 +100,7 @@ exports.login = async (req, res, next) => {
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid credentials'
+        message: 'Invalid credentials',
       });
     }
 
@@ -109,7 +109,7 @@ exports.login = async (req, res, next) => {
     if (!isPasswordValid) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid credentials'
+        message: 'Invalid credentials',
       });
     }
 
@@ -124,8 +124,8 @@ exports.login = async (req, res, next) => {
       message: 'Login successful',
       data: {
         user,
-        token
-      }
+        token,
+      },
     });
   } catch (error) {
     next(error);
@@ -141,7 +141,7 @@ exports.getMe = async (req, res, next) => {
 
     res.json({
       success: true,
-      data: { user }
+      data: { user },
     });
   } catch (error) {
     next(error);
@@ -158,13 +158,13 @@ exports.updateProfile = async (req, res, next) => {
     const user = await User.findByIdAndUpdate(
       req.userId,
       { name, phone, language, currency, avatar },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
 
     res.json({
       success: true,
       message: 'Profile updated successfully',
-      data: { user }
+      data: { user },
     });
   } catch (error) {
     next(error);
@@ -186,7 +186,7 @@ exports.changePassword = async (req, res, next) => {
     if (!isPasswordValid) {
       return res.status(401).json({
         success: false,
-        message: 'Current password is incorrect'
+        message: 'Current password is incorrect',
       });
     }
 
@@ -196,7 +196,7 @@ exports.changePassword = async (req, res, next) => {
 
     res.json({
       success: true,
-      message: 'Password changed successfully'
+      message: 'Password changed successfully',
     });
   } catch (error) {
     next(error);

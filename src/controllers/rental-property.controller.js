@@ -1,5 +1,5 @@
-const { default: RentalProperty } = require("@/models/rental.model");
-const { default: Rental } = require("@/models/rentalDetail.model");
+const { default: RentalProperty } = require('@/models/rental.model');
+const { default: Rental } = require('@/models/rentalDetail.model');
 
 /**
  * @desc    Get all rental properties for a user
@@ -20,7 +20,7 @@ exports.getRentalProperties = async (req, res, next) => {
     res.status(200).json({
       success: true,
       count: properties.length,
-      data: properties
+      data: properties,
     });
   } catch (error) {
     next(error);
@@ -39,7 +39,7 @@ exports.getRentalProperty = async (req, res, next) => {
     if (!property) {
       return res.status(404).json({
         success: false,
-        message: 'Rental property not found'
+        message: 'Rental property not found',
       });
     }
 
@@ -47,13 +47,13 @@ exports.getRentalProperty = async (req, res, next) => {
     if (property.userId.toString() !== req.user.id) {
       return res.status(403).json({
         success: false,
-        message: 'Not authorized to access this property'
+        message: 'Not authorized to access this property',
       });
     }
 
     res.status(200).json({
       success: true,
-      data: property
+      data: property,
     });
   } catch (error) {
     next(error);
@@ -72,7 +72,7 @@ exports.getRentalPropertyDetails = async (req, res, next) => {
     if (!property) {
       return res.status(404).json({
         success: false,
-        message: 'Rental property not found'
+        message: 'Rental property not found',
       });
     }
 
@@ -80,14 +80,14 @@ exports.getRentalPropertyDetails = async (req, res, next) => {
     if (property.userId.toString() !== req.user.id) {
       return res.status(403).json({
         success: false,
-        message: 'Not authorized to access this property'
+        message: 'Not authorized to access this property',
       });
     }
 
     // Get all monthly rental records for this property
     const monthlyRecords = await Rental.find({
       userId: req.user.id,
-      propertyId: property._id
+      propertyId: property._id,
     }).sort({ month: -1 });
 
     // Calculate statistics
@@ -99,10 +99,10 @@ exports.getRentalPropertyDetails = async (req, res, next) => {
       totalElectricity: 0,
       totalWater: 0,
       totalOther: 0,
-      grandTotal: 0
+      grandTotal: 0,
     };
 
-    monthlyRecords.forEach(record => {
+    monthlyRecords.forEach((record) => {
       const total = record.total || 0;
       stats.grandTotal += total;
 
@@ -126,8 +126,8 @@ exports.getRentalPropertyDetails = async (req, res, next) => {
       data: {
         property,
         monthlyRecords,
-        statistics: stats
-      }
+        statistics: stats,
+      },
     });
   } catch (error) {
     next(error);
@@ -143,19 +143,27 @@ exports.createRentalProperty = async (req, res, next) => {
   try {
     // Only allow specific fields for creation
     const allowedFields = [
-      'roomCode', 'propertyName', 'address', 'rentAmount',
-      'initialElectricityReading', 'electricityRate',
-      'initialWaterReading', 'waterRate',
-      'internetFee', 'parkingFee', 'garbageFee',
-      'startDate', 'notes'
+      'roomCode',
+      'propertyName',
+      'address',
+      'rentAmount',
+      'initialElectricityReading',
+      'electricityRate',
+      'initialWaterReading',
+      'waterRate',
+      'internetFee',
+      'parkingFee',
+      'garbageFee',
+      'startDate',
+      'notes',
     ];
 
     const propertyData = {
       userId: req.user.id,
-      createdBy: req.user._id
+      createdBy: req.user._id,
     };
 
-    allowedFields.forEach(field => {
+    allowedFields.forEach((field) => {
       if (req.body[field] !== undefined) {
         propertyData[field] = req.body[field];
       }
@@ -165,7 +173,7 @@ exports.createRentalProperty = async (req, res, next) => {
 
     res.status(201).json({
       success: true,
-      data: property
+      data: property,
     });
   } catch (error) {
     next(error);
@@ -184,7 +192,7 @@ exports.updateRentalProperty = async (req, res, next) => {
     if (!property) {
       return res.status(404).json({
         success: false,
-        message: 'Rental property not found'
+        message: 'Rental property not found',
       });
     }
 
@@ -192,21 +200,31 @@ exports.updateRentalProperty = async (req, res, next) => {
     if (property.userId.toString() !== req.user.id) {
       return res.status(403).json({
         success: false,
-        message: 'Not authorized to update this property'
+        message: 'Not authorized to update this property',
       });
     }
 
     // Only update allowed fields
     const allowedUpdates = [
-      'roomCode', 'propertyName', 'address', 'rentAmount',
-      'initialElectricityReading', 'electricityRate',
-      'initialWaterReading', 'waterRate',
-      'internetFee', 'parkingFee', 'garbageFee',
-      'startDate', 'endDate', 'isActive', 'notes'
+      'roomCode',
+      'propertyName',
+      'address',
+      'rentAmount',
+      'initialElectricityReading',
+      'electricityRate',
+      'initialWaterReading',
+      'waterRate',
+      'internetFee',
+      'parkingFee',
+      'garbageFee',
+      'startDate',
+      'endDate',
+      'isActive',
+      'notes',
     ];
 
     const updates = {};
-    allowedUpdates.forEach(field => {
+    allowedUpdates.forEach((field) => {
       if (req.body[field] !== undefined) {
         updates[field] = req.body[field];
       }
@@ -215,12 +233,12 @@ exports.updateRentalProperty = async (req, res, next) => {
 
     property = await RentalProperty.findByIdAndUpdate(req.params.id, updates, {
       new: true,
-      runValidators: true
+      runValidators: true,
     });
 
     res.status(200).json({
       success: true,
-      data: property
+      data: property,
     });
   } catch (error) {
     next(error);
@@ -239,7 +257,7 @@ exports.deleteRentalProperty = async (req, res, next) => {
     if (!property) {
       return res.status(404).json({
         success: false,
-        message: 'Rental property not found'
+        message: 'Rental property not found',
       });
     }
 
@@ -247,7 +265,7 @@ exports.deleteRentalProperty = async (req, res, next) => {
     if (property.userId.toString() !== req.user.id) {
       return res.status(403).json({
         success: false,
-        message: 'Not authorized to delete this property'
+        message: 'Not authorized to delete this property',
       });
     }
 
@@ -258,7 +276,7 @@ exports.deleteRentalProperty = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      data: {}
+      data: {},
     });
   } catch (error) {
     next(error);
@@ -277,7 +295,7 @@ exports.deactivateRentalProperty = async (req, res, next) => {
     if (!property) {
       return res.status(404).json({
         success: false,
-        message: 'Rental property not found'
+        message: 'Rental property not found',
       });
     }
 
@@ -285,7 +303,7 @@ exports.deactivateRentalProperty = async (req, res, next) => {
     if (property.userId.toString() !== req.user.id) {
       return res.status(403).json({
         success: false,
-        message: 'Not authorized to update this property'
+        message: 'Not authorized to update this property',
       });
     }
 
@@ -300,7 +318,7 @@ exports.deactivateRentalProperty = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      data: property
+      data: property,
     });
   } catch (error) {
     next(error);

@@ -1,4 +1,3 @@
-
 const { default: Category } = require('@/models/category.model');
 const { default: Transaction } = require('@/models/transaction.model');
 
@@ -11,7 +10,7 @@ exports.getCategories = async (req, res, next) => {
     const { type } = req.query;
 
     const query = {
-      $or: [{ userId: req.userId }, { isDefault: true, userId: null }]
+      $or: [{ userId: req.userId }, { isDefault: true, userId: null }],
     };
 
     if (type) {
@@ -22,7 +21,7 @@ exports.getCategories = async (req, res, next) => {
 
     res.json({
       success: true,
-      data: { categories }
+      data: { categories },
     });
   } catch (error) {
     next(error);
@@ -39,7 +38,7 @@ exports.getCategory = async (req, res, next) => {
     if (!category) {
       return res.status(404).json({
         success: false,
-        message: 'Category not found'
+        message: 'Category not found',
       });
     }
 
@@ -47,13 +46,13 @@ exports.getCategory = async (req, res, next) => {
     if (category.userId && category.userId.toString() !== req.userId.toString()) {
       return res.status(403).json({
         success: false,
-        message: 'Not authorized to access this category'
+        message: 'Not authorized to access this category',
       });
     }
 
     res.json({
       success: true,
-      data: { category }
+      data: { category },
     });
   } catch (error) {
     next(error);
@@ -68,7 +67,7 @@ exports.createCategory = async (req, res, next) => {
     const categoryData = {
       ...req.body,
       userId: req.userId,
-      isDefault: false
+      isDefault: false,
     };
 
     const category = await Category.create(categoryData);
@@ -76,7 +75,7 @@ exports.createCategory = async (req, res, next) => {
     res.status(201).json({
       success: true,
       message: 'Category created successfully',
-      data: { category }
+      data: { category },
     });
   } catch (error) {
     next(error);
@@ -93,7 +92,7 @@ exports.updateCategory = async (req, res, next) => {
     if (!category) {
       return res.status(404).json({
         success: false,
-        message: 'Category not found'
+        message: 'Category not found',
       });
     }
 
@@ -101,19 +100,19 @@ exports.updateCategory = async (req, res, next) => {
     if (!category.userId || category.userId.toString() !== req.userId.toString()) {
       return res.status(403).json({
         success: false,
-        message: "Cannot update default or other user's category"
+        message: "Cannot update default or other user's category",
       });
     }
 
     category = await Category.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-      runValidators: true
+      runValidators: true,
     });
 
     res.json({
       success: true,
       message: 'Category updated successfully',
-      data: { category }
+      data: { category },
     });
   } catch (error) {
     next(error);
@@ -130,7 +129,7 @@ exports.deleteCategory = async (req, res, next) => {
     if (!category) {
       return res.status(404).json({
         success: false,
-        message: 'Category not found'
+        message: 'Category not found',
       });
     }
 
@@ -138,20 +137,20 @@ exports.deleteCategory = async (req, res, next) => {
     if (!category.userId || category.userId.toString() !== req.userId.toString()) {
       return res.status(403).json({
         success: false,
-        message: "Cannot delete default or other user's category"
+        message: "Cannot delete default or other user's category",
       });
     }
 
     // Check if category is being used
     const transactionCount = await Transaction.countDocuments({
       userId: req.userId,
-      categoryId: req.params.id
+      categoryId: req.params.id,
     });
 
     if (transactionCount > 0) {
       return res.status(400).json({
         success: false,
-        message: 'Cannot delete category with existing transactions'
+        message: 'Cannot delete category with existing transactions',
       });
     }
 
@@ -159,7 +158,7 @@ exports.deleteCategory = async (req, res, next) => {
 
     res.json({
       success: true,
-      message: 'Category deleted successfully'
+      message: 'Category deleted successfully',
     });
   } catch (error) {
     next(error);

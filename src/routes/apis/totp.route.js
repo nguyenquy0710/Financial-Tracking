@@ -7,7 +7,7 @@ const {
   generateTotpCode,
   createTotpAccount,
   updateTotpAccount,
-  deleteTotpAccount
+  deleteTotpAccount,
 } = require('../../controllers/totp.controller');
 const { apiAuthHandler } = require('../../middleware/authHandler');
 
@@ -67,9 +67,7 @@ router.use(apiAuthHandler);
  *       201:
  *         description: TOTP account created successfully
  */
-router.route('/')
-  .get(getTotpAccounts)
-  .post(createTotpAccount);
+router.route('/').get(getTotpAccounts).post(createTotpAccount);
 
 /**
  * @swagger

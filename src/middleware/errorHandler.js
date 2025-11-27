@@ -1,13 +1,13 @@
 const errorHandler = (err, req, res, _next) => {
-  console.log("🚀 QuyNH: errorHandler -> err", err);
+  console.log('🚀 QuyNH: errorHandler -> err', err);
 
   // Mongoose validation error
   if (err.name === 'ValidationError') {
-    const errors = Object.values(err.errors).map(e => e.message);
+    const errors = Object.values(err.errors).map((e) => e.message);
     return res.status(400).json({
       success: false,
       message: 'Validation error',
-      errors
+      errors,
     });
   }
 
@@ -16,7 +16,7 @@ const errorHandler = (err, req, res, _next) => {
     const field = Object.keys(err.keyPattern)[0];
     return res.status(400).json({
       success: false,
-      message: `${field} already exists`
+      message: `${field} already exists`,
     });
   }
 
@@ -24,7 +24,7 @@ const errorHandler = (err, req, res, _next) => {
   if (err.name === 'CastError') {
     return res.status(400).json({
       success: false,
-      message: 'Invalid ID format'
+      message: 'Invalid ID format',
     });
   }
 
@@ -32,14 +32,14 @@ const errorHandler = (err, req, res, _next) => {
   if (err.name === 'JsonWebTokenError') {
     return res.status(401).json({
       success: false,
-      message: 'Invalid token'
+      message: 'Invalid token',
     });
   }
 
   if (err.name === 'TokenExpiredError') {
     return res.status(401).json({
       success: false,
-      message: 'Token expired'
+      message: 'Token expired',
     });
   }
 
@@ -47,7 +47,7 @@ const errorHandler = (err, req, res, _next) => {
   res.status(err.statusCode || 500).json({
     success: false,
     message: err.message || 'Server error',
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
   });
 };
 

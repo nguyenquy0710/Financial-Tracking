@@ -10,8 +10,8 @@ const makeMisaRequest = async (url, method = 'GET', headers = {}, body = null) =
     headers: {
       accept: 'application/json, text/plain, */*',
       'content-type': 'application/json',
-      ...headers
-    }
+      ...headers,
+    },
   };
 
   if (body) {
@@ -24,7 +24,7 @@ const makeMisaRequest = async (url, method = 'GET', headers = {}, body = null) =
   return {
     status: response.status,
     ok: response.ok,
-    data
+    data,
   };
 };
 
@@ -43,15 +43,15 @@ exports.getUserConfig = async (req, res, next) => {
           misa: {
             username: null,
             isConfigured: false,
-            lastValidated: null
-          }
-        }
+            lastValidated: null,
+          },
+        },
       });
     }
 
     res.status(200).json({
       success: true,
-      data: userConfig.getSafeConfig()
+      data: userConfig.getSafeConfig(),
     });
   } catch (error) {
     next(error);
@@ -68,7 +68,7 @@ exports.saveMisaConfig = async (req, res, next) => {
     if (!username || !password) {
       return res.status(400).json({
         success: false,
-        message: 'Username và Password là bắt buộc'
+        message: 'Username và Password là bắt buộc',
       });
     }
 
@@ -80,16 +80,15 @@ exports.saveMisaConfig = async (req, res, next) => {
       {},
       {
         UserName: username,
-        Password: password
-      }
+        Password: password,
+      },
     );
 
     if (!result.ok) {
       return res.status(400).json({
         success: false,
-        message:
-          'Thông tin đăng nhập MISA không hợp lệ. Vui lòng kiểm tra lại username và password.',
-        validationFailed: true
+        message: 'Thông tin đăng nhập MISA không hợp lệ. Vui lòng kiểm tra lại username và password.',
+        validationFailed: true,
       });
     }
 
@@ -110,8 +109,8 @@ exports.saveMisaConfig = async (req, res, next) => {
           username,
           password,
           isConfigured: true,
-          lastValidated: new Date()
-        }
+          lastValidated: new Date(),
+        },
       });
     }
 
@@ -120,7 +119,7 @@ exports.saveMisaConfig = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: 'Cấu hình MISA đã được lưu thành công',
-      data: userConfig.getSafeConfig()
+      data: userConfig.getSafeConfig(),
     });
   } catch (error) {
     next(error);
@@ -137,7 +136,7 @@ exports.testMisaConfig = async (req, res, next) => {
     if (!username || !password) {
       return res.status(400).json({
         success: false,
-        message: 'Username và Password là bắt buộc'
+        message: 'Username và Password là bắt buộc',
       });
     }
 
@@ -149,15 +148,15 @@ exports.testMisaConfig = async (req, res, next) => {
       {},
       {
         UserName: username,
-        Password: password
-      }
+        Password: password,
+      },
     );
 
     if (!result.ok) {
       return res.status(400).json({
         success: false,
         message: 'Thông tin đăng nhập MISA không hợp lệ',
-        valid: false
+        valid: false,
       });
     }
 
@@ -165,7 +164,7 @@ exports.testMisaConfig = async (req, res, next) => {
       success: true,
       message: 'Thông tin đăng nhập MISA hợp lệ',
       valid: true,
-      data: result.data
+      data: result.data,
     });
   } catch (error) {
     next(error);
@@ -182,7 +181,7 @@ exports.deleteMisaConfig = async (req, res, next) => {
     if (!userConfig) {
       return res.status(404).json({
         success: false,
-        message: 'Không tìm thấy cấu hình MISA'
+        message: 'Không tìm thấy cấu hình MISA',
       });
     }
 
@@ -191,7 +190,7 @@ exports.deleteMisaConfig = async (req, res, next) => {
       username: null,
       password: null,
       isConfigured: false,
-      lastValidated: null
+      lastValidated: null,
     };
 
     await userConfig.save();
@@ -199,7 +198,7 @@ exports.deleteMisaConfig = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: 'Đã xóa cấu hình MISA',
-      data: userConfig.getSafeConfig()
+      data: userConfig.getSafeConfig(),
     });
   } catch (error) {
     next(error);

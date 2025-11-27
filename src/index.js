@@ -75,8 +75,8 @@ app.use(
     filter: (req, res) => {
       if (req.headers['x-no-compression']) return false;
       return compression.filter(req, res);
-    }
-  })
+    },
+  }),
 ); // Compress responses
 app.use(express.json()); // Parse JSON
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded
@@ -109,8 +109,8 @@ app.use(
   swaggerUi.serve,
   swaggerUi.setup(swaggerSpec, {
     customCss: '.swagger-ui .topbar { display: none }',
-    customSiteTitle: 'FinTrack API Documentation'
-  })
+    customSiteTitle: 'FinTrack API Documentation',
+  }),
 );
 
 // Swagger JSON
@@ -126,7 +126,7 @@ app.get('/health', (req, res) => {
     success: true,
     message: `Server is healthy - ${config.server.env} mode`,
     timestamp: new Date().toISOString(),
-    uptime: process.uptime()
+    uptime: process.uptime(),
   });
 });
 
@@ -137,7 +137,7 @@ app.get('/health', (req, res) => {
 app.use((req, res) => {
   res.status(404).json({
     success: false,
-    message: 'Route not found'
+    message: 'Route not found',
   });
 });
 
@@ -163,11 +163,11 @@ app.listen(PORT, () => {
   `);
 
   // Log Turnstile keys for verification
-  console.log("🚀 QuyNH: config.turnstile.siteKey:", config.turnstile.siteKey);
+  console.log('🚀 QuyNH: config.turnstile.siteKey:', config.turnstile.siteKey);
 });
 
 // Handle unhandled promise rejections
-process.on('unhandledRejection', err => {
+process.on('unhandledRejection', (err) => {
   console.error('Unhandled Promise Rejection:', err);
   // Close server & exit process
   process.exit(1);

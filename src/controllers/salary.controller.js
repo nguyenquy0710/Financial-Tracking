@@ -1,4 +1,4 @@
-const { default: Salary } = require("@/models/salary.model");
+const { default: Salary } = require('@/models/salary.model');
 
 /**
  * @desc    Get all salaries for a user
@@ -25,7 +25,7 @@ exports.getSalaries = async (req, res, next) => {
     res.status(200).json({
       success: true,
       count: salaries.length,
-      data: salaries
+      data: salaries,
     });
   } catch (error) {
     next(error);
@@ -44,7 +44,7 @@ exports.getSalary = async (req, res, next) => {
     if (!salary) {
       return res.status(404).json({
         success: false,
-        message: 'Salary not found'
+        message: 'Salary not found',
       });
     }
 
@@ -52,13 +52,13 @@ exports.getSalary = async (req, res, next) => {
     if (salary.userId.toString() !== req.user.id) {
       return res.status(403).json({
         success: false,
-        message: 'Not authorized to access this salary'
+        message: 'Not authorized to access this salary',
       });
     }
 
     res.status(200).json({
       success: true,
-      data: salary
+      data: salary,
     });
   } catch (error) {
     next(error);
@@ -77,7 +77,7 @@ exports.createSalary = async (req, res, next) => {
 
     res.status(201).json({
       success: true,
-      data: salary
+      data: salary,
     });
   } catch (error) {
     next(error);
@@ -96,7 +96,7 @@ exports.updateSalary = async (req, res, next) => {
     if (!salary) {
       return res.status(404).json({
         success: false,
-        message: 'Salary not found'
+        message: 'Salary not found',
       });
     }
 
@@ -104,18 +104,18 @@ exports.updateSalary = async (req, res, next) => {
     if (salary.userId.toString() !== req.user.id) {
       return res.status(403).json({
         success: false,
-        message: 'Not authorized to update this salary'
+        message: 'Not authorized to update this salary',
       });
     }
 
     salary = await Salary.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-      runValidators: true
+      runValidators: true,
     });
 
     res.status(200).json({
       success: true,
-      data: salary
+      data: salary,
     });
   } catch (error) {
     next(error);
@@ -134,7 +134,7 @@ exports.deleteSalary = async (req, res, next) => {
     if (!salary) {
       return res.status(404).json({
         success: false,
-        message: 'Salary not found'
+        message: 'Salary not found',
       });
     }
 
@@ -142,7 +142,7 @@ exports.deleteSalary = async (req, res, next) => {
     if (salary.userId.toString() !== req.user.id) {
       return res.status(403).json({
         success: false,
-        message: 'Not authorized to delete this salary'
+        message: 'Not authorized to delete this salary',
       });
     }
 
@@ -150,7 +150,7 @@ exports.deleteSalary = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      data: {}
+      data: {},
     });
   } catch (error) {
     next(error);
@@ -173,14 +173,14 @@ exports.getSalaryStats = async (req, res, next) => {
           avgIncome: { $avg: '$totalIncome' },
           totalFreelance: { $sum: '$freelance.total' },
           avgFreelance: { $avg: '$freelance.total' },
-          count: { $sum: 1 }
-        }
-      }
+          count: { $sum: 1 },
+        },
+      },
     ]);
 
     res.status(200).json({
       success: true,
-      data: stats[0] || {}
+      data: stats[0] || {},
     });
   } catch (error) {
     next(error);

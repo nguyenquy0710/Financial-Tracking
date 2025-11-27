@@ -1,5 +1,4 @@
-
-const { default: BankAccount } = require("@/models/bankAccount.model");
+const { default: BankAccount } = require('@/models/bankAccount.model');
 
 // @desc    Get all bank accounts
 // @route   GET /api/bank-accounts
@@ -36,8 +35,8 @@ exports.getAllBankAccounts = async (req, res, next) => {
         page: parseInt(page),
         limit: parseInt(limit),
         total,
-        pages: Math.ceil(total / limit)
-      }
+        pages: Math.ceil(total / limit),
+      },
     });
   } catch (error) {
     next(error);
@@ -51,19 +50,19 @@ exports.getBankAccountById = async (req, res, next) => {
   try {
     const account = await BankAccount.findOne({
       _id: req.params.id,
-      userId: req.user._id
+      userId: req.user._id,
     });
 
     if (!account) {
       return res.status(404).json({
         success: false,
-        message: 'Bank account not found'
+        message: 'Bank account not found',
       });
     }
 
     res.status(200).json({
       success: true,
-      data: account
+      data: account,
     });
   } catch (error) {
     next(error);
@@ -77,7 +76,7 @@ exports.createBankAccount = async (req, res, next) => {
   try {
     const accountData = {
       ...req.body,
-      userId: req.user._id
+      userId: req.user._id,
     };
 
     // If this is set as default, unset other defaults
@@ -90,7 +89,7 @@ exports.createBankAccount = async (req, res, next) => {
     res.status(201).json({
       success: true,
       data: account,
-      message: 'Bank account created successfully'
+      message: 'Bank account created successfully',
     });
   } catch (error) {
     next(error);
@@ -104,13 +103,13 @@ exports.updateBankAccount = async (req, res, next) => {
   try {
     let account = await BankAccount.findOne({
       _id: req.params.id,
-      userId: req.user._id
+      userId: req.user._id,
     });
 
     if (!account) {
       return res.status(404).json({
         success: false,
-        message: 'Bank account not found'
+        message: 'Bank account not found',
       });
     }
 
@@ -118,19 +117,19 @@ exports.updateBankAccount = async (req, res, next) => {
     if (req.body.isDefault === true) {
       await BankAccount.updateMany(
         { userId: req.user._id, isDefault: true, _id: { $ne: req.params.id } },
-        { isDefault: false }
+        { isDefault: false },
       );
     }
 
     account = await BankAccount.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-      runValidators: true
+      runValidators: true,
     });
 
     res.status(200).json({
       success: true,
       data: account,
-      message: 'Bank account updated successfully'
+      message: 'Bank account updated successfully',
     });
   } catch (error) {
     next(error);
@@ -144,13 +143,13 @@ exports.deleteBankAccount = async (req, res, next) => {
   try {
     const account = await BankAccount.findOne({
       _id: req.params.id,
-      userId: req.user._id
+      userId: req.user._id,
     });
 
     if (!account) {
       return res.status(404).json({
         success: false,
-        message: 'Bank account not found'
+        message: 'Bank account not found',
       });
     }
 
@@ -158,7 +157,7 @@ exports.deleteBankAccount = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      message: 'Bank account deleted successfully'
+      message: 'Bank account deleted successfully',
     });
   } catch (error) {
     next(error);
@@ -172,13 +171,13 @@ exports.setDefaultBankAccount = async (req, res, next) => {
   try {
     const account = await BankAccount.findOne({
       _id: req.params.id,
-      userId: req.user._id
+      userId: req.user._id,
     });
 
     if (!account) {
       return res.status(404).json({
         success: false,
-        message: 'Bank account not found'
+        message: 'Bank account not found',
       });
     }
 
@@ -192,7 +191,7 @@ exports.setDefaultBankAccount = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: account,
-      message: 'Default bank account set successfully'
+      message: 'Default bank account set successfully',
     });
   } catch (error) {
     next(error);
@@ -207,19 +206,19 @@ exports.getDefaultBankAccount = async (req, res, next) => {
     const account = await BankAccount.findOne({
       userId: req.user._id,
       isDefault: true,
-      isActive: true
+      isActive: true,
     });
 
     if (!account) {
       return res.status(404).json({
         success: false,
-        message: 'No default bank account found'
+        message: 'No default bank account found',
       });
     }
 
     res.status(200).json({
       success: true,
-      data: account
+      data: account,
     });
   } catch (error) {
     next(error);

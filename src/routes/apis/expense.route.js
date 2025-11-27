@@ -6,7 +6,7 @@ const {
   createExpense,
   updateExpense,
   deleteExpense,
-  getExpenseStats
+  getExpenseStats,
 } = require('../../controllers/expense.controller');
 const { apiAuthHandler } = require('../../middleware/authHandler');
 

@@ -13,19 +13,21 @@ const defaultDataUserQuyNH = {
     language: 'vi',
     avatar: 'https://example.com/avatar/quynh.jpg',
     createdAt: new Date(),
-    updatedAt: new Date()
+    updatedAt: new Date(),
   },
-  bankAccounts: [{
-    userId: null, // To be set after user creation
-    bank: 'Vietcombank',
-    accountHolder: 'Nguyen Quy',
-    accountNumber: '123456789',
-    branch: 'Hanoi',
-    identifier: 'VCB123',
-    isDefault: true,
-    isActive: true,
-    notes: 'Tài khoản chính'
-  }]
+  bankAccounts: [
+    {
+      userId: null, // To be set after user creation
+      bank: 'Vietcombank',
+      accountHolder: 'Nguyen Quy',
+      accountNumber: '123456789',
+      branch: 'Hanoi',
+      identifier: 'VCB123',
+      isDefault: true,
+      isActive: true,
+      notes: 'Tài khoản chính',
+    },
+  ],
 };
 
 module.exports = {
@@ -37,7 +39,6 @@ module.exports = {
    */
   initializeDefaultDataUserQuyNH: async function initializeDefaultDataUserQuyNH() {
     try {
-
       // Check if user QuyNH already exists
       const existingUser = await User.findOne({ username: defaultDataUserQuyNH.user.username });
       if (existingUser) {
@@ -50,9 +51,9 @@ module.exports = {
       await newUser.save();
 
       // Create associated bank accounts
-      const bankAccounts = defaultDataUserQuyNH.bankAccounts.map(account => ({
+      const bankAccounts = defaultDataUserQuyNH.bankAccounts.map((account) => ({
         ...account,
-        userId: newUser._id
+        userId: newUser._id,
       }));
       await BankAccount.insertMany([...bankAccounts]);
 
@@ -61,5 +62,4 @@ module.exports = {
       console.error('✗ Error initializing default data for user QuyNH:', error);
     }
   },
-
 };

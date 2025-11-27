@@ -13,11 +13,12 @@ const isAuthenticated = async (req, errorRef = {}) => {
   req.isAuthenticated = false;
   try {
     // Get token from Authorization header or cookies
-    const token = req.header('Authorization')?.replace('Bearer ', '')?.trim()
-      || req.cookies?.authToken?.trim()
-      || req.cookies?.session_token?.trim()
-      || req.query?.authToken?.trim();
-    console.log("🚀 QuyNH: isAuthenticated -> token", token);
+    const token =
+      req.header('Authorization')?.replace('Bearer ', '')?.trim() ||
+      req.cookies?.authToken?.trim() ||
+      req.cookies?.session_token?.trim() ||
+      req.query?.authToken?.trim();
+    console.log('🚀 QuyNH: isAuthenticated -> token', token);
     if (!token) {
       errorRef.message = 'No authentication token, access denied';
       return false;
@@ -100,23 +101,34 @@ const webAuthHandler = async (req, res, next) => {
 
   try {
     if (!(await isAuthenticated(req, errorRef))) {
-      const loginUrl = '/login?redirect=' + encodeURIComponent(originalUrl)
-        + '&errorMessage=' + encodeURIComponent(errorRef.message || 'No authentication token, access denied');
+      const loginUrl =
+        '/login?redirect=' +
+        encodeURIComponent(originalUrl) +
+        '&errorMessage=' +
+        encodeURIComponent(errorRef.message || 'No authentication token, access denied');
       return res.redirect(loginUrl);
     }
 
     if (process.env.NODE_ENV !== 'production') {
-      console.log("🚀 QuyNH: apiAuthHandler -> errorRef", errorRef);
-      console.log("🚀 QuyNH: apiAuthHandler -> req.userId", req['userId']);
-      console.log("🚀 QuyNH: apiAuthHandler -> req.isAuthenticated", req['isAuthenticated']);
+      console.log('🚀 QuyNH: apiAuthHandler -> errorRef', errorRef);
+      console.log('🚀 QuyNH: apiAuthHandler -> req.userId', req['userId']);
+      console.log('🚀 QuyNH: apiAuthHandler -> req.isAuthenticated', req['isAuthenticated']);
 
-      console.log("🚀 QuyNH: apiAuthHandler -> { baseUrl, originalUrl, path, params, query, secret }", { baseUrl, originalUrl, path, params, query, secret });
+      console.log('🚀 QuyNH: apiAuthHandler -> { baseUrl, originalUrl, path, params, query, secret }', {
+        baseUrl,
+        originalUrl,
+        path,
+        params,
+        query,
+        secret,
+      });
     }
 
     next();
   } catch (error) {
     const message = 'Server error during authentication';
-    const loginUrl = '/login?redirect=' + encodeURIComponent(originalUrl) + '&errorMessage=' + encodeURIComponent(message);
+    const loginUrl =
+      '/login?redirect=' + encodeURIComponent(originalUrl) + '&errorMessage=' + encodeURIComponent(message);
 
     return res.status(500).redirect(loginUrl);
   }

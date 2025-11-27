@@ -7,7 +7,7 @@ const {
   createRentalProperty,
   updateRentalProperty,
   deleteRentalProperty,
-  deactivateRentalProperty
+  deactivateRentalProperty,
 } = require('../../controllers/rental-property.controller');
 const { apiAuthHandler } = require('../../middleware/authHandler');
 

@@ -1,5 +1,4 @@
-
-const { default: RecurringBill } = require("@/models/recurringBill.model");
+const { default: RecurringBill } = require('@/models/recurringBill.model');
 
 // @desc    Get all recurring bills
 // @route   GET /api/recurring-bills
@@ -38,8 +37,8 @@ exports.getAllRecurringBills = async (req, res, next) => {
         page: parseInt(page),
         limit: parseInt(limit),
         total,
-        pages: Math.ceil(total / limit)
-      }
+        pages: Math.ceil(total / limit),
+      },
     });
   } catch (error) {
     next(error);
@@ -53,7 +52,7 @@ exports.getRecurringBillById = async (req, res, next) => {
   try {
     const bill = await RecurringBill.findOne({
       _id: req.params.id,
-      userId: req.user._id
+      userId: req.user._id,
     })
       .populate('categoryId', 'name nameVi icon color')
       .populate('bankAccountId', 'bank accountNumber');
@@ -61,13 +60,13 @@ exports.getRecurringBillById = async (req, res, next) => {
     if (!bill) {
       return res.status(404).json({
         success: false,
-        message: 'Recurring bill not found'
+        message: 'Recurring bill not found',
       });
     }
 
     res.status(200).json({
       success: true,
-      data: bill
+      data: bill,
     });
   } catch (error) {
     next(error);
@@ -81,7 +80,7 @@ exports.createRecurringBill = async (req, res, next) => {
   try {
     const billData = {
       ...req.body,
-      userId: req.user._id
+      userId: req.user._id,
     };
 
     const bill = await RecurringBill.create(billData);
@@ -89,7 +88,7 @@ exports.createRecurringBill = async (req, res, next) => {
     res.status(201).json({
       success: true,
       data: bill,
-      message: 'Recurring bill created successfully'
+      message: 'Recurring bill created successfully',
     });
   } catch (error) {
     next(error);
@@ -103,19 +102,19 @@ exports.updateRecurringBill = async (req, res, next) => {
   try {
     let bill = await RecurringBill.findOne({
       _id: req.params.id,
-      userId: req.user._id
+      userId: req.user._id,
     });
 
     if (!bill) {
       return res.status(404).json({
         success: false,
-        message: 'Recurring bill not found'
+        message: 'Recurring bill not found',
       });
     }
 
     bill = await RecurringBill.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-      runValidators: true
+      runValidators: true,
     })
       .populate('categoryId', 'name nameVi icon color')
       .populate('bankAccountId', 'bank accountNumber');
@@ -123,7 +122,7 @@ exports.updateRecurringBill = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: bill,
-      message: 'Recurring bill updated successfully'
+      message: 'Recurring bill updated successfully',
     });
   } catch (error) {
     next(error);
@@ -137,13 +136,13 @@ exports.deleteRecurringBill = async (req, res, next) => {
   try {
     const bill = await RecurringBill.findOne({
       _id: req.params.id,
-      userId: req.user._id
+      userId: req.user._id,
     });
 
     if (!bill) {
       return res.status(404).json({
         success: false,
-        message: 'Recurring bill not found'
+        message: 'Recurring bill not found',
       });
     }
 
@@ -151,7 +150,7 @@ exports.deleteRecurringBill = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      message: 'Recurring bill deleted successfully'
+      message: 'Recurring bill deleted successfully',
     });
   } catch (error) {
     next(error);
@@ -167,13 +166,13 @@ exports.markBillAsPaid = async (req, res, next) => {
 
     let bill = await RecurringBill.findOne({
       _id: req.params.id,
-      userId: req.user._id
+      userId: req.user._id,
     });
 
     if (!bill) {
       return res.status(404).json({
         success: false,
-        message: 'Recurring bill not found'
+        message: 'Recurring bill not found',
       });
     }
 
@@ -208,7 +207,7 @@ exports.markBillAsPaid = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: bill,
-      message: 'Bill marked as paid successfully'
+      message: 'Bill marked as paid successfully',
     });
   } catch (error) {
     next(error);
@@ -231,8 +230,8 @@ exports.getUpcomingBills = async (req, res, next) => {
       isActive: true,
       nextDueDate: {
         $gte: today,
-        $lte: futureDate
-      }
+        $lte: futureDate,
+      },
     })
       .populate('categoryId', 'name nameVi icon color')
       .sort({ nextDueDate: 1 });
@@ -240,7 +239,7 @@ exports.getUpcomingBills = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: bills,
-      count: bills.length
+      count: bills.length,
     });
   } catch (error) {
     next(error);
@@ -258,8 +257,8 @@ exports.getOverdueBills = async (req, res, next) => {
       userId: req.user._id,
       isActive: true,
       nextDueDate: {
-        $lt: today
-      }
+        $lt: today,
+      },
     })
       .populate('categoryId', 'name nameVi icon color')
       .sort({ nextDueDate: 1 });
@@ -267,7 +266,7 @@ exports.getOverdueBills = async (req, res, next) => {
     res.status(200).json({
       success: true,
       data: bills,
-      count: bills.length
+      count: bills.length,
     });
   } catch (error) {
     next(error);
@@ -286,9 +285,9 @@ exports.getRecurringBillsStats = async (req, res, next) => {
           _id: '$type',
           totalAmount: { $sum: '$amount' },
           count: { $sum: 1 },
-          avgAmount: { $avg: '$amount' }
-        }
-      }
+          avgAmount: { $avg: '$amount' },
+        },
+      },
     ]);
 
     const monthlyTotal = await RecurringBill.aggregate([
@@ -297,17 +296,17 @@ exports.getRecurringBillsStats = async (req, res, next) => {
         $group: {
           _id: null,
           total: { $sum: '$amount' },
-          count: { $sum: 1 }
-        }
-      }
+          count: { $sum: 1 },
+        },
+      },
     ]);
 
     res.status(200).json({
       success: true,
       data: {
         byType: stats,
-        monthlyTotal: monthlyTotal[0] || { total: 0, count: 0 }
-      }
+        monthlyTotal: monthlyTotal[0] || { total: 0, count: 0 },
+      },
     });
   } catch (error) {
     next(error);

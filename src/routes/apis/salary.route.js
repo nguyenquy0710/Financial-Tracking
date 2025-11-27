@@ -6,7 +6,7 @@ const {
   createSalary,
   updateSalary,
   deleteSalary,
-  getSalaryStats
+  getSalaryStats,
 } = require('../../controllers/salary.controller');
 const { apiAuthHandler } = require('../../middleware/authHandler');
 

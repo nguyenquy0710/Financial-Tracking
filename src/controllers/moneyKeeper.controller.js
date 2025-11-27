@@ -1,7 +1,7 @@
-const { misaDomain } = require("@/domains/misa.domain");
+const { misaDomain } = require('@/domains/misa.domain');
 const { default: UserConfig } = require('@/models/userConfig.model');
 const { default: MoneyKeeperWallet } = require('@/models/moneyKeeperWallet.model');
-const { ConfigStatus } = require("@/config/enums");
+const { ConfigStatus } = require('@/config/enums');
 
 /**
  * @desc    Validate Money Keeper credentials and fetch wallets
@@ -15,19 +15,19 @@ exports.validateAndFetchWallets = async (req, res, next) => {
     if (!username || !password) {
       return res.status(400).json({
         success: false,
-        message: 'Username và Password là bắt buộc'
+        message: 'Username và Password là bắt buộc',
       });
     }
 
     // Attempt to login
     const loginResult = await misaDomain.loginForWeb(username, password);
-    console.log("🚀 QuyNH: exports.validateAndFetchWallets -> loginResult", loginResult);
+    console.log('🚀 QuyNH: exports.validateAndFetchWallets -> loginResult', loginResult);
 
     if (!loginResult.ok || !loginResult.data.accessToken) {
       return res.status(401).json({
         success: false,
         message: 'Thông tin đăng nhập Money Keeper không hợp lệ. Vui lòng kiểm tra lại username và password.',
-        validationFailed: true
+        validationFailed: true,
       });
     }
 
@@ -40,14 +40,14 @@ exports.validateAndFetchWallets = async (req, res, next) => {
       inActive: null,
       excludeReport: null,
       skip: 0,
-      take: 100 // Get all wallets
+      take: 100, // Get all wallets
     });
 
     if (!walletsResult.ok) {
       return res.status(500).json({
         success: false,
         message: 'Không thể lấy danh sách ví. Vui lòng thử lại.',
-        data: walletsResult.data
+        data: walletsResult.data,
       });
     }
 
@@ -56,8 +56,8 @@ exports.validateAndFetchWallets = async (req, res, next) => {
       message: 'Xác thực thành công',
       data: {
         validated: true,
-        wallets: walletsResult.data
-      }
+        wallets: walletsResult.data,
+      },
     });
   } catch (error) {
     next(error);
@@ -73,12 +73,12 @@ exports.saveConfig = async (req, res, next) => {
   try {
     const { username, password, selectedWallets } = req.body;
     const { user } = req;
-    console.log("🚀 QuyNH: exports.saveConfig -> user", user);
+    console.log('🚀 QuyNH: exports.saveConfig -> user', user);
 
     if (!username || !password) {
       return res.status(400).json({
         success: false,
-        message: 'Username và Password là bắt buộc'
+        message: 'Username và Password là bắt buộc',
       });
     }
 
@@ -89,7 +89,7 @@ exports.saveConfig = async (req, res, next) => {
       return res.status(401).json({
         success: false,
         message: 'Thông tin đăng nhập Money Keeper không hợp lệ.',
-        validationFailed: true
+        validationFailed: true,
       });
     }
 
@@ -100,7 +100,7 @@ exports.saveConfig = async (req, res, next) => {
     if (!userConfig) {
       userConfig = new UserConfig({
         userId: req.userId,
-        misa: []
+        misa: [],
       });
     }
 
@@ -118,7 +118,7 @@ exports.saveConfig = async (req, res, next) => {
       isActive: true,
       lastValidated: new Date(),
       validationStatus: ConfigStatus.ACTIVE,
-      errorMessage: undefined
+      errorMessage: undefined,
     });
 
     res.status(200).json({
@@ -127,8 +127,8 @@ exports.saveConfig = async (req, res, next) => {
       data: {
         configured: true,
         username,
-        selectedWallets: selectedWallets || []
-      }
+        selectedWallets: selectedWallets || [],
+      },
     });
   } catch (error) {
     next(error);
@@ -149,21 +149,21 @@ exports.getConfig = async (req, res, next) => {
         success: true,
         data: {
           configured: false,
-          username: null
-        }
+          username: null,
+        },
       });
     }
 
     // Get the active MISA config
-    const activeMisaConfig = userConfig.misa.find(config => config.isActive && config.isConfigured);
+    const activeMisaConfig = userConfig.misa.find((config) => config.isActive && config.isConfigured);
 
     if (!activeMisaConfig) {
       return res.status(200).json({
         success: true,
         data: {
           configured: false,
-          username: null
-        }
+          username: null,
+        },
       });
     }
 
@@ -173,8 +173,8 @@ exports.getConfig = async (req, res, next) => {
         configured: true,
         username: activeMisaConfig.username,
         lastValidated: activeMisaConfig.lastValidated,
-        validationStatus: activeMisaConfig.validationStatus
-      }
+        validationStatus: activeMisaConfig.validationStatus,
+      },
     });
   } catch (error) {
     next(error);
@@ -194,30 +194,30 @@ exports.syncWallets = async (req, res, next) => {
     if (!userConfig || !userConfig.misa || userConfig.misa.length === 0) {
       return res.status(400).json({
         success: false,
-        message: 'Vui lòng cấu hình Money Keeper trước khi đồng bộ'
+        message: 'Vui lòng cấu hình Money Keeper trước khi đồng bộ',
       });
     }
 
     // Get active MISA config
-    const activeMisaConfig = userConfig.misa.find(config => config.isActive && config.isConfigured);
+    const activeMisaConfig = userConfig.misa.find((config) => config.isActive && config.isConfigured);
 
     if (!activeMisaConfig) {
       return res.status(400).json({
         success: false,
-        message: 'Không tìm thấy cấu hình Money Keeper hoạt động'
+        message: 'Không tìm thấy cấu hình Money Keeper hoạt động',
       });
     }
 
     // Login to get token
     const loginResult = await misaDomain.loginForWeb(
       activeMisaConfig.username,
-      req.body.password || '' // Password from request body
+      req.body.password || '', // Password from request body
     );
 
     if (!loginResult.ok || !loginResult.data.accessToken) {
       return res.status(401).json({
         success: false,
-        message: 'Không thể đăng nhập Money Keeper. Vui lòng kiểm tra lại mật khẩu.'
+        message: 'Không thể đăng nhập Money Keeper. Vui lòng kiểm tra lại mật khẩu.',
       });
     }
 
@@ -230,13 +230,13 @@ exports.syncWallets = async (req, res, next) => {
       inActive: null,
       excludeReport: null,
       skip: 0,
-      take: 100
+      take: 100,
     });
 
     if (!walletsResult.ok || !walletsResult.data) {
       return res.status(500).json({
         success: false,
-        message: 'Không thể lấy danh sách ví từ Money Keeper'
+        message: 'Không thể lấy danh sách ví từ Money Keeper',
       });
     }
 
@@ -246,7 +246,7 @@ exports.syncWallets = async (req, res, next) => {
       synced: 0,
       updated: 0,
       created: 0,
-      errors: []
+      errors: [],
     };
 
     // Sync each wallet
@@ -254,7 +254,7 @@ exports.syncWallets = async (req, res, next) => {
       try {
         const existingWallet = await MoneyKeeperWallet.findOne({
           userId: req.userId,
-          walletId: wallet.walletId
+          walletId: wallet.walletId,
         });
 
         await MoneyKeeperWallet.syncWallet(req.userId, wallet);
@@ -269,7 +269,7 @@ exports.syncWallets = async (req, res, next) => {
         syncResults.errors.push({
           walletId: wallet.walletId,
           walletName: wallet.walletName,
-          error: error.message
+          error: error.message,
         });
       }
     }
@@ -277,7 +277,7 @@ exports.syncWallets = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: `Đã đồng bộ ${syncResults.synced}/${syncResults.total} ví`,
-      data: syncResults
+      data: syncResults,
     });
   } catch (error) {
     next(error);
@@ -296,7 +296,7 @@ exports.getWallets = async (req, res, next) => {
     res.status(200).json({
       success: true,
       count: wallets.length,
-      data: wallets
+      data: wallets,
     });
   } catch (error) {
     next(error);
@@ -320,8 +320,8 @@ exports.getWalletSummary = async (req, res, next) => {
       data: {
         byType: summary,
         total,
-        count: summary.reduce((acc, item) => acc + item.count, 0)
-      }
+        count: summary.reduce((acc, item) => acc + item.count, 0),
+      },
     });
   } catch (error) {
     next(error);

@@ -7,7 +7,7 @@ const validate = (req, res, next) => {
     return res.status(400).json({
       success: false,
       message: 'Validation failed',
-      errors: errors.array()
+      errors: errors.array(),
     });
   }
   next();
@@ -19,14 +19,14 @@ const userValidation = {
     body('email').isEmail().withMessage('Please provide a valid email'),
     body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
     body('name').trim().notEmpty().withMessage('Name is required'),
-    validate
+    validate,
   ],
 
   login: [
     body('email').isEmail().withMessage('Please provide a valid email'),
     body('password').notEmpty().withMessage('Password is required'),
-    validate
-  ]
+    validate,
+  ],
 };
 
 // Transaction validation rules
@@ -36,20 +36,17 @@ const transactionValidation = {
     body('amount').isFloat({ min: 0 }).withMessage('Amount must be a positive number'),
     body('categoryId').notEmpty().withMessage('Category is required'),
     body('date').optional().isISO8601().withMessage('Invalid date format'),
-    validate
+    validate,
   ],
 
   update: [
     param('id').isMongoId().withMessage('Invalid transaction ID'),
-    body('type')
-      .optional()
-      .isIn(['income', 'expense'])
-      .withMessage('Type must be income or expense'),
+    body('type').optional().isIn(['income', 'expense']).withMessage('Type must be income or expense'),
     body('amount').optional().isFloat({ min: 0 }).withMessage('Amount must be a positive number'),
-    validate
+    validate,
   ],
 
-  delete: [param('id').isMongoId().withMessage('Invalid transaction ID'), validate]
+  delete: [param('id').isMongoId().withMessage('Invalid transaction ID'), validate],
 };
 
 // Category validation rules
@@ -57,14 +54,14 @@ const categoryValidation = {
   create: [
     body('name').trim().notEmpty().withMessage('Category name is required'),
     body('type').isIn(['income', 'expense']).withMessage('Type must be income or expense'),
-    validate
+    validate,
   ],
 
   update: [
     param('id').isMongoId().withMessage('Invalid category ID'),
     body('name').optional().trim().notEmpty().withMessage('Category name cannot be empty'),
-    validate
-  ]
+    validate,
+  ],
 };
 
 // Budget validation rules
@@ -75,14 +72,14 @@ const budgetValidation = {
     body('categoryId').isMongoId().withMessage('Invalid category ID'),
     body('period').isIn(['daily', 'weekly', 'monthly', 'yearly']).withMessage('Invalid period'),
     body('startDate').isISO8601().withMessage('Invalid start date'),
-    validate
+    validate,
   ],
 
   update: [
     param('id').isMongoId().withMessage('Invalid budget ID'),
     body('amount').optional().isFloat({ min: 0 }).withMessage('Amount must be a positive number'),
-    validate
-  ]
+    validate,
+  ],
 };
 
 // Goal validation rules
@@ -91,17 +88,14 @@ const goalValidation = {
     body('name').trim().notEmpty().withMessage('Goal name is required'),
     body('targetAmount').isFloat({ min: 0 }).withMessage('Target amount must be a positive number'),
     body('targetDate').isISO8601().withMessage('Invalid target date'),
-    validate
+    validate,
   ],
 
   update: [
     param('id').isMongoId().withMessage('Invalid goal ID'),
-    body('targetAmount')
-      .optional()
-      .isFloat({ min: 0 })
-      .withMessage('Target amount must be a positive number'),
-    validate
-  ]
+    body('targetAmount').optional().isFloat({ min: 0 }).withMessage('Target amount must be a positive number'),
+    validate,
+  ],
 };
 
 module.exports = {
@@ -110,5 +104,5 @@ module.exports = {
   transactionValidation,
   categoryValidation,
   budgetValidation,
-  goalValidation
+  goalValidation,
 };

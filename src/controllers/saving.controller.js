@@ -1,5 +1,4 @@
-
-const { default: Saving } = require("@/models/saving.model");
+const { default: Saving } = require('@/models/saving.model');
 
 // @desc    Get all savings
 // @route   GET /api/savings
@@ -35,8 +34,8 @@ exports.getAllSavings = async (req, res, next) => {
         page: parseInt(page),
         limit: parseInt(limit),
         total,
-        pages: Math.ceil(total / limit)
-      }
+        pages: Math.ceil(total / limit),
+      },
     });
   } catch (error) {
     next(error);
@@ -50,19 +49,19 @@ exports.getSavingById = async (req, res, next) => {
   try {
     const saving = await Saving.findOne({
       _id: req.params.id,
-      userId: req.user._id
+      userId: req.user._id,
     });
 
     if (!saving) {
       return res.status(404).json({
         success: false,
-        message: 'Saving not found'
+        message: 'Saving not found',
       });
     }
 
     res.status(200).json({
       success: true,
-      data: saving
+      data: saving,
     });
   } catch (error) {
     next(error);
@@ -76,7 +75,7 @@ exports.createSaving = async (req, res, next) => {
   try {
     const savingData = {
       ...req.body,
-      userId: req.user._id
+      userId: req.user._id,
     };
 
     const saving = await Saving.create(savingData);
@@ -84,7 +83,7 @@ exports.createSaving = async (req, res, next) => {
     res.status(201).json({
       success: true,
       data: saving,
-      message: 'Saving created successfully'
+      message: 'Saving created successfully',
     });
   } catch (error) {
     next(error);
@@ -98,25 +97,25 @@ exports.updateSaving = async (req, res, next) => {
   try {
     let saving = await Saving.findOne({
       _id: req.params.id,
-      userId: req.user._id
+      userId: req.user._id,
     });
 
     if (!saving) {
       return res.status(404).json({
         success: false,
-        message: 'Saving not found'
+        message: 'Saving not found',
       });
     }
 
     saving = await Saving.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-      runValidators: true
+      runValidators: true,
     });
 
     res.status(200).json({
       success: true,
       data: saving,
-      message: 'Saving updated successfully'
+      message: 'Saving updated successfully',
     });
   } catch (error) {
     next(error);
@@ -130,13 +129,13 @@ exports.deleteSaving = async (req, res, next) => {
   try {
     const saving = await Saving.findOne({
       _id: req.params.id,
-      userId: req.user._id
+      userId: req.user._id,
     });
 
     if (!saving) {
       return res.status(404).json({
         success: false,
-        message: 'Saving not found'
+        message: 'Saving not found',
       });
     }
 
@@ -144,7 +143,7 @@ exports.deleteSaving = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      message: 'Saving deleted successfully'
+      message: 'Saving deleted successfully',
     });
   } catch (error) {
     next(error);
@@ -173,9 +172,9 @@ exports.getSavingsStats = async (req, res, next) => {
           _id: '$type',
           totalAmount: { $sum: '$amount' },
           count: { $sum: 1 },
-          avgAmount: { $avg: '$amount' }
-        }
-      }
+          avgAmount: { $avg: '$amount' },
+        },
+      },
     ]);
 
     const totalSavings = await Saving.aggregate([
@@ -184,17 +183,17 @@ exports.getSavingsStats = async (req, res, next) => {
         $group: {
           _id: null,
           total: { $sum: '$amount' },
-          count: { $sum: 1 }
-        }
-      }
+          count: { $sum: 1 },
+        },
+      },
     ]);
 
     res.status(200).json({
       success: true,
       data: {
         byType: stats,
-        total: totalSavings[0] || { total: 0, count: 0 }
-      }
+        total: totalSavings[0] || { total: 0, count: 0 },
+      },
     });
   } catch (error) {
     next(error);

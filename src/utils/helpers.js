@@ -1,4 +1,4 @@
-const { default: Category } = require("@/models/category.model");
+const { default: Category } = require('@/models/category.model');
 
 /**
  * Auto-categorize transaction based on keywords
@@ -12,14 +12,12 @@ async function autoCategorizeTransaction(description, type = 'expense') {
     // Find categories with matching keywords
     const categories = await Category.find({
       type,
-      keywords: { $exists: true, $ne: [] }
+      keywords: { $exists: true, $ne: [] },
     });
 
     for (const category of categories) {
       if (category.keywords && category.keywords.length > 0) {
-        const hasMatch = category.keywords.some(keyword =>
-          searchText.includes(keyword.toLowerCase())
-        );
+        const hasMatch = category.keywords.some((keyword) => searchText.includes(keyword.toLowerCase()));
 
         if (hasMatch) {
           return category._id;
@@ -42,7 +40,7 @@ function formatCurrency(amount, currency = 'VND', locale = 'vi-VN') {
     style: 'currency',
     currency: currency,
     minimumFractionDigits: 0,
-    maximumFractionDigits: 0
+    maximumFractionDigits: 0,
   });
 
   return formatter.format(amount);
@@ -110,13 +108,11 @@ function generateSpendingInsights(transactions, budgets) {
   const insights = [];
 
   // Calculate total spending
-  const totalSpending = transactions
-    .filter(t => t.type === 'expense')
-    .reduce((sum, t) => sum + t.amount, 0);
+  const totalSpending = transactions.filter((t) => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
 
   // Find top spending category
   const categorySpending = {};
-  transactions.forEach(t => {
+  transactions.forEach((t) => {
     if (t.type === 'expense') {
       const catId = t.categoryId.toString();
       categorySpending[catId] = (categorySpending[catId] || 0) + t.amount;
@@ -130,19 +126,19 @@ function generateSpendingInsights(transactions, budgets) {
     insights.push({
       type: 'spending_pattern',
       message: `${percentage}% of your spending goes to this category`,
-      categoryId: topCategory[0]
+      categoryId: topCategory[0],
     });
   }
 
   // Check budget adherence
-  budgets.forEach(budget => {
+  budgets.forEach((budget) => {
     const percentage = (budget.spent / budget.amount) * 100;
     if (percentage > 90) {
       insights.push({
         type: 'budget_alert',
         message: `You've used ${percentage.toFixed(1)}% of your budget`,
         budgetId: budget._id,
-        severity: 'high'
+        severity: 'high',
       });
     }
   });
@@ -155,5 +151,5 @@ module.exports = {
   formatCurrency,
   getDateRange,
   calculatePercentageChange,
-  generateSpendingInsights
+  generateSpendingInsights,
 };

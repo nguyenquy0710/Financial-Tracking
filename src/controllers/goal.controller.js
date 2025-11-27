@@ -1,9 +1,7 @@
-
-const { default: Goal } = require("@/models/goal.model");
+const { default: Goal } = require('@/models/goal.model');
 
 // @desc    Get all goals
 // @route   GET /api/goals
-
 
 // @access  Private
 exports.getGoals = async (req, res, next) => {
@@ -19,7 +17,7 @@ exports.getGoals = async (req, res, next) => {
 
     res.json({
       success: true,
-      data: { goals }
+      data: { goals },
     });
   } catch (error) {
     next(error);
@@ -33,19 +31,19 @@ exports.getGoal = async (req, res, next) => {
   try {
     const goal = await Goal.findOne({
       _id: req.params.id,
-      userId: req.userId
+      userId: req.userId,
     });
 
     if (!goal) {
       return res.status(404).json({
         success: false,
-        message: 'Goal not found'
+        message: 'Goal not found',
       });
     }
 
     res.json({
       success: true,
-      data: { goal }
+      data: { goal },
     });
   } catch (error) {
     next(error);
@@ -60,7 +58,7 @@ exports.createGoal = async (req, res, next) => {
     const goalData = {
       ...req.body,
       userId: req.userId,
-      currentAmount: req.body.currentAmount || 0
+      currentAmount: req.body.currentAmount || 0,
     };
 
     const goal = await Goal.create(goalData);
@@ -68,7 +66,7 @@ exports.createGoal = async (req, res, next) => {
     res.status(201).json({
       success: true,
       message: 'Goal created successfully',
-      data: { goal }
+      data: { goal },
     });
   } catch (error) {
     next(error);
@@ -82,13 +80,13 @@ exports.updateGoal = async (req, res, next) => {
   try {
     let goal = await Goal.findOne({
       _id: req.params.id,
-      userId: req.userId
+      userId: req.userId,
     });
 
     if (!goal) {
       return res.status(404).json({
         success: false,
-        message: 'Goal not found'
+        message: 'Goal not found',
       });
     }
 
@@ -99,13 +97,13 @@ exports.updateGoal = async (req, res, next) => {
 
     goal = await Goal.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-      runValidators: true
+      runValidators: true,
     });
 
     res.json({
       success: true,
       message: 'Goal updated successfully',
-      data: { goal }
+      data: { goal },
     });
   } catch (error) {
     next(error);
@@ -119,13 +117,13 @@ exports.deleteGoal = async (req, res, next) => {
   try {
     const goal = await Goal.findOne({
       _id: req.params.id,
-      userId: req.userId
+      userId: req.userId,
     });
 
     if (!goal) {
       return res.status(404).json({
         success: false,
-        message: 'Goal not found'
+        message: 'Goal not found',
       });
     }
 
@@ -133,7 +131,7 @@ exports.deleteGoal = async (req, res, next) => {
 
     res.json({
       success: true,
-      message: 'Goal deleted successfully'
+      message: 'Goal deleted successfully',
     });
   } catch (error) {
     next(error);
@@ -150,19 +148,19 @@ exports.addContribution = async (req, res, next) => {
     if (!amount || amount <= 0) {
       return res.status(400).json({
         success: false,
-        message: 'Amount must be a positive number'
+        message: 'Amount must be a positive number',
       });
     }
 
     let goal = await Goal.findOne({
       _id: req.params.id,
-      userId: req.userId
+      userId: req.userId,
     });
 
     if (!goal) {
       return res.status(404).json({
         success: false,
-        message: 'Goal not found'
+        message: 'Goal not found',
       });
     }
 
@@ -175,7 +173,7 @@ exports.addContribution = async (req, res, next) => {
 
     // Update milestones
     if (goal.milestones && goal.milestones.length > 0) {
-      goal.milestones.forEach(milestone => {
+      goal.milestones.forEach((milestone) => {
         if (!milestone.achieved && goal.currentAmount >= milestone.amount) {
           milestone.achieved = true;
           milestone.achievedDate = new Date();
@@ -188,7 +186,7 @@ exports.addContribution = async (req, res, next) => {
     res.json({
       success: true,
       message: 'Contribution added successfully',
-      data: { goal }
+      data: { goal },
     });
   } catch (error) {
     next(error);
@@ -204,18 +202,18 @@ exports.getGoalsSummary = async (req, res, next) => {
 
     const summary = {
       total: goals.length,
-      active: goals.filter(g => g.status === 'active').length,
-      completed: goals.filter(g => g.status === 'completed').length,
-      paused: goals.filter(g => g.status === 'paused').length,
-      cancelled: goals.filter(g => g.status === 'cancelled').length,
+      active: goals.filter((g) => g.status === 'active').length,
+      completed: goals.filter((g) => g.status === 'completed').length,
+      paused: goals.filter((g) => g.status === 'paused').length,
+      cancelled: goals.filter((g) => g.status === 'cancelled').length,
       totalTarget: goals.reduce((sum, g) => sum + g.targetAmount, 0),
       totalCurrent: goals.reduce((sum, g) => sum + g.currentAmount, 0),
-      totalRemaining: goals.reduce((sum, g) => sum + (g.targetAmount - g.currentAmount), 0)
+      totalRemaining: goals.reduce((sum, g) => sum + (g.targetAmount - g.currentAmount), 0),
     };
 
     res.json({
       success: true,
-      data: { summary }
+      data: { summary },
     });
   } catch (error) {
     next(error);

@@ -6,7 +6,7 @@ const {
   createRental,
   updateRental,
   deleteRental,
-  getRentalStats
+  getRentalStats,
 } = require('../../controllers/rental.controller');
 const { apiAuthHandler } = require('../../middleware/authHandler');
 

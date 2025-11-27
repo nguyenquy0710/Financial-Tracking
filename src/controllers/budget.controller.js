@@ -13,13 +13,11 @@ exports.getBudgets = async (req, res, next) => {
     if (period) query.period = period;
     if (isActive !== undefined) query.isActive = isActive === 'true';
 
-    const budgets = await Budget.find(query)
-      .populate('categoryId', 'name nameVi icon color')
-      .sort({ startDate: -1 });
+    const budgets = await Budget.find(query).populate('categoryId', 'name nameVi icon color').sort({ startDate: -1 });
 
     res.json({
       success: true,
-      data: { budgets }
+      data: { budgets },
     });
   } catch (error) {
     next(error);
@@ -33,19 +31,19 @@ exports.getBudget = async (req, res, next) => {
   try {
     const budget = await Budget.findOne({
       _id: req.params.id,
-      userId: req.userId
+      userId: req.userId,
     }).populate('categoryId', 'name nameVi icon color');
 
     if (!budget) {
       return res.status(404).json({
         success: false,
-        message: 'Budget not found'
+        message: 'Budget not found',
       });
     }
 
     res.json({
       success: true,
-      data: { budget }
+      data: { budget },
     });
   } catch (error) {
     next(error);
@@ -60,7 +58,7 @@ exports.createBudget = async (req, res, next) => {
     const budgetData = {
       ...req.body,
       userId: req.userId,
-      spent: 0
+      spent: 0,
     };
 
     // Calculate initial spent amount if budget starts in the past
@@ -70,22 +68,19 @@ exports.createBudget = async (req, res, next) => {
         req.userId,
         budgetData.categoryId,
         startDate,
-        budgetData.endDate || new Date()
+        budgetData.endDate || new Date(),
       );
       budgetData.spent = spent;
     }
 
     const budget = await Budget.create(budgetData);
 
-    const populatedBudget = await Budget.findById(budget._id).populate(
-      'categoryId',
-      'name nameVi icon color'
-    );
+    const populatedBudget = await Budget.findById(budget._id).populate('categoryId', 'name nameVi icon color');
 
     res.status(201).json({
       success: true,
       message: 'Budget created successfully',
-      data: { budget: populatedBudget }
+      data: { budget: populatedBudget },
     });
   } catch (error) {
     next(error);
@@ -99,25 +94,25 @@ exports.updateBudget = async (req, res, next) => {
   try {
     let budget = await Budget.findOne({
       _id: req.params.id,
-      userId: req.userId
+      userId: req.userId,
     });
 
     if (!budget) {
       return res.status(404).json({
         success: false,
-        message: 'Budget not found'
+        message: 'Budget not found',
       });
     }
 
     budget = await Budget.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-      runValidators: true
+      runValidators: true,
     }).populate('categoryId', 'name nameVi icon color');
 
     res.json({
       success: true,
       message: 'Budget updated successfully',
-      data: { budget }
+      data: { budget },
     });
   } catch (error) {
     next(error);
@@ -131,13 +126,13 @@ exports.deleteBudget = async (req, res, next) => {
   try {
     const budget = await Budget.findOne({
       _id: req.params.id,
-      userId: req.userId
+      userId: req.userId,
     });
 
     if (!budget) {
       return res.status(404).json({
         success: false,
-        message: 'Budget not found'
+        message: 'Budget not found',
       });
     }
 
@@ -145,7 +140,7 @@ exports.deleteBudget = async (req, res, next) => {
 
     res.json({
       success: true,
-      message: 'Budget deleted successfully'
+      message: 'Budget deleted successfully',
     });
   } catch (error) {
     next(error);
@@ -163,23 +158,23 @@ exports.getBudgetAlerts = async (req, res, next) => {
       userId: req.userId,
       isActive: true,
       startDate: { $lte: now },
-      $or: [{ endDate: { $gte: now } }, { endDate: null }]
+      $or: [{ endDate: { $gte: now } }, { endDate: null }],
     }).populate('categoryId', 'name nameVi icon color');
 
     const alerts = budgets
-      .filter(budget => {
+      .filter((budget) => {
         const percentage = (budget.spent / budget.amount) * 100;
         return percentage >= budget.alertThreshold;
       })
-      .map(budget => ({
+      .map((budget) => ({
         budget,
         percentage: (budget.spent / budget.amount) * 100,
-        message: budget.spent >= budget.amount ? 'Budget exceeded' : 'Budget threshold reached'
+        message: budget.spent >= budget.amount ? 'Budget exceeded' : 'Budget threshold reached',
       }));
 
     res.json({
       success: true,
-      data: { alerts }
+      data: { alerts },
     });
   } catch (error) {
     next(error);
@@ -196,16 +191,16 @@ async function calculateSpentAmount(userId, categoryId, startDate, endDate) {
         type: 'expense',
         date: {
           $gte: startDate,
-          $lte: endDate
-        }
-      }
+          $lte: endDate,
+        },
+      },
     },
     {
       $group: {
         _id: null,
-        total: { $sum: '$amount' }
-      }
-    }
+        total: { $sum: '$amount' },
+      },
+    },
   ]);
 
   return result.length > 0 ? result[0].total : 0;

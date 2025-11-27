@@ -1,5 +1,4 @@
-
-const { default: Deposit } = require("@/models/deposit.model");
+const { default: Deposit } = require('@/models/deposit.model');
 
 // @desc    Get all deposits
 // @route   GET /api/deposits
@@ -22,10 +21,7 @@ exports.getAllDeposits = async (req, res, next) => {
 
     // Execute query with pagination
     const skip = (page - 1) * limit;
-    const deposits = await Deposit.find(query)
-      .sort({ startDate: -1 })
-      .skip(skip)
-      .limit(parseInt(limit));
+    const deposits = await Deposit.find(query).sort({ startDate: -1 }).skip(skip).limit(parseInt(limit));
 
     const total = await Deposit.countDocuments(query);
 
@@ -36,8 +32,8 @@ exports.getAllDeposits = async (req, res, next) => {
         page: parseInt(page),
         limit: parseInt(limit),
         total,
-        pages: Math.ceil(total / limit)
-      }
+        pages: Math.ceil(total / limit),
+      },
     });
   } catch (error) {
     next(error);
@@ -51,19 +47,19 @@ exports.getDepositById = async (req, res, next) => {
   try {
     const deposit = await Deposit.findOne({
       _id: req.params.id,
-      userId: req.user._id
+      userId: req.user._id,
     });
 
     if (!deposit) {
       return res.status(404).json({
         success: false,
-        message: 'Deposit not found'
+        message: 'Deposit not found',
       });
     }
 
     res.status(200).json({
       success: true,
-      data: deposit
+      data: deposit,
     });
   } catch (error) {
     next(error);
@@ -77,7 +73,7 @@ exports.createDeposit = async (req, res, next) => {
   try {
     const depositData = {
       ...req.body,
-      userId: req.user._id
+      userId: req.user._id,
     };
 
     // Calculate total amount if not provided
@@ -91,7 +87,7 @@ exports.createDeposit = async (req, res, next) => {
     res.status(201).json({
       success: true,
       data: deposit,
-      message: 'Deposit created successfully'
+      message: 'Deposit created successfully',
     });
   } catch (error) {
     next(error);
@@ -105,13 +101,13 @@ exports.updateDeposit = async (req, res, next) => {
   try {
     let deposit = await Deposit.findOne({
       _id: req.params.id,
-      userId: req.user._id
+      userId: req.user._id,
     });
 
     if (!deposit) {
       return res.status(404).json({
         success: false,
-        message: 'Deposit not found'
+        message: 'Deposit not found',
       });
     }
 
@@ -124,13 +120,13 @@ exports.updateDeposit = async (req, res, next) => {
 
     deposit = await Deposit.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-      runValidators: true
+      runValidators: true,
     });
 
     res.status(200).json({
       success: true,
       data: deposit,
-      message: 'Deposit updated successfully'
+      message: 'Deposit updated successfully',
     });
   } catch (error) {
     next(error);
@@ -144,13 +140,13 @@ exports.deleteDeposit = async (req, res, next) => {
   try {
     const deposit = await Deposit.findOne({
       _id: req.params.id,
-      userId: req.user._id
+      userId: req.user._id,
     });
 
     if (!deposit) {
       return res.status(404).json({
         success: false,
-        message: 'Deposit not found'
+        message: 'Deposit not found',
       });
     }
 
@@ -158,7 +154,7 @@ exports.deleteDeposit = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      message: 'Deposit deleted successfully'
+      message: 'Deposit deleted successfully',
     });
   } catch (error) {
     next(error);
@@ -178,9 +174,9 @@ exports.getDepositsStats = async (req, res, next) => {
           totalPrincipal: { $sum: '$principalAmount' },
           totalInterest: { $sum: '$interestAmount' },
           totalAmount: { $sum: '$totalAmount' },
-          count: { $sum: 1 }
-        }
-      }
+          count: { $sum: 1 },
+        },
+      },
     ]);
 
     const byBank = await Deposit.aggregate([
@@ -189,9 +185,9 @@ exports.getDepositsStats = async (req, res, next) => {
         $group: {
           _id: '$bank',
           totalAmount: { $sum: '$totalAmount' },
-          count: { $sum: 1 }
-        }
-      }
+          count: { $sum: 1 },
+        },
+      },
     ]);
 
     const totalStats = await Deposit.aggregate([
@@ -203,9 +199,9 @@ exports.getDepositsStats = async (req, res, next) => {
           totalInterest: { $sum: '$interestAmount' },
           totalAmount: { $sum: '$totalAmount' },
           count: { $sum: 1 },
-          avgInterestRate: { $avg: '$interestRate' }
-        }
-      }
+          avgInterestRate: { $avg: '$interestRate' },
+        },
+      },
     ]);
 
     res.status(200).json({
@@ -218,9 +214,9 @@ exports.getDepositsStats = async (req, res, next) => {
           totalInterest: 0,
           totalAmount: 0,
           count: 0,
-          avgInterestRate: 0
-        }
-      }
+          avgInterestRate: 0,
+        },
+      },
     });
   } catch (error) {
     next(error);
@@ -243,14 +239,14 @@ exports.getUpcomingMaturityDeposits = async (req, res, next) => {
       status: 'active',
       maturityDate: {
         $gte: today,
-        $lte: futureDate
-      }
+        $lte: futureDate,
+      },
     }).sort({ maturityDate: 1 });
 
     res.status(200).json({
       success: true,
       data: deposits,
-      count: deposits.length
+      count: deposits.length,
     });
   } catch (error) {
     next(error);

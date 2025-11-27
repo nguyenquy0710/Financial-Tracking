@@ -32,8 +32,8 @@ async function verifyTurnstileToken(token, remoteIp = null) {
 
     const response = await axios.post(config.turnstile.verifyURL, formData, {
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
     });
 
     const data = response.data;
@@ -51,5 +51,5 @@ async function verifyTurnstileToken(token, remoteIp = null) {
 }
 
 module.exports = {
-  verifyTurnstileToken
+  verifyTurnstileToken,
 };

@@ -1,4 +1,4 @@
-const { default: SystemConfig } = require("@/models/systemConfig.model");
+const { default: SystemConfig } = require('@/models/systemConfig.model');
 
 // Default system configurations to be initialized
 const defaultSystemConfigs = {
@@ -35,14 +35,13 @@ module.exports = {
       }
 
       // Create default configurations
-      const configsToInsert = Object.entries(defaultSystemConfigs)
-        .map(([key, value]) => ({
-          configName: key.toUpperCase().trim(),
-          configValue: value,
-          isActive: true,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        }));
+      const configsToInsert = Object.entries(defaultSystemConfigs).map(([key, value]) => ({
+        configName: key.toUpperCase().trim(),
+        configValue: value,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }));
 
       // Insert all configurations
       await SystemConfig.insertMany([...configsToInsert]);
@@ -52,5 +51,4 @@ module.exports = {
       console.error('✗ Error initializing default system configurations:', error);
     }
   },
-
 };

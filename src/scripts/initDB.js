@@ -12,32 +12,30 @@ async function initializeDatabase() {
     await connectDB();
 
     // Initialize default categories
-    console.log("🚀 QuyNH: initializeDatabase -> initializeDefaultCategories");
-    await (await require('./category.initialize')).initializeDefaultCategories()
-      .catch(err => {
-        console.error('✗ Error initializing default categories:', err);
-      });
+    console.log('🚀 QuyNH: initializeDatabase -> initializeDefaultCategories');
+    await (await require('./category.initialize')).initializeDefaultCategories().catch((err) => {
+      console.error('✗ Error initializing default categories:', err);
+    });
 
     // Initialize default system configurations
-    console.log("🚀 QuyNH: initializeDatabase -> initializeDefaultSystemConfigs");
-    await (await require('./system-config.initialize')).initializeDefaultSystemConfigs()
-      .catch(err => {
-        console.error('✗ Error initializing default system configurations:', err);
-      });
+    console.log('🚀 QuyNH: initializeDatabase -> initializeDefaultSystemConfigs');
+    await (await require('./system-config.initialize')).initializeDefaultSystemConfigs().catch((err) => {
+      console.error('✗ Error initializing default system configurations:', err);
+    });
 
     // Nếu có tham số --data, khởi tạo dữ liệu mẫu
     try {
       if (args.includes('--data')) {
-        console.log("✅ Phát hiện tham số --data, đang chạy với dữ liệu mẫu...");
+        console.log('✅ Phát hiện tham số --data, đang chạy với dữ liệu mẫu...');
 
         // Initialize default data for user QuyNH
-        console.log("🚀 QuyNH: initializeDatabase -> initializeDefaultDataUserQuyNH");
+        console.log('🚀 QuyNH: initializeDatabase -> initializeDefaultDataUserQuyNH');
         await initializeDefaultDataUserQuyNH();
 
-        console.log("✅ Khởi tạo dữ liệu mẫu hoàn tất.");
+        console.log('✅ Khởi tạo dữ liệu mẫu hoàn tất.');
         process.exit(0);
       } else {
-        console.log("ℹ️ Không có tham số --data, chỉ tạo cấu trúc DB...");
+        console.log('ℹ️ Không có tham số --data, chỉ tạo cấu trúc DB...');
         process.exit(0);
       }
     } catch (error) {
@@ -67,11 +65,10 @@ async function initializeDatabase() {
 async function initializeDefaultDataUserQuyNH() {
   try {
     // Initialize default data for user QuyNH
-    console.log("🚀 QuyNH: initializeDatabase -> initializeDefaultDataUserQuyNH");
-    await (await require('./data.quynh.initialize')).initializeDefaultDataUserQuyNH()
-      .catch(err => {
-        console.error('✗ Error initializing default data for user QuyNH:', err);
-      });
+    console.log('🚀 QuyNH: initializeDatabase -> initializeDefaultDataUserQuyNH');
+    await (await require('./data.quynh.initialize')).initializeDefaultDataUserQuyNH().catch((err) => {
+      console.error('✗ Error initializing default data for user QuyNH:', err);
+    });
   } catch (error) {
     console.error('✗ Error initializing default data for user QuyNH:', error);
 
