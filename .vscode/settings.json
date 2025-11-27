@@ -18,6 +18,29 @@
     "other": "on"
   },
 
+  "editor.formatOnSave": false,
+  "editor.formatOnPaste": false,
+
+  "editor.defaultFormatter": "vscode.emmet",
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+
   // Accept suggestions on Enter key press
   "editor.acceptSuggestionOnEnter": "on",
   // Reduce delay for quick suggestions to appear (faster autocomplete)
@@ -58,9 +81,5 @@
     "*.ts": "${basename}.html, ${basename}.css, ${basename}.spec.ts",
     "*.js": "${basename}.test.js, ${basename}.map",
     "*.component.ts": "${basename}.component.html, ${basename}.component.css, ${basename}.component.scss, ${basename}.component.spec.ts"
-  },
-  "sonarlint.connectedMode.project": {
-    "connectionId": "nguyenquy0710",
-    "projectKey": "nguyenquy0710_Financial-Tracking"
   }
 }

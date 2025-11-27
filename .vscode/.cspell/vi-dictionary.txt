@@ -55,7 +55,6 @@ dưới
 giãn
 giao
 giây
-giấy
 giới
 giữa
 giúp
@@ -153,14 +152,12 @@ quản
 Quận
 Quang
 quên
-quét
 quyền
 rằng
 riêng
 rỗng
 sách
 sạch
-sáng
 sánh
 tảng
 thái
@@ -168,7 +165,6 @@ tham
 thân
 tháng
 thành
-thao
 thập
 thất
 thấy
@@ -203,6 +199,7 @@ tổng
 trạng
 trên
 triển
+Trinh
 trong
 trọng
 trúc
@@ -211,17 +208,16 @@ Trung
 trước
 trường
 truy
-truyền
 từng
 tương
 tượng
 tuyệt
 uống
 viên
-viện
 viet
 Viết
 Việt
+vihat
 xoay
 xong
 xuất
