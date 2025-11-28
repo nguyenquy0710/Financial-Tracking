@@ -13,7 +13,7 @@
     "copy-env": "copyfiles -u 0 .env dist/",
     "build": "npm run clean && tsc --build && tsc-alias && gulp build:icons --verbose && npm run copyfiles && npm run copy-package",
     "start": "node dist/src/index.js",
-    "dev": "nodemon --watch src --ext js,ts,json --exec ts-node -r tsconfig-paths/register src/index.js --ignore src/scripts/",
+    "dev": "dotenvx run --env-file=.env -- nodemon --watch src --ext js,ts,json --exec ts-node -r tsconfig-paths/register src/index.js --ignore src/scripts/",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
     "lint": "eslint src/**/*.js --ignore-pattern public/*",
@@ -33,6 +33,7 @@
   "author": "Nguyễn Hữu Quý",
   "license": "MIT",
   "dependencies": {
+    "@dotenvx/dotenvx": "^1.51.1",
     "@otplib/preset-browser": "^12.0.1",
     "axios": "^1.12.2",
     "bcryptjs": "^2.4.3",
