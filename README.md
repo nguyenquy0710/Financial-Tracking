@@ -149,6 +149,26 @@ Server sẽ chạy tại / Server will run at: `http://localhost:3000`
 
 This architecture allows the application to serve both as a traditional web application and as an API backend for other clients.
 
+## 📖 Tài liệu hướng dẫn / Documentation
+
+### 📚 Wiki (Tiếng Việt)
+
+FinTrack có tài liệu hướng dẫn chi tiết bằng **tiếng Việt** tại GitHub Wiki:
+
+**🔗 Truy cập Wiki:** [https://github.com/nguyenquy0710/Financial-Tracking/wiki](https://github.com/nguyenquy0710/Financial-Tracking/wiki)
+
+**Nội dung wiki bao gồm**:
+- 🚀 **[Hướng dẫn cài đặt](wiki/Huong-dan-Cai-dat.md)** - Cài đặt FinTrack từ A-Z
+- 🔐 **[Đăng ký và Đăng nhập](wiki/Dang-ky-va-Dang-nhap.md)** - Tạo tài khoản và bảo mật
+- ⚡ **[Bắt đầu nhanh](wiki/Bat-dau-Nhanh.md)** - Hướng dẫn cho người mới
+- 📊 **[Giao diện Dashboard](wiki/Giao-dien-Tong-quan.md)** - Tổng quan về Dashboard
+- 💸 **[Quản lý thu chi](wiki/Quan-ly-Thu-chi.md)** - Ghi chép và quản lý giao dịch
+- 🏺 **[Phương pháp 6 Lọ](wiki/Phuong-phap-6-Lo.md)** - Hướng dẫn chi tiết 6 Jars Method
+- 🔗 **[Tích hợp MISA](wiki/Tich-hop-MISA.md)** - Kết nối MISA Money Keeper
+- ❓ **[FAQ](wiki/FAQ.md)** - Câu hỏi thường gặp
+
+Xem **[WIKI_SUMMARY.md](WIKI_SUMMARY.md)** để biết thêm chi tiết về wiki.
+
 ## 📚 API Documentation
 
 ### Swagger UI (Interactive Documentation)

@@ -1,0 +1,86 @@
+name: Sync Wiki Documentation
+run-name: Sync Wiki - ${{ github.event_name }} on ${{ github.ref_name }}
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - develop
+    paths:
+      - 'wiki/**'
+  workflow_dispatch: # Allow manual trigger
+  repository_dispatch: # ✅ Cho phép kích hoạt từ bên ngoài (ví dụ: từ một workflow khác)
+  release:
+    # created : # ✅ Chỉ chạy khi release được tạo
+    # published: # ✅ Chỉ chạy khi release được phát hành
+    types: [published] # ✅ Chỉ chạy khi release được tạo
+
+permissions:
+  contents: write
+
+jobs:
+  sync-wiki:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout main repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Configure Git
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      
+      - name: Clone wiki repository
+        run: |
+          git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.wiki.git wiki-repo
+      
+      - name: Copy wiki files
+        run: |
+          # Copy all markdown files from wiki/ to wiki-repo/
+          cp wiki/*.md wiki-repo/
+          
+          # List files that will be synced
+          echo "Files to be synced:"
+          ls -la wiki-repo/*.md
+      
+      - name: Commit and push changes
+        run: |
+          cd wiki-repo
+          
+          # Check if there are changes
+          if [[ -n $(git status --porcelain) ]]; then
+            git add .
+            
+            # Get the commit message from the triggering commit
+            COMMIT_MSG="${{ github.event.head_commit.message }}"
+            
+            # Create a meaningful commit message
+            git commit -m "Auto-sync wiki from main repo
+            
+            Source commit: ${{ github.sha }}
+            Message: ${COMMIT_MSG}
+            
+            Synced by GitHub Actions"
+            
+            # Push changes
+            git push origin master
+            
+            echo "✅ Wiki synced successfully!"
+          else
+            echo "ℹ️ No changes to sync"
+          fi
+      
+      - name: Summary
+        run: |
+          echo "### Wiki Sync Summary 📚" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Repository:** ${{ github.repository }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Wiki URL:** https://github.com/${{ github.repository }}/wiki" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Wiki documentation has been synced successfully! 🎉" >> $GITHUB_STEP_SUMMARY
