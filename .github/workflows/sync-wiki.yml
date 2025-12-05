@@ -8,7 +8,7 @@ on:
       - master
       - develop
     paths:
-      - 'wiki/**'
+      - 'docs/wiki/**'
   workflow_dispatch: # Allow manual trigger
   repository_dispatch: # ✅ Cho phép kích hoạt từ bên ngoài (ví dụ: từ một workflow khác)
   release:
@@ -41,7 +41,7 @@ jobs:
       - name: Copy wiki files
         run: |
           # Copy all markdown files from wiki/ to wiki-repo/
-          cp wiki/*.md wiki-repo/
+          cp docs/wiki/*.md wiki-repo/
           
           # List files that will be synced
           echo "Files to be synced:"
